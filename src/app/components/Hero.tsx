@@ -2,10 +2,14 @@ import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
+import bgCarouselDefault from '../../imports/bg-test.jpg';
+import bgCarouselJeune from '../../imports/bg-promo.jpg';
+import bgCarouselCompet from '../../imports/bg-test2.jpg';
+
 const slides = [
   {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1613918431551-b2ef2720387c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBwbGF5ZXIlMjBhY3Rpb24lMjBzcG9ydHxlbnwxfHx8fDE3NzI3OTYxMjV8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    image: bgCarouselDefault,
     label: 'ACTUALITÉ DU CLUB',
     title: 'LE CLTO BADMINTON RECRUTE DE NOUVEAUX TALENTS',
     description: 'Rejoignez l\'un des clubs les plus compétitifs de France',
@@ -13,7 +17,7 @@ const slides = [
   },
   {
     id: 2,
-    image: 'https://images.unsplash.com/photo-1595220427358-8cf2ce3d7f89?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBzbWFzaCUyMGp1bXB8ZW58MXx8fHwxNzcyNzk2MTI2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    image: bgCarouselCompet,
     label: 'COMPÉTITION',
     title: 'NOS ÉQUIPES EN ROUTE VERS LES CHAMPIONNATS',
     description: 'Suivez nos athlètes lors des prochains interclubs',
@@ -21,7 +25,7 @@ const slides = [
   },
   {
     id: 3,
-    image: 'https://images.unsplash.com/photo-1716041040048-228dbae7b6ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjB0cmFpbmluZyUyMHByYWN0aWNlfGVufDF8fHx8MTc3Mjc5NjEyN3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    image: bgCarouselJeune,
     label: 'ESPACE JEUNES',
     title: 'STAGES DE VACANCES POUR LES JEUNES',
     description: 'Inscriptions ouvertes pour les stages d\'été',
@@ -78,7 +82,7 @@ export function Hero() {
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${slides[currentSlide].image})` }}
           />
-          
+
           {/* Dark Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
 
@@ -93,16 +97,16 @@ export function Hero() {
               >
                 {slides[currentSlide].label}
               </motion.div>
-              
+
               <motion.h1
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="font-['Bebas_Neue'] text-6xl md:text-7xl text-white leading-tight mb-4"
+                className="font-primary text-6xl md:text-7xl text-white leading-tight mb-4"
               >
                 {slides[currentSlide].title}
               </motion.h1>
-              
+
               <motion.p
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -111,7 +115,7 @@ export function Hero() {
               >
                 {slides[currentSlide].description}
               </motion.p>
-              
+
               <motion.button
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -120,6 +124,24 @@ export function Hero() {
               >
                 {slides[currentSlide].cta} →
               </motion.button>
+
+              {/* Slide Indicators */}
+              <div className="mt-10 z-10 flex gap-2">
+                {slides.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className="relative w-12 h-1 bg-white/30 overflow-hidden"
+                  >
+                    {index === currentSlide && (
+                      <div
+                        className="absolute inset-0 bg-[#da9619]"
+                        style={{ width: `${progress}%` }}
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -127,24 +149,6 @@ export function Hero() {
           <div className="absolute bottom-0 left-0 right-0 h-24 bg-white" style={{ clipPath: 'polygon(0 100%, 100% 0, 100% 100%)' }} />
         </motion.div>
       </AnimatePresence>
-
-      {/* Slide Indicators */}
-      <div className="absolute bottom-32 left-6 md:left-12 z-10 flex gap-2">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className="relative w-12 h-1 bg-white/30 overflow-hidden"
-          >
-            {index === currentSlide && (
-              <div
-                className="absolute inset-0 bg-[#da9619]"
-                style={{ width: `${progress}%` }}
-              />
-            )}
-          </button>
-        ))}
-      </div>
 
       {/* Navigation Arrows */}
       <div className="absolute right-6 top-1/2 -translate-y-1/2 z-10 flex flex-col gap-4">

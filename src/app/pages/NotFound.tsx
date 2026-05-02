@@ -67,8 +67,8 @@ export function NotFound() {
               Actualités
             </Link>
             <span className="text-white/40">•</span>
-            <Link to="/nos-equipes" className="text-white/80 hover:text-[#da9619] transition-colors">
-              Nos Équipes
+            <Link to="/interclub" className="text-white/80 hover:text-[#da9619] transition-colors">
+              Nos équipes d'interclubs
             </Link>
             <span className="text-white/40">•</span>
             <Link to="/contact" className="text-white/80 hover:text-[#da9619] transition-colors">

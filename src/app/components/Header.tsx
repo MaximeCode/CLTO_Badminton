@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import { Menu, X, ChevronDown } from 'lucide-react';
-import logo from 'figma:asset/logo_clto_main.png';
+import logo from '../../imports/logo_clto_main.png';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,31 +21,24 @@ export function Header() {
       items: [
         { label: 'Historique', path: '/historique' },
         { label: 'Bureau', path: '/bureau' },
-        { label: 'Infrastructures', path: '/infrastructures' },
-        { label: 'Partenaires', path: '/partenaires' },
+        { label: 'Gymnases', path: '/gymnases' },
+        { label: 'Creneaux', path: '/creneaux' },
+        { label: 'Adhérer', path: '/adherer' },
       ],
     },
     {
-      title: 'Nos Équipes',
-      path: '/nos-equipes',
+      title: 'Nos espaces',
+      items: [
+        { label: 'Jeunes', path: '/jeunes' },
+        { label: 'Adultes', path: '/adultes' },
+        { label: 'Compétition', path: '/competitions' },
+        { label: 'Loisir', path: '/loisir' },
+        { label: 'Vétérans', path: '/veterans' },
+      ],
     },
     {
       title: 'Interclubs',
       path: '/interclub',
-    },
-    {
-      title: 'Jeunes',
-      items: [
-        { label: 'École de bad', path: '/ecole-de-bad' },
-        { label: 'Compétitions', path: '/competitions-jeunes' },
-      ],
-    },
-    {
-      title: 'Adultes',
-      items: [
-        { label: 'Loisir', path: '/loisir' },
-        { label: 'Compétitions', path: '/competitions-adultes' },
-      ],
     },
     {
       title: 'Contact',
@@ -74,24 +67,24 @@ export function Header() {
                 {item.path ? (
                   <Link
                     to={item.path}
-                    className={`relative text-gray-700 hover:text-[#0153b6] transition-colors duration-200 group ${location.pathname === item.path ? 'text-[#0153b6]' : ''
+                    className={`relative text-gray-700 hover:text-[#0153b6] cursor-pointer font-medium transition-colors duration-200 group ${location.pathname === item.path ? 'text-[#0153b6]' : ''
                       }`}
                   >
                     {item.title}
                     <span
-                      className={`absolute -bottom-1 left-0 h-0.5 bg-[#da9619] transition-all duration-200 ${location.pathname === item.path ? 'w-full' : 'w-0 group-hover:w-full'
+                      className={`absolute bottom-0.5 left-0 h-0.5 bg-[#da9619] transition-all duration-200 ${location.pathname === item.path ? 'w-full' : 'w-0 group-hover:w-full'
                         }`}
                     />
                   </Link>
                 ) : (
                   <>
-                    <button className="relative text-gray-700 hover:text-[#0153b6] transition-colors duration-200 flex items-center gap-1">
+                    <button className="relative text-gray-700 hover:text-[#0153b6] cursor-pointer transition-colors duration-200 flex items-center gap-1">
                       {item.title}
                       <ChevronDown size={16} className="group-hover:rotate-180 transition-transform duration-200" />
-                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#da9619] transition-all duration-200 group-hover:w-full" />
+                      <span className="absolute bottom-1 left-0 w-0 h-0.5 bg-[#da9619] transition-all duration-200 group-hover:w-full" />
                     </button>
                     {item.items && openDropdown === item.title && (
-                      <div className="absolute top-full left-0 mt-2 bg-white shadow-lg rounded-md overflow-hidden min-w-[200px] animate-in fade-in slide-in-from-top-2 duration-200">
+                      <div className="absolute top-full left-0 mt-0 bg-white shadow-lg rounded-md overflow-hidden min-w-[200px] animate-in fade-in slide-in-from-top-2 duration-200">
                         {item.items.map((subItem) => (
                           <Link
                             key={subItem.path}

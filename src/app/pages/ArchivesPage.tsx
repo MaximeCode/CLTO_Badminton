@@ -62,7 +62,7 @@ export function ArchivesPage() {
                   <div className="bg-[#0153b6] text-white p-4 rounded-lg">
                     <Calendar size={32} />
                   </div>
-                  <h2 className="font-['Bebas_Neue'] text-5xl text-[#da9619]">
+                  <h2 className="font-primary text-5xl text-[#da9619]">
                     {archive.year}
                   </h2>
                 </div>

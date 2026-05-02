@@ -1,6 +1,7 @@
 import { PageHero } from '../components/PageHero';
 import { motion } from 'motion/react';
 import { Trophy, Target, Users } from 'lucide-react';
+import { Link } from 'react-router';
 
 const teams = [
   {
@@ -58,7 +59,7 @@ export function NosEquipesPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="font-['Bebas_Neue'] text-5xl md:text-6xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
               5 ÉQUIPES COMPÉTITIVES
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -79,7 +80,7 @@ export function NosEquipesPage() {
                 <div className="md:flex">
                   <div className="md:w-1/3 bg-gradient-to-br from-[#0153b6] to-[#013d87] p-8 flex flex-col justify-center items-center text-white">
                     <div className="text-6xl mb-4">🏸</div>
-                    <h3 className="font-['Bebas_Neue'] text-3xl mb-2 text-center">
+                    <h3 className="font-primary text-3xl mb-2 text-center">
                       {team.name}
                     </h3>
                     <span className="bg-[#da9619] px-4 py-1 rounded-full text-sm">
@@ -121,18 +122,18 @@ export function NosEquipesPage() {
             transition={{ duration: 0.6 }}
           >
             <Trophy className="mx-auto mb-6 text-[#da9619]" size={64} />
-            <h2 className="font-['Bebas_Neue'] text-4xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-4xl text-[#0153b6] mb-4">
               REJOIGNEZ UNE ÉQUIPE
             </h2>
             <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
               Vous souhaitez jouer en compétition ? Contactez-nous pour intégrer l'une de nos équipes !
             </p>
-            <a
-              href="/contact"
+            <Link
+              to="/contact"
               className="inline-block bg-[#da9619] text-white px-8 py-3 rounded-md hover:bg-[#c48515] transition-colors duration-200"
             >
               Nous contacter
-            </a>
+            </Link>
           </motion.div>
         </div>
       </section>

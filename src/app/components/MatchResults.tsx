@@ -1,13 +1,15 @@
 import { motion } from 'motion/react';
+import { Link } from 'react-router';
+import logo from '../../imports/logo_clto_main.png';
 
 export function MatchResults() {
   return (
-    <section className="py-20 bg-[#f5f7fa]">
+    <section className="py-20 bg-[#f5f7fa] font-primary">
       <div className="max-w-[1280px] mx-auto px-6">
         {/* Section Title */}
         <div className="flex items-center gap-4 mb-12">
           <div className="w-1 h-16 bg-[#da9619]" />
-          <h2 className="font-['Bebas_Neue'] text-5xl text-[#0153b6] tracking-wide">
+          <h2 className="text-5xl text-[#0153b6] tracking-wide">
             RÉSULTATS INTERCLUBS
           </h2>
         </div>
@@ -18,34 +20,37 @@ export function MatchResults() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="bg-white rounded-lg shadow-lg overflow-hidden max-w-3xl mx-auto mb-8"
+          className="font-primary bg-white rounded-lg shadow-lg overflow-hidden max-w-3xl mx-auto mb-8"
         >
           <div className="bg-gradient-to-r from-[#0153b6] to-[#013d87] text-white p-4 text-center">
-            <div className="text-sm uppercase tracking-wider mb-1">Championnat Régional - Division 1</div>
-            <div className="text-xs opacity-80">Dimanche 2 mars 2026</div>
+            <div className="text-md uppercase tracking-wider mb-1 font-primary">J10 - Nationale 2</div>
+            <div className="text-sm opacity-80 font-primary">Samedi 11 avril 2026</div>
           </div>
 
           <div className="p-8">
             <div className="flex items-center justify-between">
               {/* Home Team */}
               <div className="flex-1 text-center">
-                <div className="w-20 h-20 mx-auto mb-3 rounded-full bg-gradient-to-br from-[#0153b6] to-[#da9619] flex items-center justify-center">
-                  <span className="text-white font-bold text-2xl">C</span>
-                </div>
-                <div className="font-['Bebas_Neue'] text-2xl text-gray-900">CLTO BADMINTON</div>
+                <img
+                  src={logo}
+                  alt="CLTO Badminton"
+                  className="w-20 h-auto object-contain mx-auto mb-3"
+                />
+
+                <div className="text-2xl text-gray-900">CLTO BADMINTON</div>
                 <div className="text-sm text-gray-500">Orléans</div>
               </div>
 
               {/* Score */}
               <div className="px-8">
                 <div className="flex items-center gap-4">
-                  <div className="font-['Bebas_Neue'] text-6xl text-[#0153b6]">6</div>
+                  <div className="font-primary text-6xl text-[#0153b6]">2</div>
                   <div className="text-2xl text-gray-400">-</div>
-                  <div className="font-['Bebas_Neue'] text-6xl text-gray-400">2</div>
+                  <div className="font-primary text-6xl text-gray-400">6</div>
                 </div>
                 <div className="mt-2 text-center">
-                  <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                    Victoire
+                  <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
+                    Défaite
                   </span>
                 </div>
               </div>
@@ -53,10 +58,10 @@ export function MatchResults() {
               {/* Away Team */}
               <div className="flex-1 text-center">
                 <div className="w-20 h-20 mx-auto mb-3 rounded-full bg-gray-200 flex items-center justify-center">
-                  <span className="text-gray-600 font-bold text-2xl">BC</span>
+                  <span className="text-gray-600 font-bold text-2xl">CAB</span>
                 </div>
-                <div className="font-['Bebas_Neue'] text-2xl text-gray-900">BC TOURS</div>
-                <div className="text-sm text-gray-500">Tours</div>
+                <div className="font-primary text-2xl text-gray-900">CLUB ALENÇONNAIS BADMINTON</div>
+                <div className="text-sm text-gray-500">Alençon</div>
               </div>
             </div>
 
@@ -65,26 +70,44 @@ export function MatchResults() {
               <div className="grid grid-cols-3 gap-4 text-center text-sm">
                 <div>
                   <div className="text-gray-500 mb-1">Simples</div>
-                  <div className="font-bold text-[#0153b6]">4 - 0</div>
+                  <div className="font-bold text-[#0153b6]">2 - 2</div>
                 </div>
                 <div>
                   <div className="text-gray-500 mb-1">Doubles</div>
-                  <div className="font-bold text-[#0153b6]">2 - 1</div>
+                  <div className="font-bold text-[#0153b6]">0 - 2</div>
                 </div>
                 <div>
                   <div className="text-gray-500 mb-1">Mixtes</div>
-                  <div className="font-bold text-[#0153b6]">0 - 1</div>
+                  <div className="font-bold text-[#0153b6]">0 - 2</div>
                 </div>
               </div>
             </div>
           </div>
         </motion.div>
 
+        <div className="max-w-[1280px] mx-auto px-4 my-12">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="w-full rounded-lg"
+          >
+            <iframe
+              id="interclub-iframe"
+              width="100%"
+              height="700px"
+              className="h-[700px] w-full rounded-lg border-2 border-gray-200"
+              src={`https://icbad.ffbad.org/rencontre/710863`}
+            ></iframe>
+          </motion.div>
+        </div>
+
         {/* CTA Button */}
         <div className="text-center">
-          <button className="bg-[#0153b6] text-white px-10 py-4 rounded-full hover:bg-[#da9619] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+          <Link to="/interclub" className="bg-[#0153b6] text-white px-10 py-4 rounded-full hover:bg-[#da9619] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
             Voir tous les résultats
-          </button>
+          </Link>
         </div>
       </div>
     </section>

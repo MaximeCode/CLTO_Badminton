@@ -2,6 +2,10 @@
 
 :root {
   --font-size: 16px;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --font-primary: "Bebas Neue", sans-serif;
+  --font-secondary: "DM Sans", sans-serif;
   --background: #ffffff;
   --foreground: oklch(0.145 0 0);
   --card: #ffffff;
@@ -22,8 +26,6 @@
   --input: transparent;
   --input-background: #f3f3f5;
   --switch-background: #cbced4;
-  --font-weight-medium: 500;
-  --font-weight-normal: 400;
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -39,16 +41,16 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  
+
   /* CLTO Brand Colors */
   --clto-blue: #0153b6;
   --clto-gold: #da9619;
   --clto-navy: #0a1f3d;
   --clto-grey: #f5f7fa;
-  
+
   /* Typography */
-  --font-heading: 'Bebas Neue', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
+  --font-heading: "Bebas Neue", sans-serif;
+  --font-body: "DM Sans", sans-serif;
 }
 
 .dark {

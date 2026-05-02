@@ -43,7 +43,7 @@ export function ContactPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="font-['Bebas_Neue'] text-4xl text-[#0153b6] mb-8">
+              <h2 className="font-primary text-4xl text-[#0153b6] mb-8">
                 NOS COORDONNÉES
               </h2>
 
@@ -53,11 +53,10 @@ export function ContactPage() {
                     <MapPin size={24} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Adresse</h3>
+                    <h3 className="text-primary text-2xl mb-1">Siège social</h3>
                     <p className="text-gray-600">
-                      Gymnase Municipal<br />
-                      123 Avenue du Badminton<br />
-                      75000 Paris
+                      1 Boulevard de Québec<br />
+                      45000 Orléans<br />
                     </p>
                   </div>
                 </div>
@@ -67,7 +66,7 @@ export function ContactPage() {
                     <Mail size={24} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Email</h3>
+                    <h3 className="text-primary text-2xl mb-1">Email</h3>
                     <a href="mailto:contact@cltobadminton.fr" className="text-[#0153b6] hover:text-[#da9619] transition-colors">
                       contact@cltobadminton.fr
                     </a>
@@ -79,24 +78,27 @@ export function ContactPage() {
                     <Phone size={24} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Téléphone</h3>
+                    <h3 className="text-primary text-2xl mb-1">Téléphone</h3>
                     <a href="tel:0612345678" className="text-[#0153b6] hover:text-[#da9619] transition-colors">
-                      06 12 34 56 78
+                      02 45 48 21 62
                     </a>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-12 bg-gray-50 rounded-lg p-6">
-                <h3 className="font-['Bebas_Neue'] text-2xl text-[#0153b6] mb-4">
-                  HORAIRES DU GYMNASE
-                </h3>
+              <div className="mt-12 bg-gray-50 rounded-lg py-6">
+                <h2 className="font-primary text-4xl text-[#0153b6] mb-8">
+                  HORAIRES DU SIÈGE SOCIAL
+                </h2>
                 <div className="space-y-2 text-gray-600">
-                  <p><strong>Lundi :</strong> 20h - 22h</p>
-                  <p><strong>Mercredi :</strong> 14h - 22h30</p>
-                  <p><strong>Vendredi :</strong> 18h - 22h</p>
-                  <p><strong>Samedi :</strong> 14h - 18h</p>
+                  <p>
+                    <strong>Lundi et mardi&nbsp;:</strong> 9h30 à 16h — accueil physique
+                  </p>
+                  <p>
+                    <strong>Mercredi et jeudi&nbsp;:</strong> 9h30 à 16h — uniquement par téléphone, SMS, WhatsApp au <a href="tel:0665296372" className="text-[#0153b6] hover:text-[#da9619] transition-colors">06 65 29 63 72</a> ou par mail
+                  </p>
                 </div>
+
               </div>
             </motion.div>
 
@@ -107,7 +109,7 @@ export function ContactPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="font-['Bebas_Neue'] text-4xl text-[#0153b6] mb-8">
+              <h2 className="font-primary text-4xl text-[#0153b6] mb-8">
                 ENVOYEZ-NOUS UN MESSAGE
               </h2>
 
@@ -214,12 +216,12 @@ export function ContactPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="font-['Bebas_Neue'] text-4xl text-[#0153b6] mb-8 text-center">
-              COMMENT NOUS TROUVER ?
+            <h2 className="font-primary text-4xl text-[#0153b6] mb-8 text-center">
+              LOCALISER LE SIÈGE SOCIAL
             </h2>
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
               <div className="h-96 bg-gray-200 flex items-center justify-center">
-                <p className="text-gray-500">Carte Google Maps</p>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2604.795614571111!2d1.909339176549044!3d47.90425207613338!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f7751546555555%3A0x47f7751546555555!2s1%20Boulevard%20de%20Qu%C3%A9bec%2C%2045000%20Orl%C3%A9ans!5e0!3m2!1sfr!2sfr!4v1719787200000!5m2!1sfr!2sfr" width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Position xsur une carte Google Maps de la CLTO Badminton"></iframe>
               </div>
             </div>
           </motion.div>

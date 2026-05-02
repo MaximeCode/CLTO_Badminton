@@ -52,7 +52,7 @@ export function HistoriquePage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="font-['Bebas_Neue'] text-5xl md:text-6xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
               NOTRE HISTOIRE
             </h2>
             <p className="text-gray-600 text-lg max-w-3xl mx-auto">
@@ -73,17 +73,16 @@ export function HistoriquePage() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className={`relative flex items-center ${
-                    index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                  } flex-col gap-8`}
+                  className={`relative flex items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                    } flex-col gap-8`}
                 >
                   {/* Content */}
                   <div className="md:w-5/12 w-full">
                     <div className="bg-gray-50 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                      <div className="font-['Bebas_Neue'] text-4xl text-[#da9619] mb-2">
+                      <div className="font-primary text-4xl text-[#da9619] mb-2">
                         {event.year}
                       </div>
-                      <h3 className="font-['Bebas_Neue'] text-2xl text-[#0153b6] mb-3">
+                      <h3 className="font-primary text-2xl text-[#0153b6] mb-3">
                         {event.title}
                       </h3>
                       <p className="text-gray-600">{event.description}</p>

@@ -1,0 +1,317 @@
+import { useState } from 'react';
+import { PageHero } from '../components/PageHero';
+import { motion } from 'motion/react';
+import { MapPin, Copy, Check, ExternalLink } from 'lucide-react';
+import gymnaseChardon from '../../imports/gymnase_chardon.jpg';
+
+interface Gym {
+  id: number;
+  name: string;
+  address: string;
+  courts: number;
+  lat: number;
+  lng: number;
+}
+
+const gyms: Gym[] = [
+  {
+    id: 1,
+    name: 'Piscine Victor Fouillade',
+    address: '1 Rue Jean Bouin, 45000 Orléans',
+    courts: 4,
+    lat: 47.921666832201105,
+    lng: 1.8976930836604693,
+  },
+  {
+    id: 2,
+    name: 'Gymnase Georges Chardon',
+    address: '15 Pl. Georges Chardon, 45100 Orléans',
+    courts: 7,
+    lat: 47.887067687826196,
+    lng: 1.9135509424965862,
+  },
+  {
+    id: 3,
+    name: 'Gymnase Pierre Desseaux',
+    address: '10 Rue des Charretiers, 45000 Orléans',
+    courts: 4,
+    lat: 47.89885970484325,
+    lng: 1.899666794653384,
+  },
+  {
+    id: 4,
+    name: 'Gymnase Barthélémy',
+    address: 'Av. Jean Zay, 45000 Orléans',
+    courts: 7,
+    lat: 47.9074296411878,
+    lng: 1.92130587135132,
+  },
+  {
+    id: 5,
+    name: 'Gymnase Céline Lebrun',
+    address: '4 Rue Georges Landré, 45000 Orléans',
+    courts: 7,
+    lat: 47.92154078965461,
+    lng: 1.927667475626574,
+  },
+];
+
+const allGymsBounds = {
+  minLng: 1.87,
+  maxLng: 1.95,
+  minLat: 47.87,
+  maxLat: 47.93,
+};
+
+export function GymnasesPage() {
+  const [selectedGym, setSelectedGym] = useState<Gym | null>(null);
+  const [copiedAddress, setCopiedAddress] = useState<number | null>(null);
+
+  const copyAddress = (gym: Gym) => {
+    navigator.clipboard.writeText(gym.address);
+    setCopiedAddress(gym.id);
+    setTimeout(() => setCopiedAddress(null), 2000);
+  };
+
+  // Generate OpenStreetMap embed URL
+  const getMapUrl = () => {
+    if (selectedGym) {
+      return `https://www.openstreetmap.org/export/embed.html?bbox=${selectedGym.lng - 0.01},${selectedGym.lat - 0.01},${selectedGym.lng + 0.01},${selectedGym.lat + 0.01}&layer=mapnik&marker=${selectedGym.lat},${selectedGym.lng}`;
+    }
+    // Show all gyms centered on Orléans
+    return `https://www.openstreetmap.org/export/embed.html?bbox=1.87,47.87,1.95,47.93&layer=mapnik`;
+  };
+
+  const openInMaps = (gym: Gym) => {
+    window.open(`https://www.google.com/maps/search/?api=1&query=${gym.lat},${gym.lng}`, '_blank');
+  };
+
+  const getMarkerPosition = (gym: Gym) => {
+    const left =
+      ((gym.lng - allGymsBounds.minLng) / (allGymsBounds.maxLng - allGymsBounds.minLng)) * 100;
+    const top =
+      ((allGymsBounds.maxLat - gym.lat) / (allGymsBounds.maxLat - allGymsBounds.minLat)) * 100;
+
+    return {
+      left: `${Math.min(Math.max(left, 0), 100)}%`,
+      top: `${Math.min(Math.max(top, 0), 100)}%`,
+    };
+  };
+
+  return (
+    <>
+      <PageHero
+        title="LES GYMNASES"
+        subtitle="Découvrez nos 5 gymnases répartis à Orléans"
+        image={gymnaseChardon}
+      />
+
+      <section className="py-20 bg-white">
+        <div className="max-w-[1280px] mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
+              NOS 5 GYMNASES
+            </h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Le CLTO Badminton dispose de 5 gymnases dans Orléans pour vous offrir de nombreux créneaux
+              d'entraînement
+            </p>
+          </motion.div>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Gym List */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="space-y-4"
+            >
+              {gyms.map((gym, index) => (
+                <motion.div
+                  key={gym.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  onClick={() => setSelectedGym(gym)}
+                  className={`bg-gray-50 rounded-lg p-6 cursor-pointer transition-all duration-300 border-2 ${selectedGym?.id === gym.id
+                    ? 'border-[#0153b6] shadow-xl bg-blue-50'
+                    : 'border-transparent shadow-md hover:shadow-lg hover:border-[#da9619]'
+                    }`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div
+                      className={`p-3 rounded-lg transition-colors duration-300 ${selectedGym?.id === gym.id ? 'bg-[#0153b6]' : 'bg-[#da9619]'
+                        }`}
+                    >
+                      <MapPin className="text-white" size={24} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-primary text-2xl text-[#0153b6] mb-2">
+                        {gym.name}
+                      </h3>
+                      <p className="text-gray-600 mb-3">{gym.address}</p>
+                      <div className="flex items-center justify-between flex-wrap gap-3">
+                        <div className="flex items-center gap-2 bg-gradient-to-r from-[#0153b6] to-[#013d87] text-white px-4 py-2 rounded-lg shadow-md">
+                          <div className="text-center flex-1">
+                            <p className="text-xs opacity-90">Terrains</p>
+                            <p className="font-primary text-3xl">{gym.courts}</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              copyAddress(gym);
+                            }}
+                            className="flex items-center gap-2 bg-[#0153b6] text-white px-4 py-2 rounded-lg hover:bg-[#013d87] transition-colors duration-200"
+                          >
+                            {copiedAddress === gym.id ? (
+                              <>
+                                <Check size={16} />
+                                <span className="text-sm">Copié!</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy size={16} />
+                                <span className="text-sm hidden sm:inline">Copier</span>
+                              </>
+                            )}
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openInMaps(gym);
+                            }}
+                            className="flex items-center gap-2 bg-[#da9619] text-white px-4 py-2 rounded-lg hover:bg-[#b87d15] transition-colors duration-200"
+                          >
+                            <ExternalLink size={16} />
+                            <span className="text-sm hidden sm:inline">Itinéraire</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+
+              {selectedGym && (
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  onClick={() => setSelectedGym(null)}
+                  className="w-full bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors duration-200 font-semibold"
+                >
+                  Afficher tous les gymnases
+                </motion.button>
+              )}
+            </motion.div>
+
+            {/* Map */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="h-[600px] lg:h-full min-h-[500px] rounded-lg overflow-hidden shadow-xl sticky top-24 bg-gray-100"
+            >
+              {selectedGym ? (
+                <div className="h-full relative">
+                  <iframe
+                    key={selectedGym.id}
+                    src={getMapUrl()}
+                    className="w-full h-full border-0"
+                    title={`Carte de ${selectedGym.name}`}
+                  />
+                  <div className="absolute top-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4 z-10">
+                    <h3 className="font-primary text-xl text-[#0153b6] mb-1">
+                      {selectedGym.name}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-2">{selectedGym.address}</p>
+                    <p className="text-sm">
+                      <strong>{selectedGym.courts}</strong> terrain{selectedGym.courts > 1 ? 's' : ''}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="h-full relative">
+                  <iframe
+                    src={getMapUrl()}
+                    className="w-full h-full border-0"
+                    title="Carte de tous les gymnases"
+                  />
+                  <div className="absolute top-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4 z-10">
+                    <h3 className="font-primary text-xl text-[#0153b6] mb-1">
+                      Tous les gymnases
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Cliquez sur un gymnase pour voir sa localisation détaillée
+                    </p>
+                  </div>
+                  <div className="absolute inset-0 z-20">
+                    {gyms.map((gym) => {
+                      const position = getMarkerPosition(gym);
+                      return (
+                        <button
+                          key={gym.id}
+                          type="button"
+                          onClick={() => setSelectedGym(gym)}
+                          title={gym.name}
+                          className="absolute -translate-x-1/2 -translate-y-full group cursor-pointer"
+                          style={position}
+                        >
+                          <MapPin
+                            size={30}
+                            className="text-[#0153b6] drop-shadow-[0_2px_3px_rgba(0,0,0,0.35)] group-hover:text-[#da9619] transition-colors duration-200"
+                            fill="#ffffff"
+                          />
+                          <span className="absolute left-1/2 -translate-x-1/2 mt-1 whitespace-nowrap bg-white/95 text-gray-700 text-xs px-2 py-1 rounded-md shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                            {gym.name}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          </div>
+
+          {/* Info Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mt-16 bg-gradient-to-r from-[#0153b6] to-[#013d87] text-white rounded-lg p-8 shadow-xl"
+          >
+            <h3 className="font-primary text-3xl mb-4">Total des équipements</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <p className="font-primary text-5xl text-[#da9619]">5</p>
+                <p className="text-sm opacity-90">Gymnases</p>
+              </div>
+              <div className="text-center">
+                <p className="font-primary text-5xl text-[#da9619]">
+                  {gyms.reduce((sum, gym) => sum + gym.courts, 0)}
+                </p>
+                <p className="text-sm opacity-90">Terrains au total</p>
+              </div>
+              <div className="text-center col-span-2 md:col-span-1">
+                <p className="font-primary text-5xl text-[#da9619]">57h</p>
+                <p className="text-sm opacity-90">Heures de créneaux par semaine</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </>
+  );
+}

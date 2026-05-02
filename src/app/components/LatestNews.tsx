@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { Link } from 'react-router';
 
 const newsCards = [
   {
@@ -31,7 +32,7 @@ export function LatestNews() {
         {/* Section Title */}
         <div className="flex items-center gap-4 mb-12">
           <div className="w-1 h-16 bg-[#da9619]" />
-          <h2 className="font-['Bebas_Neue'] text-5xl text-[#0153b6] tracking-wide">
+          <h2 className="font-primary text-5xl text-[#0153b6] tracking-wide">
             DERNIÈRES ACTUALITÉS
           </h2>
         </div>
@@ -64,7 +65,7 @@ export function LatestNews() {
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="font-['Bebas_Neue'] text-2xl text-gray-900 mb-3 group-hover:text-[#0153b6] transition-colors duration-200">
+                <h3 className="font-primary text-2xl text-gray-900 mb-3 group-hover:text-[#0153b6] transition-colors duration-200">
                   {card.title}
                 </h3>
                 <span className="text-sm text-gray-500">{card.date}</span>
@@ -75,9 +76,9 @@ export function LatestNews() {
 
         {/* CTA Button */}
         <div className="text-center">
-          <button className="border-2 border-[#0153b6] text-[#0153b6] px-8 py-3 rounded-md hover:bg-[#0153b6] hover:text-white transition-all duration-200">
+          <Link to="/actualites" className="border-2 border-[#0153b6] text-[#0153b6] px-8 py-3 rounded-md hover:bg-[#0153b6] hover:text-white transition-all duration-200">
             Toutes les actualités →
-          </button>
+          </Link>
         </div>
       </div>
     </section>

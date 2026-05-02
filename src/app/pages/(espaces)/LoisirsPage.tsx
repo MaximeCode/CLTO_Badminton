@@ -1,27 +1,98 @@
-import { PageHero } from '../components/PageHero';
+import { PageHero } from '../../components/PageHero';
 import { motion } from 'motion/react';
 import { Clock, Users, Heart, Smile } from 'lucide-react';
+import { Link } from 'react-router';
 
 const sessions = [
   {
     day: 'Lundi',
-    time: '20h - 22h',
-    level: 'Tous niveaux',
+    time: '21h00 - 22h00',
+    level: 'Jeu libre loisirs - Chardon',
+  },
+  {
+    day: 'Lundi',
+    time: '16h00 - 20h00',
+    level: 'Jeu libre loisirs - Desseaux',
+  },
+  {
+    day: 'Lundi',
+    time: '12h00 - 13h30',
+    level: 'Jeu libre senior/entreprise - Barthelemy',
+  },
+  {
+    day: 'Lundi',
+    time: '19h30 - 21h00',
+    level: 'Initiation NC/P - Chardon',
+  },
+  {
+    day: 'Mardi',
+    time: '18h00 - 20h00',
+    level: 'Jeu libre loisirs - Desseaux',
+  },
+  {
+    day: 'Mardi',
+    time: '21h30 - 22h00',
+    level: 'Jeu libre loisirs - Peguy',
+  },
+  {
+    day: 'Mardi',
+    time: '19h30 - 22h00',
+    level: 'Jeu libre competiteurs - Chardon',
+  },
+  {
+    day: 'Mardi',
+    time: '12h00 - 13h30',
+    level: 'Jeu libre senior/entreprise - Barthelemy',
+  },
+  {
+    day: 'Mardi',
+    time: '20h00 - 21h30',
+    level: 'Initiation NC/P - Peguy',
   },
   {
     day: 'Mercredi',
-    time: '18h30 - 20h30',
-    level: 'Débutants',
+    time: '18h00 - 22h00',
+    level: 'Jeu libre loisirs - Desseaux',
+  },
+  {
+    day: 'Mercredi',
+    time: '21h30 - 22h00',
+    level: 'Jeu libre competiteurs - Chardon/Le Brun',
+  },
+  {
+    day: 'Jeudi',
+    time: '18h00 - 20h00',
+    level: 'Jeu libre loisirs - Desseaux',
+  },
+  {
+    day: 'Jeudi',
+    time: '12h00 - 13h30',
+    level: 'Jeu libre senior/entreprise - Barthelemy',
   },
   {
     day: 'Vendredi',
-    time: '19h30 - 22h',
-    level: 'Tous niveaux',
+    time: '20h00 - 22h00',
+    level: 'Jeu libre tout public (adultes + jeunes) - Chardon',
+  },
+  {
+    day: 'Vendredi',
+    time: '19h30 - 22h00',
+    level: 'Jeu libre competiteurs - Desseaux',
+  },
+  {
+    day: 'Vendredi',
+    time: '13h00 - 14h00',
+    level: 'Jeu libre senior/entreprise - Chardon',
   },
   {
     day: 'Samedi',
-    time: '14h - 17h',
-    level: 'Loisir avancé',
+    time: '09h30 - 12h30',
+    level: 'Jeu libre tout public (adultes + jeunes) - Chardon',
+  },
+  {
+    day: 'Dimanche',
+    time: '10h00 - 13h00',
+    level: 'Jeu libre tout public (adultes + jeunes) - Barthelemy',
   },
 ];
 
@@ -48,7 +119,7 @@ const benefits = [
   },
 ];
 
-export function LoisirPage() {
+export function LoisirsPage() {
   return (
     <>
       <PageHero
@@ -66,7 +137,7 @@ export function LoisirPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="font-['Bebas_Neue'] text-5xl md:text-6xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
               NOS CRÉNEAUX LOISIR
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -84,7 +155,7 @@ export function LoisirPage() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="bg-gradient-to-br from-[#0153b6] to-[#013d87] rounded-lg p-6 shadow-lg text-white hover:shadow-xl transition-shadow duration-300"
               >
-                <h3 className="font-['Bebas_Neue'] text-3xl mb-4">{session.day}</h3>
+                <h3 className="font-primary text-3xl mb-4">{session.day}</h3>
                 <div className="flex items-center gap-2 mb-3">
                   <Clock size={20} />
                   <span className="text-lg">{session.time}</span>
@@ -107,7 +178,7 @@ export function LoisirPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="font-['Bebas_Neue'] text-5xl md:text-6xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
               POURQUOI CHOISIR LE LOISIR ?
             </h2>
           </motion.div>
@@ -127,7 +198,7 @@ export function LoisirPage() {
                   <div className="bg-[#0153b6] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Icon size={32} />
                   </div>
-                  <h3 className="font-['Bebas_Neue'] text-xl text-[#0153b6] mb-3">
+                  <h3 className="font-primary text-xl text-[#0153b6] mb-3">
                     {benefit.title}
                   </h3>
                   <p className="text-gray-600 text-sm">{benefit.description}</p>
@@ -147,7 +218,7 @@ export function LoisirPage() {
             transition={{ duration: 0.6 }}
             className="bg-gray-50 rounded-lg p-12 text-center shadow-lg"
           >
-            <h2 className="font-['Bebas_Neue'] text-4xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-4xl text-[#0153b6] mb-4">
               TARIFS ATTRACTIFS
             </h2>
             <p className="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
@@ -156,12 +227,12 @@ export function LoisirPage() {
             <div className="bg-white rounded-lg p-8 max-w-md mx-auto shadow-md">
               <div className="text-[#da9619] text-5xl font-bold mb-2">180€</div>
               <div className="text-gray-600 mb-6">par an (licence FFBaD incluse)</div>
-              <a
-                href="/contact"
+              <Link
+                to="/contact"
                 className="inline-block bg-[#da9619] text-white px-8 py-3 rounded-md hover:bg-[#c48515] transition-colors duration-200"
               >
                 S'inscrire
-              </a>
+              </Link>
             </div>
           </motion.div>
         </div>
