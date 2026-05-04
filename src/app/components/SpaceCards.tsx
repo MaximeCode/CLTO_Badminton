@@ -8,35 +8,35 @@ const spaces = [
     title: 'ESPACE JEUNES',
     icon: Users,
     image: 'https://images.unsplash.com/photo-1733141732172-3abba91f4db2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjB5b3V0aCUyMGp1bmlvcnxlbnwxfHx8fDE3NzI3OTYxMjh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    color: '#0153b6',
+    color: 'primary',
     link: '/jeunes',
   },
   {
     title: 'ESPACE ADULTES',
     icon: Users,
     image: 'https://images.unsplash.com/photo-1716041040048-228dbae7b6ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjB0cmFpbmluZyUyMHByYWN0aWNlfGVufDF8fHx8MTc3Mjc5NjEyN3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    color: '#da9619',
+    color: 'secondary',
     link: '/adultes',
   },
   {
     title: 'COMPÉTITION',
     icon: Trophy,
     image: 'https://images.unsplash.com/photo-1595220427358-8cf2ce3d7f89?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBzbWFzaCUyMGp1bXB8ZW58MXx8fHwxNzcyNzk2MTI2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    color: '#0153b6',
+    color: 'primary',
     link: '/competitions',
   },
   {
     title: 'LOISIR',
     icon: Target,
     image: 'https://images.unsplash.com/photo-1624024834874-2a1611305604?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBjb3VydCUyMGluZG9vcnxlbnwxfHx8fDE3NzI2ODI3OTJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    color: '#da9619',
+    color: 'secondary',
     link: '/loisir',
   },
   {
     title: 'VÉTÉRANS',
     icon: Users,
     image: 'https://images.unsplash.com/photo-1765544581327-b5e9055d986c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBjb21wZXRpdGlvbiUyMG1hdGNofGVufDF8fHx8MTc3Mjc5NjEyNnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    color: '#0153b6',
+    color: 'primary',
     link: '/veterans',
   },
 ];
@@ -47,8 +47,8 @@ export function SpaceCards() {
       <div className="max-w-[1280px] mx-auto px-6">
         {/* Section Title */}
         <div className="flex items-center gap-4 mb-12">
-          <div className="w-1 h-16 bg-[#da9619]" />
-          <h2 className="font-primary text-5xl text-[#0153b6] tracking-wide">
+          <div className="w-1 h-16 bg-secondary" />
+          <h2 className="font-primary text-5xl text-primary tracking-wide">
             NOS ESPACES
           </h2>
         </div>
@@ -74,8 +74,7 @@ export function SpaceCards() {
 
                   {/* Overlay */}
                   <div
-                    className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:from-black/90 transition-all duration-300"
-                    style={{ backgroundColor: `${space.color}00` }}
+                    className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:from-black/90 transition-all duration-300 bg-${space.color}`}
                   />
 
                   {/* Content */}

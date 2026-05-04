@@ -47,7 +47,7 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-t-2 border-[#da9619] shadow-sm">
+    <header className="sticky top-0 z-50 bg-white border-t-2 border-secondary shadow-sm">
       <div className="max-w-[1280px] mx-auto px-6">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -67,21 +67,21 @@ export function Header() {
                 {item.path ? (
                   <Link
                     to={item.path}
-                    className={`relative text-gray-700 hover:text-[#0153b6] cursor-pointer font-medium transition-colors duration-200 group ${location.pathname === item.path ? 'text-[#0153b6]' : ''
+                    className={`relative text-gray-700 hover:text-primary cursor-pointer font-medium transition-colors duration-200 group ${location.pathname === item.path ? 'text-primary' : ''
                       }`}
                   >
                     {item.title}
                     <span
-                      className={`absolute bottom-0.5 left-0 h-0.5 bg-[#da9619] transition-all duration-200 ${location.pathname === item.path ? 'w-full' : 'w-0 group-hover:w-full'
+                      className={`absolute -bottom-0.5 left-0 h-0.5 bg-secondary transition-all duration-200 ${location.pathname === item.path ? 'w-full' : 'w-0 group-hover:w-full'
                         }`}
                     />
                   </Link>
                 ) : (
                   <>
-                    <button className="relative text-gray-700 hover:text-[#0153b6] cursor-pointer transition-colors duration-200 flex items-center gap-1">
+                    <button className="relative text-gray-700 hover:text-primary cursor-pointer transition-colors duration-200 flex items-center gap-1">
                       {item.title}
                       <ChevronDown size={16} className="group-hover:rotate-180 transition-transform duration-200" />
-                      <span className="absolute bottom-1 left-0 w-0 h-0.5 bg-[#da9619] transition-all duration-200 group-hover:w-full" />
+                      <span className="absolute bottom-1 left-0 w-0 h-0.5 bg-secondary transition-all duration-200 group-hover:w-full" />
                     </button>
                     {item.items && openDropdown === item.title && (
                       <div className="absolute top-full left-0 mt-0 bg-white shadow-lg rounded-md overflow-hidden min-w-[200px] animate-in fade-in slide-in-from-top-2 duration-200">
@@ -89,7 +89,7 @@ export function Header() {
                           <Link
                             key={subItem.path}
                             to={subItem.path}
-                            className={`block px-4 py-3 text-gray-700 hover:bg-[#0153b6] hover:text-white transition-colors duration-150 ${location.pathname === subItem.path ? 'bg-[#da9619] text-white' : ''
+                            className={`block px-4 py-3 text-gray-700 hover:bg-primary hover:text-white transition-colors duration-150 ${location.pathname === subItem.path ? 'bg-secondary text-white' : ''
                               }`}
                           >
                             {subItem.label}
@@ -104,17 +104,26 @@ export function Header() {
           </nav>
 
           {/* CTA Button */}
-          <Link
-            to="/contact"
-            className="hidden lg:block bg-[#0153b6] text-white px-6 py-2.5 rounded-md hover:bg-[#013d87] transition-colors duration-200"
-          >
-            Rejoindre le club
-          </Link>
+          <div className="flex gap-2">
+            <Link
+              to="/contact"
+              className="hidden lg:block bg-primary text-white px-6 py-2.5 rounded-md hover:bg-primary/80 transition-colors duration-200"
+            >
+              Rejoindre le club
+            </Link>
+
+            <Link
+              to="#"
+              className="hidden lg:block bg-secondary text-white px-6 py-2.5 rounded-md hover:bg-secondary/80 transition-colors duration-200"
+            >
+              Visiter la boutique
+            </Link>
+          </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 text-gray-700 hover:text-[#0153b6]"
+            className="lg:hidden p-2 text-gray-700 hover:text-primary"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -128,7 +137,7 @@ export function Header() {
                 {item.path ? (
                   <Link
                     to={item.path}
-                    className="block text-gray-700 hover:text-[#0153b6] py-2"
+                    className="block text-gray-700 hover:text-primary py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.title}
@@ -137,7 +146,7 @@ export function Header() {
                   <>
                     <button
                       onClick={() => setOpenDropdown(openDropdown === item.title ? null : item.title)}
-                      className="w-full flex items-center justify-between text-gray-700 hover:text-[#0153b6] py-2"
+                      className="w-full flex items-center justify-between text-gray-700 hover:text-primary py-2"
                     >
                       {item.title}
                       <ChevronDown
@@ -152,7 +161,7 @@ export function Header() {
                           <Link
                             key={subItem.path}
                             to={subItem.path}
-                            className="block text-gray-600 hover:text-[#0153b6] py-2"
+                            className="block text-gray-600 hover:text-primary py-2"
                             onClick={() => setIsMenuOpen(false)}
                           >
                             {subItem.label}
@@ -166,7 +175,7 @@ export function Header() {
             ))}
             <Link
               to="/contact"
-              className="block w-full bg-[#0153b6] text-white px-6 py-2.5 rounded-md hover:bg-[#013d87] transition-colors duration-200 text-center mt-4"
+              className="block w-full bg-primary text-white px-6 py-2.5 rounded-md hover:bg-primary-accent transition-colors duration-200 text-center mt-4"
               onClick={() => setIsMenuOpen(false)}
             >
               Rejoindre le club

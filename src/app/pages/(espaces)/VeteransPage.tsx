@@ -56,7 +56,7 @@ export function VeteransPage() {
                         transition={{ duration: 0.6 }}
                         className="text-center mb-16"
                     >
-                        <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
+                        <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
                             NOS CRENEAUX VETERANS
                         </h2>
                         <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -72,14 +72,14 @@ export function VeteransPage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                                className="bg-gradient-to-br from-[#0153b6] to-[#013d87] rounded-lg p-6 shadow-lg text-white hover:shadow-xl transition-shadow duration-300"
+                                className="bg-gradient-to-br from-primary to-primary-accent rounded-lg p-6 shadow-lg text-white hover:shadow-xl transition-shadow duration-300"
                             >
                                 <h3 className="font-primary text-3xl mb-4">{session.day}</h3>
                                 <div className="flex items-center gap-2 mb-3">
                                     <Clock size={20} />
                                     <span className="text-lg">{session.time}</span>
                                 </div>
-                                <div className="bg-[#da9619] inline-block px-3 py-1 rounded-full text-sm">
+                                <div className="bg-secondary inline-block px-3 py-1 rounded-full text-sm">
                                     {session.info}
                                 </div>
                             </motion.div>
@@ -97,7 +97,7 @@ export function VeteransPage() {
                         transition={{ duration: 0.6 }}
                         className="text-center mb-16"
                     >
-                        <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
+                        <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
                             L'ESPACE VÉTÉRANS
                         </h2>
                     </motion.div>
@@ -114,10 +114,10 @@ export function VeteransPage() {
                                     transition={{ duration: 0.6, delay: index * 0.1 }}
                                     className="bg-white rounded-lg p-6 shadow-lg text-center hover:shadow-xl transition-shadow duration-300"
                                 >
-                                    <div className="bg-[#0153b6] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <div className="bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                                         <Icon size={32} />
                                     </div>
-                                    <h3 className="font-primary text-xl text-[#0153b6] mb-3">
+                                    <h3 className="font-primary text-xl text-primary mb-3">
                                         {highlight.title}
                                     </h3>
                                     <p className="text-gray-600 text-sm">{highlight.description}</p>
@@ -137,7 +137,7 @@ export function VeteransPage() {
                         transition={{ duration: 0.6 }}
                         className="bg-gray-50 rounded-lg p-12 text-center shadow-lg"
                     >
-                        <h2 className="font-primary text-4xl text-[#0153b6] mb-4">
+                        <h2 className="font-primary text-4xl text-primary mb-4">
                             UN FORMAT SIMPLE
                         </h2>
                         <p className="text-gray-600 text-lg max-w-2xl mx-auto">

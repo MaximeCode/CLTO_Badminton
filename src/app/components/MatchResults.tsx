@@ -4,12 +4,12 @@ import logo from '../../imports/logo_clto_main.png';
 
 export function MatchResults() {
   return (
-    <section className="py-20 bg-[#f5f7fa] font-primary">
+    <section className="py-20 bg-clto-grey font-primary">
       <div className="max-w-[1280px] mx-auto px-6">
         {/* Section Title */}
         <div className="flex items-center gap-4 mb-12">
-          <div className="w-1 h-16 bg-[#da9619]" />
-          <h2 className="text-5xl text-[#0153b6] tracking-wide">
+          <div className="w-1 h-16 bg-secondary" />
+          <h2 className="text-5xl text-primary tracking-wide">
             RÉSULTATS INTERCLUBS
           </h2>
         </div>
@@ -22,7 +22,7 @@ export function MatchResults() {
           transition={{ duration: 0.5 }}
           className="font-primary bg-white rounded-lg shadow-lg overflow-hidden max-w-3xl mx-auto mb-8"
         >
-          <div className="bg-gradient-to-r from-[#0153b6] to-[#013d87] text-white p-4 text-center">
+          <div className="bg-gradient-to-r from-primary to-primary-accent text-white p-4 text-center">
             <div className="text-md uppercase tracking-wider mb-1 font-primary">J10 - Nationale 2</div>
             <div className="text-sm opacity-80 font-primary">Samedi 11 avril 2026</div>
           </div>
@@ -44,7 +44,7 @@ export function MatchResults() {
               {/* Score */}
               <div className="px-8">
                 <div className="flex items-center gap-4">
-                  <div className="font-primary text-6xl text-[#0153b6]">2</div>
+                  <div className="font-primary text-6xl text-primary">2</div>
                   <div className="text-2xl text-gray-400">-</div>
                   <div className="font-primary text-6xl text-gray-400">6</div>
                 </div>
@@ -70,15 +70,15 @@ export function MatchResults() {
               <div className="grid grid-cols-3 gap-4 text-center text-sm">
                 <div>
                   <div className="text-gray-500 mb-1">Simples</div>
-                  <div className="font-bold text-[#0153b6]">2 - 2</div>
+                  <div className="font-bold text-primary">2 - 2</div>
                 </div>
                 <div>
                   <div className="text-gray-500 mb-1">Doubles</div>
-                  <div className="font-bold text-[#0153b6]">0 - 2</div>
+                  <div className="font-bold text-primary">0 - 2</div>
                 </div>
                 <div>
                   <div className="text-gray-500 mb-1">Mixtes</div>
-                  <div className="font-bold text-[#0153b6]">0 - 2</div>
+                  <div className="font-bold text-primary">0 - 2</div>
                 </div>
               </div>
             </div>
@@ -105,7 +105,7 @@ export function MatchResults() {
 
         {/* CTA Button */}
         <div className="text-center">
-          <Link to="/interclub" className="bg-[#0153b6] text-white px-10 py-4 rounded-full hover:bg-[#da9619] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+          <Link to="/interclub" className="bg-primary text-white px-10 py-4 rounded-full hover:bg-secondary transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
             Voir tous les résultats
           </Link>
         </div>

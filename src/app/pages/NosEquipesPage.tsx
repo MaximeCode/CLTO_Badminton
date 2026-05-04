@@ -59,7 +59,7 @@ export function NosEquipesPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
               5 ÉQUIPES COMPÉTITIVES
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -78,12 +78,12 @@ export function NosEquipesPage() {
                 className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
               >
                 <div className="md:flex">
-                  <div className="md:w-1/3 bg-gradient-to-br from-[#0153b6] to-[#013d87] p-8 flex flex-col justify-center items-center text-white">
+                  <div className="md:w-1/3 bg-gradient-to-br from-primary to-primary-accent p-8 flex flex-col justify-center items-center text-white">
                     <div className="text-6xl mb-4">🏸</div>
                     <h3 className="font-primary text-3xl mb-2 text-center">
                       {team.name}
                     </h3>
-                    <span className="bg-[#da9619] px-4 py-1 rounded-full text-sm">
+                    <span className="bg-secondary px-4 py-1 rounded-full text-sm">
                       {team.level}
                     </span>
                   </div>
@@ -91,14 +91,14 @@ export function NosEquipesPage() {
                     <p className="text-gray-600 mb-6">{team.description}</p>
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-                        <Users className="text-[#0153b6]" size={24} />
+                        <Users className="text-primary" size={24} />
                         <div>
                           <div className="text-sm text-gray-500">Effectif</div>
                           <div className="font-bold text-gray-800">{team.players} joueurs</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-                        <Target className="text-[#da9619]" size={24} />
+                        <Target className="text-secondary" size={24} />
                         <div>
                           <div className="text-sm text-gray-500">Objectif</div>
                           <div className="font-bold text-gray-800">{team.objective}</div>
@@ -121,8 +121,8 @@ export function NosEquipesPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <Trophy className="mx-auto mb-6 text-[#da9619]" size={64} />
-            <h2 className="font-primary text-4xl text-[#0153b6] mb-4">
+            <Trophy className="mx-auto mb-6 text-secondary" size={64} />
+            <h2 className="font-primary text-4xl text-primary mb-4">
               REJOIGNEZ UNE ÉQUIPE
             </h2>
             <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
@@ -130,7 +130,7 @@ export function NosEquipesPage() {
             </p>
             <Link
               to="/contact"
-              className="inline-block bg-[#da9619] text-white px-8 py-3 rounded-md hover:bg-[#c48515] transition-colors duration-200"
+              className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
             >
               Nous contacter
             </Link>

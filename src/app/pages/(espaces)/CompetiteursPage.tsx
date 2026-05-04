@@ -90,7 +90,7 @@ export function CompetiteursPage() {
                         transition={{ duration: 0.6 }}
                         className="text-center mb-16"
                     >
-                        <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
+                        <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
                             COMPETITIONS ADULTES
                         </h2>
                     </motion.div>
@@ -105,11 +105,11 @@ export function CompetiteursPage() {
                                 transition={{ duration: 0.6, delay: index * 0.1 }}
                                 className="bg-gray-50 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
                             >
-                                <h3 className="font-primary text-2xl text-[#0153b6] mb-3">
+                                <h3 className="font-primary text-2xl text-primary mb-3">
                                     {competition.name}
                                 </h3>
                                 <p className="text-gray-600 mb-4">{competition.description}</p>
-                                <div className="flex items-center gap-2 text-[#da9619]">
+                                <div className="flex items-center gap-2 text-secondary">
                                     <Calendar size={20} />
                                     <span className="font-semibold">{competition.period}</span>
                                 </div>
@@ -128,7 +128,7 @@ export function CompetiteursPage() {
                         transition={{ duration: 0.6 }}
                         className="text-center mb-16"
                     >
-                        <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
+                        <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
                             COMPETITIONS JEUNES
                         </h2>
                     </motion.div>
@@ -143,11 +143,11 @@ export function CompetiteursPage() {
                                 transition={{ duration: 0.6, delay: index * 0.1 }}
                                 className="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
                             >
-                                <h3 className="font-primary text-2xl text-[#0153b6] mb-3">
+                                <h3 className="font-primary text-2xl text-primary mb-3">
                                     {competition.name}
                                 </h3>
                                 <p className="text-gray-600 mb-4">{competition.description}</p>
-                                <div className="flex items-center gap-2 text-[#da9619]">
+                                <div className="flex items-center gap-2 text-secondary">
                                     <Calendar size={20} />
                                     <span className="font-semibold">{competition.period}</span>
                                 </div>
@@ -166,7 +166,7 @@ export function CompetiteursPage() {
                         transition={{ duration: 0.6 }}
                         className="text-center mb-16"
                     >
-                        <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
+                        <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
                             ACCOMPAGNEMENT COMPETITION
                         </h2>
                     </motion.div>
@@ -183,10 +183,10 @@ export function CompetiteursPage() {
                                     transition={{ duration: 0.6, delay: index * 0.1 }}
                                     className="bg-gray-50 rounded-lg p-6 shadow-lg text-center hover:shadow-xl transition-shadow duration-300"
                                 >
-                                    <div className="bg-[#0153b6] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <div className="bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                                         <Icon size={32} />
                                     </div>
-                                    <h3 className="font-primary text-xl text-[#0153b6] mb-3">
+                                    <h3 className="font-primary text-xl text-primary mb-3">
                                         {point.title}
                                     </h3>
                                     <p className="text-gray-600 text-sm">{point.description}</p>
@@ -204,7 +204,7 @@ export function CompetiteursPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="bg-gradient-to-br from-[#0153b6] to-[#013d87] rounded-lg p-12 text-center shadow-lg text-white"
+                        className="bg-gradient-to-br from-primary to-primary-accent rounded-lg p-12 text-center shadow-lg text-white"
                     >
                         <Trophy className="mx-auto mb-6" size={64} />
                         <h2 className="font-primary text-4xl mb-4">REJOINDRE LE GROUPE</h2>
@@ -214,7 +214,7 @@ export function CompetiteursPage() {
                         </p>
                         <Link
                             to="/contact"
-                            className="inline-block bg-[#da9619] text-white px-8 py-3 rounded-md hover:bg-[#c48515] transition-colors duration-200"
+                            className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
                         >
                             Nous contacter
                         </Link>

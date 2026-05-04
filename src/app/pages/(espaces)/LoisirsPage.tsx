@@ -137,7 +137,7 @@ export function LoisirsPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
               NOS CRÉNEAUX LOISIR
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -153,14 +153,14 @@ export function LoisirsPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-gradient-to-br from-[#0153b6] to-[#013d87] rounded-lg p-6 shadow-lg text-white hover:shadow-xl transition-shadow duration-300"
+                className="bg-gradient-to-br from-primary to-primary-accent rounded-lg p-6 shadow-lg text-white hover:shadow-xl transition-shadow duration-300"
               >
                 <h3 className="font-primary text-3xl mb-4">{session.day}</h3>
                 <div className="flex items-center gap-2 mb-3">
                   <Clock size={20} />
                   <span className="text-lg">{session.time}</span>
                 </div>
-                <div className="bg-[#da9619] inline-block px-3 py-1 rounded-full text-sm">
+                <div className="bg-secondary inline-block px-3 py-1 rounded-full text-sm">
                   {session.level}
                 </div>
               </motion.div>
@@ -178,7 +178,7 @@ export function LoisirsPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
               POURQUOI CHOISIR LE LOISIR ?
             </h2>
           </motion.div>
@@ -195,10 +195,10 @@ export function LoisirsPage() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   className="bg-white rounded-lg p-6 shadow-lg text-center hover:shadow-xl transition-shadow duration-300"
                 >
-                  <div className="bg-[#0153b6] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Icon size={32} />
                   </div>
-                  <h3 className="font-primary text-xl text-[#0153b6] mb-3">
+                  <h3 className="font-primary text-xl text-primary mb-3">
                     {benefit.title}
                   </h3>
                   <p className="text-gray-600 text-sm">{benefit.description}</p>
@@ -218,18 +218,18 @@ export function LoisirsPage() {
             transition={{ duration: 0.6 }}
             className="bg-gray-50 rounded-lg p-12 text-center shadow-lg"
           >
-            <h2 className="font-primary text-4xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-4xl text-primary mb-4">
               TARIFS ATTRACTIFS
             </h2>
             <p className="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
               L'adhésion au club vous donne accès à tous les créneaux loisir de la semaine
             </p>
             <div className="bg-white rounded-lg p-8 max-w-md mx-auto shadow-md">
-              <div className="text-[#da9619] text-5xl font-bold mb-2">180€</div>
+              <div className="text-secondary text-5xl font-bold mb-2">180€</div>
               <div className="text-gray-600 mb-6">par an (licence FFBaD incluse)</div>
               <Link
                 to="/contact"
-                className="inline-block bg-[#da9619] text-white px-8 py-3 rounded-md hover:bg-[#c48515] transition-colors duration-200"
+                className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
               >
                 S'inscrire
               </Link>

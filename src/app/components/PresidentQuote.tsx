@@ -3,7 +3,7 @@ import president from '../../imports/president.jpg'
 
 export function PresidentQuote() {
   return (
-    <section className="relative py-20 bg-[#0153b6] overflow-hidden">
+    <section className="relative py-20 bg-primary overflow-hidden">
       {/* Diagonal Top Edge */}
       <div className="absolute top-0 left-0 right-0 h-16 bg-white" style={{ clipPath: 'polygon(0 0, 100% 100%, 100% 0)' }} />
 
@@ -23,7 +23,7 @@ export function PresidentQuote() {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="text-[#da9619] text-[120px] leading-none font-serif absolute -top-8 -left-4 opacity-50">
+            <div className="text-secondary text-[120px] leading-none font-serif absolute -top-8 -left-4 opacity-50">
               "
             </div>
             <div className="relative pl-8">
@@ -44,8 +44,8 @@ export function PresidentQuote() {
                 <strong>À très bientôt au CLTO Badminton&nbsp;!</strong>
               </p>
               <div className="mt-6 pt-6 border-t border-white/30">
-                <div className="text-white font-medium">Jean Dupont</div>
-                <div className="text-[#da9619] text-sm">Président du CLTO Badminton</div>
+                <div className="text-white font-medium">Steve BANDOU-NIATOLL</div>
+                <div className="text-secondary text-sm font-bold">Président du CLTO Badminton</div>
               </div>
             </div>
           </motion.div>
@@ -59,7 +59,7 @@ export function PresidentQuote() {
             className="relative flex justify-end"
           >
             <div className="relative inline-block">
-              <div className="absolute -inset-4 border-4 border-[#da9619] rotate-3" />
+              <div className="absolute -inset-4 border-4 border-secondary rotate-3" />
               <img
                 src={president}
                 alt="Président CLTO Badminton"

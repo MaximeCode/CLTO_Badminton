@@ -544,9 +544,6 @@ export function CreneauxPage() {
   const [selectedDate, setSelectedDate] = useState<Date>(
     new Date("2026-05-04"),
   );
-  const [hoveredCoach, setHoveredCoach] = useState<string | null>(
-    null,
-  );
   const [openDays, setOpenDays] = useState<Record<string, boolean>>(
     {},
   );
@@ -593,13 +590,13 @@ export function CreneauxPage() {
     switch (type) {
       case "Élite":
         return {
-          border: "border-[#0153b6]",
-          badge: "bg-[#0153b6]",
+          border: "border-primary",
+          badge: "bg-primary",
         };
       case "Perfectionnement":
         return {
-          border: "border-[#da9619]",
-          badge: "bg-[#da9619]",
+          border: "border-secondary",
+          badge: "bg-secondary",
         };
       case "Loisirs":
         return {
@@ -632,15 +629,15 @@ export function CreneauxPage() {
             transition={{ duration: 0.6 }}
             className="mb-12"
           >
-            <div className="bg-gray-50 rounded-lg p-8 shadow-lg">
+            <div className="bg-gray-50 rounded-lg p-8 shadow-lg flex flex-col gap-6">
               <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex items-center gap-4">
                   <Calendar
-                    className="text-[#0153b6]"
+                    className="text-primary"
                     size={32}
                   />
                   <div>
-                    <h3 className="font-primary text-2xl text-[#0153b6]">Sélectionner une semaine</h3>
+                    <h3 className="font-primary text-2xl text-primary">Sélectionner une semaine</h3>
                     <p className="text-gray-600">
                       {selectedWeek.period}
                     </p>
@@ -652,8 +649,57 @@ export function CreneauxPage() {
                   onChange={(e) =>
                     setSelectedDate(new Date(e.target.value))
                   }
-                  className="px-4 py-3 border-2 border-[#0153b6] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#da9619] text-lg"
+                  className="px-4 py-3 border-2 border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary text-lg"
                 />
+              </div>
+
+              {/* Filtres */}
+              <h4 className="font-primary text-xl text-primary">Filtrer par</h4>
+              <div className="flex gap-6">
+                {[
+                  {
+                    filtre: "Type de créneau",
+                    data: [
+                      "Entraînement",
+                      "Jeu libre"
+                    ]
+                  },
+                  {
+                    filtre: "Gymnase",
+                    data: [
+                      "Chardon",
+                      "Lebrun"
+                    ]
+                  },
+                  {
+                    filtre: "Jour",
+                    data: [
+                      "Lundi",
+                      "Mardi",
+                      "Mercredi",
+                      "Jeudi",
+                      "Vendredi",
+                      "Samedi",
+                      "Dimanche",
+                    ]
+                  },
+                  {
+                    filtre: "Moment de la journée",
+                    data: [
+                      "Matin",
+                      "Midi",
+                      "Soir"
+                    ]
+                  }
+                ].map((filtre) => (
+                  <select className="px-4 py-3 rounded-full text-sm font-semibold text-primary border-2 border-primary">
+                    {filtre.filtre}
+                    <option value="">{filtre.filtre}</option>
+                    {filtre.data.map((data) => (
+                      <option value={data}>{data}</option>
+                    ))}
+                  </select>
+                ))}
               </div>
             </div>
           </motion.div>
@@ -699,14 +745,14 @@ export function CreneauxPage() {
                         [dayKey]: !prev[dayKey],
                       }))
                     }
-                    className="w-full bg-[#0153b6] text-white px-6 py-4 flex items-center justify-between text-left hover:bg-[#013d87] transition-colors duration-200"
+                    className="w-full bg-primary text-white px-6 py-4 flex items-center justify-between text-left hover:bg-primary-accent transition-colors duration-200"
                   >
                     <div className="flex items-center gap-3 flex-wrap flex-1 min-w-0">
                       <h3 className="font-primary text-3xl">
                         {day} {dayDate ? dayDate : ""}
                       </h3>
                       <span
-                        className="inline-flex items-center justify-center min-w-[2.25rem] rounded-full bg-[#da9619] px-3 py-1 text-sm font-bold text-white shadow-sm"
+                        className="inline-flex items-center justify-center min-w-[2.25rem] rounded-full bg-secondary px-3 py-1 text-sm font-bold text-white shadow-sm"
                         aria-label={
                           slotCount === 0
                             ? "Aucun créneau"
@@ -763,7 +809,7 @@ export function CreneauxPage() {
                                   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                                     <div className="flex items-start gap-3">
                                       <MapPin
-                                        className="text-[#0153b6] mt-1 flex-shrink-0"
+                                        className="text-primary mt-1 flex-shrink-0"
                                         size={20}
                                       />
                                       <div>
@@ -778,7 +824,7 @@ export function CreneauxPage() {
 
                                     <div className="flex items-start gap-3">
                                       <Clock
-                                        className="text-[#0153b6] mt-1 flex-shrink-0"
+                                        className="text-primary mt-1 flex-shrink-0"
                                         size={20}
                                       />
                                       <div>
@@ -793,7 +839,7 @@ export function CreneauxPage() {
 
                                     <div className="flex items-start gap-3 relative">
                                       <User
-                                        className="text-[#0153b6] mt-1 flex-shrink-0"
+                                        className="text-primary mt-1 flex-shrink-0"
                                         size={20}
                                       />
                                       <div>
@@ -801,21 +847,10 @@ export function CreneauxPage() {
                                           {roleLabel}
                                         </p>
                                         <p
-                                          className="font-semibold text-gray-900 cursor-pointer hover:text-[#0153b6] transition-colors"
-                                          onMouseEnter={() =>
-                                            setHoveredCoach(slot.id)
-                                          }
-                                          onMouseLeave={() =>
-                                            setHoveredCoach(null)
-                                          }
+                                          className="font-semibold text-gray-900"
                                         >
                                           {slot.trainer}
                                         </p>
-                                        {hoveredCoach === slot.id && (
-                                          <div className="absolute z-10 bg-[#0153b6] text-white px-3 py-2 rounded-md text-sm mt-1 shadow-lg animate-in fade-in slide-in-from-top-2 duration-200">
-                                            {roleLabel} du creneau
-                                          </div>
-                                        )}
                                       </div>
                                     </div>
 
@@ -825,7 +860,7 @@ export function CreneauxPage() {
                                       </p>
                                       <div className="mb-2 flex items-center gap-2 text-gray-700">
                                         <SlotModeIcon
-                                          className="text-[#0153b6] flex-shrink-0"
+                                          className="text-primary flex-shrink-0"
                                           size={18}
                                         />
                                         <span className="text-sm font-medium">
@@ -878,26 +913,26 @@ export function CreneauxPage() {
             transition={{ duration: 0.6 }}
             className="mt-12 bg-gray-50 rounded-lg p-6 shadow-md"
           >
-            <h3 className="font-primary text-2xl text-[#0153b6] mb-4">
+            <h3 className="font-primary text-2xl text-primary mb-4">
               LÉGENDE
             </h3>
             <div className="flex flex-wrap gap-6">
               <div className="flex items-center gap-2">
-                <span className="inline-block w-4 h-4 rounded-full bg-[#0153b6]"></span>
+                <span className="inline-block px-3 py-1 rounded-full text-sm font-semibold text-white border-primary bg-primary">Élite</span>
                 <span className="text-gray-700">
-                  Élite - Entraînement compétition haut niveau
+                  Entraînement compétition haut niveau
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="inline-block w-4 h-4 rounded-full bg-[#da9619]"></span>
+                <span className="inline-block px-3 py-1 rounded-full text-sm font-semibold text-white border-secondary bg-secondary">Perfectionnement</span>
                 <span className="text-gray-700">
-                  Perfectionnement - Joueurs confirmés
+                  Joueurs confirmés
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="inline-block w-4 h-4 rounded-full bg-green-600"></span>
+                <span className="inline-block px-3 py-1 rounded-full text-sm font-semibold text-white border-green-600 bg-green-600">Loisirs</span>
                 <span className="text-gray-700">
-                  Loisirs - Pratique détente et conviviale
+                  Pratique détente et conviviale
                 </span>
               </div>
             </div>

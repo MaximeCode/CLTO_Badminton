@@ -43,13 +43,13 @@ export function ContactPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="font-primary text-4xl text-[#0153b6] mb-8">
+              <h2 className="font-primary text-4xl text-primary mb-8">
                 NOS COORDONNÉES
               </h2>
 
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="bg-[#0153b6] text-white p-3 rounded-lg">
+                  <div className="bg-primary text-white p-3 rounded-lg">
                     <MapPin size={24} />
                   </div>
                   <div>
@@ -62,24 +62,24 @@ export function ContactPage() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="bg-[#0153b6] text-white p-3 rounded-lg">
+                  <div className="bg-primary text-white p-3 rounded-lg">
                     <Mail size={24} />
                   </div>
                   <div>
                     <h3 className="text-primary text-2xl mb-1">Email</h3>
-                    <a href="mailto:contact@cltobadminton.fr" className="text-[#0153b6] hover:text-[#da9619] transition-colors">
+                    <a href="mailto:contact@cltobadminton.fr" className="text-primary hover:text-secondary transition-colors">
                       contact@cltobadminton.fr
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="bg-[#0153b6] text-white p-3 rounded-lg">
+                  <div className="bg-primary text-white p-3 rounded-lg">
                     <Phone size={24} />
                   </div>
                   <div>
                     <h3 className="text-primary text-2xl mb-1">Téléphone</h3>
-                    <a href="tel:0612345678" className="text-[#0153b6] hover:text-[#da9619] transition-colors">
+                    <a href="tel:0612345678" className="text-primary hover:text-secondary transition-colors">
                       02 45 48 21 62
                     </a>
                   </div>
@@ -87,7 +87,7 @@ export function ContactPage() {
               </div>
 
               <div className="mt-12 bg-gray-50 rounded-lg py-6">
-                <h2 className="font-primary text-4xl text-[#0153b6] mb-8">
+                <h2 className="font-primary text-4xl text-primary mb-8">
                   HORAIRES DU SIÈGE SOCIAL
                 </h2>
                 <div className="space-y-2 text-gray-600">
@@ -95,7 +95,7 @@ export function ContactPage() {
                     <strong>Lundi et mardi&nbsp;:</strong> 9h30 à 16h — accueil physique
                   </p>
                   <p>
-                    <strong>Mercredi et jeudi&nbsp;:</strong> 9h30 à 16h — uniquement par téléphone, SMS, WhatsApp au <a href="tel:0665296372" className="text-[#0153b6] hover:text-[#da9619] transition-colors">06 65 29 63 72</a> ou par mail
+                    <strong>Mercredi et jeudi&nbsp;:</strong> 9h30 à 16h — uniquement par téléphone, SMS, WhatsApp au <a href="tel:0665296372" className="text-primary hover:text-secondary transition-colors">06 65 29 63 72</a> ou par mail
                   </p>
                 </div>
 
@@ -109,7 +109,7 @@ export function ContactPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="font-primary text-4xl text-[#0153b6] mb-8">
+              <h2 className="font-primary text-4xl text-primary mb-8">
                 ENVOYEZ-NOUS UN MESSAGE
               </h2>
 
@@ -125,7 +125,7 @@ export function ContactPage() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#0153b6] focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -140,7 +140,7 @@ export function ContactPage() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#0153b6] focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -154,7 +154,7 @@ export function ContactPage() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#0153b6] focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -168,13 +168,18 @@ export function ContactPage() {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#0153b6] focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none transition-colors"
                   >
                     <option value="">Sélectionnez un sujet</option>
                     <option value="inscription">Inscription</option>
                     <option value="renseignement">Renseignement</option>
-                    <option value="competition">Compétition</option>
                     <option value="partenariat">Partenariat</option>
+                    <hr></hr>
+                    <option value="jeune">Jeune</option>
+                    <option value="adulte">Adulte</option>
+                    <option value="veteran">Vétéran</option>
+                    <option value="competition">Compétition</option>
+                    <option value="loisir">Loisir</option>
                     <option value="autre">Autre</option>
                   </select>
                 </div>
@@ -190,13 +195,13 @@ export function ContactPage() {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#0153b6] focus:outline-none transition-colors resize-none"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none transition-colors resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-[#da9619] text-white px-8 py-3 rounded-lg hover:bg-[#c48515] transition-colors duration-200 flex items-center justify-center gap-2"
+                  className="w-full bg-secondary text-white px-8 py-3 rounded-lg hover:bg-secondary-accent transition-colors duration-200 flex items-center justify-center gap-2"
                 >
                   <Send size={20} />
                   Envoyer le message
@@ -216,7 +221,7 @@ export function ContactPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="font-primary text-4xl text-[#0153b6] mb-8 text-center">
+            <h2 className="font-primary text-4xl text-primary mb-8 text-center">
               LOCALISER LE SIÈGE SOCIAL
             </h2>
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">

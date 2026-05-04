@@ -135,7 +135,7 @@ export function InterclubPage() {
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="text-[#da9619] uppercase tracking-wider mb-4"
+                  className="text-secondary uppercase tracking-wider mb-4"
                 >
                   {teams[currentSlide].label}
                 </motion.div>
@@ -180,7 +180,7 @@ export function InterclubPage() {
             >
               {index === currentSlide && (
                 <div
-                  className="absolute inset-0 bg-[#da9619]"
+                  className="absolute inset-0 bg-secondary"
                   style={{ width: `${progress}%` }}
                 />
               )}
@@ -215,7 +215,7 @@ export function InterclubPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
               RÉSULTATS EN DIRECT
             </h2>
             <p className="text-gray-600 text-lg">

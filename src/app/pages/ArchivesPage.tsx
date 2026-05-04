@@ -59,10 +59,10 @@ export function ArchivesPage() {
                 className="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
               >
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="bg-[#0153b6] text-white p-4 rounded-lg">
+                  <div className="bg-primary text-white p-4 rounded-lg">
                     <Calendar size={32} />
                   </div>
-                  <h2 className="font-primary text-5xl text-[#da9619]">
+                  <h2 className="font-primary text-5xl text-secondary">
                     {archive.year}
                   </h2>
                 </div>
@@ -72,7 +72,7 @@ export function ArchivesPage() {
                       key={idx}
                       className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg"
                     >
-                      <div className="w-2 h-2 bg-[#da9619] rounded-full mt-2 flex-shrink-0" />
+                      <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0" />
                       <p className="text-gray-700">{highlight}</p>
                     </div>
                   ))}

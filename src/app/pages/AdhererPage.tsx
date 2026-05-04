@@ -71,8 +71,8 @@ const paymentMethods = [
 function SectionTitle({ title, subtitle }: { title: string; subtitle?: string }) {
     return (
         <div className="mb-8">
-            <h2 className="font-primary text-5xl text-[#0153b6] md:text-6xl">{title}</h2>
-            {subtitle && <p className="mt-3 max-w-4xl text-lg text-[#1f3f68]">{subtitle}</p>}
+            <h2 className="font-primary text-5xl text-primary md:text-6xl">{title}</h2>
+            {subtitle && <p className="mt-3 max-w-4xl text-lg text-primary-accent">{subtitle}</p>}
         </div>
     );
 }
@@ -93,12 +93,12 @@ export function AdhererPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5 }}
-                        className="mb-10 rounded-2xl border border-[#0153b6]/15 bg-white p-8 shadow-sm"
+                        className="mb-10 rounded-2xl border border-primary/15 bg-white p-8 shadow-sm"
                     >
-                        <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-[#da9619]">MAJ : 11 août 2025</p>
-                        <h1 className="mb-4 font-primary text-5xl text-[#0153b6] md:text-6xl">Bienvenue au CLTO Badminton</h1>
-                        <p className="mb-2 text-xl font-semibold text-[#1f3f68]">Saison 2025-2026 - Les inscriptions sont ouvertes !</p>
-                        <p className="text-[#1f3f68]">
+                        <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-secondary">MAJ : 11 août 2025</p>
+                        <h1 className="mb-4 font-primary text-5xl text-primary md:text-6xl">Bienvenue au CLTO Badminton</h1>
+                        <p className="mb-2 text-xl font-semibold text-primary-accent">Saison 2025-2026 - Les inscriptions sont ouvertes !</p>
+                        <p className="text-primary-accent">
                             Le dossier d&apos;inscription se complète exclusivement en ligne, merci de prendre connaissance des
                             informations ci-dessous.
                         </p>
@@ -111,9 +111,9 @@ export function AdhererPage() {
                         transition={{ duration: 0.5 }}
                         className="mb-12 grid gap-8 lg:grid-cols-2"
                     >
-                        <article className="rounded-2xl border border-[#0153b6]/15 bg-white p-8 shadow-sm">
+                        <article className="rounded-2xl border border-primary/15 bg-white p-8 shadow-sm">
                             <SectionTitle title="Avant de debuter" />
-                            <ul className="space-y-3 text-[#1f3f68]">
+                            <ul className="space-y-3 text-primary-accent">
                                 <li>Pour les joueurs mineurs : l&apos;attestation parentale complétée et signée.</li>
                                 <li>
                                     Votre justificatif si vous avez droit à une réduction (carte étudiant, attestation chômage pôle
@@ -124,21 +124,21 @@ export function AdhererPage() {
                                     du questionnaire de santé, un certificat de moins de 6 mois est obligatoire.
                                 </li>
                             </ul>
-                            <div className="mt-5 space-y-2 text-sm text-[#0153b6]">
+                            <div className="mt-5 space-y-2 text-sm text-primary">
                                 <p>Liens : Autorisation parentale 25-26, questionnaire de santé adulte, questionnaire de santé jeune, certificat médical.</p>
                             </div>
                         </article>
 
-                        <article className="rounded-2xl border border-[#0153b6]/15 bg-white p-8 shadow-sm">
+                        <article className="rounded-2xl border border-primary/15 bg-white p-8 shadow-sm">
                             <SectionTitle title="Modalites de paiement" />
-                            <p className="mb-4 text-[#1f3f68]">
+                            <p className="mb-4 text-primary-accent">
                                 Après finalisation du dossier, vous recevrez un accusé de réception automatique FFBad puis un second
                                 mail quand votre dossier sera validé par le club (dossier complet).
                             </p>
-                            <p className="font-semibold text-[#0153b6]">
+                            <p className="font-semibold text-primary">
                                 Merci de ne procéder au paiement qu&apos;après réception de ce deuxième message.
                             </p>
-                            <p className="mt-4 text-[#1f3f68]">
+                            <p className="mt-4 text-primary-accent">
                                 Pour plus d&apos;informations (tarifs détaillés, planning et descriptif des créneaux, séances
                                 d&apos;essai, modes de paiement acceptés), descendez en bas de cette page.
                             </p>
@@ -158,16 +158,16 @@ export function AdhererPage() {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true, margin: '-80px' }}
                                     transition={{ duration: 0.45, delay: index * 0.04 }}
-                                    className="rounded-2xl border border-[#0153b6]/15 bg-white p-8 shadow-sm"
+                                    className="rounded-2xl border border-primary/15 bg-white p-8 shadow-sm"
                                 >
-                                    <h3 className="mb-4 font-primary text-4xl text-[#0153b6]">{item.title}</h3>
-                                    <div className="space-y-2 text-[#1f3f68]">
+                                    <h3 className="mb-4 font-primary text-4xl text-primary">{item.title}</h3>
+                                    <div className="space-y-2 text-primary-accent">
                                         {item.content.map((line) => (
                                             <p key={line}>{line}</p>
                                         ))}
                                     </div>
                                     {item.warning && (
-                                        <p className="mt-4 rounded-lg border border-[#da9619]/30 bg-[#da9619]/10 p-3 text-sm text-[#7a530d]">
+                                        <p className="mt-4 rounded-lg border border-secondary/30 bg-secondary/10 p-3 text-sm text-secondary-accent">
                                             {item.warning}
                                         </p>
                                     )}
@@ -177,10 +177,10 @@ export function AdhererPage() {
                     </section>
 
                     <section className="mb-12 grid gap-8 lg:grid-cols-2">
-                        <article className="rounded-2xl border border-[#0153b6]/15 bg-white p-8 shadow-sm">
+                        <article className="rounded-2xl border border-primary/15 bg-white p-8 shadow-sm">
                             <SectionTitle title="Informations complementaires" subtitle="Créneaux 2025-2026" />
-                            <p className="mb-4 text-[#1f3f68]">Cliquez ici pour consulter les créneaux : LIEN</p>
-                            <ul className="space-y-3 text-[#1f3f68]">
+                            <p className="mb-4 text-primary-accent">Cliquez ici pour consulter les créneaux : LIEN</p>
+                            <ul className="space-y-3 text-primary-accent">
                                 <li>
                                     Jeu libre : matchs libres entre les joueurs présents sur le créneau.
                                 </li>
@@ -198,9 +198,9 @@ export function AdhererPage() {
                             </ul>
                         </article>
 
-                        <article className="rounded-2xl border border-[#0153b6]/15 bg-white p-8 shadow-sm">
+                        <article className="rounded-2xl border border-primary/15 bg-white p-8 shadow-sm">
                             <SectionTitle title="Tarifs 25-26" />
-                            <ul className="space-y-2 text-[#1f3f68]">
+                            <ul className="space-y-2 text-primary-accent">
                                 <li>Adulte (Jeu Libre) : 195.00 €</li>
                                 <li>Jeune (Jeu libre + 1 cours encadré / semaine) : 175.00 €</li>
                                 <li>Minibad/Babybad (Jeu Libre créneau famille + 1 cours encadré / semaine) : 120.00 €</li>
@@ -221,14 +221,14 @@ export function AdhererPage() {
                     </section>
 
                     <section className="mb-12 grid gap-8 lg:grid-cols-2">
-                        <article className="rounded-2xl border border-[#0153b6]/15 bg-white p-8 shadow-sm">
+                        <article className="rounded-2xl border border-primary/15 bg-white p-8 shadow-sm">
                             <SectionTitle title="Modes de paiement" />
-                            <ul className="space-y-3 text-[#1f3f68]">
+                            <ul className="space-y-3 text-primary-accent">
                                 {paymentMethods.map((method) => (
                                     <li key={method}>{method}</li>
                                 ))}
                             </ul>
-                            <div className="mt-5 rounded-lg bg-[#f7fbff] p-4 text-[#1f3f68]">
+                            <div className="mt-5 rounded-lg bg-[#f7fbff] p-4 text-primary-accent">
                                 <p>
                                     Paiements possibles en ligne, remis en mains propres au siège, sur un créneau, ou envoyés au siège du
                                     CLTO Badminton (1 boulevard de Québec, 45000 ORLEANS).
@@ -239,19 +239,19 @@ export function AdhererPage() {
                             </div>
                         </article>
 
-                        <article className="rounded-2xl border border-[#0153b6]/15 bg-white p-8 shadow-sm">
+                        <article className="rounded-2xl border border-primary/15 bg-white p-8 shadow-sm">
                             <SectionTitle title="Seances d'essai" />
-                            <p className="mb-4 text-[#1f3f68]">Il est possible de faire jusqu&apos;à deux séances d&apos;essai.</p>
-                            <ul className="mb-4 space-y-2 text-[#1f3f68]">
+                            <p className="mb-4 text-primary-accent">Il est possible de faire jusqu&apos;à deux séances d&apos;essai.</p>
+                            <ul className="mb-4 space-y-2 text-primary-accent">
                                 <li>Vous rendre sur le créneau de votre choix (LIEN créneaux).</li>
                                 <li>Vous présenter à l&apos;entraîneur ou à l&apos;ouvreur responsable du créneau.</li>
                                 <li>Scanner le QR code (LIEN) pour bénéficier de l&apos;assurance obligatoire FFBad.</li>
                             </ul>
-                            <p className="text-sm text-[#7a530d]">
+                            <p className="text-sm text-secondary-accent">
                                 Attention : à scanner uniquement le jour de votre essai car l&apos;assurance ne sera valide que ce
                                 jour-là.
                             </p>
-                            <p className="mt-4 text-[#1f3f68]">
+                            <p className="mt-4 text-primary-accent">
                                 Les volants sont fournis sur les créneaux, et nous possédons quelques raquettes de prêt pour les
                                 séances d&apos;essai.
                             </p>
@@ -259,14 +259,14 @@ export function AdhererPage() {
                     </section>
 
                     <section className="mb-12 grid gap-8 lg:grid-cols-2">
-                        <article className="rounded-2xl border border-[#0153b6]/15 bg-white p-8 shadow-sm">
+                        <article className="rounded-2xl border border-primary/15 bg-white p-8 shadow-sm">
                             <SectionTitle title="Documents" subtitle="Tous les documents nécessaires à votre inscription" />
                             <div className="space-y-3">
                                 {docs.map((doc) => (
                                     <a
                                         key={doc.label}
                                         href={doc.href}
-                                        className="flex items-center justify-between rounded-lg border border-[#0153b6]/15 bg-[#f9fcff] px-4 py-3 text-[#0153b6] transition-colors hover:border-[#da9619] hover:text-[#da9619]"
+                                        className="flex items-center justify-between rounded-lg border border-primary/15 bg-[#f9fcff] px-4 py-3 text-primary transition-colors hover:border-secondary hover:text-secondary"
                                     >
                                         <span className="flex items-center gap-2">
                                             <FileText size={18} />
@@ -278,9 +278,9 @@ export function AdhererPage() {
                             </div>
                         </article>
 
-                        <article className="rounded-2xl border border-[#0153b6]/15 bg-white p-8 shadow-sm">
+                        <article className="rounded-2xl border border-primary/15 bg-white p-8 shadow-sm">
                             <SectionTitle title="Nous contacter" />
-                            <div className="space-y-4 text-[#1f3f68]">
+                            <div className="space-y-4 text-primary-accent">
                                 <p>1, Boulevard de Québec - 45000 Orléans</p>
                                 <p className="flex items-center gap-2">
                                     <Phone size={16} />

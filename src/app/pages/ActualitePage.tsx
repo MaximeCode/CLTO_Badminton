@@ -26,7 +26,7 @@ export function ActualitePage() {
                     <div className="mb-6">
                         <Link
                             to="/actualites"
-                            className="inline-flex items-center gap-2 rounded-md border border-[#0153b6]/30 px-4 py-2 text-sm font-semibold text-[#0153b6] hover:bg-[#0153b6]/10 transition-colors"
+                            className="inline-flex items-center gap-2 rounded-md border border-primary/30 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/10 transition-colors"
                         >
                             <ArrowLeft size={16} />
                             Retour aux articles
@@ -35,14 +35,14 @@ export function ActualitePage() {
                     <article className="bg-white rounded-lg shadow-lg p-8 md:p-10 space-y-8 text-gray-700 leading-relaxed">
                         <header className="border-b border-gray-200 pb-6">
                             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-                                <span className="inline-flex items-center rounded-full bg-[#0153b6]/10 px-3 py-1 font-semibold text-[#0153b6]">
+                                <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 font-semibold text-primary">
                                     Tournoi
                                 </span>
                                 <span>Publié le {publicationDate}</span>
                                 <span>•</span>
                                 <span>Lecture: 5 min</span>
                             </div>
-                            <h2 className="mt-4 font-primary text-4xl text-[#0153b6]">
+                            <h2 className="mt-4 font-primary text-4xl text-primary">
                                 19e Grandes Plumes écoresponsables d'Orléans
                             </h2>
                             <p className="mt-4 text-lg text-gray-600">
@@ -62,7 +62,7 @@ export function ActualitePage() {
                         </div>
 
                         <section className="space-y-4">
-                            <h3 className="font-primary text-2xl text-[#0153b6]">
+                            <h3 className="font-primary text-2xl text-primary">
                                 Un tournoi pensé pour les joueurs et le public
                             </h3>
                             <p>
@@ -74,7 +74,7 @@ export function ActualitePage() {
                         </section>
 
                         <section className="space-y-4">
-                            <h3 className="font-primary text-2xl text-[#0153b6]">
+                            <h3 className="font-primary text-2xl text-primary">
                                 Une démarche écoresponsable concrète
                             </h3>
                             <p>
@@ -85,7 +85,7 @@ export function ActualitePage() {
                             </p>
                         </section>
 
-                        <blockquote className="rounded-lg border-l-4 border-[#da9619] bg-amber-50 px-5 py-4 text-amber-900">
+                        <blockquote className="rounded-lg border-l-4 border-secondary bg-amber-50 px-5 py-4 text-amber-900">
                             <p className="italic">
                                 "Nous voulons que chaque participant reparte avec l'image d'un tournoi exigeant sportivement, mais aussi accueillant et responsable."
                             </p>
@@ -95,7 +95,7 @@ export function ActualitePage() {
                         </blockquote>
 
                         <section className="space-y-4">
-                            <h3 className="font-primary text-2xl text-[#0153b6]">
+                            <h3 className="font-primary text-2xl text-primary">
                                 Zoom sur l'expérience spectateur
                             </h3>
                             <p>

@@ -115,7 +115,7 @@ export function GymnasesPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
               NOS 5 GYMNASES
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -142,24 +142,24 @@ export function GymnasesPage() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   onClick={() => setSelectedGym(gym)}
                   className={`bg-gray-50 rounded-lg p-6 cursor-pointer transition-all duration-300 border-2 ${selectedGym?.id === gym.id
-                    ? 'border-[#0153b6] shadow-xl bg-blue-50'
-                    : 'border-transparent shadow-md hover:shadow-lg hover:border-[#da9619]'
+                    ? 'border-primary shadow-xl bg-blue-50'
+                    : 'border-transparent shadow-md hover:shadow-lg hover:border-secondary'
                     }`}
                 >
                   <div className="flex items-start gap-4">
                     <div
-                      className={`p-3 rounded-lg transition-colors duration-300 ${selectedGym?.id === gym.id ? 'bg-[#0153b6]' : 'bg-[#da9619]'
+                      className={`p-3 rounded-lg transition-colors duration-300 ${selectedGym?.id === gym.id ? 'bg-primary' : 'bg-secondary'
                         }`}
                     >
                       <MapPin className="text-white" size={24} />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-primary text-2xl text-[#0153b6] mb-2">
+                      <h3 className="font-primary text-2xl text-primary mb-2">
                         {gym.name}
                       </h3>
                       <p className="text-gray-600 mb-3">{gym.address}</p>
                       <div className="flex items-center justify-between flex-wrap gap-3">
-                        <div className="flex items-center gap-2 bg-gradient-to-r from-[#0153b6] to-[#013d87] text-white px-4 py-2 rounded-lg shadow-md">
+                        <div className="flex items-center gap-2 bg-gradient-to-r from-primary to-primary-accent text-white px-4 py-2 rounded-lg shadow-md">
                           <div className="text-center flex-1">
                             <p className="text-xs opacity-90">Terrains</p>
                             <p className="font-primary text-3xl">{gym.courts}</p>
@@ -171,7 +171,7 @@ export function GymnasesPage() {
                               e.stopPropagation();
                               copyAddress(gym);
                             }}
-                            className="flex items-center gap-2 bg-[#0153b6] text-white px-4 py-2 rounded-lg hover:bg-[#013d87] transition-colors duration-200"
+                            className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-accent transition-colors duration-200"
                           >
                             {copiedAddress === gym.id ? (
                               <>
@@ -190,7 +190,7 @@ export function GymnasesPage() {
                               e.stopPropagation();
                               openInMaps(gym);
                             }}
-                            className="flex items-center gap-2 bg-[#da9619] text-white px-4 py-2 rounded-lg hover:bg-[#b87d15] transition-colors duration-200"
+                            className="flex items-center gap-2 bg-secondary text-white px-4 py-2 rounded-lg hover:bg-secondary-accent transition-colors duration-200"
                           >
                             <ExternalLink size={16} />
                             <span className="text-sm hidden sm:inline">Itinéraire</span>
@@ -231,7 +231,7 @@ export function GymnasesPage() {
                     title={`Carte de ${selectedGym.name}`}
                   />
                   <div className="absolute top-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4 z-10">
-                    <h3 className="font-primary text-xl text-[#0153b6] mb-1">
+                    <h3 className="font-primary text-xl text-primary mb-1">
                       {selectedGym.name}
                     </h3>
                     <p className="text-sm text-gray-600 mb-2">{selectedGym.address}</p>
@@ -248,7 +248,7 @@ export function GymnasesPage() {
                     title="Carte de tous les gymnases"
                   />
                   <div className="absolute top-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4 z-10">
-                    <h3 className="font-primary text-xl text-[#0153b6] mb-1">
+                    <h3 className="font-primary text-xl text-primary mb-1">
                       Tous les gymnases
                     </h3>
                     <p className="text-sm text-gray-600">
@@ -269,7 +269,7 @@ export function GymnasesPage() {
                         >
                           <MapPin
                             size={30}
-                            className="text-[#0153b6] drop-shadow-[0_2px_3px_rgba(0,0,0,0.35)] group-hover:text-[#da9619] transition-colors duration-200"
+                            className="text-primary drop-shadow-[0_2px_3px_rgba(0,0,0,0.35)] group-hover:text-secondary transition-colors duration-200"
                             fill="#ffffff"
                           />
                           <span className="absolute left-1/2 -translate-x-1/2 mt-1 whitespace-nowrap bg-white/95 text-gray-700 text-xs px-2 py-1 rounded-md shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
@@ -290,22 +290,22 @@ export function GymnasesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="mt-16 bg-gradient-to-r from-[#0153b6] to-[#013d87] text-white rounded-lg p-8 shadow-xl"
+            className="mt-16 bg-gradient-to-r from-primary to-primary-accent text-white rounded-lg p-8 shadow-xl"
           >
             <h3 className="font-primary text-3xl mb-4">Total des équipements</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               <div className="text-center">
-                <p className="font-primary text-5xl text-[#da9619]">5</p>
+                <p className="font-primary text-5xl text-secondary">5</p>
                 <p className="text-sm opacity-90">Gymnases</p>
               </div>
               <div className="text-center">
-                <p className="font-primary text-5xl text-[#da9619]">
+                <p className="font-primary text-5xl text-secondary">
                   {gyms.reduce((sum, gym) => sum + gym.courts, 0)}
                 </p>
                 <p className="text-sm opacity-90">Terrains au total</p>
               </div>
               <div className="text-center col-span-2 md:col-span-1">
-                <p className="font-primary text-5xl text-[#da9619]">57h</p>
+                <p className="font-primary text-5xl text-secondary">57h</p>
                 <p className="text-sm opacity-90">Heures de créneaux par semaine</p>
               </div>
             </div>

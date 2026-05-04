@@ -93,7 +93,7 @@ export function Hero() {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="text-[#da9619] uppercase tracking-wider mb-4"
+                className="text-secondary uppercase tracking-wider mb-4"
               >
                 {slides[currentSlide].label}
               </motion.div>
@@ -120,7 +120,7 @@ export function Hero() {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="bg-[#da9619] text-white px-8 py-3 rounded-md hover:bg-[#c48515] transition-colors duration-200"
+                className="bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
               >
                 {slides[currentSlide].cta} →
               </motion.button>
@@ -135,7 +135,7 @@ export function Hero() {
                   >
                     {index === currentSlide && (
                       <div
-                        className="absolute inset-0 bg-[#da9619]"
+                        className="absolute inset-0 bg-secondary"
                         style={{ width: `${progress}%` }}
                       />
                     )}

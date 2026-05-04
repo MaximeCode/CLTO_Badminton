@@ -4,7 +4,7 @@ import logo from '../../imports/logo_clto_main.png';
 
 export function Footer() {
   return (
-    <footer className="relative bg-[#0a1f3d] text-white overflow-hidden">
+    <footer className="relative bg-footer text-white overflow-hidden">
       <div className="relative max-w-[1280px] mx-auto px-6 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Column 1: Logo & Social */}
@@ -22,19 +22,19 @@ export function Footer() {
             <div className="flex gap-4">
               <a
                 href="#"
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-[#da9619] flex items-center justify-center transition-colors duration-200"
+                className="w-10 h-10 rounded-full bg-white/10 hover:bg-secondary flex items-center justify-center transition-colors duration-200"
               >
                 <Facebook size={18} />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-[#da9619] flex items-center justify-center transition-colors duration-200"
+                className="w-10 h-10 rounded-full bg-white/10 hover:bg-secondary flex items-center justify-center transition-colors duration-200"
               >
                 <Instagram size={18} />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-[#da9619] flex items-center justify-center transition-colors duration-200"
+                className="w-10 h-10 rounded-full bg-white/10 hover:bg-secondary flex items-center justify-center transition-colors duration-200"
               >
                 <Youtube size={18} />
               </a>
@@ -42,7 +42,7 @@ export function Footer() {
                 href="https://www.linkedin.com/company/clto-badminton/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-[#da9619] flex items-center justify-center transition-colors duration-200"
+                className="w-10 h-10 rounded-full bg-white/10 hover:bg-secondary flex items-center justify-center transition-colors duration-200"
               >
                 <Linkedin size={18} />
               </a>
@@ -54,22 +54,22 @@ export function Footer() {
             <h4 className="font-primary text-xl mb-4 tracking-wide">Navigation</h4>
             <ul className="space-y-3">
               <li>
-                <Link to="/actualites" className="text-gray-400 hover:text-[#da9619] transition-colors duration-200">
+                <Link to="/actualites" className="text-gray-400 hover:text-secondary transition-colors duration-200">
                   Nos Actualités
                 </Link>
               </li>
               <li>
-                <Link to="/historique" className="text-gray-400 hover:text-[#da9619] transition-colors duration-200">
+                <Link to="/historique" className="text-gray-400 hover:text-secondary transition-colors duration-200">
                   Notre Histoire
                 </Link>
               </li>
               <li>
-                <Link to="/interclub" className="text-gray-400 hover:text-[#da9619] transition-colors duration-200">
+                <Link to="/interclub" className="text-gray-400 hover:text-secondary transition-colors duration-200">
                   Nos Équipes d'interclubs
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-gray-400 hover:text-[#da9619] transition-colors duration-200">
+                <Link to="/contact" className="text-gray-400 hover:text-secondary transition-colors duration-200">
                   Nous Contacter
                 </Link>
               </li>
@@ -81,27 +81,27 @@ export function Footer() {
             <h4 className="font-primary text-xl mb-4 tracking-wide">Nos Espaces</h4>
             <ul className="space-y-3">
               <li>
-                <Link to="/jeunes" className="text-gray-400 hover:text-[#da9619] transition-colors duration-200">
+                <Link to="/jeunes" className="text-gray-400 hover:text-secondary transition-colors duration-200">
                   Jeunes
                 </Link>
               </li>
               <li>
-                <Link to="/adultes" className="text-gray-400 hover:text-[#da9619] transition-colors duration-200">
+                <Link to="/adultes" className="text-gray-400 hover:text-secondary transition-colors duration-200">
                   Adultes
                 </Link>
               </li>
               <li>
-                <Link to="/veterans" className="text-gray-400 hover:text-[#da9619] transition-colors duration-200">
+                <Link to="/veterans" className="text-gray-400 hover:text-secondary transition-colors duration-200">
                   Vétérans
                 </Link>
               </li>
               <li>
-                <Link to="/loisir" className="text-gray-400 hover:text-[#da9619] transition-colors duration-200">
+                <Link to="/loisir" className="text-gray-400 hover:text-secondary transition-colors duration-200">
                   Loisirs
                 </Link>
               </li>
               <li>
-                <Link to="/competitions" className="text-gray-400 hover:text-[#da9619] transition-colors duration-200">
+                <Link to="/competitions" className="text-gray-400 hover:text-secondary transition-colors duration-200">
                   Compétitions
                 </Link>
               </li>
@@ -130,7 +130,7 @@ export function Footer() {
             </ul>
             <Link
               to="/contact"
-              className="inline-block mt-6 border-2 border-[#da9619] text-[#da9619] px-4 py-2 rounded-md hover:bg-[#da9619] hover:text-white transition-all duration-200 text-sm cursor-pointer"
+              className="inline-block mt-6 border-2 border-secondary text-secondary px-4 py-2 rounded-md hover:bg-secondary hover:text-white transition-all duration-200 text-sm cursor-pointer"
             >
               Nous contacter
             </Link>

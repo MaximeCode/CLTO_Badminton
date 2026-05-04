@@ -3,24 +3,9 @@ import { motion } from 'motion/react';
 
 const timeline = [
   {
-    year: '1985',
-    title: 'Fondation du club',
-    description: 'Le CLTO Badminton voit le jour grâce à la passion de quelques amateurs de badminton.',
-  },
-  {
-    year: '1992',
-    title: 'Première équipe en compétition',
-    description: 'Le club engage sa première équipe en championnat départemental.',
-  },
-  {
-    year: '2005',
-    title: 'Accès à la Nationale 3',
-    description: 'Une étape historique avec la montée de notre première équipe en Nationale 3.',
-  },
-  {
-    year: '2015',
-    title: 'Inauguration du nouveau gymnase',
-    description: 'Le club dispose désormais de 8 terrains et d\'équipements modernes.',
+    year: '2023',
+    title: 'Montée en Nationale 2',
+    description: 'L\'aboutissement de nombreuses années de travail avec l\'accès à l\'élite régionale.',
   },
   {
     year: '2020',
@@ -28,9 +13,24 @@ const timeline = [
     description: 'Le CLTO Badminton compte plus de 200 licenciés, toutes catégories confondues.',
   },
   {
-    year: '2023',
-    title: 'Montée en Nationale 2',
-    description: 'L\'aboutissement de nombreuses années de travail avec l\'accès à l\'élite régionale.',
+    year: '2015',
+    title: 'Inauguration du nouveau gymnase',
+    description: 'Le club dispose désormais de 8 terrains et d\'équipements modernes.',
+  },
+  {
+    year: '2005',
+    title: 'Accès à la Nationale 3',
+    description: 'Une étape historique avec la montée de notre première équipe en Nationale 3.',
+  },
+  {
+    year: '1992',
+    title: 'Première équipe en compétition',
+    description: 'Le club engage sa première équipe en championnat départemental.',
+  },
+  {
+    year: '1985',
+    title: 'Fondation du club',
+    description: 'Le CLTO Badminton voit le jour grâce à la passion de quelques amateurs de badminton.',
   },
 ];
 
@@ -52,7 +52,7 @@ export function HistoriquePage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
               NOTRE HISTOIRE
             </h2>
             <p className="text-gray-600 text-lg max-w-3xl mx-auto">
@@ -63,7 +63,7 @@ export function HistoriquePage() {
 
           <div className="relative">
             {/* Timeline Line */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-[#da9619] transform -translate-x-1/2" />
+            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-secondary transform -translate-x-1/2" />
 
             <div className="space-y-12">
               {timeline.map((event, index) => (
@@ -79,10 +79,10 @@ export function HistoriquePage() {
                   {/* Content */}
                   <div className="md:w-5/12 w-full">
                     <div className="bg-gray-50 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                      <div className="font-primary text-4xl text-[#da9619] mb-2">
+                      <div className="font-primary text-4xl text-secondary mb-2">
                         {event.year}
                       </div>
-                      <h3 className="font-primary text-2xl text-[#0153b6] mb-3">
+                      <h3 className="font-primary text-2xl text-primary mb-3">
                         {event.title}
                       </h3>
                       <p className="text-gray-600">{event.description}</p>
@@ -90,7 +90,7 @@ export function HistoriquePage() {
                   </div>
 
                   {/* Center Point */}
-                  <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-[#0153b6] rounded-full border-4 border-white shadow-lg z-10" />
+                  <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-primary rounded-full border-4 border-white shadow-lg z-10" />
 
                   {/* Spacer */}
                   <div className="hidden md:block md:w-5/12" />

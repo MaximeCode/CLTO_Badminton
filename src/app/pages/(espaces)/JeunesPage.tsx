@@ -67,7 +67,7 @@ export function JeunesPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
               NOS CATÉGORIES
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -85,11 +85,11 @@ export function JeunesPage() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="bg-gray-50 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
               >
-                <h3 className="font-primary text-2xl text-[#0153b6] mb-3">
+                <h3 className="font-primary text-2xl text-primary mb-3">
                   {group.name}
                 </h3>
                 <p className="text-gray-600 mb-4">{group.description}</p>
-                <div className="flex items-center gap-2 text-[#da9619]">
+                <div className="flex items-center gap-2 text-secondary">
                   <Clock size={20} />
                   <span className="font-semibold">{group.schedule}</span>
                 </div>
@@ -108,7 +108,7 @@ export function JeunesPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
               POURQUOI NOUS REJOINDRE ?
             </h2>
           </motion.div>
@@ -125,10 +125,10 @@ export function JeunesPage() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   className="bg-white rounded-lg p-6 shadow-lg text-center hover:shadow-xl transition-shadow duration-300"
                 >
-                  <div className="bg-[#0153b6] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Icon size={32} />
                   </div>
-                  <h3 className="font-primary text-xl text-[#0153b6] mb-3">
+                  <h3 className="font-primary text-xl text-primary mb-3">
                     {benefit.title}
                   </h3>
                   <p className="text-gray-600 text-sm">{benefit.description}</p>
@@ -139,7 +139,7 @@ export function JeunesPage() {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-r from-[#0153b6] to-[#013d87] text-white">
+      <section className="py-20 bg-gradient-to-r from-primary to-primary-accent text-white">
         <div className="max-w-[1280px] mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -149,14 +149,14 @@ export function JeunesPage() {
             className="text-center"
           >
             <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6">
-              <span className="text-[#da9619] font-semibold">Reconnaissance FFBAD</span>
+              <span className="text-secondary font-semibold">Reconnaissance FFBAD</span>
             </div>
             <h2 className="font-primary text-5xl md:text-6xl mb-6">
               ÉCOLE 4 ÉTOILES
             </h2>
             <div className="flex items-center justify-center gap-2 mb-6">
               {[1, 2, 3, 4].map((star) => (
-                <Star key={star} size={48} fill="#da9619" className="text-[#da9619]" />
+                <Star key={star} size={48} fill="#da9619" className="text-secondary" />
               ))}
               <Star size={48} className="text-white/30" />
             </div>
@@ -168,15 +168,15 @@ export function JeunesPage() {
             </p>
             <div className="grid md:grid-cols-3 gap-8 mt-12">
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-                <div className="text-4xl font-primary text-[#da9619] mb-2">Excellence</div>
+                <div className="text-4xl font-primary text-secondary mb-2">Excellence</div>
                 <p className="text-sm text-white/90">Formation de qualité reconnue</p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-                <div className="text-4xl font-primary text-[#da9619] mb-2">Encadrement</div>
+                <div className="text-4xl font-primary text-secondary mb-2">Encadrement</div>
                 <p className="text-sm text-white/90">Entraîneurs diplômés FFBAD</p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-                <div className="text-4xl font-primary text-[#da9619] mb-2">Progression</div>
+                <div className="text-4xl font-primary text-secondary mb-2">Progression</div>
                 <p className="text-sm text-white/90">Objectif 5ème étoile en 2027</p>
               </div>
             </div>
@@ -193,7 +193,7 @@ export function JeunesPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="font-primary text-5xl md:text-6xl text-[#0153b6] mb-4">
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
               ESPACE JEUNES
             </h2>
             <p className="text-gray-600 text-lg max-w-3xl mx-auto">
@@ -209,7 +209,7 @@ export function JeunesPage() {
               transition={{ duration: 0.6 }}
               className="bg-white rounded-lg p-8 shadow-lg"
             >
-              <h3 className="font-primary text-3xl text-[#0153b6] mb-4">Fonctionnement</h3>
+              <h3 className="font-primary text-3xl text-primary mb-4">Fonctionnement</h3>
               <div className="space-y-4 text-gray-700">
                 <p>
                   Chaque jeune bénéficie d&apos;un créneau encadré par semaine de 1h30, inclus dans le tarif de la
@@ -238,7 +238,7 @@ export function JeunesPage() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="bg-white rounded-lg p-8 shadow-lg"
             >
-              <h3 className="font-primary text-3xl text-[#0153b6] mb-4">Compétitions</h3>
+              <h3 className="font-primary text-3xl text-primary mb-4">Compétitions</h3>
               <p className="text-gray-700 mb-4">
                 Les jeunes reçoivent régulièrement des informations par courriel pour s&apos;inscrire aux compétitions
                 adaptées à leur niveau.
@@ -258,7 +258,7 @@ export function JeunesPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="bg-white rounded-lg p-8 shadow-lg"
             >
-              <h3 className="font-primary text-3xl text-[#0153b6] mb-4">Les avantages club</h3>
+              <h3 className="font-primary text-3xl text-primary mb-4">Les avantages club</h3>
               <ul className="space-y-2 text-gray-700 list-disc pl-6">
                 <li>Les inscriptions aux compétitions sont gérées et payées par le club.</li>
                 <li>Un t-shirt est offert à tous les jeunes qui participent à au moins une compétition.</li>
@@ -274,7 +274,7 @@ export function JeunesPage() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="bg-white rounded-lg p-8 shadow-lg"
             >
-              <h3 className="font-primary text-3xl text-[#0153b6] mb-4">La commission jeunes</h3>
+              <h3 className="font-primary text-3xl text-primary mb-4">La commission jeunes</h3>
               <div className="space-y-4 text-gray-700">
                 <p>
                   Elle réunit des bénévoles, des membres du Conseil d&apos;Administration, des parents et des jeunes
@@ -285,7 +285,7 @@ export function JeunesPage() {
                   charge par le club.
                 </p>
                 <p>
-                  Contact : <a className="text-[#0153b6] hover:underline" href="mailto:commission.jeunes@cltobadminton.fr">commission.jeunes@cltobadminton.fr</a>
+                  Contact : <a className="text-primary hover:underline" href="mailto:commission.jeunes@cltobadminton.fr">commission.jeunes@cltobadminton.fr</a>
                 </p>
               </div>
             </motion.article>
@@ -293,7 +293,7 @@ export function JeunesPage() {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-r from-[#0153b6] to-[#013d87] text-white">
+      <section className="py-20 bg-gradient-to-r from-primary to-primary-accent text-white">
         <div className="max-w-[1280px] mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -309,7 +309,7 @@ export function JeunesPage() {
             </p>
             <Link
               to="/contact"
-              className="inline-block bg-[#da9619] text-white px-8 py-3 rounded-md hover:bg-[#c48515] transition-colors duration-200"
+              className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
             >
               Nous contacter
             </Link>

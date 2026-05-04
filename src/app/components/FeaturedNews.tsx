@@ -32,8 +32,8 @@ export function FeaturedNews() {
       <div className="max-w-[1280px] mx-auto px-6">
         {/* Section Title */}
         <div className="flex items-center gap-4 mb-12">
-          <div className="w-1 h-16 bg-[#da9619]" />
-          <h2 className="font-primary text-5xl text-[#0153b6] tracking-wide">
+          <div className="w-1 h-16 bg-secondary" />
+          <h2 className="font-primary text-5xl text-primary tracking-wide">
             À LA UNE
           </h2>
         </div>
@@ -55,13 +55,13 @@ export function FeaturedNews() {
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute top-4 left-4">
-                  <span className="bg-[#da9619] text-white px-3 py-1 rounded-md text-sm font-medium">
+                  <span className="bg-secondary text-white px-3 py-1 rounded-md text-sm font-medium">
                     {featuredArticle.category}
                   </span>
                 </div>
               </div>
               <div>
-                <h3 className="font-primary text-3xl text-gray-900 mb-2 group-hover:text-[#0153b6] transition-colors duration-200">
+                <h3 className="font-primary text-3xl text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
                   {featuredArticle.title}
                 </h3>
                 <p className="text-gray-600 mb-4 line-clamp-2">
@@ -70,7 +70,7 @@ export function FeaturedNews() {
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-500">{featuredArticle.date}</span>
                   <span
-                    className="text-[#0153b6] hover:text-[#013d87] font-medium flex items-center gap-2 group-hover:gap-3 transition-all duration-200"
+                    className="text-primary hover:text-primary-accent font-medium flex items-center gap-2 group-hover:gap-3 transition-all duration-200"
                   >
                     Lire l'article
                     <ArrowRight size={16} />
@@ -100,7 +100,7 @@ export function FeaturedNews() {
                     />
                   </div>
                   <div className="flex-1 flex flex-col justify-center">
-                    <h4 className="font-primary text-xl text-gray-900 mb-2 group-hover:text-[#da9619] transition-colors duration-200">
+                    <h4 className="font-primary text-xl text-gray-900 mb-2 group-hover:text-secondary transition-colors duration-200">
                       {article.title}
                     </h4>
                     <span className="text-sm text-gray-500">{article.date}</span>

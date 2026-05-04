@@ -88,7 +88,7 @@ export function ActualitesPage() {
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="grid lg:grid-cols-[260px_1fr] gap-8 items-start">
             <aside className="lg:sticky lg:top-24 bg-gray-50 border border-gray-200 rounded-lg p-5 shadow-sm">
-              <h3 className="font-primary text-2xl text-[#0153b6] mb-4">
+              <h3 className="font-primary text-2xl text-primary mb-4">
                 Catégories
               </h3>
               <ul className="space-y-2">
@@ -97,8 +97,8 @@ export function ActualitesPage() {
                     type="button"
                     onClick={() => setSelectedCategory('Toutes')}
                     className={`w-full text-left rounded-md px-3 py-2 transition-colors ${selectedCategory === 'Toutes'
-                        ? 'bg-[#0153b6] text-white'
-                        : 'text-gray-700 hover:bg-[#0153b6]/10 hover:text-[#0153b6]'
+                      ? 'bg-primary text-white'
+                      : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
                       }`}
                   >
                     Toutes
@@ -110,8 +110,8 @@ export function ActualitesPage() {
                       type="button"
                       onClick={() => setSelectedCategory(category)}
                       className={`w-full text-left rounded-md px-3 py-2 transition-colors ${selectedCategory === category
-                          ? 'bg-[#0153b6] text-white'
-                          : 'text-gray-700 hover:bg-[#0153b6]/10 hover:text-[#0153b6]'
+                        ? 'bg-primary text-white'
+                        : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
                         }`}
                     >
                       {category}
@@ -140,7 +140,7 @@ export function ActualitesPage() {
                         alt={article.title}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
-                      <div className="absolute top-4 left-4 bg-[#da9619] text-white px-4 py-1 rounded-full text-sm">
+                      <div className="absolute top-4 left-4 bg-secondary text-white px-4 py-1 rounded-full text-sm">
                         {article.categories[0]}
                       </div>
                     </div>
@@ -149,7 +149,7 @@ export function ActualitesPage() {
                         <Calendar size={16} />
                         <span>{article.date}</span>
                       </div>
-                      <h3 className="font-primary text-2xl text-[#0153b6] mb-3 group-hover:text-[#da9619] transition-colors">
+                      <h3 className="font-primary text-2xl text-primary mb-3 group-hover:text-secondary transition-colors">
                         {article.title}
                       </h3>
                       <p className="text-gray-600 mb-4">{article.excerpt}</p>
@@ -163,7 +163,7 @@ export function ActualitesPage() {
                           </span>
                         ))}
                       </div>
-                      <button className="flex items-center gap-2 text-[#0153b6] hover:text-[#da9619] transition-colors">
+                      <button className="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
                         Lire la suite
                         <ArrowRight size={16} />
                       </button>
