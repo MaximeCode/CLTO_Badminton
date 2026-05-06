@@ -88,11 +88,11 @@ export function ContactPage() {
 
               <div className="mt-12 bg-gray-50 rounded-lg py-6">
                 <h2 className="font-primary text-4xl text-primary mb-8">
-                  HORAIRES DU SIÈGE SOCIAL
+                  HORAIRES DU SECRÉTARIAT
                 </h2>
                 <div className="space-y-2 text-gray-600">
                   <p>
-                    <strong>Lundi et mardi&nbsp;:</strong> 9h30 à 16h — accueil physique
+                    <strong>Lundi et mardi&nbsp;:</strong> 9h30 à 16h — accueil physique au siège social
                   </p>
                   <p>
                     <strong>Mercredi et jeudi&nbsp;:</strong> 9h30 à 16h — uniquement par téléphone, SMS, WhatsApp au <a href="tel:0665296372" className="text-primary hover:text-secondary transition-colors">06 65 29 63 72</a> ou par mail
