@@ -34,12 +34,12 @@ const partners: Partner[] = [
   { id: 7, name: "Departement du Loiret", logo: institutionnelDepartementLoiret, category: 'institutionnel' },
   { id: 8, name: "Mairie d'Orleans", logo: institutionnelMairieOrleans, category: 'institutionnel' },
   { id: 9, name: "DS Carrelages", logo: partenaireDSCarrelages, category: 'entreprise' },
-  { id: 10, name: "Larde Sports Orleans", logo: partenaireLardeSportsOrleans, category: 'entreprise' },
+  { id: 10, name: "Larde Sports Orleans", logo: partenaireLardeSportsOrleans, category: 'badminton' },
   { id: 11, name: "Ninka Park", logo: partenaireNinkaPark, category: 'entreprise' },
   { id: 12, name: "Orex", logo: partenaireOrex, category: 'entreprise' },
-  { id: 13, name: "Orleans Masters", logo: partenaireOrleansMasters, category: 'entreprise' },
+  { id: 13, name: "Orleans Masters", logo: partenaireOrleansMasters, category: 'badminton' },
   { id: 14, name: "SPBB", logo: partenaireSPBB, category: 'entreprise' },
-  { id: 15, name: "Victor", logo: partenaireVictor, category: 'entreprise' },
+  { id: 15, name: "Victor", logo: partenaireVictor, category: 'badminton' },
   { id: 16, name: "Web & Co", logo: partenaireWebAndCo, category: 'entreprise' },
 ];
 

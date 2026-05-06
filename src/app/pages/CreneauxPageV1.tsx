@@ -531,16 +531,17 @@ const WEEKS: WeekData[] = [
         day: "Vendredi",
         dateLabel: "15/05/2026",
         gym: "Chardon",
-        time: "Ferie",
-        trainer: "Non renseigne",
-        type: "Loisirs",
-        description: "Jour ferie - pas de creneaux planifies",
+        time: "",
+        trainer: "",
+        type: "",
+        description: "",
       },
     ],
   },
 ];
 
-export function CreneauxPage() {
+// TYPE LIST
+export function CreneauxPageV1() {
   const [selectedDate, setSelectedDate] = useState<Date>(
     new Date("2026-05-04"),
   );

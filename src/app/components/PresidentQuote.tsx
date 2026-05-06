@@ -5,10 +5,16 @@ export function PresidentQuote() {
   return (
     <section className="relative py-20 bg-primary overflow-hidden">
       {/* Diagonal Top Edge */}
-      <div className="absolute top-0 left-0 right-0 h-16 bg-white" style={{ clipPath: 'polygon(0 0, 100% 100%, 100% 0)' }} />
+      <div
+        className="absolute -top-px left-0 right-0 h-20 bg-white z-10 pointer-events-none"
+        style={{ clipPath: 'polygon(-1% 0, 101% 100%, 101% 0)' }}
+      />
 
-      {/* Diagonal Bottom Edge */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white" style={{ clipPath: 'polygon(0 100%, 100% 0, 100% 100%)' }} />
+      {/* Diagonal Bottom Clip */}
+      <div
+        className="absolute -bottom-px left-0 right-0 h-20 bg-white z-10 pointer-events-none"
+        style={{ clipPath: 'polygon(-1% 100%, 101% 0, 101% 100%)' }}
+      />
 
       <div className="max-w-[1280px] mx-auto px-6 py-8">
         <div
