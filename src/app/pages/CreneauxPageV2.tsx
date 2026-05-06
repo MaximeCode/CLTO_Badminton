@@ -169,6 +169,10 @@ export function CreneauxPageV2() {
     "Perfectionnement",
     "Loisirs",
   ]);
+  const [selectedSessionKinds, setSelectedSessionKinds] = useState<string[]>([
+    "Entraînement",
+    "Jeu libre",
+  ]);
   const [selectedGym, setSelectedGym] = useState<string>("Chardon");
 
   const selectedWeek = useMemo(
@@ -213,7 +217,11 @@ export function CreneauxPageV2() {
     const typeMatch = selectedTypes.includes(slot.type);
     const gymMatch =
       slot.gym === selectedGym;
-    return typeMatch && gymMatch;
+    const sessionKind = slot.description.toLowerCase().includes("jeu libre")
+      ? "Jeu libre"
+      : "Entraînement";
+    const sessionKindMatch = selectedSessionKinds.includes(sessionKind);
+    return typeMatch && gymMatch && sessionKindMatch;
   });
 
   // Toggle training type filter
@@ -225,9 +233,19 @@ export function CreneauxPageV2() {
     );
   };
 
+  // Toggle session kind filter (entraînement / jeu libre)
+  const toggleSessionKind = (kind: string) => {
+    setSelectedSessionKinds((prev) =>
+      prev.includes(kind)
+        ? prev.filter((k) => k !== kind)
+        : [...prev, kind],
+    );
+  };
+
   // Reset all filters
   const resetFilters = () => {
     setSelectedTypes(["Élite", "Perfectionnement", "Loisirs"]);
+    setSelectedSessionKinds(["Entraînement", "Jeu libre"]);
     setSelectedGym("Chardon");
   };
 
@@ -236,7 +254,17 @@ export function CreneauxPageV2() {
     return hours * 60 + minutes;
   };
 
-  const weekTimedSlots = allTimeSlots.filter((slot) => !slot.ferie && slot.gym === selectedGym && selectedTypes.includes(slot.type));
+  const weekTimedSlots = allTimeSlots.filter((slot) => {
+    if (slot.ferie) return false;
+    if (slot.gym !== selectedGym) return false;
+    if (!selectedTypes.includes(slot.type)) return false;
+
+    const sessionKind = slot.description.toLowerCase().includes("jeu libre")
+      ? "Jeu libre"
+      : "Entraînement";
+
+    return selectedSessionKinds.includes(sessionKind);
+  });
   const minStartMinutes = weekTimedSlots.length
     ? Math.min(...weekTimedSlots.map((slot) => toMinutes(slot.startTime)))
     : 9 * 60;
@@ -253,6 +281,7 @@ export function CreneauxPageV2() {
     { length: endHour - startHour + 1 },
     (_, index) => `${String(startHour + index).padStart(2, "0")}:00`,
   );
+  const dayColumnHeight = timeGrid.length * 80;
 
   const weekDays = [
     "Lundi",
@@ -419,7 +448,7 @@ export function CreneauxPageV2() {
                 </button>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-3 gap-6">
                 {/* Training Type Filter */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -498,6 +527,39 @@ export function CreneauxPageV2() {
                   </div>
                 </div>
 
+                {/* Session Kind Filter */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    Type de séance
+                  </label>
+                  <div className="flex flex-wrap gap-3">
+                    <button
+                      onClick={() => toggleSessionKind("Entraînement")}
+                      className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${selectedSessionKinds.includes("Entraînement")
+                        ? "bg-[#0153b6] text-white shadow-md scale-105"
+                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Dumbbell size={16} />
+                        Entraînement
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => toggleSessionKind("Jeu libre")}
+                      className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${selectedSessionKinds.includes("Jeu libre")
+                        ? "bg-green-600 text-white shadow-md scale-105"
+                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Gamepad2 size={16} />
+                        Jeu libre
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
                 {/* Gymnasium Filter */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -525,6 +587,10 @@ export function CreneauxPageV2() {
                   {timeSlots.length > 1 ? "s" : ""}{" "}
                   <span className="text-[#0153b6] font-semibold">
                     • {selectedGym}
+                  </span>
+                  <span className="text-gray-500"> • </span>
+                  <span className="font-semibold text-gray-700">
+                    {selectedSessionKinds.join(" + ")}
                   </span>
                 </p>
               </div>
@@ -705,6 +771,19 @@ export function CreneauxPageV2() {
                           const bgColor = getTypeColor(
                             slot.type,
                           );
+                          const isSlotHovered = hoveredSlot === slot.id;
+                          const baseHeight = Math.max(height - 4, 56);
+                          const expandedHeight = Math.max(
+                            baseHeight,
+                            slot.comment ? 210 : 180,
+                          );
+                          const maxHeightWithinColumn = Math.max(
+                            baseHeight,
+                            dayColumnHeight - top - 4,
+                          );
+                          const visibleHeight = isSlotHovered
+                            ? Math.min(expandedHeight, maxHeightWithinColumn)
+                            : baseHeight;
 
                           return (
                             <motion.div
@@ -715,11 +794,12 @@ export function CreneauxPageV2() {
                               }}
                               animate={{ opacity: 1, scale: 1 }}
                               transition={{ duration: 0.3 }}
-                              className="absolute left-1 right-1 rounded-lg shadow-md cursor-pointer pointer-events-auto overflow-hidden"
+                              className="absolute left-1 right-1 rounded-lg shadow-md cursor-pointer pointer-events-auto overflow-hidden transition-[height,z-index] duration-200"
                               style={{
                                 top: `${top}px`,
-                                height: `${height - 4}px`,
+                                height: `${visibleHeight}px`,
                                 backgroundColor: bgColor,
+                                zIndex: isSlotHovered ? 30 : 1,
                               }}
                               onMouseEnter={() =>
                                 setHoveredSlot(slot.id)
