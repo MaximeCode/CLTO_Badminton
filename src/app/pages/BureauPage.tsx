@@ -81,12 +81,13 @@ function MemberCard({ member, isExecutive = false }: { member: OrgMember; isExec
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.45 }}
       className={[
-        'group relative rounded-2xl border bg-white p-6 shadow-sm transition-all duration-300',
-        'hover:-translate-y-1 hover:shadow-xl',
-        isExecutive ? 'border-primary/30' : 'border-primary/15',
+        'group relative overflow-hidden bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2',
+        isExecutive ? 'border-primary/50' : 'border-primary/15',
       ].join(' ')}
     >
-      <div className="absolute inset-x-0 top-0 h-1 rounded-t-2xl bg-gradient-to-r from-primary via-[#0a69d1] to-secondary" />
+      {/* Decorative gradient bar */}
+      <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#0153b6] to-[#da9619]" />
+
       <div className="flex flex-col items-center gap-4 text-center">
         <div className="relative">
           <img
