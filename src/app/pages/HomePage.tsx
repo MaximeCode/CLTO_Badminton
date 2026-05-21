@@ -6,6 +6,7 @@ import { SpaceCards } from '../components/SpaceCards';
 import { MatchResults } from '../components/MatchResults';
 import { Partners } from '../components/Partners';
 import { ClubStats } from '../components/ClubStats';
+import { InterclubRankings } from '../components/InterclubRankings';
 
 export function HomePage() {
 
@@ -18,6 +19,7 @@ export function HomePage() {
       <PresidentQuote />
       <SpaceCards />
       <MatchResults />
+      <InterclubRankings />
       <Partners />
     </>
   );

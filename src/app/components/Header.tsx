@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import logo from '../../imports/logo_clto_main.png';
@@ -7,6 +7,26 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const location = useLocation();
+  const headerRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   const navItems = [
     {
@@ -22,8 +42,7 @@ export function Header() {
         { label: 'Historique', path: '/historique' },
         { label: 'Bureau', path: '/bureau' },
         { label: 'Gymnases', path: '/gymnases' },
-        { label: 'Creneaux V1', path: '/creneaux-v1' },
-        { label: 'Creneaux V2', path: '/creneaux-v2' },
+        { label: 'Creneaux', path: '/creneaux' },
         { label: 'Adhérer', path: '/adherer' },
       ],
     },
@@ -48,7 +67,7 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-t-2 border-secondary shadow-sm">
+    <header ref={headerRef} className="sticky top-0 z-50 bg-white border-t-2 border-secondary shadow-sm">
       <div className="max-w-[1280px] mx-auto px-6">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -107,14 +126,15 @@ export function Header() {
           {/* CTA Button */}
           <div className="flex gap-2">
             <Link
-              to="/contact"
+              to="/adherer"
               className="hidden lg:block bg-primary text-white px-6 py-2.5 rounded-md hover:bg-primary/80 transition-colors duration-200"
             >
               Rejoindre le club
             </Link>
 
             <Link
-              to="#"
+              to="https://www.helloasso.com/associations/clto-badminton/boutiques/commandes-groupees"
+              target="_blank"
               className="hidden lg:block bg-secondary text-white px-6 py-2.5 rounded-md hover:bg-secondary/80 transition-colors duration-200"
             >
               Visiter la boutique
@@ -175,7 +195,7 @@ export function Header() {
               </div>
             ))}
             <Link
-              to="/contact"
+              to="/adherer"
               className="block w-full bg-primary text-white px-6 py-2.5 rounded-md hover:bg-primary-accent transition-colors duration-200 text-center mt-4"
               onClick={() => setIsMenuOpen(false)}
             >

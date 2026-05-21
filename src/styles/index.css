@@ -1,4 +1,16 @@
 @import "./fonts.css";
 @import "./tailwind.css";
 @import "./theme.css";
-/* @import 'leaflet/dist/leaflet.css'; */
+@import "leaflet/dist/leaflet.css";
+
+.gym-map-marker {
+  background: transparent;
+  border: none;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  font-family: inherit;
+  z-index: 0;
+}

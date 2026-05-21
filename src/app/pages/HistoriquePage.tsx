@@ -43,7 +43,7 @@ export function HistoriquePage() {
         image="https://images.unsplash.com/photo-1553258223-6e8add562470?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBoaXN0b3J5JTIwdmludGFnZXxlbnwxfHx8fDE3NzU5Mjk2OTZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
       />
 
-      <section className="py-20 bg-white">
+      <section className="py-10 md:py-20 bg-white">
         <div className="max-w-[1280px] mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

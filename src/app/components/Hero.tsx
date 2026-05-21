@@ -6,13 +6,22 @@ import bgCarouselDefault from '../../imports/bg-test.jpg';
 import bgCarouselJeune from '../../imports/bg-promo.jpg';
 import bgCarouselCompet from '../../imports/bg-test2.jpg';
 
-const slides = [
+export type HeroSlide = {
+  id: number;
+  image: string;
+  label: string;
+  title: string;
+  description: string;
+  cta?: string;
+};
+
+const defaultSlides: HeroSlide[] = [
   {
     id: 1,
     image: bgCarouselDefault,
     label: 'ACTUALITÉ DU CLUB',
     title: 'LE CLTO BADMINTON RECRUTE DE NOUVEAUX TALENTS',
-    description: 'Rejoignez l\'un des clubs les plus compétitifs de France',
+    description: "Rejoignez l'un des clubs les plus compétitifs de France",
     cta: 'Découvrir',
   },
   {
@@ -28,14 +37,24 @@ const slides = [
     image: bgCarouselJeune,
     label: 'ESPACE JEUNES',
     title: 'STAGES DE VACANCES POUR LES JEUNES',
-    description: 'Inscriptions ouvertes pour les stages d\'été',
-    cta: 'S\'inscrire',
+    description: "Inscriptions ouvertes pour les stages d'été",
+    cta: "S'inscrire",
   },
 ];
 
-export function Hero() {
+type HeroProps<T extends HeroSlide = HeroSlide> = {
+  slides?: T[];
+  variant?: 'home' | 'interclub';
+};
+
+export function Hero<T extends HeroSlide = HeroSlide>({
+  slides = defaultSlides as T[],
+  variant = 'home',
+}: HeroProps<T>) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [progress, setProgress] = useState(0);
+
+  const isInterclub = variant === 'interclub';
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -49,7 +68,7 @@ export function Hero() {
     }, 50);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
@@ -66,8 +85,16 @@ export function Hero() {
     setProgress(0);
   };
 
+  const slide = slides[currentSlide];
+
   return (
-    <section className="relative h-[85vh] overflow-hidden">
+    <section
+      className={
+        isInterclub
+          ? 'relative h-[52vh] min-h-[340px] md:h-[70vh] md:min-h-0 overflow-hidden'
+          : 'relative h-[70vh] min-h-[520px] md:h-[85vh] md:min-h-0 overflow-hidden'
+      }
+    >
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
@@ -77,92 +104,151 @@ export function Hero() {
           transition={{ duration: 0.5 }}
           className="absolute inset-0"
         >
-          {/* Background Image */}
           <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${slides[currentSlide].image})` }}
+            className={
+              isInterclub
+                ? 'absolute inset-0 bg-cover bg-[center_25%] md:bg-center'
+                : 'absolute inset-0 bg-cover bg-center'
+            }
+            style={{ backgroundImage: `url(${slide.image})` }}
           />
 
-          {/* Dark Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+          <div
+            className={
+              isInterclub
+                ? 'absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-black/75 md:bg-gradient-to-r md:from-black/80 md:via-black/50 md:to-transparent'
+                : 'absolute inset-0 bg-gradient-to-b from-black/85 via-black/60 to-black/30 md:bg-gradient-to-r md:from-black/80 md:via-black/50 md:to-transparent'
+            }
+          />
 
-          {/* Content */}
-          <div className="relative h-full max-w-[1280px] mx-auto px-6 flex items-center">
-            <div className="max-w-2xl">
+          <div
+            className={
+              isInterclub
+                ? 'relative h-full max-w-[1280px] mx-auto px-4 sm:px-6 flex items-end md:items-center pt-16 pb-20 md:pt-0 md:pb-0'
+                : 'relative h-full max-w-[1280px] mx-auto px-4 sm:px-6 flex items-center pt-16 pb-20 md:pt-0 md:pb-0'
+            }
+          >
+            <div
+              className={
+                isInterclub
+                  ? 'max-w-xl bg-black/45 rounded-md px-4 py-3 sm:px-5 sm:py-4 md:bg-transparent md:rounded-none md:p-0'
+                  : 'max-w-2xl'
+              }
+            >
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="text-secondary uppercase tracking-wider mb-4"
+                className={
+                  isInterclub
+                    ? 'text-secondary uppercase tracking-[0.16em] text-[11px] sm:text-sm mb-2 md:mb-4'
+                    : 'text-secondary uppercase tracking-wider text-sm sm:text-md mb-3 md:mb-4'
+                }
               >
-                {slides[currentSlide].label}
+                {slide.label}
               </motion.div>
 
               <motion.h1
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="font-primary text-6xl md:text-7xl text-white leading-tight mb-4"
+                className={
+                  isInterclub
+                    ? 'font-primary text-2xl sm:text-4xl md:text-6xl lg:text-7xl text-white leading-[1.15] mb-2 md:mb-4'
+                    : 'font-primary text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white leading-[1.15] mb-3 md:mb-4'
+                }
               >
-                {slides[currentSlide].title}
+                {slide.title}
               </motion.h1>
 
               <motion.p
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="text-white/90 text-lg mb-8"
+                className={
+                  isInterclub
+                    ? 'text-white/90 text-xs sm:text-base md:text-lg max-w-xl'
+                    : 'text-white/90 text-sm sm:text-base md:text-lg max-w-xl mb-6 md:mb-8'
+                }
               >
-                {slides[currentSlide].description}
+                {slide.description}
               </motion.p>
 
-              <motion.button
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
-              >
-                {slides[currentSlide].cta} →
-              </motion.button>
+              {slide.cta && (
+                <motion.button
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                  className="bg-secondary text-white text-sm sm:text-base px-5 py-2.5 sm:px-8 sm:py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+                >
+                  {slide.cta} →
+                </motion.button>
+              )}
 
-              {/* Slide Indicators */}
-              <div className="mt-10 z-10 flex gap-2">
-                {slides.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => goToSlide(index)}
-                    className="relative w-12 h-1 bg-white/30 overflow-hidden"
-                  >
-                    {index === currentSlide && (
-                      <div
-                        className="absolute inset-0 bg-secondary"
-                        style={{ width: `${progress}%` }}
-                      />
-                    )}
-                  </button>
-                ))}
-              </div>
+              {!isInterclub && (
+                <div className="mt-7 md:mt-10 z-10 flex gap-1.5 sm:gap-2">
+                  {slides.map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => goToSlide(index)}
+                      className="relative w-9 sm:w-12 h-1 bg-white/30 overflow-hidden"
+                    >
+                      {index === currentSlide && (
+                        <div
+                          className="absolute inset-0 bg-secondary"
+                          style={{ width: `${progress}%` }}
+                        />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-
-          {/* Diagonal Bottom Clip */}
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-white" style={{ clipPath: 'polygon(0 100%, 100% 0, 100% 100%)' }} />
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation Arrows */}
-      <div className="absolute right-6 top-1/2 -translate-y-1/2 z-10 flex flex-col gap-4">
+      {/* Diagonal edge — outside AnimatePresence to avoid gap on slide change */}
+      <div
+        className="absolute -bottom-px left-0 right-0 h-10 md:h-24 bg-white z-10 pointer-events-none"
+        style={{ clipPath: 'polygon(-1% 100%, 101% 0, 101% 100%)' }}
+      />
+
+      {isInterclub && (
+        <div className="absolute bottom-12 sm:bottom-16 md:bottom-32 left-4 sm:left-6 md:left-12 z-10 flex gap-1.5 sm:gap-2">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => goToSlide(index)}
+              className="relative w-8 sm:w-10 md:w-12 h-1 bg-white/30 overflow-hidden"
+            >
+              {index === currentSlide && (
+                <div
+                  className="absolute inset-0 bg-secondary"
+                  style={{ width: `${progress}%` }}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-10 hidden sm:flex flex-col gap-3 sm:gap-4">
         <button
+          type="button"
           onClick={prevSlide}
-          className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors duration-200 flex items-center justify-center"
+          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors duration-200 flex items-center justify-center"
         >
-          <ChevronLeft size={24} />
+          <ChevronLeft size={20} className="sm:w-6 sm:h-6" />
         </button>
         <button
+          type="button"
           onClick={nextSlide}
-          className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors duration-200 flex items-center justify-center"
+          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors duration-200 flex items-center justify-center"
         >
-          <ChevronRight size={24} />
+          <ChevronRight size={20} className="sm:w-6 sm:h-6" />
         </button>
       </div>
     </section>

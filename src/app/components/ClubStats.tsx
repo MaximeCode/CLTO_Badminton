@@ -6,23 +6,23 @@ const stats = [
     icon: Users,
     value: '+400',
     label: 'Adhérents',
-    description: 'Membres actifs au club',
+    description: 'Membres au club',
   },
   {
     icon: Trophy,
-    value: '12',
+    value: '9',
     label: 'Équipes',
-    description: 'En compétition',
+    description: 'En interclubs',
   },
   {
     icon: Clock,
-    value: '35h',
+    value: '57h',
     label: 'Créneaux',
     description: 'Par semaine',
   },
   {
     icon: Target,
-    value: '6',
+    value: '5',
     label: 'Gymnases',
     description: 'À disposition',
   },
@@ -30,7 +30,7 @@ const stats = [
 
 export function ClubStats() {
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-10 md:py-20 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-[1280px] mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -155,9 +155,9 @@ const getWeekDistance = (date: Date, week: WeekData) => {
   return 0;
 };
 // TYPE CALENDAR
-export function CreneauxPageV2() {
+export function CreneauxPage() {
   const [selectedDate, setSelectedDate] = useState<Date>(
-    new Date("2026-05-04"),
+    new Date(new Date()),
   );
   const [hoveredSlot, setHoveredSlot] = useState<string | null>(
     null,
@@ -366,7 +366,7 @@ export function CreneauxPageV2() {
         image="https://images.unsplash.com/photo-1617962529235-262e8e777e48?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjB0cmFpbmluZyUyMHNjaGVkdWxlfGVufDF8fHx8MTc3NjMzNzE3NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
       />
 
-      <section className="py-20 bg-gray-50">
+      <section className="py-10 md:py-20 bg-gray-50">
         <div className="max-w-[1600px] mx-auto px-6">
           {/* Calendar Header */}
           <motion.div

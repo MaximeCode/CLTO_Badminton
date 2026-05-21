@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { PageHero } from '../components/PageHero';
 import { motion } from 'motion/react';
 import { MapPin, Copy, Check, ExternalLink } from 'lucide-react';
+import { GymMap } from '../components/GymMap';
 import gymnaseChardon from '../../imports/gymnase_chardon.jpg';
-
 interface Gym {
   id: number;
   name: string;
@@ -16,19 +16,19 @@ interface Gym {
 const gyms: Gym[] = [
   {
     id: 1,
-    name: 'Piscine Victor Fouillade',
-    address: '1 Rue Jean Bouin, 45000 Orléans',
-    courts: 4,
-    lat: 47.921666832201105,
-    lng: 1.8976930836604693,
-  },
-  {
-    id: 2,
     name: 'Gymnase Georges Chardon',
     address: '15 Pl. Georges Chardon, 45100 Orléans',
     courts: 7,
     lat: 47.887067687826196,
     lng: 1.9135509424965862,
+  },
+  {
+    id: 2,
+    name: 'Gymnase Barthélémy',
+    address: 'Av. Jean Zay, 45000 Orléans',
+    courts: 7,
+    lat: 47.9074296411878,
+    lng: 1.92130587135132,
   },
   {
     id: 3,
@@ -40,28 +40,21 @@ const gyms: Gym[] = [
   },
   {
     id: 4,
-    name: 'Gymnase Barthélémy',
-    address: 'Av. Jean Zay, 45000 Orléans',
-    courts: 7,
-    lat: 47.9074296411878,
-    lng: 1.92130587135132,
-  },
-  {
-    id: 5,
     name: 'Gymnase Céline Lebrun',
     address: '4 Rue Georges Landré, 45000 Orléans',
     courts: 7,
     lat: 47.92154078965461,
     lng: 1.927667475626574,
   },
+  {
+    id: 5,
+    name: 'Piscine Victor Fouillade',
+    address: '1 Rue Jean Bouin, 45000 Orléans',
+    courts: 4,
+    lat: 47.921666832201105,
+    lng: 1.8976930836604693,
+  },
 ];
-
-const allGymsBounds = {
-  minLng: 1.87,
-  maxLng: 1.95,
-  minLat: 47.87,
-  maxLat: 47.93,
-};
 
 export function GymnasesPage() {
   const [selectedGym, setSelectedGym] = useState<Gym | null>(null);
@@ -73,29 +66,8 @@ export function GymnasesPage() {
     setTimeout(() => setCopiedAddress(null), 2000);
   };
 
-  // Generate OpenStreetMap embed URL
-  const getMapUrl = () => {
-    if (selectedGym) {
-      return `https://www.openstreetmap.org/export/embed.html?bbox=${selectedGym.lng - 0.01},${selectedGym.lat - 0.01},${selectedGym.lng + 0.01},${selectedGym.lat + 0.01}&layer=mapnik&marker=${selectedGym.lat},${selectedGym.lng}`;
-    }
-    // Show all gyms centered on Orléans
-    return `https://www.openstreetmap.org/export/embed.html?bbox=1.87,47.87,1.95,47.93&layer=mapnik`;
-  };
-
   const openInMaps = (gym: Gym) => {
     window.open(`https://www.google.com/maps/search/?api=1&query=${gym.lat},${gym.lng}`, '_blank');
-  };
-
-  const getMarkerPosition = (gym: Gym) => {
-    const left =
-      ((gym.lng - allGymsBounds.minLng) / (allGymsBounds.maxLng - allGymsBounds.minLng)) * 100;
-    const top =
-      ((allGymsBounds.maxLat - gym.lat) / (allGymsBounds.maxLat - allGymsBounds.minLat)) * 100;
-
-    return {
-      left: `${Math.min(Math.max(left, 0), 100)}%`,
-      top: `${Math.min(Math.max(top, 0), 100)}%`,
-    };
   };
 
   return (
@@ -106,7 +78,7 @@ export function GymnasesPage() {
         image={gymnaseChardon}
       />
 
-      <section className="py-20 bg-white">
+      <section className="py-10 md:py-20 bg-white">
         <div className="max-w-[1280px] mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -222,15 +194,14 @@ export function GymnasesPage() {
               transition={{ duration: 0.6 }}
               className="h-[600px] lg:h-full min-h-[500px] rounded-lg overflow-hidden shadow-xl sticky top-24 bg-gray-100"
             >
-              {selectedGym ? (
-                <div className="h-full relative">
-                  <iframe
-                    key={selectedGym.id}
-                    src={getMapUrl()}
-                    className="w-full h-full border-0"
-                    title={`Carte de ${selectedGym.name}`}
-                  />
-                  <div className="absolute top-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4 z-10">
+              <GymMap
+                gyms={gyms}
+                selectedGym={selectedGym}
+                onSelectGym={setSelectedGym}
+              />
+              <div className="absolute top-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4 z-[1000] pointer-events-none">
+                {selectedGym ? (
+                  <>
                     <h3 className="font-primary text-xl text-primary mb-1">
                       {selectedGym.name}
                     </h3>
@@ -238,51 +209,19 @@ export function GymnasesPage() {
                     <p className="text-sm">
                       <strong>{selectedGym.courts}</strong> terrain{selectedGym.courts > 1 ? 's' : ''}
                     </p>
-                  </div>
-                </div>
-              ) : (
-                <div className="h-full relative">
-                  <iframe
-                    src={getMapUrl()}
-                    className="w-full h-full border-0"
-                    title="Carte de tous les gymnases"
-                  />
-                  <div className="absolute top-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4 z-10">
+                  </>
+                ) : (
+                  <>
                     <h3 className="font-primary text-xl text-primary mb-1">
                       Tous les gymnases
                     </h3>
                     <p className="text-sm text-gray-600">
-                      Cliquez sur un gymnase pour voir sa localisation détaillée
+                      Cliquez sur un gymnase ou sur la carte pour voir sa localisation détaillée
                     </p>
-                  </div>
-                  <div className="absolute inset-0 z-20">
-                    {gyms.map((gym) => {
-                      const position = getMarkerPosition(gym);
-                      return (
-                        <button
-                          key={gym.id}
-                          type="button"
-                          onClick={() => setSelectedGym(gym)}
-                          title={gym.name}
-                          className="absolute -translate-x-1/2 -translate-y-full group cursor-pointer"
-                          style={position}
-                        >
-                          <MapPin
-                            size={30}
-                            className="text-primary drop-shadow-[0_2px_3px_rgba(0,0,0,0.35)] group-hover:text-secondary transition-colors duration-200"
-                            fill="#ffffff"
-                          />
-                          <span className="absolute left-1/2 -translate-x-1/2 mt-1 whitespace-nowrap bg-white/95 text-gray-700 text-xs px-2 py-1 rounded-md shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                            {gym.name}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </motion.div>
-          </div>
+                  </>
+                )}
+              </div>
+            </motion.div>          </div>
 
           {/* Info Section */}
           <motion.div

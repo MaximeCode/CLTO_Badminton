@@ -1,55 +1,210 @@
-import { Facebook, Instagram, Youtube, MapPin, Phone, Mail, Linkedin } from 'lucide-react';
+import { useState, type ReactNode } from 'react';
+import { Facebook, Instagram, Youtube, MapPin, Phone, Mail, Linkedin, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router';
 import logo from '../../imports/logo_clto_main.png';
 
+type FooterMobileSectionId = 'navigation' | 'espaces' | 'contact';
+
+function FooterMobileSection({
+  id,
+  title,
+  openSection,
+  onToggle,
+  children,
+}: {
+  id: FooterMobileSectionId;
+  title: string;
+  openSection: FooterMobileSectionId | null;
+  onToggle: (id: FooterMobileSectionId) => void;
+  children: ReactNode;
+}) {
+  const open = openSection === id;
+
+  return (
+    <div className="border-b border-white/10">
+      <button
+        type="button"
+        onClick={() => onToggle(id)}
+        aria-expanded={open}
+        className="flex w-full items-center justify-between py-3 text-left"
+      >
+        <h4 className="font-primary text-lg tracking-wide">{title}</h4>
+        <ChevronDown
+          size={18}
+          className={`shrink-0 text-gray-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+        />
+      </button>
+      {open && <div className="pb-3">{children}</div>}
+    </div>
+  );
+}
+
+const socialLinks = [
+  { href: '#', icon: Facebook, label: 'Facebook' },
+  { href: '#', icon: Instagram, label: 'Instagram' },
+] as const;
+
 export function Footer() {
+  const [openSection, setOpenSection] = useState<FooterMobileSectionId | null>(null);
+
+  const toggleSection = (id: FooterMobileSectionId) => {
+    setOpenSection((current) => (current === id ? null : id));
+  };
+
   return (
     <footer className="relative bg-footer text-white overflow-hidden">
-      <div className="relative max-w-[1280px] mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-          {/* Column 1: Logo & Social */}
+      <div className="relative max-w-[1280px] mx-auto px-6 py-8 md:py-12 lg:py-16">
+        {/* Mobile */}
+        <div className="lg:hidden">
+          <div className="flex items-center gap-4 mb-5">
+            <img src={logo} alt="CLTO Badminton" className="h-14 w-auto shrink-0" />
+            <div className="min-w-0 flex-1">
+              <p className="text-gray-400 text-xs leading-snug mb-2">
+                L'un des plus grands clubs de badminton de France
+              </p>
+              <div className="flex gap-2">
+                {socialLinks.map(({ href, icon: Icon, label }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target={href.startsWith('http') ? '_blank' : undefined}
+                    rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    aria-label={label}
+                    className="w-9 h-9 rounded-full bg-white/10 hover:bg-secondary flex items-center justify-center transition-colors duration-200"
+                  >
+                    <Icon size={16} />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <FooterMobileSection
+            id="navigation"
+            title="Navigation"
+            openSection={openSection}
+            onToggle={toggleSection}
+          >
+            <ul className="space-y-2">
+              <li>
+                <Link to="/actualites" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Nos Actualités
+                </Link>
+              </li>
+              <li>
+                <Link to="/historique" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Notre Histoire
+                </Link>
+              </li>
+              <li>
+                <Link to="/interclub" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Nos Équipes d'interclubs
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Nous Contacter
+                </Link>
+              </li>
+            </ul>
+          </FooterMobileSection>
+
+          <FooterMobileSection
+            id="espaces"
+            title="Nos Espaces"
+            openSection={openSection}
+            onToggle={toggleSection}
+          >
+            <ul className="space-y-2">
+              <li>
+                <Link to="/jeunes" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Jeunes
+                </Link>
+              </li>
+              <li>
+                <Link to="/adultes" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Adultes
+                </Link>
+              </li>
+              <li>
+                <Link to="/veterans" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Vétérans
+                </Link>
+              </li>
+              <li>
+                <Link to="/loisir" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Loisirs
+                </Link>
+              </li>
+              <li>
+                <Link to="/competitions" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Compétitions
+                </Link>
+              </li>
+            </ul>
+          </FooterMobileSection>
+
+          <FooterMobileSection
+            id="contact"
+            title="Contact"
+            openSection={openSection}
+            onToggle={toggleSection}
+          >
+            <ul className="space-y-3">
+              <li className="flex items-start gap-2 text-gray-400">
+                <MapPin size={16} className="mt-0.5 shrink-0" />
+                <span className="text-sm">
+                  1 Boulevard de Québec, 45000 Orléans
+                </span>
+              </li>
+              <li className="flex items-center gap-2 text-gray-400">
+                <Phone size={16} className="shrink-0" />
+                <a href="tel:0245482162" className="text-sm hover:text-secondary transition-colors">
+                  02 45 48 21 62
+                </a>
+              </li>
+              <li className="flex items-center gap-2 text-gray-400">
+                <Mail size={16} className="shrink-0" />
+                <a href="mailto:contact@cltobadminton.fr" className="text-sm hover:text-secondary transition-colors">
+                  contact@cltobadminton.fr
+                </a>
+              </li>
+            </ul>
+          </FooterMobileSection>
+
+          <Link
+            to="/contact"
+            className="mt-4 flex w-full items-center justify-center border-2 border-secondary text-secondary px-4 py-2.5 rounded-md hover:bg-secondary hover:text-white transition-all duration-200 text-sm"
+          >
+            Nous contacter
+          </Link>
+        </div>
+
+        {/* Desktop */}
+        <div className="hidden lg:grid lg:grid-cols-4 gap-12 mb-12">
           <div>
             <div className="mb-6">
-              <img
-                src={logo}
-                alt="CLTO Badminton"
-                className="h-20 w-auto"
-              />
+              <img src={logo} alt="CLTO Badminton" className="h-20 w-auto" />
             </div>
             <p className="text-gray-400 text-sm mb-6">
               L'un des plus grands clubs de badminton de France
             </p>
             <div className="flex gap-4">
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-secondary flex items-center justify-center transition-colors duration-200"
-              >
-                <Facebook size={18} />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-secondary flex items-center justify-center transition-colors duration-200"
-              >
-                <Instagram size={18} />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-secondary flex items-center justify-center transition-colors duration-200"
-              >
-                <Youtube size={18} />
-              </a>
-              <a
-                href="https://www.linkedin.com/company/clto-badminton/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-secondary flex items-center justify-center transition-colors duration-200"
-              >
-                <Linkedin size={18} />
-              </a>
+              {socialLinks.map(({ href, icon: Icon, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith('http') ? '_blank' : undefined}
+                  rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  aria-label={label}
+                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-secondary flex items-center justify-center transition-colors duration-200"
+                >
+                  <Icon size={18} />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Column 2: Navigation */}
           <div>
             <h4 className="font-primary text-xl mb-4 tracking-wide">Navigation</h4>
             <ul className="space-y-3">
@@ -76,7 +231,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Jeunes & Adultes */}
           <div>
             <h4 className="font-primary text-xl mb-4 tracking-wide">Nos Espaces</h4>
             <ul className="space-y-3">
@@ -108,7 +262,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Column 4: Contact */}
           <div>
             <h4 className="font-primary text-xl mb-4 tracking-wide">Contact</h4>
             <ul className="space-y-4">
@@ -137,9 +290,8 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/10">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
+        <div className="pt-6 lg:pt-8 border-t border-white/10">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-4 text-xs md:text-sm text-gray-400 text-center md:text-left">
             <p>© {new Date().getFullYear()} CLTO Badminton. All rights reserved.</p>
             <p>Site réalisé avec passion pour le badminton</p>
           </div>

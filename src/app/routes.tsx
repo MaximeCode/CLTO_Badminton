@@ -8,13 +8,11 @@ import { ActualitesPage } from './pages/ActualitesPage';
 import { ArchivesPage } from './pages/ArchivesPage';
 import { BureauPage } from './pages/BureauPage';
 import { ContactPage } from './pages/ContactPage';
-import { CreneauxPageV1 } from './pages/CreneauxPageV1';
-import { CreneauxPageV2 } from './pages/CreneauxPageV2';
+import { CreneauxPage } from './pages/CreneauxPage';
 import { GymnasesPage } from './pages/GymnasesPage';
 import { HistoriquePage } from './pages/HistoriquePage';
 import { HomePage } from './pages/HomePage';
 import { InterclubPage } from './pages/InterclubPage';
-import { NosEquipesPage } from './pages/NosEquipesPage';
 import { AdhererPage } from './pages/AdhererPage';
 
 // Espaces
@@ -37,15 +35,11 @@ export const router = createBrowserRouter([
       { path: 'historique', Component: HistoriquePage },
       { path: 'bureau', Component: BureauPage },
       { path: 'gymnases', Component: GymnasesPage },
-      { path: 'creneaux-v1', Component: CreneauxPageV1 },
-      { path: 'creneaux-v2', Component: CreneauxPageV2 },
-      { path: 'nos-equipes', Component: NosEquipesPage },
+      { path: 'creneaux', Component: CreneauxPage },
       { path: 'interclub', Component: InterclubPage },
-      { path: 'interclubs', Component: InterclubPage },
       { path: 'adultes', Component: AdultesPage },
       { path: 'jeunes', Component: JeunesPage },
       { path: 'loisir', Component: LoisirsPage },
-      { path: 'competitions', Component: CompetiteursPage },
       { path: 'competition', Component: CompetiteursPage },
       { path: 'veterans', Component: VeteransPage },
       { path: 'contact', Component: ContactPage },

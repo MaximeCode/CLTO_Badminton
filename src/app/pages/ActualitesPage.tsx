@@ -1,7 +1,7 @@
 import { PageHero } from '../components/PageHero';
 import { useMemo, useState } from 'react';
 import { motion } from 'motion/react';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router';
 
 const newsArticles = [
@@ -67,6 +67,12 @@ const articleCategories = Array.from(
 
 export function ActualitesPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('Toutes');
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
+
+  const selectCategory = (category: string) => {
+    setSelectedCategory(category);
+    setCategoriesOpen(false);
+  };
 
   const filteredArticles = useMemo(() => {
     if (selectedCategory === 'Toutes') {
@@ -76,6 +82,37 @@ export function ActualitesPage() {
     return newsArticles.filter((article) => article.categories.includes(selectedCategory));
   }, [selectedCategory]);
 
+  const categoryFilters = (
+    <>
+      <li>
+        <button
+          type="button"
+          onClick={() => selectCategory('Toutes')}
+          className={`w-full text-left rounded-md px-3 py-2 transition-colors ${selectedCategory === 'Toutes'
+            ? 'bg-primary text-white'
+            : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
+            }`}
+        >
+          Toutes
+        </button>
+      </li>
+      {articleCategories.map((category) => (
+        <li key={category}>
+          <button
+            type="button"
+            onClick={() => selectCategory(category)}
+            className={`w-full text-left rounded-md px-3 py-2 transition-colors ${selectedCategory === category
+              ? 'bg-primary text-white'
+              : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
+              }`}
+          >
+            {category}
+          </button>
+        </li>
+      ))}
+    </>
+  );
+
   return (
     <>
       <PageHero
@@ -84,43 +121,45 @@ export function ActualitesPage() {
         image="https://images.unsplash.com/photo-1723074832950-9fb031b0f4ec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBhY3Rpb24lMjBzaG90JTIwY29tcGV0aXRpb258ZW58MXx8fHwxNzc1OTI2NjM2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
       />
 
-      <section className="py-20 bg-white">
+      <section className="py-10 md:py-20 bg-white">
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="grid lg:grid-cols-[260px_1fr] gap-8 items-start">
             <aside className="lg:sticky lg:top-24 bg-gray-50 border border-gray-200 rounded-lg p-5 shadow-sm">
-              <h3 className="font-primary text-2xl text-primary mb-4">
-                Catégories
-              </h3>
-              <ul className="space-y-2">
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedCategory('Toutes')}
-                    className={`w-full text-left rounded-md px-3 py-2 transition-colors ${selectedCategory === 'Toutes'
-                      ? 'bg-primary text-white'
-                      : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
-                      }`}
-                  >
-                    Toutes
-                  </button>
-                </li>
-                {articleCategories.map((category) => (
-                  <li key={category}>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedCategory(category)}
-                      className={`w-full text-left rounded-md px-3 py-2 transition-colors ${selectedCategory === category
-                        ? 'bg-primary text-white'
-                        : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
-                        }`}
-                    >
-                      {category}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <div className="lg:hidden">
+                <button
+                  type="button"
+                  onClick={() => setCategoriesOpen((open) => !open)}
+                  aria-expanded={categoriesOpen}
+                  aria-controls="categories-list-mobile"
+                  className="flex w-full items-center justify-between gap-3 text-left"
+                >
+                  <span>
+                    <span className="font-primary text-2xl text-primary block">
+                      Catégories
+                    </span>
+                    <span className="text-sm text-gray-600">{selectedCategory}</span>
+                  </span>
+                  <ChevronDown
+                    size={20}
+                    className={`shrink-0 text-primary transition-transform duration-200 ${categoriesOpen ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                {categoriesOpen && (
+                  <ul id="categories-list-mobile" className="mt-4 space-y-2">
+                    {categoryFilters}
+                  </ul>
+                )}
+              </div>
+
+              <div className="hidden lg:block">
+                <h3 className="font-primary text-2xl text-primary mb-4">
+                  Catégories
+                </h3>
+                <ul className="space-y-2">{categoryFilters}</ul>
+              </div>
+
               <p className="mt-4 text-xs text-gray-500">
-                {filteredArticles.length} article{filteredArticles.length > 1 ? 's' : ''} affiche{filteredArticles.length > 1 ? 's' : ''}.
+                {filteredArticles.length} article{filteredArticles.length > 1 ? 's' : ''} affiché{filteredArticles.length > 1 ? 's' : ''}.
               </p>
             </aside>
 

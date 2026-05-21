@@ -28,7 +28,7 @@ const sideArticles = [
 
 export function FeaturedNews() {
   return (
-    <section className="py-20 bg-white">
+    <section className="py-10 md:py-20 bg-white">
       <div className="max-w-[1280px] mx-auto px-6">
         {/* Section Title */}
         <div className="flex items-center gap-4 mb-12">
@@ -79,6 +79,8 @@ export function FeaturedNews() {
               </div>
             </Link>
           </motion.div>
+
+          <hr className="block lg:hidden border-gray-200 w-50 mx-auto" />
 
           {/* Side Articles */}
           <div className="space-y-6">

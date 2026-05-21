@@ -51,7 +51,7 @@ const partnerGroups = [
 
 export function Partners() {
   return (
-    <section className="py-20 bg-[linear-gradient(180deg,#f7fbff_0%,#ffffff_40%)]">
+    <section className="py-10 md:py-20 bg-[linear-gradient(180deg,#f7fbff_0%,#ffffff_40%)]">
       <div className="max-w-[1280px] mx-auto px-6">
         {/* Section Title */}
         <div className="mb-12">
