@@ -30,7 +30,7 @@ const stats = [
 
 export function ClubStats() {
   return (
-    <section className="py-10 md:py-20 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-8 md:py-15 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-[1280px] mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -47,7 +47,7 @@ export function ClubStats() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 md:w-5/6 mx-auto">
           {stats.map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -55,7 +55,7 @@ export function ClubStats() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative overflow-hidden bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-[#da9619]"
+              className="group relative overflow-hidden bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-[#da9619]"
             >
               {/* Decorative gradient bar */}
               <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#0153b6] to-[#da9619]" />

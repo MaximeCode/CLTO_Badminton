@@ -58,7 +58,7 @@ export function JeunesPage() {
         image="https://images.unsplash.com/photo-1642436978092-0f4b14112745?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaGlsZHJlbiUyMHBsYXlpbmclMjBiYWRtaW50b258ZW58MXx8fHwxNzc1OTI5Njk4fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
       />
 
-      <section className="py-10 md:py-20 bg-white">
+      <section className="py-8 md:py-15 bg-white">
         <div className="max-w-[1280px] mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -83,15 +83,17 @@ export function JeunesPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-gray-50 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                className="bg-gradient-to-br from-primary to-primary-accent rounded-lg p-6 shadow-lg text-white hover:shadow-xl transition-shadow duration-300"
               >
-                <h3 className="font-primary text-2xl text-primary mb-3">
+                <h3 className="font-primary text-2xl text-white mb-3">
                   {group.name}
                 </h3>
-                <p className="text-gray-600 mb-4">{group.description}</p>
-                <div className="flex items-center gap-2 text-secondary">
-                  <Clock size={20} />
-                  <span className="font-semibold">{group.schedule}</span>
+                <p className="text-white/90 mb-4">{group.description}</p>
+                <div className="flex items-center gap-2">
+                  <Clock size={20} className="text-white/80" />
+                  <span className="bg-secondary inline-block px-3 py-1 rounded-full text-sm font-semibold">
+                    {group.schedule}
+                  </span>
                 </div>
               </motion.div>
             ))}
@@ -99,7 +101,7 @@ export function JeunesPage() {
         </div>
       </section>
 
-      <section className="py-10 md:py-20 bg-gray-50">
+      <section className="py-8 md:py-15 bg-gray-50">
         <div className="max-w-[1280px] mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -139,7 +141,7 @@ export function JeunesPage() {
         </div>
       </section>
 
-      <section className="py-10 md:py-20 bg-gradient-to-r from-primary to-primary-accent text-white">
+      <section className="py-8 md:py-15 bg-gradient-to-r from-primary to-primary-accent text-white">
         <div className="max-w-[1280px] mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -184,7 +186,7 @@ export function JeunesPage() {
         </div>
       </section>
 
-      <section className="py-10 md:py-20 bg-gray-50">
+      <section className="py-8 md:py-15 bg-gray-50">
         <div className="max-w-[1280px] mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -293,7 +295,7 @@ export function JeunesPage() {
         </div>
       </section>
 
-      <section className="py-10 md:py-20 bg-gradient-to-r from-primary to-primary-accent text-white">
+      <section className="py-8 md:py-15 bg-gradient-to-r from-primary to-primary-accent text-white">
         <div className="max-w-[1280px] mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

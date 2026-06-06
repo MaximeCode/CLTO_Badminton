@@ -24,6 +24,15 @@ const executiveBoard: OrgMember[] = [
   { name: 'XX', role: 'Responsable', detail: 'Subvention', image: placeholderPhoto },
 ];
 
+const staffMembers: OrgMember[] = [
+  { name: 'Véronique Marchet', role: 'Agente administrative et financière', image: placeholderPhoto },
+  { name: 'Thomas Huboud-Perron', role: 'Coordinateur Technique', image: placeholderPhoto },
+  { name: 'Yohan Hénault', role: 'Entraîneur', detail: 'En formation BPJEPS APT', image: placeholderPhoto },
+  { name: 'Lucie Chantepie', role: 'Service civique', image: placeholderPhoto },
+  { name: 'Valentin Weiskopf', role: 'Service civique', image: placeholderPhoto },
+  { name: 'Louen Verrey', role: 'Service civique', image: placeholderPhoto },
+];
+
 const commissionSections: OrgSection[] = [
   {
     title: 'Partenariat & Entreprises',
@@ -43,7 +52,7 @@ const commissionSections: OrgSection[] = [
   { title: 'Loisirs', members: [{ name: 'Valentin Martel', role: 'Responsable', image: placeholderPhoto }] },
   { title: 'Jeunes', members: [{ name: 'Mathilde Brochard', role: 'Responsable', image: placeholderPhoto }] },
   {
-    title: 'Evenements',
+    title: 'Événements',
     members: [
       {
         name: 'Mathilde Brochard',
@@ -107,7 +116,7 @@ function MemberCard({ member, isExecutive = false }: { member: OrgMember; isExec
   );
 }
 
-export function BureauPage() {
+export function ConseilAdministrationPage() {
   return (
     <>
       <PageHero
@@ -128,7 +137,7 @@ export function BureauPage() {
             transition={{ duration: 0.6 }}
             className="mb-14 text-center"
           >
-            <h2 className="mb-4 font-primary text-5xl text-primary md:text-6xl">Le Bureau</h2>
+            <h2 className="mb-4 font-primary text-5xl text-primary md:text-6xl">Le Conseil d'Administration</h2>
             <p className="mx-auto max-w-3xl text-lg text-primary-accent">
               Une lecture simple de l'organisation du club : les fonctions cles du bureau puis les responsables de
               chaque commission.
@@ -138,6 +147,25 @@ export function BureauPage() {
           <div className="mx-auto mb-20 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {executiveBoard.map((member) => (
               <MemberCard key={`${member.name}-${member.role}`} member={member} isExecutive />
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-12 text-center"
+          >
+            <h2 className="mb-4 font-primary text-5xl text-primary md:text-6xl">Les Salariés</h2>
+            <p className="mx-auto max-w-3xl text-lg text-primary-accent">
+              L'équipe salariée du club, au service des adhérents au quotidien.
+            </p>
+          </motion.div>
+
+          <div className="mx-auto mb-20 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {staffMembers.map((member) => (
+              <MemberCard key={`${member.name}-${member.role}`} member={member} />
             ))}
           </div>
 

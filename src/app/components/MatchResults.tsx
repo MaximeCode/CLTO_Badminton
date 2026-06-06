@@ -4,7 +4,7 @@ import logo from '../../imports/logo_clto_main.png';
 
 export function MatchResults() {
   return (
-    <section className="py-10 md:py-20 bg-clto-grey font-primary">
+    <section className="py-8 md:py-15 bg-clto-grey font-primary">
       <div className="max-w-[1280px] mx-auto px-6">
         {/* Section Title */}
         <div className="flex items-center gap-4 mb-12">
@@ -98,7 +98,7 @@ export function MatchResults() {
               width="100%"
               height="700px"
               className="h-[700px] w-full rounded-lg border-2 border-gray-200"
-              src={`https://icbad.ffbad.org/rencontre/710863`}
+              src={`https://icbad.ffbad.org/rencontre/772074`}
             ></iframe>
           </motion.div>
         </div>

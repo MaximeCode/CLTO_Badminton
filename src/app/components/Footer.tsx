@@ -40,8 +40,9 @@ function FooterMobileSection({
 }
 
 const socialLinks = [
-  { href: '#', icon: Facebook, label: 'Facebook' },
-  { href: '#', icon: Instagram, label: 'Instagram' },
+  { href: 'https://www.facebook.com/cltoBadminton', icon: Facebook, label: 'Facebook' },
+  { href: 'https://www.instagram.com/cltobadminton/', icon: Instagram, label: 'Instagram' },
+  { href: 'https://www.linkedin.com/company/clto-badminton/', icon: Linkedin, label: 'LinkedIn' },
 ] as const;
 
 export function Footer() {
@@ -59,9 +60,6 @@ export function Footer() {
           <div className="flex items-center gap-4 mb-5">
             <img src={logo} alt="CLTO Badminton" className="h-14 w-auto shrink-0" />
             <div className="min-w-0 flex-1">
-              <p className="text-gray-400 text-xs leading-snug mb-2">
-                L'un des plus grands clubs de badminton de France
-              </p>
               <div className="flex gap-2">
                 {socialLinks.map(({ href, icon: Icon, label }) => (
                   <a
@@ -137,7 +135,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/competitions" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                <Link to="/competition" className="text-gray-400 hover:text-secondary transition-colors text-sm">
                   Compétitions
                 </Link>
               </li>
@@ -181,14 +179,11 @@ export function Footer() {
         </div>
 
         {/* Desktop */}
-        <div className="hidden lg:grid lg:grid-cols-4 gap-12 mb-12">
+        <div className="hidden lg:grid lg:grid-cols-4 gap-12 mb-6">
           <div>
             <div className="mb-6">
               <img src={logo} alt="CLTO Badminton" className="h-20 w-auto" />
             </div>
-            <p className="text-gray-400 text-sm mb-6">
-              L'un des plus grands clubs de badminton de France
-            </p>
             <div className="flex gap-4">
               {socialLinks.map(({ href, icon: Icon, label }) => (
                 <a
@@ -255,7 +250,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/competitions" className="text-gray-400 hover:text-secondary transition-colors duration-200">
+                <Link to="/competition" className="text-gray-400 hover:text-secondary transition-colors duration-200">
                   Compétitions
                 </Link>
               </li>

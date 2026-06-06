@@ -21,7 +21,7 @@ export function ActualitePage() {
                 image={bgPromo}
             />
 
-            <section className="py-10 md:py-20 bg-white">
+            <section className="py-8 md:py-15 bg-white">
                 <div className="max-w-[960px] mx-auto px-6">
                     <div className="mb-6">
                         <Link

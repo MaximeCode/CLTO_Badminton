@@ -24,11 +24,17 @@ const sideArticles = [
     image: 'https://images.unsplash.com/photo-1733141732172-3abba91f4db2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjB5b3V0aCUyMGp1bmlvcnxlbnwxfHx8fDE3NzI3OTYxMjh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
     link: '/actualite/1'
   },
+  {
+    title: 'Autre article',
+    date: '1 Juin 2026',
+    image: 'https://images.unsplash.com/photo-1733141732172-3abba91f4db2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjB5b3V0aCUyMGp1bmlvcnxlbnwxfHx8fDE3NzI3OTYxMjh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    link: '/actualite/1'
+  },
 ];
 
 export function FeaturedNews() {
   return (
-    <section className="py-10 md:py-20 bg-white">
+    <section className="py-8 md:py-15 bg-white">
       <div className="max-w-[1280px] mx-auto px-6">
         {/* Section Title */}
         <div className="flex items-center gap-4 mb-12">
@@ -38,14 +44,14 @@ export function FeaturedNews() {
           </h2>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-2 gap-8 md:w-5/6 mx-auto">
           {/* Featured Article */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="lg:col-span-2"
+            className=""
           >
             <Link to={featuredArticle.link} className="group cursor-pointer">
               <div className="relative overflow-hidden rounded-lg mb-4 aspect-[16/10]">
@@ -91,7 +97,7 @@ export function FeaturedNews() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 * (index + 1) }}
-                className="group"
+                className={`group ${index === 2 ? 'hidden md:block' : ''}`} // 3rd article is hidden on mobile
               >
                 <Link to={article.link} className="cursor-pointer flex gap-4">
                   <div className="w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden">

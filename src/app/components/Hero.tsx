@@ -87,12 +87,15 @@ export function Hero<T extends HeroSlide = HeroSlide>({
 
   const slide = slides[currentSlide];
 
+  const navButtonClass =
+    'w-7 h-7 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors duration-200 flex items-center justify-center cursor-pointer';
+
   return (
     <section
       className={
         isInterclub
-          ? 'relative h-[52vh] min-h-[340px] md:h-[70vh] md:min-h-0 overflow-hidden'
-          : 'relative h-[70vh] min-h-[520px] md:h-[85vh] md:min-h-0 overflow-hidden'
+          ? 'relative h-[52vh] min-h-[340px] lg:h-[70vh] lg:min-h-0 overflow-hidden'
+          : 'relative h-[50vh] min-h-[320px] lg:h-[65vh] lg:min-h-0 overflow-hidden'
       }
     >
       <AnimatePresence mode="wait">
@@ -128,82 +131,84 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                 : 'relative h-full max-w-[1280px] mx-auto px-4 sm:px-6 flex items-center pt-16 pb-20 md:pt-0 md:pb-0'
             }
           >
-            <div
-              className={
-                isInterclub
-                  ? 'max-w-xl bg-black/45 rounded-md px-4 py-3 sm:px-5 sm:py-4 md:bg-transparent md:rounded-none md:p-0'
-                  : 'max-w-2xl'
-              }
-            >
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
+            <div className="flex flex-col">
+              <div
                 className={
                   isInterclub
-                    ? 'text-secondary uppercase tracking-[0.16em] text-[11px] sm:text-sm mb-2 md:mb-4'
-                    : 'text-secondary uppercase tracking-wider text-sm sm:text-md mb-3 md:mb-4'
+                    ? 'max-w-xl bg-black/45 rounded-md px-4 py-3 sm:px-5 sm:py-4 md:bg-transparent md:rounded-none md:p-0'
+                    : 'max-w-2xl'
                 }
               >
-                {slide.label}
-              </motion.div>
-
-              <motion.h1
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className={
-                  isInterclub
-                    ? 'font-primary text-2xl sm:text-4xl md:text-6xl lg:text-7xl text-white leading-[1.15] mb-2 md:mb-4'
-                    : 'font-primary text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white leading-[1.15] mb-3 md:mb-4'
-                }
-              >
-                {slide.title}
-              </motion.h1>
-
-              <motion.p
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className={
-                  isInterclub
-                    ? 'text-white/90 text-xs sm:text-base md:text-lg max-w-xl'
-                    : 'text-white/90 text-sm sm:text-base md:text-lg max-w-xl mb-6 md:mb-8'
-                }
-              >
-                {slide.description}
-              </motion.p>
-
-              {slide.cta && (
-                <motion.button
+                <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                  className="bg-secondary text-white text-sm sm:text-base px-5 py-2.5 sm:px-8 sm:py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+                  transition={{ delay: 0.2 }}
+                  className={
+                    isInterclub
+                      ? 'text-secondary uppercase tracking-[0.16em] text-[11px] sm:text-sm mb-2 md:mb-4'
+                      : 'text-secondary uppercase tracking-wider text-sm sm:text-md mb-3 md:mb-4'
+                  }
                 >
-                  {slide.cta} →
-                </motion.button>
-              )}
+                  {slide.label}
+                </motion.div>
 
-              {!isInterclub && (
-                <div className="mt-7 md:mt-10 z-10 flex gap-1.5 sm:gap-2">
-                  {slides.map((_, index) => (
-                    <button
-                      key={index}
-                      type="button"
-                      onClick={() => goToSlide(index)}
-                      className="relative w-9 sm:w-12 h-1 bg-white/30 overflow-hidden"
-                    >
-                      {index === currentSlide && (
-                        <div
-                          className="absolute inset-0 bg-secondary"
-                          style={{ width: `${progress}%` }}
-                        />
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
+                <motion.h1
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className={
+                    isInterclub
+                      ? 'font-primary text-2xl sm:text-4xl md:text-6xl lg:text-7xl text-white leading-[1.15] mb-2 md:mb-4'
+                      : 'font-primary text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white leading-[1.15] mb-3 md:mb-4'
+                  }
+                >
+                  {slide.title}
+                </motion.h1>
+
+                <motion.p
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                  className={
+                    isInterclub
+                      ? 'text-white/90 text-xs sm:text-base md:text-lg max-w-xl'
+                      : 'text-white/90 text-sm sm:text-base md:text-lg max-w-xl mb-6 md:mb-8'
+                  }
+                >
+                  {slide.description}
+                </motion.p>
+
+                {slide.cta && (
+                  <motion.button
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                    className="bg-secondary text-white text-sm sm:text-base px-5 py-2.5 sm:px-8 sm:py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+                  >
+                    {slide.cta} →
+                  </motion.button>
+                )}
+              </div>
+
+              {/* {!isInterclub && (
+                <> */}
+              <div className="my-4 md:mt-10 md:mb-0 z-10 flex gap-1.5 sm:gap-2">
+                {slides.map((_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => goToSlide(index)}
+                    className="relative w-9 sm:w-12 h-1 bg-white/30 overflow-hidden"
+                  >
+                    {index === currentSlide && (
+                      <div
+                        className="absolute inset-0 bg-secondary"
+                        style={{ width: `${progress}%` }}
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </motion.div>
@@ -216,38 +221,23 @@ export function Hero<T extends HeroSlide = HeroSlide>({
       />
 
       {isInterclub && (
-        <div className="absolute bottom-12 sm:bottom-16 md:bottom-32 left-4 sm:left-6 md:left-12 z-10 flex gap-1.5 sm:gap-2">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              type="button"
-              onClick={() => goToSlide(index)}
-              className="relative w-8 sm:w-10 md:w-12 h-1 bg-white/30 overflow-hidden"
-            >
-              {index === currentSlide && (
-                <div
-                  className="absolute inset-0 bg-secondary"
-                  style={{ width: `${progress}%` }}
-                />
-              )}
+        <div className="absolute bottom-12 sm:bottom-16 md:bottom-32 left-4 sm:left-6 md:left-12 z-10 flex flex-col gap-3">
+          <div className="flex sm:hidden gap-3">
+            <button type="button" onClick={prevSlide} className={navButtonClass}>
+              <ChevronLeft size={20} />
             </button>
-          ))}
+            <button type="button" onClick={nextSlide} className={navButtonClass}>
+              <ChevronRight size={20} />
+            </button>
+          </div>
         </div>
       )}
 
       <div className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-10 hidden sm:flex flex-col gap-3 sm:gap-4">
-        <button
-          type="button"
-          onClick={prevSlide}
-          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors duration-200 flex items-center justify-center"
-        >
+        <button type="button" onClick={prevSlide} className={navButtonClass}>
           <ChevronLeft size={20} className="sm:w-6 sm:h-6" />
         </button>
-        <button
-          type="button"
-          onClick={nextSlide}
-          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors duration-200 flex items-center justify-center"
-        >
+        <button type="button" onClick={nextSlide} className={navButtonClass}>
           <ChevronRight size={20} className="sm:w-6 sm:h-6" />
         </button>
       </div>

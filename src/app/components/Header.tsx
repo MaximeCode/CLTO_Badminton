@@ -40,7 +40,7 @@ export function Header() {
       title: 'Le Club',
       items: [
         { label: 'Historique', path: '/historique' },
-        { label: 'Bureau', path: '/bureau' },
+        { label: 'Conseil d\'Administration', path: '/conseil-administration' },
         { label: 'Gymnases', path: '/gymnases' },
         { label: 'Creneaux', path: '/creneaux' },
         { label: 'Adhérer', path: '/adherer' },
@@ -51,7 +51,7 @@ export function Header() {
       items: [
         { label: 'Jeunes', path: '/jeunes' },
         { label: 'Adultes', path: '/adultes' },
-        { label: 'Compétition', path: '/competitions' },
+        { label: 'Compétition', path: '/competition' },
         { label: 'Loisir', path: '/loisir' },
         { label: 'Vétérans', path: '/veterans' },
       ],
@@ -62,7 +62,10 @@ export function Header() {
     },
     {
       title: 'Contact',
-      path: '/contact',
+      items: [
+        { label: 'Contact', path: '/contact' },
+        { label: 'FAQ', path: '/faq' },
+      ],
     },
   ];
 

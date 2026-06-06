@@ -6,7 +6,7 @@ import { Layout } from './components/Layout';
 import { ActualitePage } from './pages/ActualitePage';
 import { ActualitesPage } from './pages/ActualitesPage';
 import { ArchivesPage } from './pages/ArchivesPage';
-import { BureauPage } from './pages/BureauPage';
+import { ConseilAdministrationPage } from './pages/ConseilAdministrationPage';
 import { ContactPage } from './pages/ContactPage';
 import { CreneauxPage } from './pages/CreneauxPage';
 import { GymnasesPage } from './pages/GymnasesPage';
@@ -14,6 +14,8 @@ import { HistoriquePage } from './pages/HistoriquePage';
 import { HomePage } from './pages/HomePage';
 import { InterclubPage } from './pages/InterclubPage';
 import { AdhererPage } from './pages/AdhererPage';
+import { FAQPage } from './pages/FAQPage';
+import { StagesPage } from './pages/StagesPage';
 
 // Espaces
 import { CompetiteursPage } from './pages/(espaces)/CompetiteursPage';
@@ -33,7 +35,7 @@ export const router = createBrowserRouter([
       { path: 'actualite/:id', Component: ActualitePage },
       { path: 'archives', Component: ArchivesPage },
       { path: 'historique', Component: HistoriquePage },
-      { path: 'bureau', Component: BureauPage },
+      { path: 'conseil-administration', Component: ConseilAdministrationPage },
       { path: 'gymnases', Component: GymnasesPage },
       { path: 'creneaux', Component: CreneauxPage },
       { path: 'interclub', Component: InterclubPage },
@@ -43,6 +45,8 @@ export const router = createBrowserRouter([
       { path: 'competition', Component: CompetiteursPage },
       { path: 'veterans', Component: VeteransPage },
       { path: 'contact', Component: ContactPage },
+      { path: 'faq', Component: FAQPage },
+      { path: 'stages', Component: StagesPage },
       { path: 'adherer', Component: AdhererPage },
       { path: '*', Component: NotFound },
     ],

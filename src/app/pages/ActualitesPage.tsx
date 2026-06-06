@@ -121,7 +121,7 @@ export function ActualitesPage() {
         image="https://images.unsplash.com/photo-1723074832950-9fb031b0f4ec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBhY3Rpb24lMjBzaG90JTIwY29tcGV0aXRpb258ZW58MXx8fHwxNzc1OTI2NjM2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
       />
 
-      <section className="py-10 md:py-20 bg-white">
+      <section className="py-8 md:py-15 bg-white">
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="grid lg:grid-cols-[260px_1fr] gap-8 items-start">
             <aside className="lg:sticky lg:top-24 bg-gray-50 border border-gray-200 rounded-lg p-5 shadow-sm">

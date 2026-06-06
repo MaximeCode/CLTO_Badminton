@@ -33,7 +33,7 @@ export function ContactPage() {
         image="https://images.unsplash.com/photo-1758686254030-a6dae2f49e69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb250YWN0JTIwc3VwcG9ydCUyMGNvbW11bmljYXRpb258ZW58MXx8fHwxNzc1OTI5Njk5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
       />
 
-      <section className="py-10 md:py-20 bg-white">
+      <section className="py-8 md:py-15 bg-white">
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12">
             {/* Contact Info */}
@@ -86,7 +86,7 @@ export function ContactPage() {
                 </div>
               </div>
 
-              <div className="mt-12 bg-gray-50 rounded-lg py-6">
+              <div className="mt-12 bg-gray-100 rounded-lg p-6">
                 <h2 className="font-primary text-4xl text-primary mb-8">
                   HORAIRES DU SECRÉTARIAT
                 </h2>
@@ -213,7 +213,7 @@ export function ContactPage() {
       </section>
 
       {/* Map Section */}
-      <section className="py-10 md:py-20 bg-gray-50">
+      <section className="py-8 md:py-15 bg-gray-50">
         <div className="max-w-[1280px] mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
