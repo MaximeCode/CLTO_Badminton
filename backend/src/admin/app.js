@@ -130,6 +130,10 @@ const config = {
       "form.button.finish": "Terminer",
       "form.button.next": "Suivant",
 
+      // ─── form.attribute.* (détails dans les forms) ───────────────────────
+      "form.attribute.condition.apply": "Activer ou désactiver les paramètres d'un champ en fonction de la valeur d'un autre champ de type booléen ou énumération.",
+      "form.attribute.condition.no-fields": "Aucun champ trouvé",
+
       // ─── global.* ────────────────────────────────────────────────────────────
       "global.more.actions": "Plus d'actions",
       "global.plugins.strapi-cloud": "Déploiement Strapi",

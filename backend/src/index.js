@@ -1,8 +1,8 @@
 "use strict";
 
 const PUBLIC_CONTENT_ACTIONS = [
-  "api::prestation.prestation.find",
-  "api::prestation.prestation.findOne",
+  "api::historique.historique.find",
+  "api::historique.historique.findOne",
 ];
 
 async function ensurePublicPermissions(strapi) {

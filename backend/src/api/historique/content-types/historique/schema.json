@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "historiques",
+  "info": {
+    "singularName": "historique",
+    "pluralName": "historiques",
+    "displayName": "Historique"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Titre": {
+      "type": "string",
+      "required": true
+    },
+    "Description": {
+      "type": "text"
+    },
+    "Date": {
+      "type": "date",
+      "required": true
+    }
+  }
+}

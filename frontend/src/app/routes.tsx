@@ -5,7 +5,6 @@ import { Layout } from './components/Layout';
 // Pages brut
 import { ActualitePage } from './pages/ActualitePage';
 import { ActualitesPage } from './pages/ActualitesPage';
-import { ArchivesPage } from './pages/ArchivesPage';
 import { ConseilAdministrationPage } from './pages/ConseilAdministrationPage';
 import { ContactPage } from './pages/ContactPage';
 import { CreneauxPage } from './pages/CreneauxPage';
@@ -33,7 +32,6 @@ export const router = createBrowserRouter([
       { index: true, Component: HomePage },
       { path: 'actualites', Component: ActualitesPage },
       { path: 'actualite/:id', Component: ActualitePage },
-      { path: 'archives', Component: ArchivesPage },
       { path: 'historique', Component: HistoriquePage },
       { path: 'conseil-administration', Component: ConseilAdministrationPage },
       { path: 'gymnases', Component: GymnasesPage },

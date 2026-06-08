@@ -31,10 +31,7 @@ export function Header() {
   const navItems = [
     {
       title: 'Actualités',
-      items: [
-        { label: 'Toutes les actualités', path: '/actualites' },
-        { label: 'Archives', path: '/archives' },
-      ],
+      path: '/actualites',
     },
     {
       title: 'Le Club',
