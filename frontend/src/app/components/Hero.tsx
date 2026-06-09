@@ -158,8 +158,8 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                   transition={{ delay: 0.3 }}
                   className={
                     isInterclub
-                      ? 'font-primary text-2xl sm:text-4xl md:text-6xl lg:text-7xl text-white leading-[1.15] mb-2 md:mb-4'
-                      : 'font-primary text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white leading-[1.15] mb-3 md:mb-4'
+                      ? 'font-primary text-3xl md:text-4xl lg:text-6xl xl:text-7xl text-white leading-[1.15] mb-2 md:mb-4'
+                      : 'font-primary text-3xl md:text-4xl lg:text-6xl xl:text-7xl text-white leading-[1.15] mb-3 md:mb-4'
                   }
                 >
                   {slide.title}

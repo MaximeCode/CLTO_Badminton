@@ -49,7 +49,7 @@ function NewsCard({ card }: { card: (typeof newsCards)[number] }) {
           </div>
         </div>
         <div className="p-4">
-          <h3 className="font-primary text-2xl text-gray-900 mb-3 group-hover:text-primary transition-colors duration-200">
+          <h3 className="font-primary text-2xl text-gray-900 md:mb-3 group-hover:text-primary transition-colors duration-200">
             {card.title}
           </h3>
           <span className="text-sm text-gray-500">{card.date}</span>

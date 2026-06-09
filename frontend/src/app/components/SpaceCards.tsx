@@ -1,7 +1,6 @@
 import { motion } from 'motion/react';
 import { Users, Trophy, Target } from 'lucide-react';
 import { Link } from 'react-router';
-import { MobileCarousel } from './MobileCarousel';
 
 const spaces = [
   {
@@ -52,7 +51,7 @@ function SpaceCard({ space }: { space: Space }) {
   const Icon = space.icon;
 
   return (
-    <div className="group relative h-full rounded-lg overflow-hidden cursor-pointer aspect-[16/10] sm:aspect-[3/4]">
+    <div className="group relative h-full max-h-[300px] rounded-lg overflow-hidden cursor-pointer aspect-[3/4]">
       <div
         className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
         style={{ backgroundImage: `url(${space.image})` }}
@@ -90,25 +89,12 @@ export function SpaceCards() {
           </h2>
         </div>
 
-        <MobileCarousel
-          items={spaces}
-          getItemKey={(space) => space.link}
-          renderItem={(space) => (
-            <Link to={space.link}>
-              <SpaceCard space={space} />
-            </Link>
-          )}
-          prevAriaLabel="Espace précédent"
-          nextAriaLabel="Espace suivant"
-          className="mb-8"
-        />
-
-        <div className="hidden md:flex flex-wrap justify-center gap-4 sm:gap-6">
+        <div className="flex flex-row gap-4 overflow-x-auto overflow-y-hidden pb-4 scrollbar-styled">
           {spaces.map((space, index) => (
             <Link
               key={space.link}
               to={space.link}
-              className="w-[calc(33.333%-1rem)] lg:w-[calc(20%-1.2rem)] max-w-[280px] lg:max-w-none"
+              className="shrink-0 w-48 sm:w-56"
             >
               <motion.div
                 initial={{ opacity: 0, y: 20 }}

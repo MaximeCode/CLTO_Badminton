@@ -112,7 +112,7 @@ export function InterclubPage() {
               </div>
               <h3 className="font-primary text-xl text-primary">Septembre — Avril</h3>
               <p className="text-gray-600 text-sm">
-                La saison interclubs s'étend de septembre à avril. Les rencontres se jouent le samedi, en réception ou en déplacement.
+                La saison interclubs s'étend de septembre à avril.
               </p>
             </div>
           </motion.div>

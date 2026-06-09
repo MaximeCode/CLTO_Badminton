@@ -14,3 +14,22 @@
   font-family: inherit;
   z-index: 0;
 }
+
+/* Horizontal Scrollbar styled */
+.scrollbar-styled {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary) transparent;
+}
+
+.scrollbar-styled::-webkit-scrollbar {
+  height: 5px;
+}
+
+.scrollbar-styled::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-styled::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 9999px;
+}
