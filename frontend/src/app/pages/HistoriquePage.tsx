@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { PageHero } from '../components/PageHero';
 import { motion } from 'motion/react';
 import { Historique } from '../../types/historiqueType';
-import { getHistoriques } from '@/api/Historiques';
+import { getHistoriques } from '@/api/strapi/historiques';
 
 // const timeline = [
 //   {
