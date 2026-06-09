@@ -1,40 +1,62 @@
+import { useState, useEffect } from 'react';
 import { PageHero } from '../components/PageHero';
 import { motion } from 'motion/react';
+import { Historique } from '../../types/historiqueType';
+import { getHistoriques } from '@/api/Historiques';
 
-const timeline = [
-  {
-    year: '2023',
-    title: 'Montée en Nationale 2',
-    description: 'L\'aboutissement de nombreuses années de travail avec l\'accès à l\'élite régionale.',
-  },
-  {
-    year: '2020',
-    title: 'Record d\'adhérents',
-    description: 'Le CLTO Badminton compte plus de 200 licenciés, toutes catégories confondues.',
-  },
-  {
-    year: '2015',
-    title: 'Inauguration du nouveau gymnase',
-    description: 'Le club dispose désormais de 8 terrains et d\'équipements modernes.',
-  },
-  {
-    year: '2005',
-    title: 'Accès à la Nationale 3',
-    description: 'Une étape historique avec la montée de notre première équipe en Nationale 3.',
-  },
-  {
-    year: '1992',
-    title: 'Première équipe en compétition',
-    description: 'Le club engage sa première équipe en championnat départemental.',
-  },
-  {
-    year: '1985',
-    title: 'Fondation du club',
-    description: 'Le CLTO Badminton voit le jour grâce à la passion de quelques amateurs de badminton.',
-  },
-];
+// const timeline = [
+//   {
+//     year: '2023',
+//     title: 'Montée en Nationale 2',
+//     description: 'L\'aboutissement de nombreuses années de travail avec l\'accès à l\'élite régionale.',
+//   },
+//   {
+//     year: '2020',
+//     title: 'Record d\'adhérents',
+//     description: 'Le CLTO Badminton compte plus de 200 licenciés, toutes catégories confondues.',
+//   },
+//   {
+//     year: '2015',
+//     title: 'Inauguration du nouveau gymnase',
+//     description: 'Le club dispose désormais de 8 terrains et d\'équipements modernes.',
+//   },
+//   {
+//     year: '2005',
+//     title: 'Accès à la Nationale 3',
+//     description: 'Une étape historique avec la montée de notre première équipe en Nationale 3.',
+//   },
+//   {
+//     year: '1992',
+//     title: 'Première équipe en compétition',
+//     description: 'Le club engage sa première équipe en championnat départemental.',
+//   },
+//   {
+//     year: '1985',
+//     title: 'Fondation du club',
+//     description: 'Le CLTO Badminton voit le jour grâce à la passion de quelques amateurs de badminton.',
+//   },
+// ];
 
 export function HistoriquePage() {
+  const [historiques, setHistoriques] = useState<Historique[]>([]);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        setLoadError(null);
+        const data = await getHistoriques();
+        // console.log(data);
+        setHistoriques(data);
+      } catch (error) {
+        setLoadError(
+          error instanceof Error ? error.message : 'Impossible de charger l\'historique.',
+        );
+      }
+    }
+
+    loadData();
+  }, []);
   return (
     <>
       <PageHero
@@ -66,9 +88,9 @@ export function HistoriquePage() {
             <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-secondary transform -translate-x-1/2" />
 
             <div className="space-y-12">
-              {timeline.map((event, index) => (
+              {historiques.map((event, index) => (
                 <motion.div
-                  key={event.year}
+                  key={event.id}
                   initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
@@ -79,13 +101,13 @@ export function HistoriquePage() {
                   {/* Content */}
                   <div className="md:w-5/12 w-full">
                     <div className="bg-gray-50 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                      <div className="font-primary text-4xl text-secondary mb-2">
-                        {event.year}
+                      <div className="font-primary text-4xl text-secondary mb-2 capitalize">
+                        {new Date(event.Date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'short', day: 'numeric' })}
                       </div>
                       <h3 className="font-primary text-2xl text-primary mb-3">
-                        {event.title}
+                        {event.Titre}
                       </h3>
-                      <p className="text-gray-600">{event.description}</p>
+                      <p className="text-gray-600">{event.Description}</p>
                     </div>
                   </div>
 
