@@ -1,0 +1,120 @@
+{
+  "kind": "collectionType",
+  "collectionName": "interclub_teams",
+  "info": {
+    "singularName": "interclub-team",
+    "pluralName": "interclub-teams",
+    "displayName": "Interclub Team",
+    "description": "Données interclubs scrapées depuis IcBAD — classement + rencontres par équipe"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "content-manager": {
+      "visible": true
+    },
+    "content-type-builder": {
+      "visible": true
+    }
+  },
+  "attributes": {
+    "teamSlug": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "description": "Identifiant unique ex: 'clto-n2'"
+    },
+    "teamLabel": {
+      "type": "string",
+      "required": true,
+      "description": "Libellé affiché ex: 'CLTO N2'"
+    },
+    "division": {
+      "type": "enumeration",
+      "enum": [
+        "N2",
+        "N3",
+        "R2",
+        "D1-A",
+        "D1-B",
+        "D2-A",
+        "D2-B",
+        "D3"
+      ],
+      "required": true
+    },
+    "icbadUrl": {
+      "type": "string",
+      "required": true,
+      "description": "URL complète de la poule IcBAD"
+    },
+    "icbadTeamCode": {
+      "type": "string",
+      "description": "Code sigle de l'équipe sur IcBAD ex: '45-CLTO-1'"
+    },
+    "competitionName": {
+      "type": "string",
+      "description": "Nom de la compétition ex: 'Interclubs Nationaux N2 — Poule 6'"
+    },
+    "season": {
+      "type": "string",
+      "description": "Saison ex: '2025-2026'"
+    },
+    "ranking": {
+      "type": "json",
+      "description": "Classement complet de la poule — tableau d'objets [{position, teamName, teamCode, logoUrl, played, won, draw, lost, forfeit, bonusPlus, bonusMinus, points, matchDiff, setDiff, ptsDiff, isClto}]"
+    },
+    "cltoPosition": {
+      "type": "integer",
+      "description": "Position du CLTO dans la poule (dénormalisé pour accès rapide)"
+    },
+    "cltoPoints": {
+      "type": "integer",
+      "description": "Points du CLTO (dénormalisé)"
+    },
+    "cltoPlayed": {
+      "type": "integer"
+    },
+    "cltoWon": {
+      "type": "integer"
+    },
+    "cltoDraw": {
+      "type": "integer"
+    },
+    "cltoLost": {
+      "type": "integer"
+    },
+    "cltoBonusPlus": {
+      "type": "integer"
+    },
+    "cltoBonusMinus": {
+      "type": "integer"
+    },
+    "cltoMatchDiff": {
+      "type": "integer"
+    },
+    "cltoSetDiff": {
+      "type": "integer"
+    },
+    "cltoPtsDiff": {
+      "type": "integer"
+    },
+    "matches": {
+      "type": "json",
+      "description": "Toutes les rencontres de la poule — tableau [{journee, date, time, venue, homeTeam, homeCode, awayTeam, awayCode, homeScore, awayScore, result ('win'|'draw'|'loss'|'upcoming'|'other'), hasBonus, icbadUrl, involvesClto}]"
+    },
+    "bonuses": {
+      "type": "json",
+      "description": "Tous les bonus et pénalités — [{journee, teamName, teamCode, matchup, value, type, icbadMatchUrl, involvesClto}]"
+    },
+    "lastScrapedAt": {
+      "type": "datetime",
+      "description": "Date du dernier scraping réussi"
+    },
+    "scrapeError": {
+      "type": "string",
+      "description": "Message d'erreur du dernier scraping si échec"
+    }
+  }
+}

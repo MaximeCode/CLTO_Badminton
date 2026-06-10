@@ -1,0 +1,15 @@
+{
+  "name": "icbad-scraper",
+  "version": "1.0.0",
+  "description": "Plugin Strapi v5 — Scraping IcBAD FFBaD pour les interclubs CLTO Badminton",
+  "strapi": {
+    "kind": "plugin",
+    "name": "icbad-scraper",
+    "displayName": "IcBAD Scraper",
+    "description": "Scrape les données interclubs depuis icbad.ffbad.org et les stocke en base."
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "node-fetch": "^2.7.0"
+  }
+}
