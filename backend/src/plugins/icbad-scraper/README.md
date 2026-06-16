@@ -116,10 +116,10 @@ ex `Cercle Laïque des Tourelles Orléans Badminton **(45-CLTO-1)**`.
 
 ### Lecture publique (front Next.js)
 
-| Méthode | URL                              | Description                                     |
-| ------- | -------------------------------- | ----------------------------------------------- |
-| `GET`   | `/api/icbad-scraper/teams`       | Résumé de toutes les équipes (sans JSON lourds) |
-| `GET`   | `/api/icbad-scraper/teams/:slug` | Données complètes d'une équipe                  |
+| Méthode | URL                              | Description                                |
+| ------- | -------------------------------- | ------------------------------------------ |
+| `GET`   | `/api/icbad-scraper/teams`       | Liste toutes les équipes (TOUS LES CHAMPS) |
+| `GET`   | `/api/icbad-scraper/teams/:slug` | Données complètes d'une équipe             |
 
 **Slugs disponibles :** `clto-n2`, `clto-n3`, `clto-r2`, `clto-d1a`, `clto-d1b`, `clto-d2a`, `clto-d2b`, `clto-d3`
 
@@ -129,25 +129,54 @@ ex `Cercle Laïque des Tourelles Orléans Badminton **(45-CLTO-1)**`.
 {
   "data": [
     {
-      "teamSlug": "clto-n2",
-      "teamLabel": "CLTO N2",
-      "division": "N2",
-      "competitionName": "Poule 6",
+      "id": 4,
+      "documentId": "x1ttpuehzk0cta0c8rlb483u",
+      "teamSlug": "clto-d1a",
+      "teamLabel": "CLTO D1-A",
+      "division": "D1-A",
+      "competitionName": "poule-A",
       "season": "2025-2026",
-      "cltoPosition": 2,
-      "cltoPoints": 41,
+      "cltoPosition": 1,
+      "cltoPoints": 36,
       "cltoPlayed": 10,
-      "cltoWon": 6,
-      "cltoDraw": 2,
-      "cltoLost": 2,
-      "cltoBonusPlus": 3,
+      "cltoWon": 10,
+      "cltoDraw": 0,
+      "cltoLost": 0,
+      "cltoBonusPlus": 6,
       "cltoBonusMinus": 0,
-      "cltoMatchDiff": 22,
-      "cltoSetDiff": 42,
-      "cltoPtsDiff": 299,
-      "lastScrapedAt": "2025-10-15T02:00:00.000Z",
-      "scrapeError": null
-    }
+      "cltoMatchDiff": 70,
+      "cltoSetDiff": 130,
+      "cltoPtsDiff": 1100,
+      "lastScrapedAt": "2026-06-09T16:57:07.503Z",
+      "scrapeError": null,
+      "ranking": [
+        {
+          "position": 1,
+          "teamName": "Cercle Laïque des Tourelles Orléans Badminton A",
+          "teamCode": "45-CLTO-1",
+          "logoUrl": "https://poona.ffbad.org/download/logo/logo_instance_CLTO45_529.png",
+          "rowClass": "promotion",
+          "played": 10,
+          "won": 10,
+          "draw": 0,
+          "lost": 0,
+          "forfeit": 0,
+          "bonusPlus": 6,
+          "bonusMinus": 0,
+          "points": 36,
+          "matchDiff": 70,
+          "setDiff": 130,
+          "ptsDiff": 1100,
+          "isClto": true
+        },
+        {
+          "position": 2,
+          "teamName": "Sully Les Bordes 2",
+          // [...] //
+        }
+      ]
+    },
+    // [...] //
   ]
 }
 ```

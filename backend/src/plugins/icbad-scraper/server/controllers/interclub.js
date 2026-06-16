@@ -7,13 +7,13 @@ module.exports = ({ strapi }) => ({
    * controllers/interclub.js
    *
    * Expose :
-   *  GET  /api/icbad-scraper/teams           → liste toutes les équipes (résumé)
+   *  GET  /api/icbad-scraper/teams           → liste toutes les équipes (TOUS LES CHAMPS)
    *  GET  /api/icbad-scraper/teams/:slug     → détail complet d'une équipe
    *  POST /api/icbad-scraper/scrape          → déclenche le scraping de toutes les équipes (admin)
    *  POST /api/icbad-scraper/scrape/:slug    → déclenche le scraping d'une équipe (admin)
    */
 
-  // ── Liste toutes les équipes (champs résumés, sans JSON lourds) ─────────
+  // ── Liste toutes les équipes (TOUS LES CHAMPS) ─────────
   findAll: async (ctx) => {
     const uid = 'plugin::icbad-scraper.interclub-team';
 
@@ -23,7 +23,7 @@ module.exports = ({ strapi }) => ({
         'cltoPosition', 'cltoPoints', 'cltoPlayed', 'cltoWon', 'cltoDraw',
         'cltoLost', 'cltoBonusPlus', 'cltoBonusMinus',
         'cltoMatchDiff', 'cltoSetDiff', 'cltoPtsDiff',
-        'lastScrapedAt', 'scrapeError',
+        'lastScrapedAt', 'scrapeError', 'ranking'
       ],
       sort: { division: 'asc' },
     });

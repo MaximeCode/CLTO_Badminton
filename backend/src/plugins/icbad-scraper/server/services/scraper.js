@@ -82,7 +82,7 @@ const TEAMS_CONFIG = [
     teamSlug: 'clto-d3',
     teamLabel: 'CLTO D3',
     division: 'D3',
-    icbadTeamCode: '45-CLTO-8',
+    icbadTeamCode: '45-CLTO-1',
     icbadUrl: 'https://icbad.ffbad.org/competition/2501079/tableau/15522',
     season: '2025-2026',
   },

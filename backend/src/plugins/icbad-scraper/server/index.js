@@ -136,7 +136,7 @@ module.exports = () => ({
         }, 5000);
       } else {
         strapi.log.info(
-          `[icbad-scraper] ✅  ${count} équipe(s) déjà en base.`
+          `[icbad-scraper] ✅  ${count} équipe(s) enregistrées en base.`
         );
       }
     } catch (err) {
