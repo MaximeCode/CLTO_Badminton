@@ -1,19 +1,21 @@
 import { motion } from 'motion/react';
 
 interface PageHeroProps {
-  title: string;
+  title?: string;
   subtitle?: string;
   image: string;
 }
 
-export function PageHero({ title, subtitle, image }: PageHeroProps) {
+export function PageHero({ title = '', subtitle = '', image }: PageHeroProps) {
   return (
     <div className="relative h-[260px] sm:h-[320px] md:h-[400px] overflow-hidden">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${image})` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/45 md:bg-gradient-to-r md:from-black/70 md:via-black/50 md:to-black/30" />
+        {title && (
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/45 md:bg-gradient-to-r md:from-black/70 md:via-black/50 md:to-black/30" />
+        )}
       </div>
       <div className="relative h-full max-w-[1280px] mx-auto px-4 sm:px-6 pt-14 sm:pt-16 md:pt-0 flex flex-col justify-center">
         <motion.h1

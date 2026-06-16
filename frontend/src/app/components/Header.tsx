@@ -41,6 +41,7 @@ export function Header() {
         { label: 'Gymnases', path: '/gymnases' },
         { label: 'Creneaux', path: '/creneaux' },
         { label: 'Adhérer', path: '/adherer' },
+        { label: 'Projet Club', path: '/projet-club' },
       ],
     },
     {

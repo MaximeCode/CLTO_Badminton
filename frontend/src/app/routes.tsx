@@ -15,6 +15,7 @@ import { InterclubPage } from './pages/InterclubPage';
 import { AdhererPage } from './pages/AdhererPage';
 import { FAQPage } from './pages/FAQPage';
 import { StagesPage } from './pages/StagesPage';
+import { ProjetClub } from './pages/ProjetClub';
 
 // Espaces
 import { CompetiteursPage } from './pages/(espaces)/CompetiteursPage';
@@ -37,6 +38,7 @@ export const router = createBrowserRouter([
       { path: 'gymnases', Component: GymnasesPage },
       { path: 'creneaux', Component: CreneauxPage },
       { path: 'interclub', Component: InterclubPage },
+      { path: 'projet-club', Component: ProjetClub },
       { path: 'adultes', Component: AdultesPage },
       { path: 'jeunes', Component: JeunesPage },
       { path: 'loisir', Component: LoisirsPage },
