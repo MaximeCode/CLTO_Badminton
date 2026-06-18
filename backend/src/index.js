@@ -3,6 +3,8 @@
 const PUBLIC_CONTENT_ACTIONS = [
   "api::historique.historique.find",
   "api::historique.historique.findOne",
+  "api::contact.contact.find",
+  "api::faq.faq.find",
 ];
 
 async function ensurePublicPermissions(strapi) {

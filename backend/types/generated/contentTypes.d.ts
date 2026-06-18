@@ -429,6 +429,72 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiContactContact extends Struct.SingleTypeSchema {
+  collectionName: "contacts";
+  info: {
+    displayName: "Contact";
+    pluralName: "contacts";
+    singularName: "contact";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    adresse: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    email: Schema.Attribute.Email;
+    heure_debut_accueils_a_distance: Schema.Attribute.Time;
+    heure_debut_accueils_physique: Schema.Attribute.Time;
+    heure_fin_accueils_a_distance: Schema.Attribute.Time;
+    heure_fin_accueils_physique: Schema.Attribute.Time;
+    jour_accueils_a_distance: Schema.Attribute.JSON &
+      Schema.Attribute.CustomField<
+        "plugin::multi-select.multi-select",
+        ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
+      > &
+      Schema.Attribute.DefaultTo<"[]">;
+    jour_accueils_physique: Schema.Attribute.JSON &
+      Schema.Attribute.CustomField<
+        "plugin::multi-select.multi-select",
+        ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
+      > &
+      Schema.Attribute.DefaultTo<"[]">;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::contact.contact"> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    telephone: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    WhatsApp: Schema.Attribute.String;
+  };
+}
+
+export interface ApiFaqFaq extends Struct.CollectionTypeSchema {
+  collectionName: "faqs";
+  info: {
+    displayName: "FAQ";
+    pluralName: "faqs";
+    singularName: "faq";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::faq.faq"> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    question: Schema.Attribute.String & Schema.Attribute.Required;
+    reponse: Schema.Attribute.Text & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
 export interface ApiHistoriqueHistorique extends Struct.CollectionTypeSchema {
   collectionName: "historiques";
   info: {
@@ -941,6 +1007,8 @@ declare module "@strapi/strapi" {
       "admin::transfer-token": AdminTransferToken;
       "admin::transfer-token-permission": AdminTransferTokenPermission;
       "admin::user": AdminUser;
+      "api::contact.contact": ApiContactContact;
+      "api::faq.faq": ApiFaqFaq;
       "api::historique.historique": ApiHistoriqueHistorique;
       "plugin::content-releases.release": PluginContentReleasesRelease;
       "plugin::content-releases.release-action": PluginContentReleasesReleaseAction;

@@ -1,0 +1,67 @@
+{
+  "kind": "singleType",
+  "collectionName": "contacts",
+  "info": {
+    "singularName": "contact",
+    "pluralName": "contacts",
+    "displayName": "Contact"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "telephone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "adresse": {
+      "type": "string"
+    },
+    "jour_accueils_physique": {
+      "type": "customField",
+      "customField": "plugin::multi-select.multi-select",
+      "default": "[]",
+      "options": [
+        "Lundi",
+        "Mardi",
+        "Mercredi",
+        "Jeudi",
+        "Vendredi",
+        "Samedi",
+        "Dimanche"
+      ]
+    },
+    "heure_debut_accueils_physique": {
+      "type": "time"
+    },
+    "heure_fin_accueils_physique": {
+      "type": "time"
+    },
+    "jour_accueils_a_distance": {
+      "type": "customField",
+      "customField": "plugin::multi-select.multi-select",
+      "default": "[]",
+      "options": [
+        "Lundi",
+        "Mardi",
+        "Mercredi",
+        "Jeudi",
+        "Vendredi",
+        "Samedi",
+        "Dimanche"
+      ]
+    },
+    "heure_debut_accueils_a_distance": {
+      "type": "time"
+    },
+    "heure_fin_accueils_a_distance": {
+      "type": "time"
+    },
+    "WhatsApp": {
+      "type": "string"
+    }
+  }
+}

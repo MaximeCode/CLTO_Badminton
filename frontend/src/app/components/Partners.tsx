@@ -61,7 +61,7 @@ export function Partners() {
               Ils nous soutiennent
             </h2>
           </div>
-          <h4 className="mt-3 text-primary-accent">
+          <h4 className="text-lg mt-3 text-primary-accent leading-5">
             Nos partenaires accompagnent le club au quotidien et participent a son rayonnement local.
           </h4>
         </div>

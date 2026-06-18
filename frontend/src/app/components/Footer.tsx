@@ -1,7 +1,9 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Facebook, Instagram, Youtube, MapPin, Phone, Mail, Linkedin, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router';
 import logo from '../../imports/logo_clto_main.png';
+import { getContact } from '@/api/strapi/contact';
+import { Contact } from '@/types/contactType';
 
 type FooterMobileSectionId = 'navigation' | 'espaces' | 'contact';
 
@@ -47,10 +49,31 @@ const socialLinks = [
 
 export function Footer() {
   const [openSection, setOpenSection] = useState<FooterMobileSectionId | null>(null);
+  const [contact, setContact] = useState<Contact | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const toggleSection = (id: FooterMobileSectionId) => {
     setOpenSection((current) => (current === id ? null : id));
   };
+
+  // Fetch contact data
+  useEffect(() => {
+    async function loadData() {
+      try {
+        setLoadError(null);
+        // console.log('Loading contact data...');
+        const data = await getContact();
+        // console.log('Contact data loaded:', data);
+        setContact(data);
+      } catch (error) {
+        console.error('Error loading contact data:', error);
+        setLoadError(
+          error instanceof Error ? error.message : 'Impossible de charger les coordonnées.',
+        );
+      }
+    }
+    loadData();
+  }, []);
 
   return (
     <footer className="relative bg-footer text-white overflow-hidden">
@@ -152,19 +175,19 @@ export function Footer() {
               <li className="flex items-start gap-2 text-gray-400">
                 <MapPin size={16} className="mt-0.5 shrink-0" />
                 <span className="text-sm">
-                  1 Boulevard de Québec, 45000 Orléans
+                  {contact?.adresse ?? '—'}
                 </span>
               </li>
               <li className="flex items-center gap-2 text-gray-400">
                 <Phone size={16} className="shrink-0" />
-                <a href="tel:0245482162" className="text-sm hover:text-secondary transition-colors">
-                  02 45 48 21 62
+                <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="text-sm hover:text-secondary transition-colors">
+                  {contact?.telephone ?? '—'}
                 </a>
               </li>
               <li className="flex items-center gap-2 text-gray-400">
                 <Mail size={16} className="shrink-0" />
-                <a href="mailto:contact@cltobadminton.fr" className="text-sm hover:text-secondary transition-colors">
-                  contact@cltobadminton.fr
+                <a href={`mailto:${contact?.email}`} className="text-sm hover:text-secondary transition-colors">
+                  {contact?.email ?? '—'}
                 </a>
               </li>
             </ul>
@@ -263,17 +286,20 @@ export function Footer() {
               <li className="flex items-start gap-3 text-gray-400">
                 <MapPin size={18} className="mt-1 flex-shrink-0" />
                 <span className="text-sm">
-                  1 Boulevard de Québec<br />
-                  45000 Orléans
+                  {contact?.adresse ?? '—'}
                 </span>
               </li>
               <li className="flex items-center gap-3 text-gray-400">
                 <Phone size={18} className="flex-shrink-0" />
-                <span className="text-sm">02 45 48 21 62</span>
+                <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="text-sm hover:text-secondary transition-colors">
+                  {contact?.telephone ?? '—'}
+                </a>
               </li>
               <li className="flex items-center gap-3 text-gray-400">
                 <Mail size={18} className="flex-shrink-0" />
-                <span className="text-sm">contact@cltobadminton.fr</span>
+                <a href={`mailto:${contact?.email}`} className="text-sm hover:text-secondary transition-colors">
+                  {contact?.email ?? '—'}
+                </a>
               </li>
             </ul>
             <Link
