@@ -1,26 +1,14 @@
 import { PageHero } from '../components/PageHero';
 import { motion } from 'motion/react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { Contact } from '../../types/contactType';
-import { getContact } from '@/api/strapi/contact';
-
-function formatTime(time: string): string {
-  const [h, m] = time.split(':');
-  const hours = parseInt(h, 10);
-  const minutes = parseInt(m, 10);
-  return minutes === 0 ? `${hours}h` : `${hours}h${m}`;
-}
-
-function joinDays(days: string[]): string {
-  if (days.length === 0) return '';
-  if (days.length === 1) return days[0];
-  return `${days.slice(0, -1).join(', ')} et ${days[days.length - 1]}`;
-}
+import { useState, useContext } from 'react';
+import type { Contact } from '@/types/contactType';
+import { ContactContext } from '../contexts/ContactContext';
+import { formatTime, joinDays } from '@/utils/showHoraires';
 
 export function ContactPage() {
-  const [contact, setContact] = useState<Contact | null>(null);
-  const [loadError, setLoadError] = useState<string | null>(null);
+  const contact = useContext<Contact | null>(ContactContext);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -42,25 +30,6 @@ export function ContactPage() {
     });
   };
 
-  // Fetch contact data
-  useEffect(() => {
-    async function loadData() {
-      try {
-        setLoadError(null);
-        // console.log('Loading contact data...');
-        const data = await getContact();
-        // console.log('Contact data loaded:', data);
-        setContact(data);
-      } catch (error) {
-        console.error('Error loading contact data:', error);
-        setLoadError(
-          error instanceof Error ? error.message : 'Impossible de charger les coordonnées.',
-        );
-      }
-    }
-    loadData();
-  }, []);
-
   return (
     <>
       <PageHero
@@ -68,12 +37,6 @@ export function ContactPage() {
         subtitle="Rejoignez-nous ou posez-nous vos questions"
         image="https://images.unsplash.com/photo-1758686254030-a6dae2f49e69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb250YWN0JTIwc3VwcG9ydCUyMGNvbW11bmljYXRpb258ZW58MXx8fHwxNzc1OTI5Njk5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
       />
-
-      {loadError && (
-        <div className="max-w-[1280px] mx-auto px-6 py-4">
-          <p className="text-red-600">{loadError}</p>
-        </div>
-      )}
 
       <section className="py-8 md:py-15 bg-white">
         <div className="max-w-[1280px] mx-auto px-6">
@@ -89,63 +52,68 @@ export function ContactPage() {
                 NOS COORDONNÉES
               </h2>
 
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="bg-primary text-white p-3 rounded-lg">
-                    <MapPin size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-primary text-2xl mb-1">Siège social</h3>
-                    <p className="text-gray-600">
-                      {contact?.adresse ?? '—'}
-                    </p>
-                  </div>
-                </div>
+              {contact ? (
+                <>
+                  <div className="space-y-6">
+                    <div className="flex items-start gap-4">
+                      <div className="bg-primary text-white p-3 rounded-lg">
+                        <MapPin size={24} />
+                      </div>
+                      <div>
+                        <h3 className="text-primary text-2xl mb-1">Siège social</h3>
+                        <p className="text-gray-600">
+                          {contact?.adresse ?? '—'}
+                        </p>
+                      </div>
+                    </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="bg-primary text-white p-3 rounded-lg">
-                    <Mail size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-primary text-2xl mb-1">Email</h3>
-                    <a href={`mailto:${contact?.email}`} className="text-primary hover:text-secondary transition-colors">
-                      {contact?.email ?? '—'}
-                    </a>
-                  </div>
-                </div>
+                    <div className="flex items-start gap-4">
+                      <div className="bg-primary text-white p-3 rounded-lg">
+                        <Mail size={24} />
+                      </div>
+                      <div>
+                        <h3 className="text-primary text-2xl mb-1">Email</h3>
+                        <a href={`mailto:${contact?.email}`} className="text-primary hover:text-secondary transition-colors">
+                          {contact?.email ?? '—'}
+                        </a>
+                      </div>
+                    </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="bg-primary text-white p-3 rounded-lg">
-                    <Phone size={24} />
+                    <div className="flex items-start gap-4">
+                      <div className="bg-primary text-white p-3 rounded-lg">
+                        <Phone size={24} />
+                      </div>
+                      <div>
+                        <h3 className="text-primary text-2xl mb-1">Téléphone</h3>
+                        <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="text-primary hover:text-secondary transition-colors">
+                          {contact?.telephone ?? '—'}
+                        </a>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-primary text-2xl mb-1">Téléphone</h3>
-                    <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="text-primary hover:text-secondary transition-colors">
-                      {contact?.telephone ?? '—'}
-                    </a>
+
+                  <div className="mt-12 bg-gray-100 rounded-lg p-6">
+                    <h2 className="font-primary text-4xl text-primary mb-8">
+                      HORAIRES DU SECRÉTARIAT
+                    </h2>
+                    <div className="space-y-2 text-gray-600">
+                      <p>
+                        <strong>{contact ? joinDays(contact.jour_accueils_physique) : '—'}&nbsp;:</strong>{' '}
+                        {contact ? `${formatTime(contact.heure_debut_accueils_physique)} à ${formatTime(contact.heure_fin_accueils_physique)}` : '—'} — accueil physique au siège social
+                      </p>
+                      <p>
+                        <strong>{contact ? joinDays(contact.jour_accueils_a_distance) : '—'}&nbsp;:</strong>{' '}
+                        {contact ? `${formatTime(contact.heure_debut_accueils_a_distance)} à ${formatTime(contact.heure_fin_accueils_a_distance)}` : '—'} — uniquement par téléphone, SMS, WhatsApp au{' '}
+                        <a href={`tel:${contact?.WhatsApp?.replace(/\s/g, '')}`} className="text-primary hover:text-secondary transition-colors">
+                          {contact?.WhatsApp ?? '—'}
+                        </a>{' '}ou par mail
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </div>
-
-              <div className="mt-12 bg-gray-100 rounded-lg p-6">
-                <h2 className="font-primary text-4xl text-primary mb-8">
-                  HORAIRES DU SECRÉTARIAT
-                </h2>
-                <div className="space-y-2 text-gray-600">
-                  <p>
-                    <strong>{contact ? joinDays(contact.jour_accueils_physique) : '—'}&nbsp;:</strong>{' '}
-                    {contact ? `${formatTime(contact.heure_debut_accueils_physique)} à ${formatTime(contact.heure_fin_accueils_physique)}` : '—'} — accueil physique au siège social
-                  </p>
-                  <p>
-                    <strong>{contact ? joinDays(contact.jour_accueils_a_distance) : '—'}&nbsp;:</strong>{' '}
-                    {contact ? `${formatTime(contact.heure_debut_accueils_a_distance)} à ${formatTime(contact.heure_fin_accueils_a_distance)}` : '—'} — uniquement par téléphone, SMS, WhatsApp au{' '}
-                    <a href={`tel:${contact?.WhatsApp?.replace(/\s/g, '')}`} className="text-primary hover:text-secondary transition-colors">
-                      {contact?.WhatsApp ?? '—'}
-                    </a>{' '}ou par mail
-                  </p>
-                </div>
-
-              </div>
+                </>
+              ) : (
+                <div>Chargement des coordonnées...</div>
+              )}
             </motion.div>
 
             {/* Contact Form */}

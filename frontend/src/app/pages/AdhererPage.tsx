@@ -1,6 +1,6 @@
-import { useState, type ReactNode } from 'react';
+import { useContext, useState, type ReactNode } from 'react';
 import { motion } from 'motion/react';
-import { ExternalLink, FileText, Mail, Phone, ChevronDown } from 'lucide-react';
+import { ExternalLink, FileText, Mail, Phone, ChevronDown, MapPin } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
 import {
     Accordion,
@@ -8,6 +8,12 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '../components/ui/accordion';
+
+import { ContactContext } from '../contexts/ContactContext';
+import type { Contact } from '@/types/contactType';
+
+import { formatTime, joinDays } from '@/utils/showHoraires';
+import { Link } from 'react-router';
 
 const bgPromo = new URL('../../imports/bg-promo.jpg', import.meta.url).href;
 
@@ -145,6 +151,8 @@ export function AdhererPage() {
     const togglePanel = (id: string) => {
         setOpenPanel((current) => (current === id ? null : id));
     };
+
+    const contact = useContext<Contact | null>(ContactContext);
 
     return (
         <>
@@ -325,7 +333,7 @@ export function AdhererPage() {
                             <div className="mt-4 rounded-lg bg-[#f7fbff] p-3 text-sm text-primary-accent sm:mt-5 sm:p-4 sm:text-base">
                                 <p>
                                     Paiements possibles en ligne, remis en mains propres au siège, sur un créneau, ou envoyés au siège du
-                                    CLTO Badminton (1 boulevard de Québec, 45000 ORLEANS).
+                                    CLTO Badminton ({contact?.adresse}).
                                 </p>
                                 <p className="mt-2">
                                     Le premier versement doit être au minimum de 70 € (adulte), 60 € (jeune), 30 € (miniBad).
@@ -390,23 +398,40 @@ export function AdhererPage() {
                             onToggle={togglePanel}
                         >
                             <div className="space-y-4 text-sm text-primary-accent sm:text-base">
-                                <p>1, Boulevard de Québec - 45000 Orléans</p>
+                                <p className="flex items-center gap-2">
+                                    <MapPin size={16} className="shrink-0" />
+                                    {contact?.adresse}
+                                </p>
                                 <p className="flex items-center gap-2">
                                     <Phone size={16} className="shrink-0" />
-                                    02.45.48.21.62
+                                    {contact?.telephone}
                                 </p>
                                 <p className="flex items-center gap-2">
                                     <Mail size={16} className="shrink-0" />
-                                    contact@cltobadminton.fr
+                                    {contact?.email}
                                 </p>
-                                <div className="rounded-lg bg-[#f7fbff] p-3 text-sm sm:p-4">
-                                    <p>Lundi et mardi de 9h30 à 16h - accueil physique</p>
-                                    <p>Mercredi et jeudi de 9h30 à 16h - uniquement par téléphone, SMS, WhatsApp ou par mail</p>
-                                </div>
+                                <p>
+                                    <strong>{contact ? joinDays(contact.jour_accueils_physique) : '—'}&nbsp;:</strong>{' '}
+                                    {contact ? `${formatTime(contact.heure_debut_accueils_physique)} à ${formatTime(contact.heure_fin_accueils_physique)}` : '—'} — accueil physique
+                                </p>
+                                <p>
+                                    <strong>{contact ? joinDays(contact.jour_accueils_a_distance) : '—'}&nbsp;:</strong>{' '}
+                                    {contact ? `${formatTime(contact.heure_debut_accueils_a_distance)} à ${formatTime(contact.heure_fin_accueils_a_distance)}` : '—'} — uniquement par téléphone, SMS, WhatsApp ou par mail
+                                </p>
                                 <p className="text-sm">
                                     Des bénévoles du club sont présents régulièrement sur les créneaux. N&apos;hésitez pas à faire appel
                                     à eux en cas de difficulté.
                                 </p>
+                                {/* plus d'infos sur la page Contact */}
+                                <div className="pt-2">
+                                    <Link
+                                        to="/contact"
+                                        className="inline-flex items-center gap-2 rounded-md bg-secondary px-5 py-2 text-white font-medium hover:bg-secondary/80 transition-colors"
+                                    >
+                                        Plus d&apos;informations sur la page Contact
+                                        <ExternalLink size={16} className="shrink-0" />
+                                    </Link>
+                                </div>
                             </div>
                         </CollapsiblePanel>
                     </div>

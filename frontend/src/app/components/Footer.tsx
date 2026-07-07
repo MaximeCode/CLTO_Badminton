@@ -1,9 +1,9 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useContext, useState, type ReactNode } from 'react';
 import { Facebook, Instagram, Youtube, MapPin, Phone, Mail, Linkedin, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router';
 import logo from '../../imports/logo_clto_main.png';
-import { getContact } from '@/api/strapi/contact';
-import { Contact } from '@/types/contactType';
+import { ContactContext } from '../contexts/ContactContext';
+import type { Contact } from '@/types/contactType';
 
 type FooterMobileSectionId = 'navigation' | 'espaces' | 'contact';
 
@@ -48,36 +48,17 @@ const socialLinks = [
 ] as const;
 
 export function Footer() {
+  const contact = useContext<Contact | null>(ContactContext);
+  console.log('contact', contact);
   const [openSection, setOpenSection] = useState<FooterMobileSectionId | null>(null);
-  const [contact, setContact] = useState<Contact | null>(null);
-  const [loadError, setLoadError] = useState<string | null>(null);
 
   const toggleSection = (id: FooterMobileSectionId) => {
     setOpenSection((current) => (current === id ? null : id));
   };
 
-  // Fetch contact data
-  useEffect(() => {
-    async function loadData() {
-      try {
-        setLoadError(null);
-        // console.log('Loading contact data...');
-        const data = await getContact();
-        // console.log('Contact data loaded:', data);
-        setContact(data);
-      } catch (error) {
-        console.error('Error loading contact data:', error);
-        setLoadError(
-          error instanceof Error ? error.message : 'Impossible de charger les coordonnées.',
-        );
-      }
-    }
-    loadData();
-  }, []);
-
   return (
     <footer className="relative bg-footer text-white overflow-hidden">
-      <div className="relative max-w-[1280px] mx-auto px-6 py-8 md:py-12 lg:py-16">
+      <div className="relative max-w-[1280px] mx-auto px-6 py-4 md:pt-10 md:pb-6">
         {/* Mobile */}
         <div className="lg:hidden">
           <div className="flex items-center gap-4 mb-5">
@@ -171,26 +152,30 @@ export function Footer() {
             openSection={openSection}
             onToggle={toggleSection}
           >
-            <ul className="space-y-3">
-              <li className="flex items-start gap-2 text-gray-400">
-                <MapPin size={16} className="mt-0.5 shrink-0" />
-                <span className="text-sm">
-                  {contact?.adresse ?? '—'}
-                </span>
-              </li>
-              <li className="flex items-center gap-2 text-gray-400">
-                <Phone size={16} className="shrink-0" />
-                <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="text-sm hover:text-secondary transition-colors">
-                  {contact?.telephone ?? '—'}
-                </a>
-              </li>
-              <li className="flex items-center gap-2 text-gray-400">
-                <Mail size={16} className="shrink-0" />
-                <a href={`mailto:${contact?.email}`} className="text-sm hover:text-secondary transition-colors">
-                  {contact?.email ?? '—'}
-                </a>
-              </li>
-            </ul>
+            {contact ? (
+              <ul className="space-y-3">
+                <li className="flex items-start gap-2 text-gray-400">
+                  <MapPin size={16} className="mt-0.5 shrink-0" />
+                  <span className="text-sm">
+                    {contact?.adresse ?? '—'}
+                  </span>
+                </li>
+                <li className="flex items-center gap-2 text-gray-400">
+                  <Phone size={16} className="shrink-0" />
+                  <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="text-sm hover:text-secondary transition-colors">
+                    {contact?.telephone ?? '—'}
+                  </a>
+                </li>
+                <li className="flex items-center gap-2 text-gray-400">
+                  <Mail size={16} className="shrink-0" />
+                  <a href={`mailto:${contact?.email}`} className="text-sm hover:text-secondary transition-colors">
+                    {contact?.email ?? '—'}
+                  </a>
+                </li>
+              </ul>
+            ) : (
+              <div>Chargement des coordonnées...</div>
+            )}
           </FooterMobileSection>
 
           <Link
@@ -282,26 +267,30 @@ export function Footer() {
 
           <div>
             <h4 className="font-primary text-xl mb-4 tracking-wide">Contact</h4>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3 text-gray-400">
-                <MapPin size={18} className="mt-1 flex-shrink-0" />
-                <span className="text-sm">
-                  {contact?.adresse ?? '—'}
-                </span>
-              </li>
-              <li className="flex items-center gap-3 text-gray-400">
-                <Phone size={18} className="flex-shrink-0" />
-                <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="text-sm hover:text-secondary transition-colors">
-                  {contact?.telephone ?? '—'}
-                </a>
-              </li>
-              <li className="flex items-center gap-3 text-gray-400">
-                <Mail size={18} className="flex-shrink-0" />
-                <a href={`mailto:${contact?.email}`} className="text-sm hover:text-secondary transition-colors">
-                  {contact?.email ?? '—'}
-                </a>
-              </li>
-            </ul>
+            {contact ? (
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3 text-gray-400">
+                  <MapPin size={18} className="mt-1 flex-shrink-0" />
+                  <span className="text-sm">
+                    {contact?.adresse ?? '—'}
+                  </span>
+                </li>
+                <li className="flex items-center gap-3 text-gray-400">
+                  <Phone size={18} className="flex-shrink-0" />
+                  <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="text-sm hover:text-secondary transition-colors">
+                    {contact?.telephone ?? '—'}
+                  </a>
+                </li>
+                <li className="flex items-center gap-3 text-gray-400">
+                  <Mail size={18} className="flex-shrink-0" />
+                  <a href={`mailto:${contact?.email}`} className="text-sm hover:text-secondary transition-colors">
+                    {contact?.email ?? '—'}
+                  </a>
+                </li>
+              </ul>
+            ) : (
+              <div>Chargement des coordonnées...</div>
+            )}
             <Link
               to="/contact"
               className="inline-block mt-6 border-2 border-secondary text-secondary px-4 py-2 rounded-md hover:bg-secondary hover:text-white transition-all duration-200 text-sm cursor-pointer"
@@ -311,7 +300,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="pt-6 lg:pt-8 border-t border-white/10">
+        <div className="pt-4 md:pt-6 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-4 text-xs md:text-sm text-gray-400 text-center md:text-left">
             <p>© {new Date().getFullYear()} CLTO Badminton. All rights reserved.</p>
             <p>Site réalisé avec passion pour le badminton</p>
