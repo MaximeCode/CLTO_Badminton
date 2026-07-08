@@ -1,10 +1,35 @@
 import { PageHero } from '../components/PageHero';
 import { motion } from 'motion/react';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Check, Loader2 } from 'lucide-react';
 import { useState, useContext } from 'react';
 import type { Contact } from '@/types/contactType';
 import { ContactContext } from '../contexts/ContactContext';
 import { formatTime, joinDays } from '@/utils/showHoraires';
+import { PostAPI } from '@/api/Client';
+
+const mailSubjects = {
+  inscription: "Inscription",
+  renseignement: "Renseignement",
+  partenariat: "Partenariat",
+  jeune: "Jeune",
+  adulte: "Adulte",
+  veteran: "Vétéran",
+  competition: "Compétition",
+  loisir: "Loisir",
+  autre: "Autre",
+};
+
+const mailSubjectGroups = [
+  {
+    label: "Général",
+    keys: ["inscription", "renseignement", "partenariat"] as const,
+  },
+  {
+    label: "Espaces",
+    keys: ["jeune", "adulte", "veteran", "competition", "loisir"] as const,
+  },
+];
+
 
 export function ContactPage() {
   const contact = useContext<Contact | null>(ContactContext);
@@ -17,10 +42,37 @@ export function ContactPage() {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form submission logic would go here
-    console.log('Form submitted:', formData);
+    setLoading(true);
+    setError(null);
+
+    try {
+      await PostAPI('/api/form-contact', formData);
+      setSubmitted(true);
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: '',
+      });
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Impossible d\'envoyer votre demande. Vérifiez que le serveur est démarré et réessayez.',
+      );
+    } finally {
+      setLoading(false);
+      setTimeout(() => {
+        setSubmitted(false);
+      }, 3000);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -35,7 +87,7 @@ export function ContactPage() {
       <PageHero
         title="CONTACT"
         subtitle="Rejoignez-nous ou posez-nous vos questions"
-        image="https://images.unsplash.com/photo-1758686254030-a6dae2f49e69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb250YWN0JTIwc3VwcG9ydCUyMGNvbW11bmljYXRpb258ZW58MXx8fHwxNzc1OTI5Njk5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+        image=""
       />
 
       <section className="py-8 md:py-15 bg-white">
@@ -185,16 +237,17 @@ export function ContactPage() {
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none transition-colors"
                   >
                     <option value="">Sélectionnez un sujet</option>
-                    <option value="inscription">Inscription</option>
-                    <option value="renseignement">Renseignement</option>
-                    <option value="partenariat">Partenariat</option>
-                    <hr></hr>
-                    <option value="jeune">Jeune</option>
-                    <option value="adulte">Adulte</option>
-                    <option value="veteran">Vétéran</option>
-                    <option value="competition">Compétition</option>
-                    <option value="loisir">Loisir</option>
-                    <option value="autre">Autre</option>
+                    {mailSubjectGroups.map((group) => (
+                      <optgroup key={group.label} label={group.label}>
+                        {group.keys.map((key) => (
+                          <option key={key} value={key}>
+                            {mailSubjects[key]}
+                          </option>
+                        ))}
+                      </optgroup>
+                    ))}
+                    <option value="autre">{mailSubjects.autre}</option>
+
                   </select>
                 </div>
 
@@ -215,11 +268,35 @@ export function ContactPage() {
 
                 <button
                   type="submit"
-                  className="w-full bg-secondary text-white px-8 py-3 rounded-lg hover:bg-secondary-accent transition-colors duration-200 flex items-center justify-center gap-2"
+                  disabled={submitted || loading}
+                  className={`w-full bg-secondary text-white px-8 py-3 rounded-lg hover:bg-secondary-accent transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer ${submitted
+                    ? 'bg-green-600 text-white'
+                    : 'bg-secondary text-white hover:bg-secondary-accent'
+                    }`}
                 >
-                  <Send size={20} />
-                  Envoyer le message
+                  {submitted ? (
+                    <>
+                      <Check className="animate-bounce" size={20} />
+                      Message envoyé !
+                    </>
+                  ) : (
+                    <>
+                      {loading ? (
+                        <Loader2 className="animate-spin" size={20} />
+                      ) : (
+                        <Send size={20} />
+                      )}
+                      Envoyer le message
+                    </>
+                  )}
                 </button>
+
+                {error && (
+                  <p className="text-center text-red-600 text-sm">
+                    {error}
+                  </p>
+                )}
+
               </form>
             </motion.div>
           </div>
