@@ -195,13 +195,22 @@ export function Header() {
                 )}
               </div>
             ))}
-            <Link
-              to="/adherer"
-              className="block w-full bg-primary text-white px-6 py-2.5 rounded-md hover:bg-primary-accent transition-colors duration-200 text-center mt-4"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Rejoindre le club
-            </Link>
+            <div className="flex flex-col sm:flex-row justify-center gap-2">
+              <Link
+                to="/adherer"
+                className="block w-full bg-primary text-white px-6 py-2.5 rounded-md hover:bg-primary-accent transition-colors duration-200 text-center"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Rejoindre le club
+              </Link>
+              <Link
+                to="https://www.helloasso.com/associations/clto-badminton/boutiques/commandes-groupees"
+                target="_blank"
+                className="block w-full bg-secondary text-white px-6 py-2.5 rounded-md hover:bg-secondary/80 transition-colors duration-200 text-center"
+              >
+                Visiter la boutique
+              </Link>
+            </div>
           </nav>
         )}
       </div>

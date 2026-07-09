@@ -1,18 +1,13 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router';
 import logo from '../../imports/logo_clto_main.png';
+import { HomePageSectionTitle } from './homePage_SectionTitle';
 
 export function MatchResults() {
   return (
     <section className="py-8 md:py-15 bg-clto-grey font-primary">
       <div className="max-w-[1280px] mx-auto px-6">
-        {/* Section Title */}
-        <div className="flex items-center gap-4 mb-12">
-          <div className="w-1 h-16 bg-secondary" />
-          <h2 className="text-5xl text-primary tracking-wide">
-            RÉSULTATS INTERCLUBS
-          </h2>
-        </div>
+        <HomePageSectionTitle title="RÉSULTATS INTERCLUBS" />
 
         {/* Match Card */}
         <motion.div
@@ -85,7 +80,7 @@ export function MatchResults() {
           </div>
         </motion.div>
 
-        <div className="max-w-[1280px] mx-auto px-4 my-12">
+        {/* <div className="max-w-[1280px] mx-auto px-4 my-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -101,7 +96,7 @@ export function MatchResults() {
               src={`https://icbad.ffbad.org/rencontre/772074`}
             ></iframe>
           </motion.div>
-        </div>
+        </div> */}
 
         {/* CTA Button */}
         <div className="text-center">

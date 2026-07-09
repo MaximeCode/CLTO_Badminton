@@ -16,6 +16,7 @@ import partenaireOrleansMasters from "../../imports/Partners/Partenaire_OrleansM
 import partenaireSPBB from "../../imports/Partners/Partenaire_SPBB.png";
 import partenaireVictor from "../../imports/Partners/Partenaire_Victor.png";
 import partenaireWebAndCo from "../../imports/Partners/Partenaire_Web-&-Co.png";
+import { HomePageSectionTitle } from './homePage_SectionTitle';
 
 type Partner = {
   id: number;
@@ -53,18 +54,10 @@ export function Partners() {
   return (
     <section className="py-8 md:py-15 bg-[linear-gradient(180deg,#f7fbff_0%,#ffffff_40%)]">
       <div className="max-w-[1280px] mx-auto px-6">
-        {/* Section Title */}
-        <div className="mb-12">
-          <div className="flex items-center gap-4">
-            <div className="w-1 h-16 bg-secondary" />
-            <h2 className="text-5xl text-primary tracking-wide">
-              Ils nous soutiennent
-            </h2>
-          </div>
-          <h4 className="text-lg mt-3 text-primary-accent leading-5">
-            Nos partenaires accompagnent le club au quotidien et participent a son rayonnement local.
-          </h4>
-        </div>
+        <HomePageSectionTitle
+          title="ILS NOUS SOUTIENNENT"
+          subtitle="Nos partenaires accompagnent le club au quotidien et participent a son rayonnement local."
+        />
 
         <div className="space-y-10">
           {partnerGroups.map((group, groupIndex) => (

@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router';
+import { HomePageSectionTitle } from './homePage_SectionTitle';
 
 const featuredArticle = {
   category: 'Actualités',
@@ -36,15 +37,9 @@ export function FeaturedNews() {
   return (
     <section className="py-8 md:py-15 bg-white">
       <div className="max-w-[1280px] mx-auto px-6">
-        {/* Section Title */}
-        <div className="flex items-center gap-4 mb-12">
-          <div className="w-1 h-16 bg-secondary" />
-          <h2 className="font-primary text-5xl text-primary tracking-wide">
-            À LA UNE
-          </h2>
-        </div>
+        <HomePageSectionTitle title="À LA UNE" />
 
-        <div className="grid lg:grid-cols-2 gap-8 md:w-5/6 mx-auto">
+        <div className="grid lg:grid-cols-2 gap-8 md:w-5/6 mx-auto lg:w-full">
           {/* Featured Article */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

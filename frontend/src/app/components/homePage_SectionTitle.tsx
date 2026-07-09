@@ -1,0 +1,17 @@
+export function HomePageSectionTitle({ title, subtitle }: { title: string, subtitle?: string }) {
+    return (
+        <div className="flex flex-col gap-4 mb-12">
+            <div className="flex items-center gap-4">
+                <div className="w-1 h-16 bg-secondary" />
+                <h2 className="font-['Bebas_Neue'] text-5xl text-primary tracking-wide">
+                    {title}
+                </h2>
+            </div>
+            {subtitle && (
+                <h4 className="text-xl text-primary-accent leading-5">
+                    {subtitle}
+                </h4>
+            )}
+        </div>
+    );
+}

@@ -14,12 +14,11 @@ export function HomePage() {
     <>
       <Hero />
       <ClubStats />
-      <FeaturedNews />
-      <LatestNews />
-      <PresidentQuote />
-      <SpaceCards />
-      <MatchResults />
       <InterclubRankings />
+      <FeaturedNews />
+      <SpaceCards />
+      {/* <MatchResults /> */}
+      <PresidentQuote />
       <Partners />
     </>
   );

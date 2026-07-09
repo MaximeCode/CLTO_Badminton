@@ -1,34 +1,45 @@
 import { motion } from 'motion/react';
+import { useEffect, useState } from 'react';
 import { Users, Trophy, Clock, Target } from 'lucide-react';
-
-const stats = [
-  {
-    icon: Users,
-    value: '+400',
-    label: 'Adhérents',
-    description: 'Membres au club',
-  },
-  {
-    icon: Trophy,
-    value: '9',
-    label: 'Équipes',
-    description: 'En interclubs',
-  },
-  {
-    icon: Clock,
-    value: '57h',
-    label: 'Créneaux',
-    description: 'Par semaine',
-  },
-  {
-    icon: Target,
-    value: '5',
-    label: 'Gymnases',
-    description: 'À disposition',
-  },
-];
+import { getInterclubTeams } from '@/api/icbad_local/interclub';
+import { HomePageSectionTitle } from './homePage_SectionTitle';
 
 export function ClubStats() {
+  const [teamsCount, setTeamsCount] = useState<string>('…');
+
+  useEffect(() => {
+    getInterclubTeams()
+      .then((teams) => setTeamsCount(String(teams.length)))
+      .catch(() => setTeamsCount('-'));
+  }, []);
+
+  const stats = [
+    {
+      icon: Users,
+      value: '+400',
+      label: 'Adhérents',
+      description: 'Membres au club',
+    },
+    {
+      icon: Trophy,
+      value: teamsCount,
+      label: 'Équipes',
+      description: 'En interclubs',
+    },
+    {
+      icon: Clock,
+      value: '57h',
+      label: 'Créneaux',
+      description: 'Par semaine',
+    },
+    {
+      icon: Target,
+      value: '5',
+      label: 'Gymnases',
+      description: 'À disposition',
+    },
+  ];
+
   return (
     <section className="py-8 md:py-15 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-[1280px] mx-auto px-6">
@@ -37,14 +48,13 @@ export function ClubStats() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="mb-12"
         >
-          <h2 className="font-['Bebas_Neue'] text-5xl md:text-6xl text-[#0153b6] mb-4">
-            LE CLUB EN CHIFFRES
-          </h2>
-          <p className="text-gray-600 text-lg">
-            Des chiffres qui témoignent de notre dynamisme
-          </p>
+          <HomePageSectionTitle
+            title="LE CLUB EN CHIFFRES"
+            subtitle="Des chiffres qui témoignent de notre dynamisme"
+          />
+
         </motion.div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 md:w-5/6 mx-auto">
