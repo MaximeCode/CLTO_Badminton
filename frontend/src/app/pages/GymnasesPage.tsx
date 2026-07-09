@@ -1,80 +1,55 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PageHero } from '../components/PageHero';
 import { motion } from 'motion/react';
 import { MapPin, Copy, Check, ExternalLink } from 'lucide-react';
+
+import type { Gymnase } from '../../types/gymnaseType';
+import { getGymnases } from '../../api/strapi/gymnases';
 import { GymMap } from '../components/GymMap';
 import gymnaseChardon from '../../imports/gymnase_chardon.jpg';
-interface Gym {
-  id: number;
-  name: string;
-  address: string;
-  courts: number;
-  lat: number;
-  lng: number;
-}
-
-const gyms: Gym[] = [
-  {
-    id: 1,
-    name: 'Gymnase Georges Chardon',
-    address: '15 Pl. Georges Chardon, 45100 Orléans',
-    courts: 7,
-    lat: 47.887067687826196,
-    lng: 1.9135509424965862,
-  },
-  {
-    id: 2,
-    name: 'Gymnase Barthélémy',
-    address: 'Av. Jean Zay, 45000 Orléans',
-    courts: 7,
-    lat: 47.9074296411878,
-    lng: 1.92130587135132,
-  },
-  {
-    id: 3,
-    name: 'Gymnase Pierre Desseaux',
-    address: '10 Rue des Charretiers, 45000 Orléans',
-    courts: 4,
-    lat: 47.89885970484325,
-    lng: 1.899666794653384,
-  },
-  {
-    id: 4,
-    name: 'Gymnase Céline Lebrun',
-    address: '4 Rue Georges Landré, 45000 Orléans',
-    courts: 7,
-    lat: 47.92154078965461,
-    lng: 1.927667475626574,
-  },
-  {
-    id: 5,
-    name: 'Piscine Victor Fouillade',
-    address: '1 Rue Jean Bouin, 45000 Orléans',
-    courts: 4,
-    lat: 47.921666832201105,
-    lng: 1.8976930836604693,
-  },
-];
 
 export function GymnasesPage() {
-  const [selectedGym, setSelectedGym] = useState<Gym | null>(null);
+  const [selectedGym, setSelectedGym] = useState<Gymnase | null>(null);
   const [copiedAddress, setCopiedAddress] = useState<number | null>(null);
 
-  const copyAddress = (gym: Gym) => {
-    navigator.clipboard.writeText(gym.address);
+  const [gyms, setGyms] = useState<Gymnase[]>([]);
+  const gymsCount = gyms.length;
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  const copyAddress = (gym: Gymnase) => {
+    navigator.clipboard.writeText(gym.adresse);
     setCopiedAddress(gym.id);
     setTimeout(() => setCopiedAddress(null), 2000);
   };
 
-  const openInMaps = (gym: Gym) => {
-    window.open(`https://www.google.com/maps/search/?api=1&query=${gym.lat},${gym.lng}`, '_blank');
+  const openInMaps = (gym: Gymnase) => {
+    window.open(`https://www.google.com/maps/search/?api=1&query=${gym.latitude},${gym.longitude}`, '_blank');
   };
+
+  // Fetch datas
+  useEffect(() => {
+    async function loadData() {
+      try {
+        setLoadError(null);
+        console.log('Loading data...');
+        const data = await getGymnases();
+        console.log('data loaded:', data);
+        setGyms(data);
+      } catch (error) {
+        console.error('Error loading data:', error);
+        setLoadError(
+          error instanceof Error ? error.message : 'Impossible de charger les données.',
+        );
+      }
+    }
+    loadData();
+  }, []);
 
   return (
     <>
       <PageHero
         title="LES GYMNASES"
-        subtitle="Découvrez nos 5 gymnases répartis à Orléans"
+        subtitle={`Découvrez nos ${gymsCount} gymnases répartis à Orléans`}
         image={gymnaseChardon}
       />
 
@@ -88,7 +63,7 @@ export function GymnasesPage() {
             className="text-center mb-16"
           >
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-              NOS 5 GYMNASES
+              NOS {gymsCount} GYMNASES
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
               Le CLTO Badminton dispose de 5 gymnases dans Orléans pour vous offrir de nombreux créneaux
@@ -97,7 +72,7 @@ export function GymnasesPage() {
           </motion.div>
 
           <div className="grid lg:grid-cols-2 gap-8">
-            {/* Gym List */}
+            {/* Gymnase List */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -127,14 +102,14 @@ export function GymnasesPage() {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-primary text-2xl text-primary mb-2">
-                        {gym.name}
+                        {gym.libelle}
                       </h3>
-                      <p className="text-gray-600 mb-3">{gym.address}</p>
+                      <p className="text-gray-600 mb-3">{gym.adresse}</p>
                       <div className="flex items-center justify-between flex-wrap gap-3">
                         <div className="flex items-center gap-2 bg-gradient-to-r from-primary to-primary-accent text-white px-4 py-2 rounded-lg shadow-md">
                           <div className="text-center flex-1">
                             <p className="text-xs opacity-90">Terrains</p>
-                            <p className="font-primary text-3xl">{gym.courts}</p>
+                            <p className="font-primary text-3xl">{gym.terrains}</p>
                           </div>
                         </div>
                         <div className="flex gap-2">
@@ -203,11 +178,11 @@ export function GymnasesPage() {
                 {selectedGym ? (
                   <>
                     <h3 className="font-primary text-xl text-primary mb-1">
-                      {selectedGym.name}
+                      {selectedGym.libelle}
                     </h3>
-                    <p className="text-sm text-gray-600 mb-2">{selectedGym.address}</p>
+                    <p className="text-sm text-gray-600 mb-2">{selectedGym.adresse}</p>
                     <p className="text-sm">
-                      <strong>{selectedGym.courts}</strong> terrain{selectedGym.courts > 1 ? 's' : ''}
+                      <strong>{selectedGym.terrains}</strong> terrain{selectedGym.terrains > 1 ? 's' : ''}
                     </p>
                   </>
                 ) : (
@@ -234,12 +209,12 @@ export function GymnasesPage() {
             <h3 className="font-primary text-3xl mb-4">Total des équipements</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               <div className="text-center">
-                <p className="font-primary text-5xl text-secondary">5</p>
+                <p className="font-primary text-5xl text-secondary">{gymsCount}</p>
                 <p className="text-sm opacity-90">Gymnases</p>
               </div>
               <div className="text-center">
                 <p className="font-primary text-5xl text-secondary">
-                  {gyms.reduce((sum, gym) => sum + gym.courts, 0)}
+                  {gyms.reduce((sum, gym) => sum + gym.terrains, 0)}
                 </p>
                 <p className="text-sm opacity-90">Terrains au total</p>
               </div>

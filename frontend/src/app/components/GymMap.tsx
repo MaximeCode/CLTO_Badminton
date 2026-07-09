@@ -1,18 +1,17 @@
 import { useEffect, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
-
-export interface GymMapGym {
-  id: number;
-  name: string;
-  address: string;
-  courts: number;
-  lat: number;
-  lng: number;
-}
+import type { Gymnase } from '../../types/gymnaseType';
 
 const PRIMARY = '#0153b6';
 const SECONDARY = '#da9619';
+
+// Fallback center on Orléans when no gyms are loaded yet
+const ORLEANS_CENTER: [number, number] = [47.902, 1.909];
+
+function isValidCoord(value: unknown): value is number {
+  return typeof value === 'number' && Number.isFinite(value);
+}
 
 function createMarkerIcon(isSelected: boolean) {
   const color = isSelected ? SECONDARY : PRIMARY;
@@ -35,21 +34,33 @@ function MapViewController({
   gyms,
   selectedGym,
 }: {
-  gyms: GymMapGym[];
-  selectedGym: GymMapGym | null;
+  gyms: Gymnase[];
+  selectedGym: Gymnase | null;
 }) {
   const map = useMap();
 
   useEffect(() => {
-    if (selectedGym) {
-      map.flyTo([selectedGym.lat, selectedGym.lng], 16, { duration: 0.6 });
+    if (
+      selectedGym &&
+      isValidCoord(selectedGym.latitude) &&
+      isValidCoord(selectedGym.longitude)
+    ) {
+      map.flyTo([selectedGym.latitude, selectedGym.longitude], 16, { duration: 0.6 });
       return;
     }
 
     if (gyms.length === 0) return;
 
-    const bounds = L.latLngBounds(gyms.map((gym) => [gym.lat, gym.lng] as [number, number]));
-    map.fitBounds(bounds, { padding: [56, 56], maxZoom: 14 });
+    const validPoints = gyms
+      .filter((g) => isValidCoord(g.latitude) && isValidCoord(g.longitude))
+      .map((g) => [g.latitude, g.longitude] as [number, number]);
+
+    if (validPoints.length === 0) return;
+
+    const bounds = L.latLngBounds(validPoints);
+    if (bounds.isValid()) {
+      map.fitBounds(bounds, { padding: [56, 56], maxZoom: 14 });
+    }
   }, [map, gyms, selectedGym]);
 
   return null;
@@ -60,15 +71,21 @@ export function GymMap({
   selectedGym,
   onSelectGym,
 }: {
-  gyms: GymMapGym[];
-  selectedGym: GymMapGym | null;
-  onSelectGym: (gym: GymMapGym) => void;
+  gyms: Gymnase[];
+  selectedGym: Gymnase | null;
+  onSelectGym: (gym: Gymnase) => void;
 }) {
-  const center = useMemo(() => {
-    const avgLat = gyms.reduce((sum, gym) => sum + gym.lat, 0) / gyms.length;
-    const avgLng = gyms.reduce((sum, gym) => sum + gym.lng, 0) / gyms.length;
-    return [avgLat, avgLng] as [number, number];
-  }, [gyms]);
+  const validGyms = useMemo(
+    () => gyms.filter((g) => isValidCoord(g.latitude) && isValidCoord(g.longitude)),
+    [gyms],
+  );
+
+  const center = useMemo((): [number, number] => {
+    if (validGyms.length === 0) return ORLEANS_CENTER;
+    const avgLat = validGyms.reduce((sum, g) => sum + g.latitude, 0) / validGyms.length;
+    const avgLng = validGyms.reduce((sum, g) => sum + g.longitude, 0) / validGyms.length;
+    return [avgLat, avgLng];
+  }, [validGyms]);
 
   return (
     <MapContainer
@@ -81,20 +98,20 @@ export function GymMap({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <MapViewController gyms={gyms} selectedGym={selectedGym} />
-      {gyms.map((gym) => (
+      <MapViewController gyms={validGyms} selectedGym={selectedGym} />
+      {validGyms.map((gym) => (
         <Marker
           key={gym.id}
-          position={[gym.lat, gym.lng]}
+          position={[gym.latitude, gym.longitude]}
           icon={createMarkerIcon(selectedGym?.id === gym.id)}
           eventHandlers={{
             click: () => onSelectGym(gym),
           }}
         >
           <Popup>
-            <span className="font-semibold">{gym.name}</span>
+            <span className="font-semibold">{gym.libelle}</span>
             <br />
-            <span className="text-sm text-gray-600">{gym.address}</span>
+            <span className="text-sm text-gray-600">{gym.adresse}</span>
           </Popup>
         </Marker>
       ))}

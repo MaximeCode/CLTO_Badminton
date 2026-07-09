@@ -495,6 +495,35 @@ export interface ApiFaqFaq extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiGymnaseGymnase extends Struct.CollectionTypeSchema {
+  collectionName: "gymnases";
+  info: {
+    displayName: "Gymnases";
+    pluralName: "gymnases";
+    singularName: "gymnase";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    adresse: Schema.Attribute.String & Schema.Attribute.Required & Schema.Attribute.Unique;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    latitude: Schema.Attribute.String;
+    libelle: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<"Gymnase ">;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::gymnase.gymnase"> &
+      Schema.Attribute.Private;
+    longitude: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    terrains: Schema.Attribute.Integer & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
 export interface ApiHistoriqueHistorique extends Struct.CollectionTypeSchema {
   collectionName: "historiques";
   info: {
@@ -1009,6 +1038,7 @@ declare module "@strapi/strapi" {
       "admin::user": AdminUser;
       "api::contact.contact": ApiContactContact;
       "api::faq.faq": ApiFaqFaq;
+      "api::gymnase.gymnase": ApiGymnaseGymnase;
       "api::historique.historique": ApiHistoriqueHistorique;
       "plugin::content-releases.release": PluginContentReleasesRelease;
       "plugin::content-releases.release-action": PluginContentReleasesReleaseAction;
