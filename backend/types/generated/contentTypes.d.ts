@@ -429,6 +429,57 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
+  collectionName: "articles";
+  info: {
+    displayName: "Articles";
+    pluralName: "articles";
+    singularName: "article";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    auteur: Schema.Attribute.Relation<"oneToOne", "plugin::users-permissions.user">;
+    categorie: Schema.Attribute.Relation<"oneToOne", "api::categorie.categorie">;
+    contenu: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::article.article"> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    titre: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    vignette: Schema.Attribute.Media<"images" | "files" | "videos" | "audios"> &
+      Schema.Attribute.Required;
+  };
+}
+
+export interface ApiCategorieCategorie extends Struct.CollectionTypeSchema {
+  collectionName: "categories";
+  info: {
+    displayName: "Cat\u00E9gories";
+    pluralName: "categories";
+    singularName: "categorie";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    libelle: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::categorie.categorie"> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
 export interface ApiContactContact extends Struct.SingleTypeSchema {
   collectionName: "contacts";
   info: {
@@ -1036,6 +1087,8 @@ declare module "@strapi/strapi" {
       "admin::transfer-token": AdminTransferToken;
       "admin::transfer-token-permission": AdminTransferTokenPermission;
       "admin::user": AdminUser;
+      "api::article.article": ApiArticleArticle;
+      "api::categorie.categorie": ApiCategorieCategorie;
       "api::contact.contact": ApiContactContact;
       "api::faq.faq": ApiFaqFaq;
       "api::gymnase.gymnase": ApiGymnaseGymnase;

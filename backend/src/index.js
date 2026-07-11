@@ -6,6 +6,9 @@ const PUBLIC_CONTENT_ACTIONS = [
   "api::contact.contact.find",
   "api::faq.faq.find",
   "api::gymnase.gymnase.find",
+  "api::article.article.find",
+  "api::article.article.findOne",
+  "api::categorie.categorie.find",
 ];
 
 async function ensurePublicPermissions(strapi) {
