@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import president from '../../imports/president.jpg';
+import { ImageWithFallback } from './figma/ImageWithFallback';
 
 export function PresidentQuote() {
   return (
@@ -14,7 +15,7 @@ export function PresidentQuote() {
       />
 
       <div className="relative max-w-[1280px] mx-auto px-4 sm:px-6 py-4 md:py-8">
-        <div className="grid grid-cols-1 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-8 md:gap-10 lg:gap-12 md:items-center">
+        <div className="grid grid-cols-1 md:grid-cols-[minmax(0,5fr)_minmax(0,2fr)] gap-8 md:gap-14 lg:gap-18 md:items-center">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -63,10 +64,10 @@ export function PresidentQuote() {
           >
             <div className="relative w-full mx-auto max-w-[150px] md:w-3/4 md:max-w-xs">
               <div className="absolute -inset-4 border-4 border-secondary rotate-3" />
-              <img
+              <ImageWithFallback
                 src={president}
                 alt="Steve Bandou-Niatoll, Président du CLTO Badminton"
-                className="relative w-full rounded-lg object-cover aspect-[3/4]"
+                className="relative rounded-lg object-cover aspect-3/4"
               />
             </div>
           </motion.div>
