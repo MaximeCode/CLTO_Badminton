@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_contenu_page_etape_d_inscriptions",
+  "info": {
+    "displayName": "Étape d'inscription",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "titre": {
+      "type": "string",
+      "required": true
+    },
+    "contenu": {
+      "type": "blocks",
+      "required": true
+    }
+  },
+  "config": {}
+}

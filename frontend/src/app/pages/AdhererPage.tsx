@@ -1,4 +1,4 @@
-import { useContext, useState, type ReactNode } from 'react';
+import { useContext, useEffect, useState, type ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { ExternalLink, FileText, Mail, Phone, ChevronDown, MapPin } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
@@ -14,6 +14,8 @@ import type { Contact } from '@/types/contactType';
 
 import { formatTime, joinDays } from '@/utils/showHoraires';
 import { Link } from 'react-router';
+import { PageAdherer } from '@/types/pageAdhererType';
+import { getPageAdherer } from '@/api/strapi/pageAdherer';
 
 const bgPromo = new URL('../../imports/bg-promo.jpg', import.meta.url).href;
 
@@ -154,12 +156,34 @@ export function AdhererPage() {
 
     const contact = useContext<Contact | null>(ContactContext);
 
+    const [pageAdhererDatas, setPageAdhererDatas] = useState<PageAdherer | null>(null);
+    const [loadError, setLoadError] = useState<string | null>(null);
+
+    // Fetch datas
+    useEffect(() => {
+        async function loadData() {
+            try {
+                setLoadError(null);
+                console.log('Loading data...');
+                const data = await getPageAdherer();
+                console.log('data loaded:', data);
+                setPageAdhererDatas(data);
+            } catch (error) {
+                console.error('Error loading data:', error);
+                setLoadError(
+                    error instanceof Error ? error.message : 'Impossible de charger les données.',
+                );
+            }
+        }
+        loadData();
+    }, []);
+
     return (
         <>
             <PageHero
                 title="ADHERER AU CLUB"
                 subtitle="Toutes les informations d'inscription pour la saison 2025-2026"
-                image={bgPromo}
+            // image={bgPromo}
             />
 
             <section className="bg-gradient-to-b from-[#f7fbff] via-white to-[#f5f9ff] py-10 md:py-16">

@@ -1,0 +1,25 @@
+{
+  "kind": "singleType",
+  "collectionName": "page_adherers",
+  "info": {
+    "singularName": "page-adherer",
+    "pluralName": "page-adherers",
+    "displayName": "Page Adhérer"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "blocs": {
+      "type": "component",
+      "component": "contenu-page.contenu",
+      "repeatable": true
+    },
+    "cas_inscriptions": {
+      "type": "component",
+      "component": "contenu-page.etape-d-inscription",
+      "repeatable": true
+    }
+  }
+}

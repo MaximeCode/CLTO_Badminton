@@ -9,6 +9,7 @@ const PUBLIC_CONTENT_ACTIONS = [
   "api::article.article.find",
   "api::article.article.findOne",
   "api::categorie.categorie.find",
+  "api::page-adherer.page-adherer.find",
 ];
 
 async function ensurePublicPermissions(strapi) {

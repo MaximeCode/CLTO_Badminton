@@ -599,6 +599,30 @@ export interface ApiHistoriqueHistorique extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiPageAdhererPageAdherer extends Struct.SingleTypeSchema {
+  collectionName: "page_adherers";
+  info: {
+    displayName: "Page Adh\u00E9rer";
+    pluralName: "page-adherers";
+    singularName: "page-adherer";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    blocs: Schema.Attribute.Component<"contenu-page.contenu", true>;
+    cas_inscriptions: Schema.Attribute.Component<"contenu-page.etape-d-inscription", true>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::page-adherer.page-adherer"> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
 export interface PluginContentReleasesRelease extends Struct.CollectionTypeSchema {
   collectionName: "strapi_releases";
   info: {
@@ -1092,6 +1116,7 @@ declare module "@strapi/strapi" {
       "api::faq.faq": ApiFaqFaq;
       "api::gymnase.gymnase": ApiGymnaseGymnase;
       "api::historique.historique": ApiHistoriqueHistorique;
+      "api::page-adherer.page-adherer": ApiPageAdhererPageAdherer;
       "plugin::content-releases.release": PluginContentReleasesRelease;
       "plugin::content-releases.release-action": PluginContentReleasesReleaseAction;
       "plugin::i18n.locale": PluginI18NLocale;
