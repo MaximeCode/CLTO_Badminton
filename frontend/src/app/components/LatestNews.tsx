@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router';
 import { MobileCarousel } from './MobileCarousel';
+import { Section } from './Section';
 
 const newsCards = [
   {
@@ -61,8 +62,7 @@ function NewsCard({ card }: { card: (typeof newsCards)[number] }) {
 
 export function LatestNews() {
   return (
-    <section className="py-8 md:py-15 bg-white">
-      <div className="max-w-[1280px] mx-auto px-6">
+    <Section className="bg-white">
         {/* Section Title */}
         <div className="flex items-center gap-4 mb-12">
           <div className="w-1 h-16 bg-secondary" />
@@ -101,7 +101,6 @@ export function LatestNews() {
             Toutes les actualités →
           </Link>
         </div>
-      </div>
-    </section>
+    </Section>
   );
 }

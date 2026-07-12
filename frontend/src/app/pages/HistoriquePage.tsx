@@ -1,41 +1,9 @@
 import { useState, useEffect } from 'react';
 import { PageHero } from '../components/PageHero';
+import { Section } from '../components/Section';
 import { motion } from 'motion/react';
-import { Historique } from '../../types/historiqueType';
+import type { Historique } from '../../types/historiquesType';
 import { getHistoriques } from '@/api/strapi/historiques';
-
-// const timeline = [
-//   {
-//     year: '2023',
-//     title: 'Montée en Nationale 2',
-//     description: 'L\'aboutissement de nombreuses années de travail avec l\'accès à l\'élite régionale.',
-//   },
-//   {
-//     year: '2020',
-//     title: 'Record d\'adhérents',
-//     description: 'Le CLTO Badminton compte plus de 200 licenciés, toutes catégories confondues.',
-//   },
-//   {
-//     year: '2015',
-//     title: 'Inauguration du nouveau gymnase',
-//     description: 'Le club dispose désormais de 8 terrains et d\'équipements modernes.',
-//   },
-//   {
-//     year: '2005',
-//     title: 'Accès à la Nationale 3',
-//     description: 'Une étape historique avec la montée de notre première équipe en Nationale 3.',
-//   },
-//   {
-//     year: '1992',
-//     title: 'Première équipe en compétition',
-//     description: 'Le club engage sa première équipe en championnat départemental.',
-//   },
-//   {
-//     year: '1985',
-//     title: 'Fondation du club',
-//     description: 'Le CLTO Badminton voit le jour grâce à la passion de quelques amateurs de badminton.',
-//   },
-// ];
 
 export function HistoriquePage() {
   const [historiques, setHistoriques] = useState<Historique[]>([]);
@@ -65,8 +33,7 @@ export function HistoriquePage() {
         image="https://images.unsplash.com/photo-1553258223-6e8add562470?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBoaXN0b3J5JTIwdmludGFnZXxlbnwxfHx8fDE3NzU5Mjk2OTZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
       />
 
-      <section className="py-8 md:py-15 bg-white">
-        <div className="max-w-[1280px] mx-auto px-6">
+      <Section className="bg-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -102,12 +69,12 @@ export function HistoriquePage() {
                   <div className="md:w-5/12 w-full">
                     <div className="bg-gray-50 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                       <div className="font-primary text-4xl text-secondary mb-2 capitalize">
-                        {new Date(event.Date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'short', day: 'numeric' })}
+                        {new Date(event.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'short', day: 'numeric' })}
                       </div>
                       <h3 className="font-primary text-2xl text-primary mb-3">
-                        {event.Titre}
+                        {event.titre}
                       </h3>
-                      <p className="text-gray-600">{event.Description}</p>
+                      <p className="text-gray-600">{event.description}</p>
                     </div>
                   </div>
 
@@ -120,8 +87,7 @@ export function HistoriquePage() {
               ))}
             </div>
           </div>
-        </div>
-      </section>
+      </Section>
     </>
   );
 }

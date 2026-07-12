@@ -10,5 +10,4 @@ export type Contact = {
   jour_accueils_a_distance: string[];
   heure_debut_accueils_a_distance: string;
   heure_fin_accueils_a_distance: string;
-  WhatsApp: string;
 };

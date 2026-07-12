@@ -17,7 +17,7 @@ export function Layout() {
     async function loadData() {
       try {
         setLoadError(null);
-        console.log('Loading contact data...');
+        // console.log('Loading contact data...');
         const data = await getContact();
         // console.log('Contact data loaded:', data);
         setContact(data);

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { PageHero } from '../components/PageHero';
+import { Section } from '../components/Section';
 import { motion } from 'motion/react';
 import { MapPin, Copy, Check, ExternalLink } from 'lucide-react';
 
-import type { Gymnase } from '../../types/gymnaseType';
+import type { Gymnase } from '../../types/gymnasesType';
 import { getGymnases } from '../../api/strapi/gymnases';
 import { GymMap } from '../components/GymMap';
 import gymnaseChardon from '../../imports/gymnase_chardon.jpg';
@@ -53,8 +54,7 @@ export function GymnasesPage() {
         image={gymnaseChardon}
       />
 
-      <section className="py-8 md:py-15 bg-white">
-        <div className="max-w-[1280px] mx-auto px-6">
+      <Section className="bg-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -224,8 +224,7 @@ export function GymnasesPage() {
               </div>
             </div>
           </motion.div>
-        </div>
-      </section>
+      </Section>
     </>
   );
 }

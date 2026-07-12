@@ -1,5 +1,5 @@
 import { fetchAPI } from "../Client";
-import type { Contact } from "../../types/contactType";
+import type { Contact } from "@/types/contactType";
 
 export async function getContact(): Promise<Contact> {
   const { data } = await fetchAPI(`/api/contact`);
@@ -15,6 +15,5 @@ export async function getContact(): Promise<Contact> {
     jour_accueils_a_distance: data.jour_accueils_a_distance,
     heure_debut_accueils_a_distance: data.heure_debut_accueils_a_distance,
     heure_fin_accueils_a_distance: data.heure_fin_accueils_a_distance,
-    WhatsApp: data.WhatsApp,
   };
 }

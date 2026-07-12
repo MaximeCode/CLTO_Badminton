@@ -2,11 +2,11 @@ import { motion } from 'motion/react';
 import { Link } from 'react-router';
 import logo from '../../imports/logo_clto_main.png';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
+import { Section } from './Section';
 
 export function MatchResults() {
   return (
-    <section className="py-8 md:py-15 bg-clto-grey font-primary">
-      <div className="max-w-[1280px] mx-auto px-6">
+    <Section className="bg-clto-grey font-primary">
         <HomePageSectionTitle title="RÉSULTATS INTERCLUBS" />
 
         {/* Match Card */}
@@ -104,7 +104,6 @@ export function MatchResults() {
             Voir tous les résultats
           </Link>
         </div>
-      </div>
-    </section>
+    </Section>
   );
 }

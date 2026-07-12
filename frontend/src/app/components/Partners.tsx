@@ -17,6 +17,7 @@ import partenaireSPBB from "../../imports/Partners/Partenaire_SPBB.png";
 import partenaireVictor from "../../imports/Partners/Partenaire_Victor.png";
 import partenaireWebAndCo from "../../imports/Partners/Partenaire_Web-&-Co.png";
 import { HomePageSectionTitle } from './homePage_SectionTitle';
+import { Section } from './Section';
 
 type Partner = {
   id: number;
@@ -52,8 +53,7 @@ const partnerGroups = [
 
 export function Partners() {
   return (
-    <section className="py-8 md:py-15 bg-[linear-gradient(180deg,#f7fbff_0%,#ffffff_40%)]">
-      <div className="max-w-[1280px] mx-auto px-6">
+    <Section className="bg-[linear-gradient(180deg,#f7fbff_0%,#ffffff_40%)]">
         <HomePageSectionTitle
           title="ILS NOUS SOUTIENNENT"
           subtitle="Nos partenaires accompagnent le club au quotidien et participent a son rayonnement local."
@@ -110,7 +110,6 @@ export function Partners() {
             Nous contacter
           </Link>
         </div>
-      </div>
-    </section>
+    </Section>
   );
 }

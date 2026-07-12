@@ -518,7 +518,6 @@ export interface ApiContactContact extends Struct.SingleTypeSchema {
     telephone: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
-    WhatsApp: Schema.Attribute.String;
   };
 }
 
@@ -578,7 +577,7 @@ export interface ApiGymnaseGymnase extends Struct.CollectionTypeSchema {
 export interface ApiHistoriqueHistorique extends Struct.CollectionTypeSchema {
   collectionName: "historiques";
   info: {
-    displayName: "Historique";
+    displayName: "Historiques";
     pluralName: "historiques";
     singularName: "historique";
   };
@@ -588,13 +587,13 @@ export interface ApiHistoriqueHistorique extends Struct.CollectionTypeSchema {
   attributes: {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
-    Date: Schema.Attribute.Date & Schema.Attribute.Required;
-    Description: Schema.Attribute.Text;
+    date: Schema.Attribute.Date & Schema.Attribute.Required;
+    description: Schema.Attribute.Text;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<"oneToMany", "api::historique.historique"> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    Titre: Schema.Attribute.String & Schema.Attribute.Required;
+    titre: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
   };

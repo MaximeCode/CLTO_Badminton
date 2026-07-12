@@ -17,9 +17,6 @@ const config = {
       "app.components.UpsellBanner.text.ended": "Conservez l\u2019acc\u00e8s aux fonctionnalit\u00e9s Growth en passant au plan payant.",
       "app.utils.drag": "Faire glisser",
 
-      // ─── api::* (content type identifiers) ───────────────────────────────────
-      "api::prestation.prestation": "Prestations",
-
       // ─── chat.* (AI assistant) ────────────────────────────────────────────────
       "chat.header.default-title": "Nouvelle conversation",
       "chat.input.strapi-ai-can-make-errors": "Strapi AI peut faire des erreurs.",
@@ -91,11 +88,6 @@ const config = {
       // ─── content-manager.* ───────────────────────────────────────────────────
       "content-manager.plugin.name": "Gestionnaire de contenu",
       "content-manager.containers.list.table-headers.status": "Statut",
-      "content-manager.content-types.api::prestation.prestation.id": "ID",
-      "content-manager.content-types.api::prestation.prestation.Titre": "Titre",
-      "content-manager.content-types.api::prestation.prestation.image": "Image",
-      "content-manager.content-types.api::prestation.prestation.createdAt": "Créé le",
-      "content-manager.content-types.api::prestation.prestation.createdBy": "Créé par",
       "content-manager.content-types.plugin::users-permissions.user.blocked": "Bloqué",
       "content-manager.content-types.plugin::users-permissions.user.confirmed": "Confirmé",
       "content-manager.content-types.plugin::users-permissions.user.createdAt": "Créé le",

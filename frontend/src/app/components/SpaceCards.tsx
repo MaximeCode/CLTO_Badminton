@@ -2,6 +2,7 @@ import { motion } from 'motion/react';
 import { Users, Trophy, Target } from 'lucide-react';
 import { Link } from 'react-router';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
+import { Section } from './Section';
 
 const spaces = [
   {
@@ -81,8 +82,7 @@ function SpaceCard({ space }: { space: Space }) {
 
 export function SpaceCards() {
   return (
-    <section className="py-8 md:py-15 bg-white">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
+    <Section className="bg-white">
         <HomePageSectionTitle title="NOS ESPACES" />
 
         <div className="flex flex-row gap-4 overflow-x-auto overflow-y-hidden pb-4 scrollbar-styled">
@@ -103,7 +103,6 @@ export function SpaceCards() {
             </Link>
           ))}
         </div>
-      </div>
-    </section>
+    </Section>
   );
 }

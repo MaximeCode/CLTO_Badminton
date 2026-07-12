@@ -2,6 +2,7 @@ import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
+import { Section } from './Section';
 
 const featuredArticle = {
   category: 'Actualités',
@@ -35,85 +36,83 @@ const sideArticles = [
 
 export function FeaturedNews() {
   return (
-    <section className="py-8 md:py-15 bg-white">
-      <div className="max-w-[1280px] mx-auto px-6">
-        <HomePageSectionTitle title="À LA UNE" />
+    <Section className='bg-white'>
+      <HomePageSectionTitle title="À LA UNE" />
 
-        <div className="grid lg:grid-cols-2 gap-8 md:w-5/6 mx-auto lg:w-full">
-          {/* Featured Article */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className=""
-          >
-            <Link to={featuredArticle.link} className="group cursor-pointer">
-              <div className="relative overflow-hidden rounded-lg mb-4 aspect-[16/10]">
-                <img
-                  src={featuredArticle.image}
-                  alt={featuredArticle.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute top-4 left-4">
-                  <span className="bg-secondary text-white px-3 py-1 rounded-md text-sm font-medium">
-                    {featuredArticle.category}
-                  </span>
-                </div>
+      <div className="grid lg:grid-cols-2 gap-8 md:w-5/6 mx-auto lg:w-full">
+        {/* Featured Article */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className=""
+        >
+          <Link to={featuredArticle.link} className="group cursor-pointer">
+            <div className="relative overflow-hidden rounded-lg mb-4 aspect-[16/10]">
+              <img
+                src={featuredArticle.image}
+                alt={featuredArticle.title}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute top-4 left-4">
+                <span className="bg-secondary text-white px-3 py-1 rounded-md text-sm font-medium">
+                  {featuredArticle.category}
+                </span>
               </div>
-              <div>
-                <h3 className="font-primary text-3xl text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
-                  {featuredArticle.title}
-                </h3>
-                <p className="text-gray-600 mb-4 line-clamp-2">
-                  {featuredArticle.excerpt}
-                </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">{featuredArticle.date}</span>
-                  <span
-                    className="text-primary hover:text-primary-accent font-medium flex items-center gap-2 group-hover:gap-3 transition-all duration-200"
-                  >
-                    Lire l'article
-                    <ArrowRight size={16} />
-                  </span>
-                </div>
+            </div>
+            <div>
+              <h3 className="font-primary text-3xl text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
+                {featuredArticle.title}
+              </h3>
+              <p className="text-gray-600 mb-4 line-clamp-2">
+                {featuredArticle.excerpt}
+              </p>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-500">{featuredArticle.date}</span>
+                <span
+                  className="text-primary hover:text-primary-accent font-medium flex items-center gap-2 group-hover:gap-3 transition-all duration-200"
+                >
+                  Lire l'article
+                  <ArrowRight size={16} />
+                </span>
               </div>
-            </Link>
-          </motion.div>
+            </div>
+          </Link>
+        </motion.div>
 
-          <hr className="block lg:hidden border-gray-200 w-50 mx-auto" />
+        <hr className="block lg:hidden border-gray-200 w-50 mx-auto" />
 
-          {/* Side Articles */}
-          <div className="space-y-6">
-            {sideArticles.map((article, index) => (
-              <motion.div
-                key={`${article.title}-${article.date}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 * (index + 1) }}
-                className={`group ${index === 2 ? 'hidden md:block' : ''}`} // 3rd article is hidden on mobile
-              >
-                <Link to={article.link} className="cursor-pointer flex gap-4">
-                  <div className="w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden">
-                    <img
-                      src={article.image}
-                      alt={article.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                  </div>
-                  <div className="flex-1 flex flex-col justify-center">
-                    <h4 className="font-primary text-xl text-gray-900 mb-2 group-hover:text-secondary transition-colors duration-200">
-                      {article.title}
-                    </h4>
-                    <span className="text-sm text-gray-500">{article.date}</span>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+        {/* Side Articles */}
+        <div className="space-y-6">
+          {sideArticles.map((article, index) => (
+            <motion.div
+              key={`${article.title}-${article.date}`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 * (index + 1) }}
+              className={`group ${index === 2 ? 'hidden md:block' : ''}`} // 3rd article is hidden on mobile
+            >
+              <Link to={article.link} className="cursor-pointer flex gap-4">
+                <div className="w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden">
+                  <img
+                    src={article.image}
+                    alt={article.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
+                <div className="flex-1 flex flex-col justify-center">
+                  <h4 className="font-primary text-xl text-gray-900 mb-2 group-hover:text-secondary transition-colors duration-200">
+                    {article.title}
+                  </h4>
+                  <span className="text-sm text-gray-500">{article.date}</span>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

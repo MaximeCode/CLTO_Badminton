@@ -1,5 +1,5 @@
 import { fetchAPI } from "../Client";
-import type { Gymnase } from "../../types/gymnaseType";
+import type { Gymnase } from "@/types/gymnasesType";
 
 export async function getGymnases(): Promise<Gymnase[]> {
   const { data } = await fetchAPI("/api/gymnases?populate=*");

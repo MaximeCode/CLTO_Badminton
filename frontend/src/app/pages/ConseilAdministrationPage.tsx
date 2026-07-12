@@ -1,6 +1,7 @@
 import { PageHero } from '../components/PageHero';
 import { motion } from 'motion/react';
 import bandeauBureau from '../../imports/bandeau-bureau.jpg';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 const placeholderPhoto = new URL('../../imports/user.png', import.meta.url).href;
 
 type OrgMember = {
@@ -99,10 +100,10 @@ function MemberCard({ member, isExecutive = false }: { member: OrgMember; isExec
 
       <div className="flex flex-col items-center gap-4 text-center">
         <div className="relative">
-          <img
+          <ImageWithFallback
             src={member.image ?? placeholderPhoto}
             alt={member.name}
-            className="h-24 w-24 rounded-full border-4 border-secondary object-cover shadow-md md:h-28 md:w-28"
+            className="h-20 w-20 rounded-full border-4 border-secondary object-cover shadow-md md:w-24 md:h-24"
           />
           <div className="absolute -inset-1 -z-10 rounded-full bg-primary/10 blur-sm" />
         </div>
@@ -122,7 +123,7 @@ export function ConseilAdministrationPage() {
       <PageHero
         title="CONSEIL D'ADMINISTRATION"
         subtitle="Organigramme 2025-2026 du CLTO Badminton"
-        image={bandeauBureau}
+      image={bandeauBureau}
       />
 
       <section className="relative overflow-hidden bg-gradient-to-b from-[#f7fbff] via-white to-[#f5f9ff] py-20">
@@ -144,7 +145,7 @@ export function ConseilAdministrationPage() {
             </p>
           </motion.div>
 
-          <div className="mx-auto mb-20 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mx-auto mb-20 grid max-w-6xl gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {executiveBoard.map((member) => (
               <MemberCard key={`${member.name}-${member.role}`} member={member} isExecutive />
             ))}
@@ -163,7 +164,7 @@ export function ConseilAdministrationPage() {
             </p>
           </motion.div>
 
-          <div className="mx-auto mb-20 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mx-auto mb-20 grid max-w-6xl gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {staffMembers.map((member) => (
               <MemberCard key={`${member.name}-${member.role}`} member={member} />
             ))}
@@ -197,7 +198,7 @@ export function ConseilAdministrationPage() {
                   <span className="h-10 w-1.5 rounded-full bg-secondary" />
                   <h3 className="font-primary text-4xl leading-none text-primary">{section.title}</h3>
                 </div>
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                   {section.members.map((member) => (
                     <MemberCard key={`${section.title}-${member.name}-${member.role}`} member={member} />
                   ))}

@@ -1,5 +1,5 @@
 import { fetchAPI } from "../Client";
-import type { Historique } from "../../types/historiqueType";
+import type { Historique } from "@/types/historiquesType";
 
 export async function getHistoriques(): Promise<Historique[]> {
   const { data } = await fetchAPI("/api/historiques?populate=*");
@@ -8,16 +8,16 @@ export async function getHistoriques(): Promise<Historique[]> {
     (item: {
       id: number;
       documentId: string;
-      Titre: string;
-      Description?: string | null;
-      Date: Date;
+      titre: string;
+      description?: string | null;
+      date: string;
     }) => ({
       id: item.id,
       documentId: item.documentId,
-      Titre: item.Titre,
-      Description: item.Description,
-      Date: item.Date,
-    })
+      titre: item.titre,
+      description: item.description,
+      date: item.date,
+    }),
   );
 }
 
@@ -26,8 +26,8 @@ export async function getOneHistorique(documentId: string): Promise<Historique> 
   return {
     id: data.id,
     documentId: data.documentId,
-    Titre: data.Titre,
-    Description: data.Description,
-    Date: data.Date,
+    titre: data.titre,
+    description: data.description,
+    date: data.date,
   };
 }

@@ -4,21 +4,21 @@
   "info": {
     "singularName": "historique",
     "pluralName": "historiques",
-    "displayName": "Historique"
+    "displayName": "Historiques"
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "Titre": {
+    "titre": {
       "type": "string",
       "required": true
     },
-    "Description": {
+    "description": {
       "type": "text"
     },
-    "Date": {
+    "date": {
       "type": "date",
       "required": true
     }

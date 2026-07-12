@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Users, Trophy, Clock, Target } from 'lucide-react';
 import { getInterclubTeams } from '@/api/icbad_local/interclub';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
+import { Section } from './Section';
 
 export function ClubStats() {
   const [teamsCount, setTeamsCount] = useState<string>('…');
@@ -41,63 +42,61 @@ export function ClubStats() {
   ];
 
   return (
-    <section className="py-8 md:py-15 bg-gradient-to-b from-white to-gray-50">
-      <div className="max-w-[1280px] mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-12"
-        >
-          <HomePageSectionTitle
-            title="LE CLUB EN CHIFFRES"
-            subtitle="Des chiffres qui témoignent de notre dynamisme"
-          />
+    <Section className="bg-gradient-to-b from-white to-gray-50">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mb-12"
+      >
+        <HomePageSectionTitle
+          title="LE CLUB EN CHIFFRES"
+          subtitle="Des chiffres qui témoignent de notre dynamisme"
+        />
 
-        </motion.div>
+      </motion.div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 md:w-5/6 mx-auto">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative overflow-hidden bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-[#da9619]"
-            >
-              {/* Decorative gradient bar */}
-              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#0153b6] to-[#da9619]" />
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:w-11/12 xl:w-5/6 mx-auto">
+        {stats.map((stat, index) => (
+          <motion.div
+            key={stat.label}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            className="group relative overflow-hidden bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-[#da9619] max-w-[250px]"
+          >
+            {/* Decorative gradient bar */}
+            <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#0153b6] to-[#da9619]" />
 
-              {/* Icon */}
-              <div className="flex justify-center mb-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0153b6] to-[#0a69d1] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
-                  <stat.icon className="text-white" size={32} />
-                </div>
+            {/* Icon */}
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0153b6] to-[#0a69d1] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+                <stat.icon className="text-white" size={32} />
               </div>
+            </div>
 
-              {/* Value */}
-              <div className="font-['Bebas_Neue'] text-5xl md:text-6xl text-[#0153b6] mb-2 text-center">
-                {stat.value}
-              </div>
+            {/* Value */}
+            <div className="font-['Bebas_Neue'] text-5xl md:text-6xl text-[#0153b6] mb-2 text-center">
+              {stat.value}
+            </div>
 
-              {/* Label */}
-              <div className="text-lg font-bold text-[#da9619] uppercase tracking-wide text-center mb-1">
-                {stat.label}
-              </div>
+            {/* Label */}
+            <div className="text-lg font-bold text-[#da9619] uppercase tracking-wide text-center mb-1">
+              {stat.label}
+            </div>
 
-              {/* Description */}
-              <div className="text-sm text-gray-600 text-center">
-                {stat.description}
-              </div>
+            {/* Description */}
+            <div className="text-sm text-gray-600 text-center">
+              {stat.description}
+            </div>
 
-              {/* Hover effect background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0153b6]/5 to-[#da9619]/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
-            </motion.div>
-          ))}
-        </div>
+            {/* Hover effect background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0153b6]/5 to-[#da9619]/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
+          </motion.div>
+        ))}
       </div>
-    </section>
+    </Section>
   );
 }

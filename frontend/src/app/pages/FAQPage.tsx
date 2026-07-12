@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
-import { Faq } from '../../types/faqType';
+import type { Faq } from '../../types/faqsType';
 import { getFaqs } from '@/api/strapi/faqs';
 
 // const faqs = [

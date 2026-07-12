@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import type { Gymnase } from '../../types/gymnaseType';
+import type { Gymnase } from '../../types/gymnasesType';
 
 const PRIMARY = '#0153b6';
 const SECONDARY = '#da9619';

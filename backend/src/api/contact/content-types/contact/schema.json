@@ -59,9 +59,6 @@
     },
     "heure_fin_accueils_a_distance": {
       "type": "time"
-    },
-    "WhatsApp": {
-      "type": "string"
     }
   }
 }

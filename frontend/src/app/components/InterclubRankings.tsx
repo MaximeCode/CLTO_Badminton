@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Trophy, TrendingUp, TrendingDown, Minus, Medal, Loader2, AlertCircle } from 'lucide-react';
 import { getInterclubTeams } from '@/api/icbad_local/interclub';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
+import { Section } from './Section';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -102,24 +103,24 @@ export function InterclubRankings() {
     // ── État chargement ─────────────────────────────────────────────────────
     if (loading) {
         return (
-            <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-                <div className="max-w-[1280px] mx-auto px-6 flex flex-col items-center justify-center min-h-64">
+            <Section className='bg-gradient-to-b from-gray-50 to-white'>
+                <div className="flex flex-col items-center justify-center min-h-64">
                     <Loader2 size={40} className="text-[#0153b6] animate-spin mb-4" />
                     <p className="text-gray-500 font-medium">Chargement des classements…</p>
                 </div>
-            </section>
+            </Section>
         );
     }
 
     // ── État erreur ─────────────────────────────────────────────────────────
     if (error || teams.length === 0) {
         return (
-            <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-                <div className="max-w-[1280px] mx-auto px-6 flex flex-col items-center justify-center min-h-64">
+            <Section className='bg-gradient-to-b from-gray-50 to-white'>
+                <div className="flex flex-col items-center justify-center min-h-64">
                     <AlertCircle size={40} className="text-red-500 mb-4" />
                     <p className="text-gray-600">{error ?? 'Aucune donnée disponible.'}</p>
                 </div>
-            </section>
+            </Section>
         );
     }
 
@@ -128,198 +129,195 @@ export function InterclubRankings() {
     const accentColor = divConfig.color;
 
     return (
-        <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-            <div className="max-w-[1280px] mx-auto px-6">
+        <Section className="bg-gradient-to-b from-gray-50 to-white">
+            {/* ── En-tête ────────────────────────────────────────────── */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="mb-12"
+            >
+                <HomePageSectionTitle
+                    title="CLASSEMENTS INTERCLUB"
+                    subtitle={`Nos équipes en compétition | Saison ${selected.season}`}
+                />
 
-                {/* ── En-tête ────────────────────────────────────────────── */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                    className="mb-12"
+                {/* ── Sélecteur d'équipe ──────────────────────────────── */}
+                <div className="flex flex-wrap justify-center gap-3 mb-8">
+                    {teams.map((team, index) => {
+                        const cfg = getDivisionConfig(team.division);
+                        const isActive = selectedIndex === index;
+                        return (
+                            <motion.button
+                                key={team.teamSlug}
+                                onClick={() => setSelectedIndex(index)}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className={`relative px-6 py-3 rounded-xl font-['Bebas_Neue'] text-xl transition-all duration-300 ${isActive
+                                    ? 'text-white shadow-xl scale-105'
+                                    : 'bg-white text-gray-700 shadow-md hover:shadow-lg'
+                                    }`}
+                                style={{
+                                    backgroundColor: isActive ? cfg.color : undefined,
+                                }}
+                            >
+                                <span className="relative z-10">{team.division}</span>
+                                {isActive && (
+                                    <motion.div
+                                        layoutId="activeTab"
+                                        className="absolute inset-0 rounded-xl"
+                                        style={{ backgroundColor: cfg.color }}
+                                        initial={false}
+                                        transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                                    />
+                                )}
+                            </motion.button>
+                        );
+                    })}
+                </div>
+
+                {/* ── Titre de la division ────────────────────────────── */}
+                <motion.h3
+                    key={selected.division}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="font-['Bebas_Neue'] text-2xl md:text-3xl mb-2 text-center"
+                    style={{ color: accentColor }}
                 >
-                    <HomePageSectionTitle
-                        title="CLASSEMENTS INTERCLUB"
-                        subtitle={`Nos équipes en compétition | ${selected.season}`}
-                    />
+                    {divConfig.label} - {selected.competitionName}
+                </motion.h3>
+            </motion.div>
 
-                    {/* ── Sélecteur d'équipe ──────────────────────────────── */}
-                    <div className="flex flex-wrap justify-center gap-3 mb-8">
-                        {teams.map((team, index) => {
-                            const cfg = getDivisionConfig(team.division);
-                            const isActive = selectedIndex === index;
+            {/* ── Carte des équipes ───────────────────────────────── */}
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={selected.teamSlug}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="max-w-4xl mx-auto"
+                >
+                    {selected.ranking.length > 0 ?
+                        selected.ranking.map((team, index) => {
+                            const isCLTO = team.teamCode?.toUpperCase().includes("CLTO");
                             return (
-                                <motion.button
-                                    key={team.teamSlug}
-                                    onClick={() => setSelectedIndex(index)}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className={`relative px-6 py-3 rounded-xl font-['Bebas_Neue'] text-xl transition-all duration-300 ${isActive
-                                        ? 'text-white shadow-xl scale-105'
-                                        : 'bg-white text-gray-700 shadow-md hover:shadow-lg'
-                                        }`}
-                                    style={{
-                                        backgroundColor: isActive ? cfg.color : undefined,
-                                    }}
+                                <div
+                                    key={index}
+                                    className="rounded-2xl p-4 mb-6 shadow-xl border-2"
+                                    style={{ borderColor: isCLTO ? accentColor : '', background: isCLTO ? `${accentColor}0f` : '' }}
                                 >
-                                    <span className="relative z-10">{team.division}</span>
-                                    {isActive && (
-                                        <motion.div
-                                            layoutId="activeTab"
-                                            className="absolute inset-0 rounded-xl"
-                                            style={{ backgroundColor: cfg.color }}
-                                            initial={false}
-                                            transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                                        />
-                                    )}
-                                </motion.button>
-                            );
-                        })}
-                    </div>
+                                    {/* Single row on md+, two rows on mobile */}
+                                    <div className="flex items-center gap-4">
 
-                    {/* ── Titre de la division ────────────────────────────── */}
-                    <motion.h3
-                        key={selected.division}
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="font-['Bebas_Neue'] text-2xl md:text-3xl mb-2 text-center"
-                        style={{ color: accentColor }}
-                    >
-                        {divConfig.label} - {selected.competitionName}
-                    </motion.h3>
-                </motion.div>
+                                        {/* Position */}
+                                        <div
+                                            className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-xl flex flex-col items-center justify-center shadow-md text-white"
+                                            style={{ backgroundColor: accentColor }}
+                                        >
+                                            <span className="font-['Bebas_Neue'] text-3xl md:text-4xl leading-none">
+                                                {team.position}
+                                            </span>
+                                            <span className="text-xs opacity-80 uppercase">place</span>
+                                        </div>
 
-                {/* ── Carte des équipes ───────────────────────────────── */}
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={selected.teamSlug}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="max-w-4xl mx-auto"
-                    >
-                        {selected.ranking.length > 0 ?
-                            selected.ranking.map((team, index) => {
-                                const isCLTO = team.teamCode?.toUpperCase().includes("CLTO");
-                                return (
-                                    <div
-                                        key={index}
-                                        className="rounded-2xl p-4 mb-6 shadow-xl border-2"
-                                        style={{ borderColor: isCLTO ? accentColor : '', background: isCLTO ? `${accentColor}0f` : '' }}
-                                    >
-                                        {/* Single row on md+, two rows on mobile */}
-                                        <div className="flex items-center gap-4">
+                                        {/* Right side: stacks on mobile, single row on md+ */}
+                                        <div className="flex-1 min-w-0 flex flex-col md:flex-row md:items-center md:gap-6">
 
-                                            {/* Position */}
-                                            <div
-                                                className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-xl flex flex-col items-center justify-center shadow-md text-white"
-                                                style={{ backgroundColor: accentColor }}
-                                            >
-                                                <span className="font-['Bebas_Neue'] text-3xl md:text-4xl leading-none">
-                                                    {team.position}
-                                                </span>
-                                                <span className="text-xs opacity-80 uppercase">place</span>
+                                            {/* Nom + résultats */}
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    {team.position === 1 && <Trophy style={{ color: accentColor }} size={20} />}
+                                                    {team.position === 2 && <Medal style={{ color: '#9ca3af' }} size={20} />}
+                                                    {team.position === 3 && <Medal style={{ color: '#d97706' }} size={20} />}
+                                                    <h4 className="text-lg md:text-2xl text-gray-900 truncate">
+                                                        {team.teamName}
+                                                    </h4>
+                                                </div>
+                                                <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
+                                                    <span>
+                                                        <strong className="text-gray-900">{team.played}</strong> joués
+                                                    </span>
+                                                    <span className="text-green-600 font-semibold">{team.won}V</span>
+                                                    {(team.draw ?? 0) > 0 && (
+                                                        <span className="text-yellow-600 font-semibold">{team.draw}N</span>
+                                                    )}
+                                                    <span className="text-red-500 font-semibold">{team.lost}D</span>
+                                                </div>
                                             </div>
 
-                                            {/* Right side: stacks on mobile, single row on md+ */}
-                                            <div className="flex-1 min-w-0 flex flex-col md:flex-row md:items-center md:gap-6">
-
-                                                {/* Nom + résultats */}
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="flex items-center gap-2 mb-1">
-                                                        {team.position === 1 && <Trophy style={{ color: accentColor }} size={20} />}
-                                                        {team.position === 2 && <Medal style={{ color: '#9ca3af' }} size={20} />}
-                                                        {team.position === 3 && <Medal style={{ color: '#d97706' }} size={20} />}
-                                                        <h4 className="text-lg md:text-2xl text-gray-900 truncate">
-                                                            {team.teamName}
-                                                        </h4>
+                                            {/* Stats détaillées */}
+                                            <div className="flex items-center gap-4 md:gap-6 mt-3 md:mt-0">
+                                                <StatPill label="Bonus +" value={team.bonusPlus} color="#16a34a" />
+                                                <StatPill label="Bonus −" value={team.bonusMinus} color="#dc2626" />
+                                                <DiffPill value={team.matchDiff} />
+                                                <div className="flex-shrink-0 text-center">
+                                                    <div
+                                                        className="font-['Bebas_Neue'] text-4xl md:text-5xl leading-none"
+                                                        style={{ color: accentColor }}
+                                                    >
+                                                        {team.points}
                                                     </div>
-                                                    <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
-                                                        <span>
-                                                            <strong className="text-gray-900">{team.played}</strong> joués
-                                                        </span>
-                                                        <span className="text-green-600 font-semibold">{team.won}V</span>
-                                                        {(team.draw ?? 0) > 0 && (
-                                                            <span className="text-yellow-600 font-semibold">{team.draw}N</span>
-                                                        )}
-                                                        <span className="text-red-500 font-semibold">{team.lost}D</span>
-                                                    </div>
+                                                    <div className="text-xs text-gray-500 uppercase tracking-wide">Pts</div>
                                                 </div>
-
-                                                {/* Stats détaillées */}
-                                                <div className="flex items-center gap-4 md:gap-6 mt-3 md:mt-0">
-                                                    <StatPill label="Bonus +" value={team.bonusPlus} color="#16a34a" />
-                                                    <StatPill label="Bonus −" value={team.bonusMinus} color="#dc2626" />
-                                                    <DiffPill value={team.matchDiff} />
-                                                    <div className="flex-shrink-0 text-center">
-                                                        <div
-                                                            className="font-['Bebas_Neue'] text-4xl md:text-5xl leading-none"
-                                                            style={{ color: accentColor }}
-                                                        >
-                                                            {team.points}
-                                                        </div>
-                                                        <div className="text-xs text-gray-500 uppercase tracking-wide">Pts</div>
-                                                    </div>
-                                                </div>
-
                                             </div>
+
                                         </div>
                                     </div>
-                                )
-                            }
-                            ) : (
-                                // Pas de données CLTO pour cette équipe
-                                <div className="rounded-2xl p-10 bg-white border-2 border-gray-200 shadow text-center">
-                                    <AlertCircle size={32} className="text-gray-300 mx-auto mb-3" />
-                                    <p className="text-gray-500">
-                                        {selected.scrapeError
-                                            ? `Erreur de scraping : ${selected.scrapeError}`
-                                            : 'Aucune donnée disponible pour cette équipe.'}
-                                    </p>
                                 </div>
-                            )}
-                    </motion.div>
-                </AnimatePresence>
-
-                {/* ── Légende ───────────────────────────────────────────── */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.5 }}
-                    className="mt-10 text-sm text-gray-500"
-                >
-                    <div className="flex flex-wrap justify-center gap-6">
-                        <div className="flex items-center gap-2">
-                            <span className="w-3 h-3 rounded-full bg-green-600 inline-block" />
-                            <span>V = Victoire</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <span className="w-3 h-3 rounded-full bg-yellow-500 inline-block" />
-                            <span>N = Nul</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <span className="w-3 h-3 rounded-full bg-red-500 inline-block" />
-                            <span>D = Défaite</span>
-                        </div>
-                    </div>
-
-                    {/* Lien IcBAD */}
-                    <div className="text-center mt-4">
-                        <p className="text-xs text-gray-400">
-                            Données issues de icbad.ffbad.org ·{' '}
-                            {selected.lastScrapedAt
-                                ? `mis à jour le ${new Date(selected.lastScrapedAt).toLocaleDateString('fr-FR', {
-                                    day: '2-digit', month: 'long', year: 'numeric',
-                                })}`
-                                : 'données non disponibles'}
-                        </p>
-                    </div>
+                            )
+                        }
+                        ) : (
+                            // Pas de données CLTO pour cette équipe
+                            <div className="rounded-2xl p-10 bg-white border-2 border-gray-200 shadow text-center">
+                                <AlertCircle size={32} className="text-gray-300 mx-auto mb-3" />
+                                <p className="text-gray-500">
+                                    {selected.scrapeError
+                                        ? `Erreur de scraping : ${selected.scrapeError}`
+                                        : 'Aucune donnée disponible pour cette équipe.'}
+                                </p>
+                            </div>
+                        )}
                 </motion.div>
-            </div>
-        </section>
+            </AnimatePresence>
+
+            {/* ── Légende ───────────────────────────────────────────── */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5 }}
+                className="mt-10 text-sm text-gray-500"
+            >
+                <div className="flex flex-wrap justify-center gap-6">
+                    <div className="flex items-center gap-2">
+                        <span className="w-3 h-3 rounded-full bg-green-600 inline-block" />
+                        <span>V = Victoire</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span className="w-3 h-3 rounded-full bg-yellow-500 inline-block" />
+                        <span>N = Nul</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span className="w-3 h-3 rounded-full bg-red-500 inline-block" />
+                        <span>D = Défaite</span>
+                    </div>
+                </div>
+
+                {/* Lien IcBAD */}
+                <div className="text-center mt-4">
+                    <p className="text-xs text-gray-400">
+                        Données issues de icbad.ffbad.org ·{' '}
+                        {selected.lastScrapedAt
+                            ? `mis à jour le ${new Date(selected.lastScrapedAt).toLocaleDateString('fr-FR', {
+                                day: '2-digit', month: 'long', year: 'numeric',
+                            })}`
+                            : 'données non disponibles'}
+                    </p>
+                </div>
+            </motion.div>
+        </Section>
     );
 }
 

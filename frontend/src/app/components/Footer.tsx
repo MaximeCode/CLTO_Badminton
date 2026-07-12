@@ -49,7 +49,7 @@ const socialLinks = [
 
 export function Footer() {
   const contact = useContext<Contact | null>(ContactContext);
-  console.log('contact', contact);
+  // console.log('contact', contact);
   const [openSection, setOpenSection] = useState<FooterMobileSectionId | null>(null);
 
   const toggleSection = (id: FooterMobileSectionId) => {

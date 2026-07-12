@@ -1,5 +1,5 @@
 import { fetchAPI } from "../Client";
-import type { Faq } from "../../types/faqType";
+import type { Faq } from "@/types/faqsType";
 
 export async function getFaqs(): Promise<Faq[]> {
   const { data } = await fetchAPI("/api/faqs?populate=*");
@@ -10,6 +10,6 @@ export async function getFaqs(): Promise<Faq[]> {
       documentId: item.documentId,
       question: item.question,
       reponse: item.reponse,
-    })
+    }),
   );
 }
