@@ -6,6 +6,19 @@
   },
   "options": {},
   "attributes": {
+    "case_key": {
+      "type": "enumeration",
+      "enum": [
+        "cas_0",
+        "cas_1_1",
+        "cas_1_2",
+        "cas_2_1",
+        "cas_2_2",
+        "cas_3_1",
+        "cas_3_2"
+      ],
+      "required": true
+    },
     "titre": {
       "type": "string",
       "required": true

@@ -20,6 +20,11 @@
       "type": "component",
       "component": "contenu-page.etape-d-inscription",
       "repeatable": true
+    },
+    "documents": {
+      "type": "component",
+      "component": "docs-inscription.documents",
+      "repeatable": true
     }
   }
 }

@@ -614,6 +614,7 @@ export interface ApiPageAdhererPageAdherer extends Struct.SingleTypeSchema {
     cas_inscriptions: Schema.Attribute.Component<"contenu-page.etape-d-inscription", true>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    documents: Schema.Attribute.Component<"docs-inscription.documents", true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<"oneToMany", "api::page-adherer.page-adherer"> &
       Schema.Attribute.Private;

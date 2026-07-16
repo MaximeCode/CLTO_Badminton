@@ -1,20 +1,15 @@
 import { useContext, useEffect, useState, type ReactNode } from 'react';
 import { motion } from 'motion/react';
-import { ExternalLink, Mail, Phone, ChevronDown, MapPin } from 'lucide-react';
+import { ExternalLink, Mail, Phone, ChevronDown, MapPin, Download } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from '../components/ui/accordion';
+import { InscriptionWizard } from '../components/InscriptionWizard';
 
 import { ContactContext } from '../contexts/ContactContext';
 import type { Contact } from '@/types/contactType';
 
 import { formatTime, joinDays } from '@/utils/showHoraires';
 import { Link } from 'react-router';
-import { PageAdherer } from '@/types/pageAdhererType';
+import { PageAdherer, Document } from '@/types/pageAdhererType';
 import { getPageAdherer } from '@/api/strapi/pageAdherer';
 import { BlocksRenderer } from '../components/BlocksRenderer';
 
@@ -179,6 +174,7 @@ export function AdhererPage() {
                 setLoadError(null);
                 const data = await getPageAdherer();
                 setPageAdhererDatas(data);
+                console.log('pageAdhererDatas:', data);
             } catch (error) {
                 console.error('Error loading data:', error);
                 setLoadError(
@@ -192,7 +188,7 @@ export function AdhererPage() {
     const introBloc = pageAdhererDatas?.blocs[0];
     const contentBlocs = pageAdhererDatas?.blocs.slice(1) ?? [];
     const casInscriptions = pageAdhererDatas?.cas_inscriptions ?? [];
-
+    const documents = pageAdhererDatas?.documents ?? [];
     return (
         <>
             <PageHero
@@ -232,44 +228,31 @@ export function AdhererPage() {
                         )}
                     </motion.div>
 
-                    {/* Accordion : cas d'inscription */}
+                    {/* Assistant interactif : cas d'inscription */}
                     <section className="mb-8 sm:mb-12">
                         <div className="mb-4 sm:mb-6">
-                            <h2 className="font-primary text-3xl text-primary sm:text-4xl md:text-5xl lg:text-6xl">
+                            <h2 className="font-primary text-2xl text-primary sm:text-3xl md:text-4xl lg:text-5xl">
                                 Prêt(e) à vous inscrire ?
                             </h2>
                             <p className="mt-2 text-sm text-primary-accent sm:mt-3 sm:text-base md:text-lg">
-                                Déterminez votre situation, et on vous explique tout. Le compte My-FFBAD est personnel : pour plusieurs licences (famille, conjoint...), connectez-vous à chaque compte individuellement.
+                                Répondez à quelques questions pour afficher les instructions correspondant à votre situation.<br />
+                                <span className='text-secondary-accent/80 italic'>
+                                    À noter : le compte My-FFBAD est personnel. Si vous souhaitez prendre plusieurs licences (famille, conjoint...), connectez-vous à chacun des comptes pour faire les demandes individuellement.
+                                </span>
                             </p>
                         </div>
-                        <Accordion
-                            type="single"
-                            collapsible
-                            className="overflow-hidden rounded-2xl border border-primary/15 bg-white shadow-sm"
-                        >
-                            {casInscriptions.map((item) => (
-                                <AccordionItem
-                                    key={item.id}
-                                    value={String(item.id)}
-                                    className="border-primary/15 px-4 sm:px-6"
-                                >
-                                    <AccordionTrigger className="font-primary text-lg leading-snug text-primary hover:text-secondary hover:no-underline sm:text-xl lg:text-2xl hover:cursor-pointer">
-                                        {item.titre}
-                                    </AccordionTrigger>
-                                    <AccordionContent className="text-sm text-primary-accent sm:text-base">
-                                        <div className="[&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_p]:text-base [&_li]:text-sm sm:[&_li]:text-base [&_li]:text-primary-accent">
-                                            <BlocksRenderer content={item.contenu} />
-                                        </div>
-                                    </AccordionContent>
-                                </AccordionItem>
-                            ))}
-                        </Accordion>
+
+                        <InscriptionWizard
+                            casInscriptions={casInscriptions}
+                            isLoading={!pageAdhererDatas && !loadError}
+                            loadError={loadError}
+                        />
                     </section>
 
-                    {/* Dynamic blocs panels */}
-                    {contentBlocs.length > 0 && (
-                        <div className="mb-8 grid gap-4 sm:mb-12 sm:gap-6 lg:grid-cols-2 lg:gap-8">
-                            {contentBlocs.map((bloc) => (
+                    <div className='grid gap-4 sm:gap-6 lg:grid-cols-2 lg:gap-8'>
+                        {/* Dynamic blocs panels */}
+                        {contentBlocs.length > 0 &&
+                            contentBlocs.map((bloc) => (
                                 <CollapsiblePanel
                                     key={bloc.id}
                                     id={String(bloc.id)}
@@ -282,12 +265,10 @@ export function AdhererPage() {
                                         <BlocksRenderer content={bloc.contenu} />
                                     </div>
                                 </CollapsiblePanel>
-                            ))}
-                        </div>
-                    )}
+                            ))
+                        }
 
-                    {/* Contact panel — hardcoded, uses ContactContext */}
-                    <div className="grid gap-4 sm:gap-6 lg:grid-cols-2 lg:gap-8">
+                        {/* Contact panel — hardcoded, uses ContactContext */}
                         <CollapsiblePanel
                             id="contact"
                             title="Nous contacter"
@@ -330,8 +311,51 @@ export function AdhererPage() {
                                 </div>
                             </div>
                         </CollapsiblePanel>
-                    </div>
 
+                        {/* Documents panel */}
+                        <CollapsiblePanel
+                            id="documents"
+                            title="Documents"
+                            openPanel={openPanel}
+                            onToggle={togglePanel}
+                        >
+                            <div className="space-y-4 text-sm text-primary-accent sm:text-base">
+                                <p className="italic text-primary-accent/80">
+                                    Trouver ici tous les documents nécessaires pour votre inscription au CLTO Badminton Orléans
+                                </p>
+
+                                <ul className="flex flex-col gap-3 pt-1">
+                                    {documents.map((document) => (
+                                        <li key={document.id}>
+                                            <a
+                                                href={document.document.url}
+                                                download
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="group flex w-full items-center gap-3 rounded-xl border border-primary/15 bg-primary/[0.03] px-4 py-3 text-left transition-all duration-200 hover:border-secondary/40 hover:bg-secondary/10 hover:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+                                            >
+                                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-white shadow-sm transition-transform duration-200 group-hover:scale-105">
+                                                    <Download size={18} strokeWidth={2.25} />
+                                                </span>
+                                                <span className="min-w-0 flex-1">
+                                                    <span className="block font-medium text-primary group-hover:text-primary-accent">
+                                                        {document.libelle}
+                                                    </span>
+                                                    <span className="mt-0.5 block text-xs text-primary-accent/70">
+                                                        Télécharger le document
+                                                    </span>
+                                                </span>
+                                                <ExternalLink
+                                                    size={16}
+                                                    className="shrink-0 text-primary-accent/40 transition-colors group-hover:text-secondary"
+                                                />
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </CollapsiblePanel>
+                    </div>
                 </div>
             </section>
         </>
