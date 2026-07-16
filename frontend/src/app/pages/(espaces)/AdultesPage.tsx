@@ -67,7 +67,7 @@ export function AdultesPage() {
     return (
         <>
             <PageHero
-                title="ADULTES"
+                title="ADULTES COMPÉTITEURS"
                 subtitle="Du loisir à la compétition, pratiquez le badminton à votre rythme"
                 image="https://images.unsplash.com/photo-1599390270093-232c3e476f95?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBjbHViJTIwYWR1bHRzfGVufDF8fHx8MTc4NTQ4NDUwMXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
             />
@@ -81,7 +81,7 @@ export function AdultesPage() {
                     className="text-center mb-16"
                 >
                     <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-                        NOS CRÉNEAUX ADULTES
+                        NOS CRÉNEAUX ADULTES COMPÉTITEURS
                     </h2>
                     <p className="text-gray-600 text-lg max-w-2xl mx-auto">
                         Des rendez-vous chaque semaine pour jouer, progresser et partager.

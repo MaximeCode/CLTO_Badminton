@@ -8,28 +8,29 @@ import { ShopIcon } from "./icons/ShopIcon";
 
 const NAV_ITEMS: NavItem[] = [
   {
-    title: "Actualités",
-    path: "/actualites",
-  },
-  {
-    title: "Le Club",
+    title: "La vie du Club",
     items: [
       { label: "Historique", path: "/historique" },
       { label: "Conseil d'Administration", path: "/conseil-administration" },
       { label: "Gymnases", path: "/gymnases" },
-      { label: "Créneaux", path: "/creneaux" },
+      { label: "Actualités", path: "/actualites" },
       { label: "Adhérer", path: "/adherer" },
       { label: "Projet Club", path: "/projet-club" },
+      { label: "Documents", path: "/documents" },
     ],
   },
   {
-    title: "Nos espaces",
+    title: "Créneaux",
+    path: "/creneaux",
+  },
+  {
+    title: "Nos Publics",
     items: [
-      { label: "Jeunes", path: "/jeunes" },
-      { label: "Adultes", path: "/adultes" },
-      { label: "Compétition", path: "/competition" },
-      { label: "Loisir", path: "/loisir" },
-      { label: "Vétérans", path: "/veterans" },
+      { label: "Jeunes Loisirs", path: "/jeunes-loisirs" },
+      { label: "Jeunes Compétiteurs", path: "/jeunes-competiteurs" },
+      { label: "Adultes Loisirs", path: "/adultes-loisirs" },
+      { label: "Adultes compétiteurs", path: "/adultes-competiteurs" },
+      { label: "Vieilles plumes", path: "/vieilles-plumes" },
     ],
   },
   {

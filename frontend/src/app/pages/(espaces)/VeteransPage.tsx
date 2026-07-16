@@ -43,7 +43,7 @@ export function VeteransPage() {
     return (
         <>
             <PageHero
-                title="VETERANS"
+                title="VIEILLES PLUMES"
                 subtitle="Des creneaux dedies en jeu libre, sans entrainements"
                 image="https://images.unsplash.com/photo-1521537634581-0dced2fee2ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBjbHViJTIwaW5kb29yfGVufDF8fHx8MTc4NTQ4NDI2OHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
             />
@@ -57,7 +57,7 @@ export function VeteransPage() {
                     className="text-center mb-16"
                 >
                     <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-                        NOS CRENEAUX VETERANS
+                        NOS CRENEAUX VIEILLES PLUMES
                     </h2>
                     <p className="text-gray-600 text-lg max-w-2xl mx-auto">
                         Deux rendez-vous hebdomadaires en jeu libre dedies aux veterans.
@@ -96,7 +96,7 @@ export function VeteransPage() {
                     className="text-center mb-16"
                 >
                     <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-                        L'ESPACE VÉTÉRANS
+                        L'ESPACE VIEILLES PLUMES
                     </h2>
                 </motion.div>
 

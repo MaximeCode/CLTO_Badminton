@@ -113,6 +113,13 @@ export function FeaturedNews() {
           ))}
         </div>
       </div>
+
+      <div className="w-full mt-10 flex justify-center text-lg">
+        <Link to="/actualites" className="flex justify-center items-center gap-2 px-6 py-3 rounded-full bg-secondary text-white hover:bg-secondary/80 transition-all duration-200">
+          Voir toutes les actualités
+          <ArrowRight size={20} />
+        </Link>
+      </div>
     </Section>
   );
 }

@@ -16,6 +16,7 @@ import { AdhererPage } from './pages/AdhererPage';
 import { FAQPage } from './pages/FAQPage';
 import { StagesPage } from './pages/StagesPage';
 import { ProjetClub } from './pages/ProjetClub';
+import { DocumentsPage } from './pages/DocumentsPage';
 
 // Espaces
 import { CompetiteursPage } from './pages/(espaces)/CompetiteursPage';
@@ -39,11 +40,12 @@ export const router = createBrowserRouter([
       { path: 'creneaux', Component: CreneauxPage },
       { path: 'interclub', Component: InterclubPage },
       { path: 'projet-club', Component: ProjetClub },
-      { path: 'adultes', Component: AdultesPage },
-      { path: 'jeunes', Component: JeunesPage },
-      { path: 'loisir', Component: LoisirsPage },
-      { path: 'competition', Component: CompetiteursPage },
-      { path: 'veterans', Component: VeteransPage },
+      { path: 'documents', Component: DocumentsPage },
+      { path: 'jeunes-loisirs', Component: JeunesPage },
+      { path: 'jeunes-competiteurs', Component: CompetiteursPage },
+      { path: 'adultes-loisirs', Component: LoisirsPage },
+      { path: 'adultes-competiteurs', Component: AdultesPage },
+      { path: 'vieilles-plumes', Component: VeteransPage },
       { path: 'contact', Component: ContactPage },
       { path: 'faq', Component: FAQPage },
       { path: 'stages', Component: StagesPage },

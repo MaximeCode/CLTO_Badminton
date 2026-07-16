@@ -113,34 +113,34 @@ export function Footer() {
 
           <FooterMobileSection
             id="espaces"
-            title="Nos Espaces"
+            title="Nos Publics"
             openSection={openSection}
             onToggle={toggleSection}
           >
             <ul className="space-y-2">
               <li>
-                <Link to="/jeunes" className="text-gray-400 hover:text-secondary transition-colors text-sm">
-                  Jeunes
+                <Link to="/jeunes-loisirs" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Jeunes Loisirs
                 </Link>
               </li>
               <li>
-                <Link to="/adultes" className="text-gray-400 hover:text-secondary transition-colors text-sm">
-                  Adultes
+                <Link to="/jeunes-competiteurs" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Jeunes Compétiteurs
                 </Link>
               </li>
               <li>
-                <Link to="/veterans" className="text-gray-400 hover:text-secondary transition-colors text-sm">
-                  Vétérans
+                <Link to="/adultes-loisirs" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Adultes Loisirs
                 </Link>
               </li>
               <li>
-                <Link to="/loisir" className="text-gray-400 hover:text-secondary transition-colors text-sm">
-                  Loisirs
+                <Link to="/adultes-competiteurs" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Adultes compétiteurs
                 </Link>
               </li>
               <li>
-                <Link to="/competition" className="text-gray-400 hover:text-secondary transition-colors text-sm">
-                  Compétitions
+                <Link to="/vieilles-plumes" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Vieilles plumes
                 </Link>
               </li>
             </ul>
@@ -235,31 +235,31 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-primary text-xl mb-4 tracking-wide">Nos Espaces</h4>
+            <h4 className="font-primary text-xl mb-4 tracking-wide">Nos Publics</h4>
             <ul className="space-y-3">
               <li>
-                <Link to="/jeunes" className="text-gray-400 hover:text-secondary transition-colors duration-200">
-                  Jeunes
+                <Link to="/jeunes-loisirs" className="text-gray-400 hover:text-secondary transition-colors duration-200">
+                  Jeunes Loisirs
                 </Link>
               </li>
               <li>
-                <Link to="/adultes" className="text-gray-400 hover:text-secondary transition-colors duration-200">
-                  Adultes
+                <Link to="/jeunes-competiteurs" className="text-gray-400 hover:text-secondary transition-colors duration-200">
+                  Jeunes Compétiteurs
                 </Link>
               </li>
               <li>
-                <Link to="/veterans" className="text-gray-400 hover:text-secondary transition-colors duration-200">
-                  Vétérans
+                <Link to="/adultes-loisirs" className="text-gray-400 hover:text-secondary transition-colors duration-200">
+                  Adultes Loisirs
                 </Link>
               </li>
               <li>
-                <Link to="/loisir" className="text-gray-400 hover:text-secondary transition-colors duration-200">
-                  Loisirs
+                <Link to="/adultes-competiteurs" className="text-gray-400 hover:text-secondary transition-colors duration-200">
+                  Adultes compétiteurs
                 </Link>
               </li>
               <li>
-                <Link to="/competition" className="text-gray-400 hover:text-secondary transition-colors duration-200">
-                  Compétitions
+                <Link to="/vieilles-plumes" className="text-gray-400 hover:text-secondary transition-colors duration-200">
+                  Vieilles plumes
                 </Link>
               </li>
             </ul>

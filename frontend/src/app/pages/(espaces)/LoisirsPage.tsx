@@ -124,7 +124,7 @@ export function LoisirsPage() {
   return (
     <>
       <PageHero
-        title="LOISIR"
+        title="ADULTES LOISIRS"
         subtitle="Le badminton pour le plaisir et la convivialité"
         image="https://images.unsplash.com/photo-1765118384650-7660293e74f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBsZWlzdXJlJTIwcmVjcmVhdGlvbmFsJTIwcGxheXxlbnwxfHx8fDE3NzU5Mjk2OTl8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
       />
@@ -138,7 +138,7 @@ export function LoisirsPage() {
           className="text-center mb-16"
         >
           <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-            NOS CRÉNEAUX LOISIR
+            NOS CRÉNEAUX ADULTES LOISIRS
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Choisissez le créneau qui vous convient et venez jouer dans la bonne humeur !

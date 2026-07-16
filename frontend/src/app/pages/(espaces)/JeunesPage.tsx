@@ -54,7 +54,7 @@ export function JeunesPage() {
   return (
     <>
       <PageHero
-        title="ÉCOLE DE BAD"
+        title="JEUNES LOISIRS"
         subtitle="L'apprentissage du badminton pour les jeunes de 6 à 14 ans"
         image="https://images.unsplash.com/photo-1642436978092-0f4b14112745?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaGlsZHJlbiUyMHBsYXlpbmclMjBiYWRtaW50b258ZW58MXx8fHwxNzc1OTI5Njk4fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
       />
@@ -190,7 +190,7 @@ export function JeunesPage() {
           className="text-center mb-16"
         >
           <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-            ESPACE JEUNES
+            JEUNES LOISIRS
           </h2>
           <p className="text-gray-600 text-lg max-w-3xl mx-auto">
             Fonctionnement, compétitions, avantages et informations utiles pour la saison <strong>2025/2026</strong>.

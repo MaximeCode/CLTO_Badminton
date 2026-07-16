@@ -27,7 +27,7 @@ const defaultSlides: HeroSlide[] = [
   {
     id: 2,
     image: bgCarouselCompet,
-    label: 'COMPÉTITION',
+    label: 'JEUNES COMPÉTITEURS',
     title: 'NOS ÉQUIPES EN ROUTE VERS LES CHAMPIONNATS',
     description: 'Suivez nos athlètes lors des prochains interclubs',
     cta: 'Voir les résultats',
@@ -35,7 +35,7 @@ const defaultSlides: HeroSlide[] = [
   {
     id: 3,
     image: bgCarouselJeune,
-    label: 'ESPACE JEUNES',
+    label: 'JEUNES LOISIRS',
     title: 'STAGES DE VACANCES POUR LES JEUNES',
     description: "Inscriptions ouvertes pour les stages d'été",
     cta: "S'inscrire",

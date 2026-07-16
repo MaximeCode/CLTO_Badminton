@@ -6,39 +6,39 @@ import { Section } from './Section';
 
 const spaces = [
   {
-    title: 'ESPACE JEUNES',
+    title: 'JEUNES LOISIRS',
     icon: Users,
     image: 'https://images.unsplash.com/photo-1733141732172-3abba91f4db2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjB5b3V0aCUyMGp1bmlvcnxlbnwxfHx8fDE3NzI3OTYxMjh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
     color: 'primary' as const,
-    link: '/jeunes',
+    link: '/jeunes-loisirs',
   },
   {
-    title: 'ESPACE ADULTES',
+    title: 'JEUNES COMPÉTITEURS',
+    icon: Trophy,
+    image: 'https://images.unsplash.com/photo-1595220427358-8cf2ce3d7f89?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBzbWFzaCUyMGp1bXB8ZW58MXx8fHwxNzcyNzk2MTI2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    color: 'secondary' as const,
+    link: '/jeunes-competiteurs',
+  },
+  {
+    title: 'ADULTES LOISIRS',
+    icon: Target,
+    image: 'https://images.unsplash.com/photo-1624024834874-2a1611305604?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBjb3VydCUyMGluZG9vcnxlbnwxfHx8fDE3NzI2ODI3OTJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    color: 'primary' as const,
+    link: '/adultes-loisirs',
+  },
+  {
+    title: 'ADULTES COMPÉTITEURS',
     icon: Users,
     image: 'https://images.unsplash.com/photo-1716041040048-228dbae7b6ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjB0cmFpbmluZyUyMHByYWN0aWNlfGVufDF8fHx8MTc3Mjc5NjEyN3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
     color: 'secondary' as const,
-    link: '/adultes',
+    link: '/adultes-competiteurs',
   },
   {
-    title: 'COMPÉTITION',
-    icon: Trophy,
-    image: 'https://images.unsplash.com/photo-1595220427358-8cf2ce3d7f89?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBzbWFzaCUyMGp1bXB8ZW58MXx8fHwxNzcyNzk2MTI2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    color: 'primary' as const,
-    link: '/competition',
-  },
-  {
-    title: 'LOISIR',
-    icon: Target,
-    image: 'https://images.unsplash.com/photo-1624024834874-2a1611305604?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBjb3VydCUyMGluZG9vcnxlbnwxfHx8fDE3NzI2ODI3OTJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    color: 'secondary' as const,
-    link: '/loisir',
-  },
-  {
-    title: 'VÉTÉRANS',
+    title: 'VIEILLES PLUMES',
     icon: Users,
     image: 'https://images.unsplash.com/photo-1765544581327-b5e9055d986c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBjb21wZXRpdGlvbiUyMG1hdGNofGVufDF8fHx8MTc3Mjc5NjEyNnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
     color: 'primary' as const,
-    link: '/veterans',
+    link: '/vieilles-plumes',
   },
 ];
 
@@ -83,26 +83,26 @@ function SpaceCard({ space }: { space: Space }) {
 export function SpaceCards() {
   return (
     <Section className="bg-white">
-        <HomePageSectionTitle title="NOS ESPACES" />
+      <HomePageSectionTitle title="NOS PUBLICS" />
 
-        <div className="flex flex-row gap-4 overflow-x-auto overflow-y-hidden pb-4 scrollbar-styled">
-          {spaces.map((space, index) => (
-            <Link
-              key={space.link}
-              to={space.link}
-              className="shrink-0 w-48 sm:w-56"
+      <div className="flex flex-row gap-4 overflow-x-auto overflow-y-hidden pb-4 scrollbar-styled">
+        {spaces.map((space, index) => (
+          <Link
+            key={space.link}
+            to={space.link}
+            className="shrink-0 w-48 sm:w-56"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 * index }}
             >
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 * index }}
-              >
-                <SpaceCard space={space} />
-              </motion.div>
-            </Link>
-          ))}
-        </div>
+              <SpaceCard space={space} />
+            </motion.div>
+          </Link>
+        ))}
+      </div>
     </Section>
   );
 }
