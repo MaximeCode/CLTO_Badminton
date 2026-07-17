@@ -6,24 +6,10 @@ import { useEffect, useState } from 'react';
 import { getOneArticle } from '@/api/strapi/articles';
 import { BlocksRenderer } from '../components/BlocksRenderer';
 import { motion } from 'motion/react';
+import { extractTextFromBlocks } from '@/utils/blocksText';
 
 const userAvatar = new URL('../../imports/user.png', import.meta.url).href;
 
-// ia
-const extractTextFromBlocks = (nodes: unknown[]): string => {
-  const parts: string[] = [];
-  for (const node of nodes) {
-    const n = node as Record<string, unknown>;
-    if (n.type === "text" && typeof n.text === "string") {
-      parts.push(n.text);
-    } else if (Array.isArray(n.children)) {
-      parts.push(extractTextFromBlocks(n.children));
-    }
-  }
-  return parts.join(" ");
-};
-
-// ia
 const calculateReadTime = (article: Article | null) => {
   if (!article) return 0;
   const averageWPM = 260;
@@ -198,8 +184,11 @@ export function ActualitePage() {
                 />
                 <div>
                   <p className="text-gray-900">
-                    Publié par {article?.auteur?.username ? (
-                      <span className="font-semibold">{article.auteur.username}</span>
+                    Publié par {article?.createdBy?.username || article?.createdBy?.firstname ? (
+                      <span className="font-semibold">
+                        {article.createdBy.username
+                          ?? [article.createdBy.firstname, article.createdBy.lastname].filter(Boolean).join(" ")}
+                      </span>
                     ) : (
                       <span className="italic text-gray-500">Auteur mystérieux</span>
                     )}

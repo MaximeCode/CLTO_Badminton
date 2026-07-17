@@ -7,7 +7,8 @@
     "displayName": "Articles"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": true,
+    "populateCreatorFields": true
   },
   "pluginOptions": {},
   "attributes": {
@@ -34,11 +35,6 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::categorie.categorie"
-    },
-    "auteur": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "plugin::users-permissions.user"
     },
     "a_la_une": {
       "type": "boolean",

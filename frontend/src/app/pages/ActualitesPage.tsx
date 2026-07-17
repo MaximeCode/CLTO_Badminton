@@ -73,6 +73,8 @@ export function ActualitesPage() {
   const filteredArticles = useMemo(() => {
     if (selectedCategory === 'Toutes') {
       return articles;
+    } else if (selectedCategory === 'À la une') {
+      return articles.filter((article) => article.a_la_une);
     }
 
     return articles.filter((article) => article.categorie.libelle === selectedCategory);
@@ -90,6 +92,18 @@ export function ActualitesPage() {
             }`}
         >
           Toutes
+        </button>
+      </li>
+      <li>
+        <button
+          type="button"
+          onClick={() => selectCategory('À la une')}
+          className={`w-full text-left rounded-md px-3 py-2 transition-colors ${selectedCategory === 'À la une'
+            ? 'bg-primary text-white'
+            : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
+            }`}
+        >
+          À la une
         </button>
       </li>
       {categories.map((category) => (
@@ -114,7 +128,6 @@ export function ActualitesPage() {
       <PageHero
         title="ACTUALITÉS"
         subtitle="Toutes les dernières nouvelles du CLTO Badminton"
-        image="https://images.unsplash.com/photo-1723074832950-9fb031b0f4ec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBhY3Rpb24lMjBzaG90JTIwY29tcGV0aXRpb258ZW58MXx8fHwxNzc1OTI2NjM2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
       />
 
       <Section className="bg-white">
@@ -184,6 +197,14 @@ export function ActualitesPage() {
                       <div className="absolute top-4 left-4 bg-secondary text-white px-4 py-1 rounded-full text-sm">
                         {article.categorie.libelle}
                       </div>
+                      {article.a_la_une && (
+                        <div
+                          className="pointer-events-none absolute top-3 -right-10 w-36 rotate-45 bg-primary py-1 text-center text-xs font-semibold tracking-wide text-white shadow-sm"
+                          aria-hidden
+                        >
+                          <span className='pl-2'>À la une</span>
+                        </div>
+                      )}
                     </div>
                     <div className="p-6">
                       <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">

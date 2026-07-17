@@ -438,21 +438,21 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   };
   options: {
     draftAndPublish: true;
+    populateCreatorFields: true;
   };
   attributes: {
     a_la_une: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    auteur: Schema.Attribute.Relation<"oneToOne", "plugin::users-permissions.user">;
     categorie: Schema.Attribute.Relation<"oneToOne", "api::categorie.categorie">;
     contenu: Schema.Attribute.Blocks & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user">;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<"oneToMany", "api::article.article"> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     titre: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user">;
     vignette: Schema.Attribute.Media<"images" | "files" | "videos" | "audios"> &
       Schema.Attribute.Required;
   };
