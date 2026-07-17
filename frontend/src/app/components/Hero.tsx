@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-
-import bgCarouselDefault from '../../imports/bg-test.jpg';
-import bgCarouselJeune from '../../imports/bg-promo.jpg';
-import bgCarouselCompet from '../../imports/bg-test2.jpg';
 
 export type HeroSlide = {
   id: number;
@@ -15,46 +11,21 @@ export type HeroSlide = {
   cta?: string;
 };
 
-const defaultSlides: HeroSlide[] = [
-  {
-    id: 1,
-    image: bgCarouselDefault,
-    label: 'ACTUALITÉ DU CLUB',
-    title: 'LE CLTO BADMINTON RECRUTE DE NOUVEAUX TALENTS',
-    description: "Rejoignez l'un des clubs les plus compétitifs de France",
-    cta: 'Découvrir',
-  },
-  {
-    id: 2,
-    image: bgCarouselCompet,
-    label: 'JEUNES COMPÉTITEURS',
-    title: 'NOS ÉQUIPES EN ROUTE VERS LES CHAMPIONNATS',
-    description: 'Suivez nos athlètes lors des prochains interclubs',
-    cta: 'Voir les résultats',
-  },
-  {
-    id: 3,
-    image: bgCarouselJeune,
-    label: 'JEUNES LOISIRS',
-    title: 'STAGES DE VACANCES POUR LES JEUNES',
-    description: "Inscriptions ouvertes pour les stages d'été",
-    cta: "S'inscrire",
-  },
-];
-
 type HeroProps<T extends HeroSlide = HeroSlide> = {
   slides?: T[];
   variant?: 'home' | 'interclub';
 };
 
 export function Hero<T extends HeroSlide = HeroSlide>({
-  slides = defaultSlides as T[],
+  slides = [] as unknown as T[],
   variant = 'home',
 }: HeroProps<T>) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [progress, setProgress] = useState(0);
 
   const isInterclub = variant === 'interclub';
+
+  const loaded = slides.length > 0;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -89,6 +60,27 @@ export function Hero<T extends HeroSlide = HeroSlide>({
 
   const navButtonClass =
     'w-7 h-7 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors duration-200 flex items-center justify-center cursor-pointer';
+
+  if (!loaded) {
+    return (
+      <section
+        className={
+          isInterclub
+            ? 'relative h-[52vh] min-h-[340px] lg:h-[70vh] lg:min-h-0 overflow-hidden bg-gray-200 flex flex-row items-center justify-center gap-4'
+            : 'relative h-[50vh] min-h-[320px] lg:h-[65vh] lg:min-h-0 overflow-hidden bg-gray-200 flex flex-row items-center justify-center gap-4'
+        }
+      >
+        {/* Loader2 icon */}
+        <Loader2 className="w-10 h-10 animate-spin text-secondary" />
+        <p className="text-primary">Chargement des slides...</p>
+        {/* Diagonal edge — outside AnimatePresence to avoid gap on slide change */}
+        <div
+          className="absolute -bottom-px left-0 right-0 h-10 md:h-24 bg-white z-10 pointer-events-none"
+          style={{ clipPath: 'polygon(-1% 100%, 101% 0, 101% 100%)' }}
+        />
+      </section>
+    );
+  }
 
   return (
     <section
@@ -216,7 +208,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
 
       {/* Diagonal edge — outside AnimatePresence to avoid gap on slide change */}
       <div
-        className="absolute -bottom-px left-0 right-0 h-10 md:h-24 bg-white z-10 pointer-events-none"
+        className={`absolute -bottom-px left-0 right-0 h-10 md:h-24 bg-${isInterclub ? 'gray-100' : 'white'} z-10 pointer-events-none`}
         style={{ clipPath: 'polygon(-1% 100%, 101% 0, 101% 100%)' }}
       />
 

@@ -33,16 +33,21 @@
     "division": {
       "type": "enumeration",
       "enum": [
+        "N1",
         "N2",
         "N3",
+        "R1",
         "R2",
+        "R3",
         "D1-A",
         "D1-B",
         "D2-A",
         "D2-B",
-        "D3"
+        "D3",
+        "D4"
       ],
-      "required": true
+      "required": true,
+      "unique": true
     },
     "icbadUrl": {
       "type": "string",
@@ -115,6 +120,17 @@
     "scrapeError": {
       "type": "string",
       "description": "Message d'erreur du dernier scraping si échec"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "desc": {
+      "type": "text"
     }
   }
 }

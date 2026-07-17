@@ -575,6 +575,34 @@ export interface ApiGymnaseGymnase extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiHeroHero extends Struct.CollectionTypeSchema {
+  collectionName: "heros";
+  info: {
+    displayName: "Bandeau accueil";
+    pluralName: "heros";
+    singularName: "hero";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    categorie: Schema.Attribute.String & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    image: Schema.Attribute.Media<"images" | "files"> & Schema.Attribute.Required;
+    interclub: Schema.Attribute.Boolean;
+    libelle_btn: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::hero.hero"> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    titre: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
 export interface ApiHistoriqueHistorique extends Struct.CollectionTypeSchema {
   collectionName: "historiques";
   info: {
@@ -831,17 +859,21 @@ export interface PluginIcbadScraperInterclubTeam extends Struct.CollectionTypeSc
     competitionName: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    desc: Schema.Attribute.Text;
     division: Schema.Attribute.Enumeration<
-      ["N2", "N3", "R2", "D1-A", "D1-B", "D2-A", "D2-B", "D3"]
+      ["N1", "N2", "N3", "R1", "R2", "R3", "D1-A", "D1-B", "D2-A", "D2-B", "D3", "D4"]
     > &
-      Schema.Attribute.Required;
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     icbadTeamCode: Schema.Attribute.String;
     icbadUrl: Schema.Attribute.String & Schema.Attribute.Required;
+    image: Schema.Attribute.Media<"images">;
     lastScrapedAt: Schema.Attribute.DateTime;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<"oneToMany", "plugin::icbad-scraper.interclub-team"> &
       Schema.Attribute.Private;
     matches: Schema.Attribute.JSON;
+    objectif: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     ranking: Schema.Attribute.JSON;
     scrapeError: Schema.Attribute.String;
@@ -1172,10 +1204,11 @@ declare module "@strapi/strapi" {
       "api::contact.contact": ApiContactContact;
       "api::faq.faq": ApiFaqFaq;
       "api::gymnase.gymnase": ApiGymnaseGymnase;
+      "api::hero.hero": ApiHeroHero;
       "api::historique.historique": ApiHistoriqueHistorique;
-"api::mot-du-president.mot-du-president": ApiMotDuPresidentMotDuPresident;
+      "api::mot-du-president.mot-du-president": ApiMotDuPresidentMotDuPresident;
       "api::page-adherer.page-adherer": ApiPageAdhererPageAdherer;
-"api::partenaire.partenaire": ApiPartenairePartenaire;
+      "api::partenaire.partenaire": ApiPartenairePartenaire;
       "plugin::content-releases.release": PluginContentReleasesRelease;
       "plugin::content-releases.release-action": PluginContentReleasesReleaseAction;
       "plugin::i18n.locale": PluginI18NLocale;

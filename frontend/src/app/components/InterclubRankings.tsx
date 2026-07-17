@@ -2,77 +2,58 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Trophy, TrendingUp, TrendingDown, Minus, Medal, Loader2, AlertCircle } from 'lucide-react';
+import {
+    Trophy,
+    TrendingUp,
+    TrendingDown,
+    Minus,
+    Medal,
+    Loader2,
+    AlertCircle,
+    ChevronDown,
+    ChevronUp,
+    ArrowRight,
+} from 'lucide-react';
 import { getInterclubTeams } from '@/api/icbad_local/interclub';
+import type { InterclubTeamRanking, InterclubTeamSummary } from '@/types/interclubType';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
 import { Section } from './Section';
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-interface InterclubTeamRanking {
-    position: number;
-    teamName: string;
-    teamCode: string;
-    logoUrl: string | null;
-    rowClass: string;
-    played: number;
-    won: number;
-    draw: number;
-    lost: number;
-    forfeit: number;
-    bonusPlus: number;
-    bonusMinus: number;
-    points: number;
-    matchDiff: number;
-    setDiff: number;
-    ptsDiff: number;
-    isClto: boolean;
-}
-
-interface InterclubTeamSummary {
-    teamSlug: string;
-    teamLabel: string;
-    division: string;
-    competitionName: string;
-    season: string;
-    cltoPosition: number | null;
-    cltoPoints: number | null;
-    cltoPlayed: number | null;
-    cltoWon: number | null;
-    cltoDraw: number | null;
-    cltoLost: number | null;
-    cltoBonusPlus: number | null;
-    cltoBonusMinus: number | null;
-    cltoMatchDiff: number | null;
-    cltoSetDiff: number | null;
-    cltoPtsDiff: number | null;
-    lastScrapedAt: string | null;
-    scrapeError: string | null;
-    ranking: InterclubTeamRanking[];
-}
+import { Link } from 'react-router';
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
 
-// Ordre d'affichage souhaité + couleur par division
 const DIVISION_CONFIG: Record<string, { label: string; color: string; order: number }> = {
-    'N2': { label: 'Nationale 2', color: '#dc2626', order: 1 },
-    'N3': { label: 'Nationale 3', color: '#dc2626', order: 2 },
-    'R2': { label: 'Régionale 2', color: '#0153b6', order: 3 },
-    'D1-A': { label: 'Départementale 1 - A', color: '#16a34a', order: 4 },
-    'D1-B': { label: 'Départementale 1 - B', color: '#16a34a', order: 5 },
-    'D2-A': { label: 'Départementale 2 - A', color: '#16a34a', order: 6 },
-    'D2-B': { label: 'Départementale 2 - B', color: '#16a34a', order: 7 },
-    'D3': { label: 'Départementale 3', color: '#16a34a', order: 8 },
+    'N1': { label: 'Nationale 1', color: '#dc2626', order: 1 },
+    'N2': { label: 'Nationale 2', color: '#dc2626', order: 2 },
+    'N3': { label: 'Nationale 3', color: '#dc2626', order: 3 },
+    'R1': { label: 'Régionale 1', color: '#0153b6', order: 4 },
+    'R2': { label: 'Régionale 2', color: '#0153b6', order: 5 },
+    'R3': { label: 'Régionale 3', color: '#0153b6', order: 6 },
+    'D1-A': { label: 'Départementale 1 - A', color: '#16a34a', order: 7 },
+    'D1-B': { label: 'Départementale 1 - B', color: '#16a34a', order: 8 },
+    'D2-A': { label: 'Départementale 2 - A', color: '#16a34a', order: 9 },
+    'D2-B': { label: 'Départementale 2 - B', color: '#16a34a', order: 10 },
+    'D3': { label: 'Départementale 3', color: '#16a34a', order: 11 },
+    'D4': { label: 'Départementale 4', color: '#16a34a', order: 12 },
 };
+
+const PEEK_HEIGHT_PX = 28;
 
 const getDivisionConfig = (division: string) =>
     DIVISION_CONFIG[division] ?? { label: division, color: '#0153b6', order: 99 };
+
+const isCltoTeam = (team: InterclubTeamRanking) =>
+    team.isClto || team.teamCode?.toUpperCase().includes('CLTO');
+
+/** Opacité plus faible (= plus transparent) quand l'équipe est loin de CLTO */
+const peekOpacity = (distance: number) => Math.max(0.15, 1 - distance * 0.2);
 
 // ─── Composant principal ──────────────────────────────────────────────────────
 
 export function InterclubRankings() {
     const [teams, setTeams] = useState<InterclubTeamSummary[]>([]);
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [expanded, setExpanded] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -82,7 +63,6 @@ export function InterclubRankings() {
                 setLoading(true);
                 const data: InterclubTeamSummary[] = await getInterclubTeams();
 
-                // Trier selon l'ordre défini dans DIVISION_CONFIG
                 const sorted = [...data].sort((a, b) => {
                     const orderA = getDivisionConfig(a.division).order;
                     const orderB = getDivisionConfig(b.division).order;
@@ -100,10 +80,14 @@ export function InterclubRankings() {
         fetchData();
     }, []);
 
-    // ── État chargement ─────────────────────────────────────────────────────
+    // Replier la pile quand on change d'équipe CLTO
+    useEffect(() => {
+        setExpanded(false);
+    }, [selectedIndex]);
+
     if (loading) {
         return (
-            <Section className='bg-gradient-to-b from-gray-50 to-white'>
+            <Section className="bg-gradient-to-b from-gray-50 to-white">
                 <div className="flex flex-col items-center justify-center min-h-64">
                     <Loader2 size={40} className="text-[#0153b6] animate-spin mb-4" />
                     <p className="text-gray-500 font-medium">Chargement des classements…</p>
@@ -112,10 +96,9 @@ export function InterclubRankings() {
         );
     }
 
-    // ── État erreur ─────────────────────────────────────────────────────────
     if (error || teams.length === 0) {
         return (
-            <Section className='bg-gradient-to-b from-gray-50 to-white'>
+            <Section className="bg-gradient-to-b from-gray-50 to-white">
                 <div className="flex flex-col items-center justify-center min-h-64">
                     <AlertCircle size={40} className="text-red-500 mb-4" />
                     <p className="text-gray-600">{error ?? 'Aucune donnée disponible.'}</p>
@@ -127,10 +110,13 @@ export function InterclubRankings() {
     const selected = teams[selectedIndex];
     const divConfig = getDivisionConfig(selected.division);
     const accentColor = divConfig.color;
+    const ranking = selected.ranking;
+    const cltoIndex = ranking.findIndex(isCltoTeam);
+    const cltoPosition =
+        cltoIndex >= 0 ? ranking[cltoIndex].position : (selected.cltoPosition ?? null);
 
     return (
         <Section className="bg-gradient-to-b from-gray-50 to-white">
-            {/* ── En-tête ────────────────────────────────────────────── */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -140,10 +126,9 @@ export function InterclubRankings() {
             >
                 <HomePageSectionTitle
                     title="CLASSEMENTS INTERCLUB"
-                    subtitle={`Nos équipes en compétition | Saison ${selected.season}`}
+                    subtitle={`Nos équipes en compétition | Saison ${selected.season} | Phase de poule`}
                 />
 
-                {/* ── Sélecteur d'équipe ──────────────────────────────── */}
                 <div className="flex flex-wrap justify-center gap-3 mb-8">
                     {teams.map((team, index) => {
                         const cfg = getDivisionConfig(team.division);
@@ -177,7 +162,6 @@ export function InterclubRankings() {
                     })}
                 </div>
 
-                {/* ── Titre de la division ────────────────────────────── */}
                 <motion.h3
                     key={selected.division}
                     initial={{ opacity: 0, y: -10 }}
@@ -187,102 +171,129 @@ export function InterclubRankings() {
                 >
                     {divConfig.label} - {selected.competitionName}
                 </motion.h3>
+
+                <div className="text-center mt-2">
+                    <button
+                        type="button"
+                        onClick={() => setExpanded((prev) => !prev)}
+                        className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2"
+                        style={{ outlineColor: accentColor }}
+                        aria-expanded={expanded}
+                    >
+                        {expanded ? (
+                            <>
+                                <ChevronUp size={14} style={{ color: accentColor }} />
+                                Réduire le classement complet
+                            </>
+                        ) : (
+                            <>
+                                <ChevronDown size={14} style={{ color: accentColor }} />
+                                Afficher le classement complet
+                            </>
+                        )}
+                    </button>
+                </div>
             </motion.div>
 
-            {/* ── Carte des équipes ───────────────────────────────── */}
             <AnimatePresence mode="wait">
                 <motion.div
-                    key={selected.teamSlug}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.3 }}
+                    key={`${selected.teamSlug}-${expanded ? 'open' : 'peek'}`}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.28 }}
                     className="max-w-4xl mx-auto"
                 >
-                    {selected.ranking.length > 0 ?
-                        selected.ranking.map((team, index) => {
-                            const isCLTO = team.teamCode?.toUpperCase().includes("CLTO");
-                            return (
-                                <div
-                                    key={index}
-                                    className="rounded-2xl p-4 mb-6 shadow-xl border-2"
-                                    style={{ borderColor: isCLTO ? accentColor : '', background: isCLTO ? `${accentColor}0f` : '' }}
-                                >
-                                    {/* Single row on md+, two rows on mobile */}
-                                    <div className="flex items-center gap-4">
-
-                                        {/* Position */}
-                                        <div
-                                            className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-xl flex flex-col items-center justify-center shadow-md text-white"
-                                            style={{ backgroundColor: accentColor }}
-                                        >
-                                            <span className="font-['Bebas_Neue'] text-3xl md:text-4xl leading-none">
-                                                {team.position}
-                                            </span>
-                                            <span className="text-xs opacity-80 uppercase">place</span>
-                                        </div>
-
-                                        {/* Right side: stacks on mobile, single row on md+ */}
-                                        <div className="flex-1 min-w-0 flex flex-col md:flex-row md:items-center md:gap-6">
-
-                                            {/* Nom + résultats */}
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    {team.position === 1 && <Trophy style={{ color: accentColor }} size={20} />}
-                                                    {team.position === 2 && <Medal style={{ color: '#9ca3af' }} size={20} />}
-                                                    {team.position === 3 && <Medal style={{ color: '#d97706' }} size={20} />}
-                                                    <h4 className="text-lg md:text-2xl text-gray-900 truncate">
-                                                        {team.teamName}
-                                                    </h4>
-                                                </div>
-                                                <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
-                                                    <span>
-                                                        <strong className="text-gray-900">{team.played}</strong> joués
-                                                    </span>
-                                                    <span className="text-green-600 font-semibold">{team.won}V</span>
-                                                    {(team.draw ?? 0) > 0 && (
-                                                        <span className="text-yellow-600 font-semibold">{team.draw}N</span>
-                                                    )}
-                                                    <span className="text-red-500 font-semibold">{team.lost}D</span>
-                                                </div>
-                                            </div>
-
-                                            {/* Stats détaillées */}
-                                            <div className="flex items-center gap-4 md:gap-6 mt-3 md:mt-0">
-                                                <StatPill label="Bonus +" value={team.bonusPlus} color="#16a34a" />
-                                                <StatPill label="Bonus −" value={team.bonusMinus} color="#dc2626" />
-                                                <DiffPill value={team.matchDiff} />
-                                                <div className="flex-shrink-0 text-center">
-                                                    <div
-                                                        className="font-['Bebas_Neue'] text-4xl md:text-5xl leading-none"
-                                                        style={{ color: accentColor }}
-                                                    >
-                                                        {team.points}
-                                                    </div>
-                                                    <div className="text-xs text-gray-500 uppercase tracking-wide">Pts</div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                        }
-                        ) : (
-                            // Pas de données CLTO pour cette équipe
-                            <div className="rounded-2xl p-10 bg-white border-2 border-gray-200 shadow text-center">
-                                <AlertCircle size={32} className="text-gray-300 mx-auto mb-3" />
-                                <p className="text-gray-500">
-                                    {selected.scrapeError
-                                        ? `Erreur de scraping : ${selected.scrapeError}`
-                                        : 'Aucune donnée disponible pour cette équipe.'}
-                                </p>
+                    {ranking.length > 0 ? (
+                        expanded ? (
+                            <div className="space-y-6">
+                                {ranking.map((team) => (
+                                    <RankingCard
+                                        key={`${team.teamCode}-${team.position}`}
+                                        team={team}
+                                        accentColor={accentColor}
+                                        isClto={isCltoTeam(team)}
+                                        onCltoClick={() => setExpanded(false)}
+                                        expanded={expanded}
+                                    />
+                                ))}
                             </div>
-                        )}
+                        ) : (
+                            <div className="flex flex-col items-stretch">
+                                {ranking.map((team, index) => {
+                                    const isCLTO = isCltoTeam(team);
+                                    const distance =
+                                        cltoPosition != null
+                                            ? Math.abs(team.position - cltoPosition)
+                                            : Math.abs(index - Math.max(cltoIndex, 0));
+                                    const isAbove = cltoIndex >= 0 && index < cltoIndex;
+                                    const isBelow = cltoIndex >= 0 && index > cltoIndex;
+
+                                    if (isCLTO) {
+                                        return (
+                                            <motion.div
+                                                key={`${team.teamCode}-${team.position}`}
+                                                layout
+                                                className="relative z-20"
+                                            >
+                                                <RankingCard
+                                                    team={team}
+                                                    accentColor={accentColor}
+                                                    isClto
+                                                    onCltoClick={() => setExpanded(true)}
+                                                    expanded={expanded}
+                                                />
+                                            </motion.div>
+                                        );
+                                    }
+
+                                    const opacity = peekOpacity(distance);
+
+                                    return (
+                                        <div
+                                            key={`${team.teamCode}-${team.position}`}
+                                            aria-hidden
+                                            className={`relative z-10 pointer-events-none overflow-hidden rounded-2xl ${isAbove ? '-mb-1' : isBelow ? '-mt-1' : ''
+                                                }`}
+                                            style={{
+                                                height: PEEK_HEIGHT_PX,
+                                                opacity,
+                                            }}
+                                        >
+                                            {/* Contenu réel clipé : bord haut (équipes devant) ou bas (équipes derrière) */}
+                                            <div
+                                                className="absolute left-0 right-0"
+                                                style={
+                                                    isAbove
+                                                        ? { top: 0 }
+                                                        : { bottom: 0 }
+                                                }
+                                            >
+                                                <RankingCard
+                                                    team={team}
+                                                    accentColor={accentColor}
+                                                    isClto={false}
+                                                    expanded={expanded}
+                                                />
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )
+                    ) : (
+                        <div className="rounded-2xl p-10 bg-white border-2 border-gray-200 shadow text-center">
+                            <AlertCircle size={32} className="text-gray-300 mx-auto mb-3" />
+                            <p className="text-gray-500">
+                                {selected.scrapeError
+                                    ? `Erreur de scraping : ${selected.scrapeError}`
+                                    : 'Aucune donnée disponible pour cette équipe.'}
+                            </p>
+                        </div>
+                    )}
                 </motion.div>
             </AnimatePresence>
 
-            {/* ── Légende ───────────────────────────────────────────── */}
             <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
@@ -305,19 +316,119 @@ export function InterclubRankings() {
                     </div>
                 </div>
 
-                {/* Lien IcBAD */}
                 <div className="text-center mt-4">
                     <p className="text-xs text-gray-400">
                         Données issues de icbad.ffbad.org ·{' '}
                         {selected.lastScrapedAt
                             ? `mis à jour le ${new Date(selected.lastScrapedAt).toLocaleDateString('fr-FR', {
-                                day: '2-digit', month: 'long', year: 'numeric',
+                                day: '2-digit',
+                                month: 'long',
+                                year: 'numeric',
                             })}`
                             : 'données non disponibles'}
                     </p>
                 </div>
             </motion.div>
+
+            <div className="w-full mt-10 flex justify-center text-lg">
+                <Link to="/interclub" className="flex justify-center items-center gap-2 px-6 py-3 rounded-full bg-secondary text-white hover:bg-secondary/80 transition-all duration-200">
+                    Accéder à la page Interclubs
+                    <ArrowRight size={20} />
+                </Link>
+            </div>
         </Section>
+    );
+}
+
+// ─── Carte d'équipe ───────────────────────────────────────────────────────────
+
+function RankingCard({
+    team,
+    accentColor,
+    isClto,
+    onCltoClick,
+    expanded,
+}: {
+    team: InterclubTeamRanking;
+    accentColor: string;
+    isClto: boolean;
+    onCltoClick?: () => void;
+    expanded?: boolean;
+}) {
+    const interactive = isClto && !!onCltoClick;
+
+    return (
+        <div
+            role={interactive ? 'button' : undefined}
+            tabIndex={interactive ? 0 : undefined}
+            onClick={interactive ? onCltoClick : undefined}
+            onKeyDown={
+                interactive
+                    ? (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            onCltoClick?.();
+                        }
+                    }
+                    : undefined
+            }
+            className={`rounded-2xl p-4 shadow-xl border-2 bg-white ${interactive ? 'cursor-pointer transition-shadow hover:shadow-2xl' : ''
+                }`}
+            style={{
+                borderColor: isClto ? accentColor : '#e5e7eb',
+                background: isClto ? `${accentColor}0f` : undefined,
+            }}
+        >
+            {(expanded || isClto) && (
+                <div className="flex items-center gap-4">
+                    <div
+                        className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-xl flex flex-col items-center justify-center shadow-md text-white"
+                        style={{ backgroundColor: accentColor }}
+                    >
+                        <span className="font-['Bebas_Neue'] text-3xl md:text-4xl leading-none">
+                            {team.position}
+                        </span>
+                        <span className="text-xs opacity-80 uppercase">place</span>
+                    </div>
+
+                    <div className="flex-1 min-w-0 flex flex-col md:flex-row md:items-center md:gap-6">
+                        <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1">
+                                {team.position === 1 && <Trophy style={{ color: accentColor }} size={20} />}
+                                {team.position === 2 && <Medal style={{ color: '#9ca3af' }} size={20} />}
+                                {team.position === 3 && <Medal style={{ color: '#d97706' }} size={20} />}
+                                <h4 className="text-lg md:text-2xl text-gray-900 truncate">{team.teamName}</h4>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
+                                <span>
+                                    <strong className="text-gray-900">{team.played}</strong> joués
+                                </span>
+                                <span className="text-green-600 font-semibold">{team.won}V</span>
+                                {(team.draw ?? 0) > 0 && (
+                                    <span className="text-yellow-600 font-semibold">{team.draw}N</span>
+                                )}
+                                <span className="text-red-500 font-semibold">{team.lost}D</span>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 md:gap-6 mt-3 md:mt-0">
+                            <StatPill label="Bonus +" value={team.bonusPlus} color="#16a34a" />
+                            <StatPill label="Bonus −" value={team.bonusMinus} color="#dc2626" />
+                            <DiffPill value={team.matchDiff} />
+                            <div className="flex-shrink-0 text-center">
+                                <div
+                                    className="font-['Bebas_Neue'] text-4xl md:text-5xl leading-none"
+                                    style={{ color: accentColor }}
+                                >
+                                    {team.points}
+                                </div>
+                                <div className="text-xs text-gray-500 uppercase tracking-wide">Pts</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 }
 
@@ -332,7 +443,10 @@ function DiffPill({ value }: { value: number | null }) {
     const display = isPositive ? `+${value}` : String(value);
     return (
         <div className="flex-shrink-0 text-center">
-            <div className="flex items-center justify-center gap-0.5 font-['Bebas_Neue'] text-2xl leading-none" style={{ color }}>
+            <div
+                className="flex items-center justify-center gap-0.5 font-['Bebas_Neue'] text-2xl leading-none"
+                style={{ color }}
+            >
                 <Icon size={16} strokeWidth={2.5} />
                 <span>{display}</span>
             </div>
