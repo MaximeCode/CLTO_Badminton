@@ -440,6 +440,7 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    a_la_une: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     auteur: Schema.Attribute.Relation<"oneToOne", "plugin::users-permissions.user">;
     categorie: Schema.Attribute.Relation<"oneToOne", "api::categorie.categorie">;
     contenu: Schema.Attribute.Blocks & Schema.Attribute.Required;
@@ -599,6 +600,33 @@ export interface ApiHistoriqueHistorique extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiMotDuPresidentMotDuPresident extends Struct.SingleTypeSchema {
+  collectionName: "mot_du_presidents";
+  info: {
+    displayName: "Mot du pr\u00E9sident";
+    pluralName: "mot-du-presidents";
+    singularName: "mot-du-president";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    discours: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      "oneToMany",
+      "api::mot-du-president.mot-du-president"
+    > &
+      Schema.Attribute.Private;
+    portrait: Schema.Attribute.Media<"images"> & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
 export interface ApiPageAdhererPageAdherer extends Struct.SingleTypeSchema {
   collectionName: "page_adherers";
   info: {
@@ -619,6 +647,34 @@ export interface ApiPageAdhererPageAdherer extends Struct.SingleTypeSchema {
     localizations: Schema.Attribute.Relation<"oneToMany", "api::page-adherer.page-adherer"> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPartenairePartenaire extends Struct.CollectionTypeSchema {
+  collectionName: "partenaires";
+  info: {
+    displayName: "Partenaires";
+    pluralName: "partenaires";
+    singularName: "partenaire";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::partenaire.partenaire"> &
+      Schema.Attribute.Private;
+    logo: Schema.Attribute.Media<"images", true> & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    type: Schema.Attribute.Enumeration<
+      ["Partenaires badminton", "Partenaires institutionnels", "Partenaires entreprises"]
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<"Partenaires badminton">;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
   };
@@ -1117,7 +1173,9 @@ declare module "@strapi/strapi" {
       "api::faq.faq": ApiFaqFaq;
       "api::gymnase.gymnase": ApiGymnaseGymnase;
       "api::historique.historique": ApiHistoriqueHistorique;
+"api::mot-du-president.mot-du-president": ApiMotDuPresidentMotDuPresident;
       "api::page-adherer.page-adherer": ApiPageAdhererPageAdherer;
+"api::partenaire.partenaire": ApiPartenairePartenaire;
       "plugin::content-releases.release": PluginContentReleasesRelease;
       "plugin::content-releases.release-action": PluginContentReleasesReleaseAction;
       "plugin::i18n.locale": PluginI18NLocale;

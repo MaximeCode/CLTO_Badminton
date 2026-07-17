@@ -39,6 +39,10 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
+    },
+    "a_la_une": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

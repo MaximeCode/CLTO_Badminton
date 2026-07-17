@@ -1,0 +1,27 @@
+{
+  "kind": "singleType",
+  "collectionName": "mot_du_presidents",
+  "info": {
+    "singularName": "mot-du-president",
+    "pluralName": "mot-du-presidents",
+    "displayName": "Mot du président"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "discours": {
+      "type": "blocks",
+      "required": true
+    },
+    "portrait": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}
