@@ -51,3 +51,53 @@ export function ...Page() {
   }, []);
 }
 ```
+
+---
+
+## Code Complet d'un Template pour get, fetch et show les données
+
+```tsx
+const [articles, setArticles] = useState<Article[]>([]);
+const [loadError, setLoadError] = useState<string | null>(null);
+const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  async function loadData() {
+    try {
+      setLoadError(null);
+      setLoading(true);
+      const data = await getFeaturedArticles();
+      setArticles(data);
+    } catch (error) {
+      console.error('Error loading data:', error);
+      setLoadError(
+        error instanceof Error ? error.message : 'Impossible de charger les données.',
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+  loadData();
+}, []);
+
+if (loading) {
+  return (
+    <Section className="bg-white">
+      <div className="flex flex-col items-center justify-center min-h-64">
+        <Loader2 size={40} className="text-[#0153b6] animate-spin mb-4" />
+        <p className="text-gray-500 font-medium">Chargement des actualités à la Une…</p>
+      </div>
+    </Section>
+  );
+}
+
+if (loadError) {
+  return (
+    <Section className="bg-white">
+      <div className="flex flex-col items-center justify-center min-h-64">
+        <p className="text-gray-500 font-medium">{loadError}</p>
+      </div>
+    </Section>
+  );
+}
+```	

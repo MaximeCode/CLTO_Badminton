@@ -696,7 +696,7 @@ export interface ApiPartenairePartenaire extends Struct.CollectionTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<"oneToMany", "api::partenaire.partenaire"> &
       Schema.Attribute.Private;
-    logo: Schema.Attribute.Media<"images", true> & Schema.Attribute.Required;
+    logos: Schema.Attribute.Media<"images", true> & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     type: Schema.Attribute.Enumeration<
       ["Partenaires badminton", "Partenaires institutionnels", "Partenaires entreprises"]

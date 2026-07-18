@@ -11,7 +11,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "logo": {
+    "logos": {
       "type": "media",
       "multiple": true,
       "required": true,
