@@ -138,7 +138,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                   className={
                     isInterclub
                       ? 'text-secondary uppercase tracking-[0.16em] text-[11px] sm:text-sm mb-2 md:mb-4'
-                      : 'text-secondary uppercase tracking-wider text-sm sm:text-md mb-3 md:mb-4'
+                      : 'text-secondary uppercase tracking-wider text-lg md:text-xl mb-3 md:mb-4'
                   }
                 >
                   {slide.label}
@@ -150,8 +150,8 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                   transition={{ delay: 0.3 }}
                   className={
                     isInterclub
-                      ? 'font-primary text-3xl md:text-4xl lg:text-6xl xl:text-7xl text-white leading-[1.15] mb-2 md:mb-4'
-                      : 'font-primary text-3xl md:text-4xl lg:text-6xl xl:text-7xl text-white leading-[1.15] mb-3 md:mb-4'
+                      ? 'font-primary text-4xl lg:text-5xl xl:text-7xl text-white leading-[1.15] mb-2 md:mb-4'
+                      : 'font-primary text-4xl lg:text-5xl xl:text-7xl text-white leading-[1.15] mb-3 md:mb-4'
                   }
                 >
                   {slide.title}
@@ -182,9 +182,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                 )}
               </div>
 
-              {/* {!isInterclub && (
-                <> */}
-              <div className="my-4 md:mt-10 md:mb-0 z-10 flex gap-1.5 sm:gap-2">
+              <div className="mt-10 z-10 flex gap-1.5 sm:gap-2">
                 {slides.map((_, index) => (
                   <button
                     key={index}

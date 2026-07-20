@@ -1,5 +1,6 @@
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import { Users, Trophy, Target } from 'lucide-react';
+import { Smile, Trophy, Target, Medal, Feather } from 'lucide-react';
 import { Link } from 'react-router';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
 import { Section } from './Section';
@@ -7,44 +8,39 @@ import { Section } from './Section';
 const spaces = [
   {
     title: 'JEUNES LOISIRS',
-    icon: Users,
-    image: 'https://images.unsplash.com/photo-1733141732172-3abba91f4db2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjB5b3V0aCUyMGp1bmlvcnxlbnwxfHx8fDE3NzI3OTYxMjh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    icon: Smile,
     color: 'primary' as const,
     link: '/jeunes-loisirs',
   },
   {
     title: 'JEUNES COMPÉTITEURS',
     icon: Trophy,
-    image: 'https://images.unsplash.com/photo-1595220427358-8cf2ce3d7f89?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBzbWFzaCUyMGp1bXB8ZW58MXx8fHwxNzcyNzk2MTI2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
     color: 'secondary' as const,
     link: '/jeunes-competiteurs',
   },
   {
     title: 'ADULTES LOISIRS',
     icon: Target,
-    image: 'https://images.unsplash.com/photo-1624024834874-2a1611305604?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBjb3VydCUyMGluZG9vcnxlbnwxfHx8fDE3NzI2ODI3OTJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
     color: 'primary' as const,
     link: '/adultes-loisirs',
   },
   {
     title: 'ADULTES COMPÉTITEURS',
-    icon: Users,
-    image: 'https://images.unsplash.com/photo-1716041040048-228dbae7b6ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjB0cmFpbmluZyUyMHByYWN0aWNlfGVufDF8fHx8MTc3Mjc5NjEyN3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    icon: Medal,
     color: 'secondary' as const,
     link: '/adultes-competiteurs',
   },
   {
     title: 'VIEILLES PLUMES',
-    icon: Users,
-    image: 'https://images.unsplash.com/photo-1765544581327-b5e9055d986c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBjb21wZXRpdGlvbiUyMG1hdGNofGVufDF8fHx8MTc3Mjc5NjEyNnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    icon: Feather,
     color: 'primary' as const,
     link: '/vieilles-plumes',
   },
 ];
 
 const overlayClasses = {
-  primary: 'from-primary/90 via-primary/50',
-  secondary: 'from-secondary/90 via-secondary/50',
+  primary: 'from-primary/90 to-primary/50',
+  secondary: 'from-secondary/90 to-secondary/50',
 } as const;
 
 type Space = (typeof spaces)[number];
@@ -56,14 +52,14 @@ function SpaceCard({ space }: { space: Space }) {
     <div className="group relative h-full max-h-[300px] rounded-lg overflow-hidden cursor-pointer aspect-[3/4]">
       <div
         className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-        style={{ backgroundImage: `url(${space.image})` }}
+      // style={{ backgroundImage: `url(${space.image})` }}
       />
 
       <div
-        className={`absolute inset-0 bg-gradient-to-t ${overlayClasses[space.color]} to-transparent group-hover:opacity-95 transition-opacity duration-300`}
+        className={`absolute inset-0 bg-gradient-to-t ${overlayClasses[space.color]}  group-hover:opacity-95 transition-opacity duration-300`}
       />
 
-      <div className="absolute inset-0 flex flex-col items-center justify-end p-4 sm:p-6 text-white">
+      <div className="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 text-white">
         <motion.div
           initial={{ scale: 1 }}
           whileHover={{ scale: 1.1 }}
@@ -81,27 +77,94 @@ function SpaceCard({ space }: { space: Space }) {
 }
 
 export function SpaceCards() {
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [scrollMetrics, setScrollMetrics] = useState({
+    canScroll: false,
+    canScrollRight: false,
+    thumbWidth: 100,
+    thumbLeft: 0,
+  });
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+
+    const update = () => {
+      const { scrollLeft, scrollWidth, clientWidth } = el;
+      const maxScroll = scrollWidth - clientWidth;
+      const canScroll = maxScroll > 1;
+      const thumbWidth = canScroll ? Math.max((clientWidth / scrollWidth) * 100, 18) : 100;
+      const progress = maxScroll > 0 ? scrollLeft / maxScroll : 0;
+
+      setScrollMetrics({
+        canScroll,
+        canScrollRight: scrollLeft < maxScroll - 1,
+        thumbWidth,
+        thumbLeft: progress * (100 - thumbWidth),
+      });
+    };
+
+    update();
+    el.addEventListener('scroll', update, { passive: true });
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+
+    return () => {
+      el.removeEventListener('scroll', update);
+      ro.disconnect();
+    };
+  }, []);
+
   return (
     <Section className="bg-white">
       <HomePageSectionTitle title="NOS PUBLICS" />
 
-      <div className="flex flex-row gap-4 overflow-x-auto overflow-y-hidden pb-4 scrollbar-styled">
-        {spaces.map((space, index) => (
-          <Link
-            key={space.link}
-            to={space.link}
-            className="shrink-0 w-48 sm:w-56"
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 * index }}
+      <div className="relative">
+        <div
+          ref={scrollerRef}
+          className="flex flex-row gap-4 overflow-x-auto overflow-y-hidden pb-1 scrollbar-none"
+        >
+          {spaces.map((space, index) => (
+            <Link
+              key={space.link}
+              to={space.link}
+              className="shrink-0 w-48 sm:w-56"
             >
-              <SpaceCard space={space} />
-            </motion.div>
-          </Link>
-        ))}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 * index }}
+              >
+                <SpaceCard space={space} />
+              </motion.div>
+            </Link>
+          ))}
+        </div>
+
+        {scrollMetrics.canScrollRight && (
+          <div
+            className="pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-14 bg-gradient-to-l from-white to-transparent"
+            aria-hidden
+          />
+        )}
+
+        {scrollMetrics.canScroll && (
+          <div
+            className="mt-3 h-1.5 rounded-full bg-muted"
+            role="scrollbar"
+            aria-orientation="horizontal"
+            aria-valuenow={Math.round(scrollMetrics.thumbLeft)}
+          >
+            <div
+              className="h-full rounded-full bg-secondary"
+              style={{
+                width: `${scrollMetrics.thumbWidth}%`,
+                marginLeft: `${scrollMetrics.thumbLeft}%`,
+              }}
+            />
+          </div>
+        )}
       </div>
     </Section>
   );

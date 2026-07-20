@@ -8,6 +8,7 @@ import { Section } from './Section';
 import type { Article } from '@/types/articlesType';
 import { getFeaturedArticles } from '@/api/strapi/articles';
 import { extractTextFromBlocks } from '@/utils/blocksText';
+import { Button } from './Button';
 
 function formatArticleDate(date: Date | string) {
   return new Date(date).toLocaleDateString('fr-FR', {
@@ -152,12 +153,7 @@ export function FeaturedNews() {
         </div>
       </div>
 
-      <div className="w-full mt-10 flex justify-center text-lg">
-        <Link to="/actualites" className="flex justify-center items-center gap-2 px-6 py-3 rounded-full bg-secondary text-white hover:bg-secondary/80 transition-all duration-200">
-          Voir toutes les actualités
-          <ArrowRight size={20} />
-        </Link>
-      </div>
+      <Button text='Voir toutes les actualités' to='/actualites' />
     </Section>
   );
 }

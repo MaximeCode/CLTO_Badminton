@@ -11,7 +11,47 @@ import React from "react";
 
 type InlineNode = TextInlineNode | { type: "link"; url: string; children: TextInlineNode[] };
 
-function renderInline(nodes: InlineNode[], keyPrefix: string): React.ReactNode {
+type BlocksVariant = "default" | "onPrimary";
+
+type VariantStyles = {
+  paragraph: string;
+  heading: string;
+  strong: string;
+  underline: string;
+  link: string;
+  quote: string;
+  code: string;
+  figcaption: string;
+};
+
+const VARIANT_STYLES: Record<BlocksVariant, VariantStyles> = {
+  default: {
+    paragraph: "mb-4 text-lg text-foreground/80 leading-relaxed",
+    heading: "text-primary",
+    strong: "text-primary",
+    underline: "text-primary",
+    link: "text-[var(--burgundy)] underline hover:opacity-80",
+    quote: "mb-6 border-l-4 border-[var(--burgundy)] pl-6 italic text-muted-foreground",
+    code: "rounded bg-muted px-1.5 py-0.5 text-sm font-mono",
+    figcaption: "mt-2 text-center text-sm text-muted-foreground",
+  },
+  onPrimary: {
+    paragraph: "mb-3 sm:mb-4 text-base sm:text-lg text-white/90 leading-relaxed",
+    heading: "text-white",
+    strong: "text-secondary",
+    underline: "text-secondary",
+    link: "text-secondary underline hover:opacity-80",
+    quote: "mb-6 border-l-4 border-secondary pl-6 italic text-white/80",
+    code: "rounded bg-white/15 px-1.5 py-0.5 text-sm font-mono text-white",
+    figcaption: "mt-2 text-center text-sm text-white/70",
+  },
+};
+
+function renderInline(
+  nodes: InlineNode[],
+  keyPrefix: string,
+  styles: VariantStyles,
+): React.ReactNode {
   return nodes.map((node, index) => {
     const key = `${keyPrefix}-${index}`;
 
@@ -20,23 +60,23 @@ function renderInline(nodes: InlineNode[], keyPrefix: string): React.ReactNode {
         <a
           key={key}
           href={node.url}
-          className="text-[var(--burgundy)] underline hover:opacity-80"
+          className={styles.link}
           target="_blank"
           rel="noopener noreferrer"
         >
-          {renderInline(node.children, key)}
+          {renderInline(node.children, key, styles)}
         </a>
       );
     }
 
     let content: React.ReactNode = node.text || null;
-    if (node.bold) content = <strong key={`${key}-b`} className="text-primary">{content}</strong>;
+    if (node.bold) content = <strong key={`${key}-b`} className={styles.strong}>{content}</strong>;
     if (node.italic) content = <em key={`${key}-i`}>{content}</em>;
-    if (node.underline) content = <u key={`${key}-u`} className="text-primary">{content}</u>;
+    if (node.underline) content = <u key={`${key}-u`} className={styles.underline}>{content}</u>;
     if (node.strikethrough) content = <s key={`${key}-s`}>{content}</s>;
     if (node.code) {
       content = (
-        <code key={`${key}-c`} className="rounded bg-muted px-1.5 py-0.5 text-sm font-mono">
+        <code key={`${key}-c`} className={styles.code}>
           {content}
         </code>
       );
@@ -46,7 +86,11 @@ function renderInline(nodes: InlineNode[], keyPrefix: string): React.ReactNode {
   });
 }
 
-function renderList(list: ListBlockNode, key: string): React.ReactNode {
+function renderList(
+  list: ListBlockNode,
+  key: string,
+  styles: VariantStyles,
+): React.ReactNode {
   const Tag = list.format === "ordered" ? "ol" : "ul";
   const listClass =
     list.format === "ordered"
@@ -57,12 +101,12 @@ function renderList(list: ListBlockNode, key: string): React.ReactNode {
     <Tag key={key} className={listClass}>
       {list.children.map((child, index) => {
         if (child.type === "list") {
-          return renderList(child, `${key}-nested-${index}`);
+          return renderList(child, `${key}-nested-${index}`, styles);
         }
         const item = child as ListItemInlineNode;
         return (
           <li key={`${key}-item-${index}`} className="leading-relaxed">
-            {renderInline(item.children, `${key}-item-${index}`)}
+            {renderInline(item.children, `${key}-item-${index}`, styles)}
           </li>
         );
       })}
@@ -70,7 +114,11 @@ function renderList(list: ListBlockNode, key: string): React.ReactNode {
   );
 }
 
-function renderBlock(block: BlocksRootNode, index: number): React.ReactNode {
+function renderBlock(
+  block: BlocksRootNode,
+  index: number,
+  styles: VariantStyles,
+): React.ReactNode {
   const key = `block-${index}`;
 
   switch (block.type) {
@@ -78,11 +126,11 @@ function renderBlock(block: BlocksRootNode, index: number): React.ReactNode {
       const heading = block as HeadingBlockNode;
       const className =
         heading.level <= 2
-          ? "mb-4 mt-10 first:mt-0 text-primary"
-          : "mb-3 mt-8 text-primary";
+          ? `mb-4 mt-10 first:mt-0 ${styles.heading}`
+          : `mb-3 mt-8 ${styles.heading}`;
       const style =
         heading.level <= 2 ? { fontFamily: "var(--font-heading)" } : undefined;
-      const children = renderInline(heading.children, key);
+      const children = renderInline(heading.children, key, styles);
 
       switch (heading.level) {
         case 1:
@@ -125,17 +173,14 @@ function renderBlock(block: BlocksRootNode, index: number): React.ReactNode {
     }
     case "paragraph":
       return (
-        <p key={key} className="mb-4 text-lg text-foreground/80 leading-relaxed">
-          {renderInline(block.children, key)}
+        <p key={key} className={styles.paragraph}>
+          {renderInline(block.children, key, styles)}
         </p>
       );
     case "quote":
       return (
-        <blockquote
-          key={key}
-          className="mb-6 border-l-4 border-[var(--burgundy)] pl-6 italic text-muted-foreground"
-        >
-          {renderInline(block.children, key)}
+        <blockquote key={key} className={styles.quote}>
+          {renderInline(block.children, key, styles)}
         </blockquote>
       );
     case "code":
@@ -148,7 +193,7 @@ function renderBlock(block: BlocksRootNode, index: number): React.ReactNode {
         </pre>
       );
     case "list":
-      return <div key={key} className="mb-6">{renderList(block, key)}</div>;
+      return <div key={key} className="mb-6">{renderList(block, key, styles)}</div>;
     case "image": {
       const src = block.image.url.startsWith("http")
         ? block.image.url
@@ -163,7 +208,7 @@ function renderBlock(block: BlocksRootNode, index: number): React.ReactNode {
             height={block.image.height}
           />
           {block.image.caption && (
-            <figcaption className="mt-2 text-center text-sm text-muted-foreground">
+            <figcaption className={styles.figcaption}>
               {block.image.caption}
             </figcaption>
           )}
@@ -177,12 +222,16 @@ function renderBlock(block: BlocksRootNode, index: number): React.ReactNode {
 
 type BlocksRendererProps = {
   content: BlocksContent;
+  /** `onPrimary` = texte clair pour fond coloré (ex. Mot du Président) */
+  variant?: BlocksVariant;
 };
 
-export function BlocksRenderer({ content }: BlocksRendererProps) {
+export function BlocksRenderer({ content, variant = "default" }: BlocksRendererProps) {
   if (!content.length) {
     return null;
   }
 
-  return <div className="blocks-content">{content.map(renderBlock)}</div>;
+  const styles = VARIANT_STYLES[variant];
+
+  return <div className="blocks-content">{content.map((block, i) => renderBlock(block, i, styles))}</div>;
 }

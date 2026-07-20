@@ -3,7 +3,7 @@ export function ShopIcon({ className = "h-5 w-5" }: { className?: string }) {
         <svg
             xmlns="http://www.w3.org/2000/svg"
             className={className}
-            viewBox="0 0 24 24"
+            viewBox="2 2 20 20"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"

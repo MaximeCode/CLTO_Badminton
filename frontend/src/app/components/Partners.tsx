@@ -75,10 +75,10 @@ export function Partners() {
                 <h3 className="font-primary text-2xl text-footer tracking-wide">
                   {partner.type}
                 </h3>
-                <div className="h-1.5 w-14 rounded-full bg-secondary" />
+                <div className="h-1.5 w-8 md:w-14 rounded-full bg-secondary" />
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-5 p-5 md:p-7">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 p-5 md:p-7">
                 {partner.logos.map((logo, index) => (
                   <motion.div
                     key={index}
@@ -86,13 +86,13 @@ export function Partners() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.3, delay: index * 0.04 }}
-                    className="group relative rounded-xl border border-primary/12 bg-white p-4 md:p-5 min-h-[132px] flex items-center justify-center transition-all duration-200 hover:border-secondary/70 hover:-translate-y-0.5 hover:shadow-[0_8px_18px_rgba(218,150,25,0.16)]"
+                    className="group relative rounded-xl border border-primary/12 bg-white p-3 md:px-10 min-h-[100px] md:min-h-[120px] flex items-center justify-center transition-all duration-200 hover:border-secondary/70 hover:-translate-y-0.5 hover:shadow-[0_8px_18px_rgba(218,150,25,0.16)]"
                   >
                     <img
                       src={logo.url}
                       alt={`${logo.url}`}
 
-                      className="max-h-16 md:max-h-[72px] w-auto object-contain grayscale-[12%] group-hover:grayscale-0 transition-all duration-200"
+                      className="max-h-16 md:max-h-[90px] w-auto object-contain grayscale-[12%] group-hover:grayscale-0 transition-all duration-200"
                       loading="lazy"
                     />
                   </motion.div>

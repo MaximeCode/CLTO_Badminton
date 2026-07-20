@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Hero, type HeroSlide } from '../components/Hero';
 import { FeaturedNews } from '../components/FeaturedNews';
-import { PresidentQuote } from '../components/PresidentQuote';
+import { PresidentQuote } from '../components/MotPresident';
 import { SpaceCards } from '../components/SpaceCards';
 import { Partners } from '../components/Partners';
 import { ClubStats } from '../components/ClubStats';

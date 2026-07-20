@@ -15,10 +15,21 @@
   z-index: 0;
 }
 
-/* Horizontal Scrollbar styled */
+/* Hide native scrollbar (mobile often overlays/hides it anyway) */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Horizontal Scrollbar styled (native — desktop browsers that show it) */
 .scrollbar-styled {
+  overflow-x: scroll;
   scrollbar-width: thin;
-  scrollbar-color: var(--secondary) transparent;
+  scrollbar-color: var(--secondary) var(--muted);
 }
 
 .scrollbar-styled::-webkit-scrollbar {
@@ -26,7 +37,8 @@
 }
 
 .scrollbar-styled::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--muted);
+  border-radius: 9999px;
 }
 
 .scrollbar-styled::-webkit-scrollbar-thumb {

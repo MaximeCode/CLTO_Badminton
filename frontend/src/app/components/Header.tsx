@@ -234,7 +234,7 @@ export function Header() {
               rel="noopener noreferrer"
               className="hidden items-center justify-center gap-1.5 rounded-md px-2 py-1 text-secondary transition-colors duration-200 hover:text-secondary/80 md:flex lg:bg-secondary lg:px-3 lg:py-2.5 lg:text-white lg:hover:bg-secondary/80 lg:hover:text-white xl:gap-2 xl:px-6"
             >
-              <ShopIcon className="h-7 w-7 lg:h-5 lg:w-5 xl:h-7 xl:w-7" />
+              <ShopIcon className="h-8 w-8 lg:h-5 lg:w-5 xl:h-8 xl:w-8" />
               <span className="sr-only">Visiter la boutique</span>
               <span className="hidden lg:block">Visiter la boutique</span>
             </a>

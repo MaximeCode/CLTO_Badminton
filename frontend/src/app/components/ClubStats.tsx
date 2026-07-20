@@ -57,7 +57,7 @@ export function ClubStats() {
 
       </motion.div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:w-11/12 xl:w-5/6 mx-auto">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:w-5/6 mx-auto">
         {stats.map((stat, index) => (
           <motion.div
             key={stat.label}
@@ -65,20 +65,20 @@ export function ClubStats() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: index * 0.1 }}
-            className="group relative overflow-hidden bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-[#da9619] max-w-[250px]"
+            className="group relative overflow-hidden bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-[#da9619]"
           >
             {/* Decorative gradient bar */}
             <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#0153b6] to-[#da9619]" />
 
             {/* Icon */}
             <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0153b6] to-[#0a69d1] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
-                <stat.icon className="text-white" size={32} />
+              <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-full bg-gradient-to-br from-[#0153b6] to-[#0a69d1] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+                <stat.icon className="text-white w-6 h-6 lg:w-7 lg:h-7 xl:w-8 xl:h-8" />
               </div>
             </div>
 
             {/* Value */}
-            <div className="font-['Bebas_Neue'] text-5xl md:text-6xl text-[#0153b6] mb-2 text-center">
+            <div className="font-['Bebas_Neue'] text-5xl xl:text-6xl text-[#0153b6] mb-2 text-center">
               {stat.value}
             </div>
 
