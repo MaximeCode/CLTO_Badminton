@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_stats_stats_clubs",
+  "info": {
+    "displayName": "Stats du club",
+    "icon": "chartBubble",
+    "description": "Statistique complémentaire affichée sur l'accueil"
+  },
+  "options": {},
+  "attributes": {
+    "chiffre": {
+      "type": "integer",
+      "required": true
+    },
+    "desc": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

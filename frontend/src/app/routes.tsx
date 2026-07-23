@@ -5,7 +5,7 @@ import { Layout } from './components/Layout';
 // Pages brut
 import { ActualitePage } from './pages/ActualitePage';
 import { ActualitesPage } from './pages/ActualitesPage';
-import { ConseilAdministrationPage } from './pages/ConseilAdministrationPage';
+import { AgendaPage } from './pages/AgendaPage';
 import { ContactPage } from './pages/ContactPage';
 import { CreneauxPage } from './pages/CreneauxPage';
 import { GymnasesPage } from './pages/GymnasesPage';
@@ -17,6 +17,9 @@ import { FAQPage } from './pages/FAQPage';
 import { StagesPage } from './pages/StagesPage';
 import { ProjetClub } from './pages/ProjetClub';
 import { DocumentsPage } from './pages/DocumentsPage';
+import { GaleriePage } from './pages/GaleriePage';
+
+import { PalmaresPage } from './pages/PalmaresPage';
 
 // Espaces
 import { CompetiteursPage } from './pages/(espaces)/CompetiteursPage';
@@ -35,7 +38,9 @@ export const router = createBrowserRouter([
       { path: 'actualites', Component: ActualitesPage },
       { path: 'actualite/:documentId', Component: ActualitePage },
       { path: 'historique', Component: HistoriquePage },
-      { path: 'conseil-administration', Component: ConseilAdministrationPage },
+      { path: 'galerie', Component: GaleriePage },
+      { path: 'palmares', Component: PalmaresPage },
+      { path: 'agenda', Component: AgendaPage },
       { path: 'gymnases', Component: GymnasesPage },
       { path: 'creneaux', Component: CreneauxPage },
       { path: 'interclub', Component: InterclubPage },

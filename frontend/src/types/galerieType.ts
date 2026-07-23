@@ -1,0 +1,9 @@
+export type Galerie = {
+  id: number;
+  documentId: string;
+  titre: string;
+  vignette: {
+    url: string;
+  };
+  url_album: string;
+};
