@@ -42,26 +42,12 @@ export interface DocsInscriptionDocuments extends Struct.ComponentSchema {
   };
 }
 
-export interface StatsStatsClub extends Struct.ComponentSchema {
-  collectionName: "components_stats_stats_clubs";
-  info: {
-    description: "Statistique compl\u00E9mentaire affich\u00E9e sur l'accueil";
-    displayName: "Stats du club";
-    icon: "chartBubble";
-  };
-  attributes: {
-    chiffre: Schema.Attribute.Integer & Schema.Attribute.Required;
-    desc: Schema.Attribute.Text & Schema.Attribute.Required;
-  };
-}
-
 declare module "@strapi/strapi" {
   export module Public {
     export interface ComponentSchemas {
       "contenu-page.contenu": ContenuPageContenu;
       "contenu-page.etape-d-inscription": ContenuPageEtapeDInscription;
       "docs-inscription.documents": DocsInscriptionDocuments;
-      "stats.stats-club": StatsStatsClub;
     }
   }
 }
