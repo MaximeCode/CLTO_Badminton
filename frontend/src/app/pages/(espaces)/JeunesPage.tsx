@@ -83,7 +83,7 @@ export function JeunesPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-gradient-to-br from-primary to-primary-accent rounded-lg p-6 shadow-lg text-white hover:shadow-xl transition-shadow duration-300"
+              className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 shadow-lg text-white hover:shadow-xl transition-shadow duration-300"
             >
               <h3 className="font-primary text-2xl text-white mb-3">
                 {group.name}
@@ -138,7 +138,7 @@ export function JeunesPage() {
         </div>
       </Section>
 
-      <Section className="bg-gradient-to-r from-primary to-primary-accent text-white">
+      <Section className="bg-linear-to-r from-primary to-primary-accent text-white">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -288,7 +288,7 @@ export function JeunesPage() {
         </div>
       </Section>
 
-      <Section className="bg-gradient-to-r from-primary to-primary-accent text-white text-center">
+      <Section className="bg-linear-to-r from-primary to-primary-accent text-white text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

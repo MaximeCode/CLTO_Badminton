@@ -172,10 +172,11 @@ export function InscriptionWizard({
 
     return (
         <div
-            className="overflow-hidden rounded-2xl border border-primary/15 bg-white shadow-sm"
+            className="w-full md:w-5/6 mx-auto overflow-hidden rounded-2xl border border-primary/15 bg-white shadow-sm"
             aria-live="polite"
         >
-            <div className="border-b border-primary/10 bg-primary/[0.04] px-4 py-4 sm:px-6">
+            <div className="border-b border-primary/10 bg-primary/4 px-4 py-4 sm:px-6">
+
                 <div className="flex flex-wrap items-center justify-between gap-3">
                     <p className="text-sm font-semibold text-primary-accent">
                         {resultCaseKey ? 'Parcours identifié' : `Question ${history.length + 1}`}
@@ -192,36 +193,26 @@ export function InscriptionWizard({
                         </button>
                     )}
                 </div>
-
+<div className="w-full">
                 {history.length > 0 && (
-                    <ol className="mt-4 space-y-2 text-sm text-primary-accent">
+                    <ol className="mt-4 grid grid-cols-[auto_minmax(0,1fr)_auto] gap-y-2 text-sm text-primary-accent">
                         {history.map((entry, index) => (
                             <li
                                 key={`${entry.nodeId}-${index}`}
-                                className="flex flex-col gap-0.5 rounded-lg bg-white/70 px-3 py-2 sm:flex-row sm:flex-wrap sm:items-baseline sm:gap-x-2"
+                                className="col-span-3 grid grid-cols-subgrid items-baseline gap-x-3 rounded-lg bg-white/70 px-3 py-2"
                             >
-                                <span className="font-semibold text-primary">
+                                <span className="font-semibold text-primary tabular-nums">
                                     {index + 1}.
-                                </span>
-
-                                <span>
-                                    {entry.question}
-                                </span>
-
-                                <span
-                                    className="hidden text-primary/40 sm:inline"
-                                    aria-hidden="true"
-                                >
-                                    →
-                                </span>
-
-                                <span className="font-semibold text-secondary">
+                                                                </span>
+<span className="min-w-0">{entry.question}</span>
+                                <span className="font-semibold text-secondary text-right whitespace-nowrap">
                                     {entry.answerLabel}
                                 </span>
                             </li>
                         ))}
                     </ol>
                 )}
+</div>
             </div>
 
             <motion.div
@@ -240,15 +231,15 @@ export function InscriptionWizard({
                             Sélectionnez la réponse correspondant à votre situation.
                         </p>
 
-                        <div className="mt-6 grid gap-3 sm:grid-cols-2 sm:gap-4">
+                        <div className="w-full mx-auto mt-4 md:mt-6 grid gap-3 sm:grid-cols-2 sm:gap-4">
                             {currentNode.answers.map((answer) => (
                                 <button
                                     key={answer.id}
                                     type="button"
                                     onClick={() => handleAnswer(answer)}
-                                    className="group flex min-h-24 w-full items-center justify-between gap-4 rounded-xl border border-primary/20 bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-secondary hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
+                                    className="group flex min-h-16 lg:min-h-24 w-full items-center justify-between gap-4 rounded-xl border border-primary/20 bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-secondary hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
                                 >
-                                    <span className="font-primary text-2xl text-primary transition-colors group-hover:text-secondary sm:text-3xl">
+                                    <span className="font-primary text-lg md:text-xl lg:text-2xl text-primary transition-colors group-hover:text-secondary sm:text-3xl">
                                         {answer.label}
                                     </span>
                                     <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-secondary group-hover:text-white">

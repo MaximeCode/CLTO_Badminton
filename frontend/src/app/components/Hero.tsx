@@ -111,8 +111,8 @@ export function Hero<T extends HeroSlide = HeroSlide>({
           <div
             className={
               isInterclub
-                ? 'absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-black/75 md:bg-gradient-to-r md:from-black/80 md:via-black/50 md:to-transparent'
-                : 'absolute inset-0 bg-gradient-to-b from-black/85 via-black/60 to-black/30 md:bg-gradient-to-r md:from-black/80 md:via-black/50 md:to-transparent'
+                ? 'absolute inset-0 bg-linear-to-b from-black/45 via-black/20 to-black/75 md:bg-linear-to-r md:from-black/80 md:via-black/50 md:to-transparent'
+                : 'absolute inset-0 bg-linear-to-b from-black/85 via-black/60 to-black/30 md:bg-linear-to-r md:from-black/80 md:via-black/50 md:to-transparent'
             }
           />
 

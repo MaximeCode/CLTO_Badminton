@@ -72,7 +72,7 @@ export function VeteransPage() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: index * 0.1 }}
-                            className="bg-gradient-to-br from-primary to-primary-accent rounded-lg p-6 shadow-lg text-white hover:shadow-xl transition-shadow duration-300"
+                            className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 shadow-lg text-white hover:shadow-xl transition-shadow duration-300"
                         >
                             <h3 className="font-primary text-3xl mb-4">{session.day}</h3>
                             <div className="flex items-center gap-2 mb-3">

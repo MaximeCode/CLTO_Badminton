@@ -17,7 +17,7 @@ export function MatchResults() {
           transition={{ duration: 0.5 }}
           className="font-primary bg-white rounded-lg shadow-lg overflow-hidden max-w-3xl mx-auto mb-8"
         >
-          <div className="bg-gradient-to-r from-primary to-primary-accent text-white p-4 text-center">
+          <div className="bg-linear-to-r from-primary to-primary-accent text-white p-4 text-center">
             <div className="text-md uppercase tracking-wider mb-1 font-primary">J10 - Nationale 2</div>
             <div className="text-sm opacity-80 font-primary">Samedi 11 avril 2026</div>
           </div>

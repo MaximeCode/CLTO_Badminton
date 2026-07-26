@@ -270,19 +270,19 @@ export function Footer() {
             {contact ? (
               <ul className="space-y-4">
                 <li className="flex items-start gap-3 text-gray-400">
-                  <MapPin size={18} className="mt-1 flex-shrink-0" />
+                  <MapPin size={18} className="mt-1 shrink-0" />
                   <span className="text-sm">
                     {contact?.adresse ?? '—'}
                   </span>
                 </li>
                 <li className="flex items-center gap-3 text-gray-400">
-                  <Phone size={18} className="flex-shrink-0" />
+                  <Phone size={18} className="shrink-0" />
                   <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="text-sm hover:text-secondary transition-colors">
                     {contact?.telephone ?? '—'}
                   </a>
                 </li>
                 <li className="flex items-center gap-3 text-gray-400">
-                  <Mail size={18} className="flex-shrink-0" />
+                  <Mail size={18} className="shrink-0" />
                   <a href={`mailto:${contact?.email}`} className="text-sm hover:text-secondary transition-colors">
                     {contact?.email ?? '—'}
                   </a>

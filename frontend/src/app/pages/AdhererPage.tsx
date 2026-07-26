@@ -196,7 +196,7 @@ export function AdhererPage() {
                 subtitle="Toutes les informations d'inscription pour la saison 2025-2026"
             />
 
-            <section className="bg-gradient-to-b from-[#f7fbff] via-white to-[#f5f9ff] py-10 md:py-16">
+            <section className="bg-linear-to-b from-[#f7fbff] via-white to-[#f5f9ff] py-10 md:py-16">
                 <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
 
                     {/* Intro bloc */}
@@ -236,7 +236,7 @@ export function AdhererPage() {
                             </h2>
                             <p className="mt-2 text-sm text-primary-accent sm:mt-3 sm:text-base md:text-lg">
                                 Répondez à quelques questions pour afficher les instructions correspondant à votre situation.<br />
-                                <span className='text-secondary-accent/80 italic'>
+                                <span className='md:text-sm text-secondary-accent/80 italic'>
                                     À noter : le compte My-FFBAD est personnel. Si vous souhaitez prendre plusieurs licences (famille, conjoint...), connectez-vous à chacun des comptes pour faire les demandes individuellement.
                                 </span>
                             </p>

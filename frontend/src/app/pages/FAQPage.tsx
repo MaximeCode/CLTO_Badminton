@@ -164,7 +164,7 @@ export function FAQPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-gradient-to-br from-primary to-primary-accent rounded-lg p-12 text-center shadow-lg text-white"
+            className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-12 text-center shadow-lg text-white"
           >
             <HelpCircle className="mx-auto mb-6" size={56} />
             <h2 className="font-primary text-4xl mb-4">UNE AUTRE QUESTION ?</h2>

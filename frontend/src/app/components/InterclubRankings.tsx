@@ -86,7 +86,7 @@ export function InterclubRankings() {
 
     if (loading) {
         return (
-            <Section className="bg-gradient-to-b from-gray-50 to-white">
+            <Section className="bg-linear-to-b from-gray-50 to-white">
                 <div className="flex flex-col items-center justify-center min-h-64">
                     <Loader2 size={40} className="text-[#0153b6] animate-spin mb-4" />
                     <p className="text-gray-500 font-medium">Chargement des classements…</p>
@@ -97,7 +97,7 @@ export function InterclubRankings() {
 
     if (error || teams.length === 0) {
         return (
-            <Section className="bg-gradient-to-b from-gray-50 to-white">
+            <Section className="bg-linear-to-b from-gray-50 to-white">
                 <div className="flex flex-col items-center justify-center min-h-64">
                     <AlertCircle size={40} className="text-red-500 mb-4" />
                     <p className="text-gray-600">{error ?? 'Aucune donnée disponible.'}</p>
@@ -115,7 +115,7 @@ export function InterclubRankings() {
         cltoIndex >= 0 ? ranking[cltoIndex].position : (selected.cltoPosition ?? null);
 
     return (
-        <Section className="bg-gradient-to-b from-gray-50 to-white">
+        <Section className="bg-linear-to-b from-gray-50 to-white">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -377,7 +377,7 @@ function RankingCard({
             {(expanded || isClto) && (
                 <div className="flex items-center gap-4">
                     <div
-                        className="flex-shrink-0 w-14 h-14 rounded-lg flex flex-col items-center justify-center shadow-md text-white"
+                        className="shrink-0 w-14 h-14 rounded-lg flex flex-col items-center justify-center shadow-md text-white"
                         style={{ backgroundColor: accentColor }}
                     >
                         <span className="font-['Bebas_Neue'] text-2xl md:text-3xl leading-none">
@@ -417,7 +417,7 @@ function RankingCard({
                             </div>
 
 
-                            <div className="flex-shrink-0 md:hidden text-center">
+                            <div className="shrink-0 md:hidden text-center">
                                 <div
                                     className="font-['Bebas_Neue'] text-4xl md:text-5xl leading-none"
                                     style={{ color: accentColor }}
@@ -429,7 +429,7 @@ function RankingCard({
                         </div>
                     </div>
 
-                    <div className="flex-shrink-0 hidden md:block text-center">
+                    <div className="shrink-0 hidden md:block text-center">
                         <div
                             className="font-['Bebas_Neue'] text-4xl md:text-5xl leading-none"
                             style={{ color: accentColor }}
@@ -481,7 +481,7 @@ function StatPill({
         (showSign || showTrend) && isPositive ? `+${value}` : String(value);
 
     return (
-        <div className="flex-shrink-0 text-center md:flex md:justify-center items-center gap-2">
+        <div className="shrink-0 text-center md:flex md:justify-center items-center gap-2">
             <div
                 className="flex items-center justify-center gap-0.5 font-['Bebas_Neue'] text-base md:text-xl leading-none"
                 style={{ color: resolvedColor }}

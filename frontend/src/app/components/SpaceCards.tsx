@@ -56,7 +56,7 @@ function SpaceCard({ space }: { space: Space }) {
       />
 
       <div
-        className={`absolute inset-0 bg-gradient-to-t ${overlayClasses[space.color]}  group-hover:opacity-95 transition-opacity duration-300`}
+        className={`absolute inset-0 bg-linear-to-t ${overlayClasses[space.color]}  group-hover:opacity-95 transition-opacity duration-300`}
       />
 
       <div className="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 text-white">
@@ -144,7 +144,7 @@ export function SpaceCards() {
 
         {scrollMetrics.canScrollRight && (
           <div
-            className="pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-14 bg-gradient-to-l from-white to-transparent"
+            className="pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-14 bg-linear-to-l from-white to-transparent"
             aria-hidden
           />
         )}

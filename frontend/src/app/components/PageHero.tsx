@@ -10,7 +10,7 @@ export function PageHero({ title = '', subtitle = '', image }: PageHeroProps) {
   const hasImage = Boolean(image);
 
   return (
-    <div className="relative h-[260px] sm:h-[320px] md:h-[400px] overflow-hidden">
+    <div className="relative h-[160px] sm:h-[240px] md:h-[320px] overflow-hidden">
       <div
         className={`absolute inset-0 ${hasImage ? 'bg-cover bg-center' : ''}`}
         style={
@@ -23,10 +23,10 @@ export function PageHero({ title = '', subtitle = '', image }: PageHeroProps) {
         }
       >
         {hasImage && title && (
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/45 md:bg-gradient-to-r md:from-black/70 md:via-black/50 md:to-black/30" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/80 via-black/60 to-black/45 md:bg-linear-to-r md:from-black/70 md:via-black/50 md:to-black/30" />
         )}
       </div>
-      <div className="relative h-full max-w-[1280px] mx-auto px-4 sm:px-6 pt-14 sm:pt-16 md:pt-0 flex flex-col justify-center">
+      <div className="relative h-full max-w-[1280px] mx-auto px-4 sm:px-6 pt-6 sm:pt-10 md:pt-0 flex flex-col justify-center">
         <div>
           <div className="flex items-stretch gap-3 sm:gap-4 mb-2 sm:mb-3 md:mb-4">
             <div className="w-1.5 shrink-0 rounded-full bg-secondary" />
@@ -34,7 +34,7 @@ export function PageHero({ title = '', subtitle = '', image }: PageHeroProps) {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-white text-3xl sm:text-4xl md:text-6xl lg:text-7xl tracking-wide md:tracking-wider leading-[1.15]"
+              className="text-white text-4xl md:text-6xl lg:text-7xl tracking-wide md:tracking-wider leading-[1.15]"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
               {title}

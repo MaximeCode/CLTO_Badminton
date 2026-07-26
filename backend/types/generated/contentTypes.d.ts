@@ -1252,11 +1252,13 @@ declare module "@strapi/strapi" {
       "api::categorie.categorie": ApiCategorieCategorie;
       "api::contact.contact": ApiContactContact;
       "api::faq.faq": ApiFaqFaq;
+      "api::galerie.galerie": ApiGalerieGalerie;
       "api::gymnase.gymnase": ApiGymnaseGymnase;
       "api::hero.hero": ApiHeroHero;
       "api::historique.historique": ApiHistoriqueHistorique;
       "api::mot-du-president.mot-du-president": ApiMotDuPresidentMotDuPresident;
       "api::page-adherer.page-adherer": ApiPageAdhererPageAdherer;
+      "api::palmares.palmares": ApiPalmaresPalmares;
       "api::partenaire.partenaire": ApiPartenairePartenaire;
       "plugin::content-releases.release": PluginContentReleasesRelease;
       "plugin::content-releases.release-action": PluginContentReleasesReleaseAction;

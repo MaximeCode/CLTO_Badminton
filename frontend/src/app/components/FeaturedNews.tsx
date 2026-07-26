@@ -134,7 +134,7 @@ export function FeaturedNews() {
               className="group"
             >
               <Link to={`/actualite/${article.documentId}`} className="cursor-pointer flex gap-4">
-                <div className="w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden">
+                <div className="w-32 h-32 shrink-0 rounded-lg overflow-hidden">
                   <img
                     src={article.vignette.url}
                     alt={article.titre}

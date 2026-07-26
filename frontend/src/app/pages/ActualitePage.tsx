@@ -58,11 +58,11 @@ export function ActualitePage() {
   return (
     <>
       {/* Article hero banner */}
-      <div className="relative h-[260px] sm:h-[320px] md:h-[400px] max-h-[260px] sm:max-h-[320px] md:max-h-[400px] overflow-hidden border-t-2 border-secondary bg-gradient-to-br from-primary-accent via-primary to-primary/80">
+      <div className="relative h-65 sm:h-80 md:h-100 max-h-65 sm:max-h-80 md:max-h-100 overflow-hidden border-t-2 border-secondary bg-linear-to-br from-primary-accent via-primary to-primary/80">
         {/* Subtle warm glow on the right, where the image sits */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_75%_50%,rgba(218,150,25,0.10),transparent_60%)]" />
 
-        <div className="relative h-full mx-auto max-w-[1280px] px-6 py-10 md:py-14">
+        <div className="relative h-full mx-auto max-w-7xl px-6 py-10 md:py-14">
           <div className="h-full flex flex-col-reverse items-center gap-8 md:flex-row md:gap-12">
 
             {loading && (

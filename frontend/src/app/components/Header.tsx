@@ -8,20 +8,28 @@ import { ShopIcon } from "./icons/ShopIcon";
 
 const NAV_ITEMS: NavItem[] = [
   {
-    title: "La vie du Club",
+    title: "Actualités",
+    path: "/actualites",
+  },
+  {
+    title: "Vie du Club",
     items: [
-      { label: "Historique", path: "/historique" },
-      { label: "Conseil d'Administration", path: "/conseil-administration" },
-      { label: "Gymnases", path: "/gymnases" },
-      { label: "Actualités", path: "/actualites" },
       { label: "Adhérer", path: "/adherer" },
+      { label: "Agenda", path: "/agenda" },
+      { label: "Organigramme", path: "/organigramme" },
       { label: "Projet Club", path: "/projet-club" },
-      { label: "Documents", path: "/documents" },
+      { label: "Palmarès", path: "/palmares" },
+      { label: "Documents officiels", path: "/documents" },
+      { label: "Historique", path: "/historique" },
+      { label: "Galerie", path: "/galerie" },
     ],
   },
   {
     title: "Créneaux",
-    path: "/creneaux",
+    items: [
+      { label: "Créneaux", path: "/creneaux" },
+      { label: "Gymnases", path: "/gymnases" },
+    ],
   },
   {
     title: "Nos Publics",
@@ -48,6 +56,13 @@ const NAV_ITEMS: NavItem[] = [
 
 const SHOP_URL =
   "https://www.helloasso.com/associations/clto-badminton/boutiques/commandes-groupees";
+
+const CTA_BUTTON_BASE =
+  "hidden items-center justify-center gap-1.5 rounded-md px-1.5 py-1 lg:text-white lg:hover:text-white transition-colors duration-200 md:flex lg:px-1 lg:py-2 xl:gap-2 xl:px-4";
+
+const JOIN_CLUB_BUTTON_CLASS = `${CTA_BUTTON_BASE} text-primary hover:text-primary/80 lg:bg-primary lg:hover:bg-primary/80`;
+
+const SHOP_BUTTON_CLASS = `${CTA_BUTTON_BASE} text-secondary hover:text-secondary/80 lg:bg-secondary lg:hover:bg-secondary/80`;
 
 /*
  * Transforme un titre en identifiant HTML stable pour relier les boutons
@@ -219,7 +234,7 @@ export function Header() {
             <Link
               to="/adherer"
               title="Rejoindre le club"
-              className="hidden items-center justify-center gap-1.5 rounded-md px-2 py-1 text-primary transition-colors duration-200 hover:text-primary/80 md:flex lg:bg-primary lg:px-3 lg:py-2.5 lg:text-white lg:hover:bg-primary/80 lg:hover:text-white xl:gap-2 xl:px-6"
+              className={JOIN_CLUB_BUTTON_CLASS}
             >
               <JoinClubIcon className="h-7 w-7 lg:h-5 lg:w-5 xl:h-7 xl:w-7" />
               <span className="sr-only">Rejoindre le club</span>
@@ -232,7 +247,7 @@ export function Header() {
               title="Visiter la boutique"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden items-center justify-center gap-1.5 rounded-md px-2 py-1 text-secondary transition-colors duration-200 hover:text-secondary/80 md:flex lg:bg-secondary lg:px-3 lg:py-2.5 lg:text-white lg:hover:bg-secondary/80 lg:hover:text-white xl:gap-2 xl:px-6"
+              className={SHOP_BUTTON_CLASS}
             >
               <ShopIcon className="h-8 w-8 lg:h-5 lg:w-5 xl:h-8 xl:w-8" />
               <span className="sr-only">Visiter la boutique</span>

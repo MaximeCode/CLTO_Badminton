@@ -75,7 +75,7 @@ export function StagesPage() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="bg-gray-50 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
               >
-                <div className={`bg-gradient-to-r ${stage.color} px-8 py-4 flex items-center justify-between`}>
+                <div className={`bg-linear-to-r ${stage.color} px-8 py-4 flex items-center justify-between`}>
                   <h3 className="font-primary text-3xl text-white">{stage.title}</h3>
                   <span className="bg-white/20 text-white text-sm font-semibold px-4 py-1.5 rounded-full">
                     {stage.highlight}
@@ -113,7 +113,7 @@ export function StagesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-gradient-to-br from-primary to-primary-accent rounded-lg p-12 text-center shadow-lg text-white"
+            className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-12 text-center shadow-lg text-white"
           >
             <h2 className="font-primary text-4xl mb-4">INSCRIVEZ-VOUS</h2>
             <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">

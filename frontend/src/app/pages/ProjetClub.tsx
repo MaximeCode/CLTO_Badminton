@@ -11,8 +11,12 @@ export function ProjetClub() {
       />
 
       <Section className="bg-white">
-        <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4 flex items-center justify-between">Projet Club F.J.P.C.R
-          <span className="text-secondary">2024 - 2028</span></h2>
+        <h2 className="font-primary text-4xl md:text-6xl text-primary mb-4 flex items-center justify-between">
+          <div className="flex flex-col">
+            Projet Club F.J.P.C.R
+            <span className="text-secondary">2024 - 2028</span>
+          </div>
+        </h2>
 
         {/* Iframe avec le projet club */}
         <div className="px-8">
@@ -26,7 +30,7 @@ export function ProjetClub() {
             <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQK4X4eELLRKJUtgXSpSS7OV6Y9rZPwfvbs76DA6xvIhTy5xyVmbf_ho0W0Tc2aPonUJNcJfWUlkDwW/pubembed?start=false&loop=false&delayms=5000" width="100%" height="680" allowFullScreen={true} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Projet Club F.J.P.C.R | 2024 - 2028"></iframe>
           </motion.div>
         </div>
-      </Section>
+      </Section >
     </>
   );
 }

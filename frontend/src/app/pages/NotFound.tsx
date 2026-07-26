@@ -4,7 +4,7 @@ import { Home, Search } from 'lucide-react';
 
 export function NotFound() {
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-primary to-footer px-6">
+    <div className="min-h-[80vh] flex items-center justify-center bg-linear-to-br from-primary to-footer px-6">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

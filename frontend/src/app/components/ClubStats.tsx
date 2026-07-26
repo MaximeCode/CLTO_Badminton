@@ -51,7 +51,7 @@ export function ClubStats() {
   ];
 
   return (
-    <Section className="bg-gradient-to-b from-white to-gray-50">
+    <Section className="bg-linear-to-b from-white to-gray-50">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -75,10 +75,10 @@ export function ClubStats() {
             transition={{ duration: 0.6, delay: index * 0.1 }}
             className="group relative overflow-hidden bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-[#da9619]"
           >
-            <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#0153b6] to-[#da9619]" />
+            <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-[#0153b6] to-[#da9619]" />
 
             <div className="flex justify-center mb-4">
-              <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-full bg-gradient-to-br from-[#0153b6] to-[#0a69d1] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-full bg-linear-to-br from-[#0153b6] to-[#0a69d1] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
                 <stat.icon className="text-white w-6 h-6 lg:w-7 lg:h-7 xl:w-8 xl:h-8" />
               </div>
             </div>
@@ -95,7 +95,7 @@ export function ClubStats() {
               {stat.description}
             </div>
 
-            <div className="absolute inset-0 bg-gradient-to-br from-[#0153b6]/5 to-[#da9619]/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
+            <div className="absolute inset-0 bg-linear-to-br from-[#0153b6]/5 to-[#da9619]/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
           </motion.div>
         ))}
       </div>

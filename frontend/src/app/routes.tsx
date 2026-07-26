@@ -18,7 +18,7 @@ import { StagesPage } from './pages/StagesPage';
 import { ProjetClub } from './pages/ProjetClub';
 import { DocumentsPage } from './pages/DocumentsPage';
 import { GaleriePage } from './pages/GaleriePage';
-
+import { OrganigrammePage } from './pages/OrganigrammePage';
 import { PalmaresPage } from './pages/PalmaresPage';
 
 // Espaces
@@ -40,6 +40,7 @@ export const router = createBrowserRouter([
       { path: 'historique', Component: HistoriquePage },
       { path: 'galerie', Component: GaleriePage },
       { path: 'palmares', Component: PalmaresPage },
+      { path: 'organigramme', Component: OrganigrammePage },
       { path: 'agenda', Component: AgendaPage },
       { path: 'gymnases', Component: GymnasesPage },
       { path: 'creneaux', Component: CreneauxPage },

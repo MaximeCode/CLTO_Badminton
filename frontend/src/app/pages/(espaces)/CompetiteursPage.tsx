@@ -260,7 +260,7 @@ export function CompetiteursPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-gradient-to-br from-primary to-primary-accent rounded-lg p-10 text-white shadow-lg max-w-3xl mx-auto text-center"
+          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-10 text-white shadow-lg max-w-3xl mx-auto text-center"
         >
           <Trophy className="mx-auto mb-5" size={52} />
           <h3 className="font-primary text-3xl mb-4">Championnats offerts par le club</h3>
@@ -390,7 +390,7 @@ export function CompetiteursPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-gradient-to-br from-primary to-primary-accent rounded-lg p-12 text-center shadow-lg text-white"
+          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-12 text-center shadow-lg text-white"
         >
           <Trophy className="mx-auto mb-6" size={64} />
           <h2 className="font-primary text-4xl mb-4">DES QUESTIONS ?</h2>

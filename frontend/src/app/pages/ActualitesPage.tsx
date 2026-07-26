@@ -82,38 +82,38 @@ export function ActualitesPage() {
 
   const categoryFilters = (
     <>
-      <li>
+      <li className="w-full">
         <button
           type="button"
-          onClick={() => selectCategory('Toutes')}
-          className={`w-full text-left rounded-md px-3 py-2 transition-colors ${selectedCategory === 'Toutes'
-            ? 'bg-primary text-white'
-            : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
+          onClick={() => selectCategory("Toutes")}
+          className={`w-full text-left rounded-md px-3 py-2 transition-colors ${selectedCategory === "Toutes"
+            ? "bg-primary text-white"
+            : "text-gray-700 hover:bg-primary/10 hover:text-primary"
             }`}
         >
           Toutes
         </button>
       </li>
-      <li>
+      <li className="w-full">
         <button
           type="button"
-          onClick={() => selectCategory('À la une')}
-          className={`w-full text-left rounded-md px-3 py-2 transition-colors ${selectedCategory === 'À la une'
-            ? 'bg-primary text-white'
-            : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
+          onClick={() => selectCategory("À la une")}
+          className={`w-full text-left rounded-md px-3 py-2 transition-colors ${selectedCategory === "À la une"
+            ? "bg-primary text-white"
+            : "text-gray-700 hover:bg-primary/10 hover:text-primary"
             }`}
         >
           À la une
         </button>
       </li>
       {categories.map((category) => (
-        <li key={category.id}>
+        <li key={category.id} className="w-full">
           <button
             type="button"
             onClick={() => selectCategory(category.libelle)}
             className={`w-full text-left rounded-md px-3 py-2 transition-colors ${selectedCategory === category.libelle
-              ? 'bg-primary text-white'
-              : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
+              ? "bg-primary text-white"
+              : "text-gray-700 hover:bg-primary/10 hover:text-primary"
               }`}
           >
             {category.libelle}
@@ -132,49 +132,55 @@ export function ActualitesPage() {
 
       <Section className="bg-white">
         <div className="grid lg:grid-cols-[260px_1fr] gap-8 items-start">
-          <aside className="lg:sticky lg:top-24 bg-gray-50 border border-gray-200 rounded-lg p-5 shadow-sm">
+          <aside className="lg:sticky lg:top-24 flex flex-col w-full max-w-[350px] bg-gray-50 border border-gray-200 rounded-lg p-3 md:p-5 shadow-sm">
             {/* MOBILE */}
-            <div className="lg:hidden">
-              <button
-                type="button"
-                onClick={() => setCategoriesOpen((open) => !open)}
-                aria-expanded={categoriesOpen}
-                aria-controls="categories-list-mobile"
-                className="flex w-full items-center justify-between gap-3 text-left"
-              >
-                <span>
-                  <span className="font-primary text-2xl text-primary block">
-                    Catégories
+            <div className="lg:hidden w-full">
+              <div className="flex items-start justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={() => setCategoriesOpen((open) => !open)}
+                  aria-expanded={categoriesOpen}
+                  aria-controls="categories-list-mobile"
+                  className="flex min-w-0 flex-1 items-center gap-2 text-left"
+                >
+                  <span className="min-w-0">
+                    <span className="font-primary text-2xl text-primary flex items-center gap-2">
+                      Catégories
+                      <ChevronDown
+                        size={20}
+                        className={`shrink-0 text-primary transition-transform duration-200 ${categoriesOpen ? "rotate-180" : ""}`}
+                      />
+                    </span>
+                    <span className="text-sm text-gray-600">{selectedCategory}</span>
                   </span>
-                  <span className="text-sm text-gray-600">{selectedCategory}</span>
-                </span>
-                <ChevronDown
-                  size={20}
-                  className={`shrink-0 text-primary transition-transform duration-200 ${categoriesOpen ? 'rotate-180' : ''}`}
-                />
-              </button>
+                </button>
+                <p className="shrink-0 pt-1 text-xs text-gray-500 text-right">
+                  {filteredArticles.length} article
+                  {filteredArticles.length > 1 ? "s" : ""} affiché
+                  {filteredArticles.length > 1 ? "s" : ""}.
+                </p>
+              </div>
+
               {categoriesOpen && (
-                <ul id="categories-list-mobile" className="mt-4 space-y-2">
+                <ul id="categories-list-mobile" className="mt-4 ms-4 w-3/4 space-y-2">
                   {categoryFilters}
                 </ul>
               )}
             </div>
 
-            {/* DESTKTOP */}
-            <div className="hidden lg:block">
-              <h3 className="font-primary text-2xl text-primary mb-4">
-                Catégories
-              </h3>
-              <ul className="space-y-2">{categoryFilters}</ul>
+            {/* DESKTOP */}
+            <div className="hidden lg:block w-full">
+              <h3 className="font-primary text-2xl text-primary mb-4">Catégories</h3>
+              <ul className="w-full space-y-2">{categoryFilters}</ul>
+              <p className="mt-4 text-xs text-gray-500">
+                {filteredArticles.length} article
+                {filteredArticles.length > 1 ? "s" : ""} affiché
+                {filteredArticles.length > 1 ? "s" : ""}.
+              </p>
             </div>
-
-            {/* ALL */}
-            <p className="mt-4 text-xs text-gray-500">
-              {filteredArticles.length} article{filteredArticles.length > 1 ? 's' : ''} affiché{filteredArticles.length > 1 ? 's' : ''}.
-            </p>
           </aside>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 gap-8">
+          <div className="w-5/6 sm:w-full mx-auto grid sm:grid-cols-2 md:grid-cols-3 [2000px]:grid-cols-4 gap-8">
             {loading
               ? Array.from({ length: 6 }).map((_, i) => (
                 <ArticleCardSkeleton key={i} />
