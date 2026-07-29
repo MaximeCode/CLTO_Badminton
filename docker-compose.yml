@@ -24,8 +24,13 @@ services:
       # Port nginx interne
       - "traefik.http.services.cltobadminton-frontend.loadbalancer.server.port=80"
 
+      # Basic Auth
+      - "traefik.http.routers.cltobadminton-frontend.middlewares=preprod-auth@file"
+
     networks:
       - max_network
+    ports:
+      - "5173:80"
 
   ## STRAPI ##
   backend:
@@ -45,7 +50,6 @@ services:
 
       # Domaine API Strapi
       - "traefik.http.routers.cltobadminton-strapi.rule=Host(`admin.preprod.cltobadminton.fr`)"
-
       - "traefik.http.routers.cltobadminton-strapi.entrypoints=websecure"
 
       # HTTPS
@@ -55,8 +59,13 @@ services:
       # Port Strapi interne
       - "traefik.http.services.cltobadminton-strapi.loadbalancer.server.port=1337"
 
+      # Basic Auth
+      - "traefik.http.routers.cltobadminton-strapi.middlewares=preprod-auth@file"
+
     networks:
       - max_network
+    ports:
+      - "1337:1337"
 
 networks:
   max_network:
