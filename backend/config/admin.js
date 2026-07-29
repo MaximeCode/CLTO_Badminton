@@ -35,4 +35,5 @@ module.exports = ({ env }) => ({
     promoteEE: env.bool('FLAG_PROMOTE_EE', true),
     docLinks: env.bool('FLAG_DOC_LINKS', true),
   },
+  url: "/admin",
 });

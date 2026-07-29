@@ -67,6 +67,12 @@ services:
     ports:
       - "1337:1337"
 
+    volumes:
+      - strapi_uploads:/backend/public/uploads
+
 networks:
   max_network:
     external: true
+
+volumes:
+  strapi_uploads:
