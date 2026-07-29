@@ -1,19 +1,26 @@
 import type { MotPresident } from "@/types/motPresident";
 import { API_URL, fetchAPI } from "../Client";
-import { BlocksContent } from "@/types/blocks";
 
 export async function getMotPresident(): Promise<MotPresident | null> {
-  const { data } = await fetchAPI("/api/mot-du-president?populate=*");
+  try {
+    const { data } = await fetchAPI("/api/mot-du-president?populate=*");
 
-  if (!data) {
-    return null;
+    if (!data) {
+      return null;
+    }
+
+    return {
+      id: data.id,
+      discours: data.discours,
+      portrait: {
+        url: `${API_URL}${data.portrait?.url ?? ""}`,
+      },
+    };
+  } catch (error) {
+    // Strapi renvoie 404 tant que le single type n'a pas été créé / publié
+    if (error instanceof Error && error.message === "Not Found") {
+      return null;
+    }
+    throw error;
   }
-
-  return {
-    id: data.id,
-    discours: data.discours,
-    portrait: {
-      url: `${API_URL}${data.portrait?.url ?? ""}`,
-    },
-  };
 }
