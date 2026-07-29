@@ -429,6 +429,29 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAccueilAccueil extends Struct.SingleTypeSchema {
+  collectionName: "accueils";
+  info: {
+    displayName: "Accueil";
+    pluralName: "accueils";
+    singularName: "accueil";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::accueil.accueil"> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    stats_club: Schema.Attribute.Component<"stats.stats-club", true>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
 export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   collectionName: "articles";
   info: {
@@ -543,6 +566,31 @@ export interface ApiFaqFaq extends Struct.CollectionTypeSchema {
     reponse: Schema.Attribute.Text & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
+export interface ApiGalerieGalerie extends Struct.CollectionTypeSchema {
+  collectionName: "galeries";
+  info: {
+    displayName: "Galerie";
+    pluralName: "galeries";
+    singularName: "galerie";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::galerie.galerie"> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    titre: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    url_album: Schema.Attribute.String & Schema.Attribute.Required;
+    vignette: Schema.Attribute.Media<"images"> & Schema.Attribute.Required;
   };
 }
 
@@ -675,6 +723,31 @@ export interface ApiPageAdhererPageAdherer extends Struct.SingleTypeSchema {
     localizations: Schema.Attribute.Relation<"oneToMany", "api::page-adherer.page-adherer"> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPalmaresPalmares extends Struct.CollectionTypeSchema {
+  collectionName: "palmares";
+  info: {
+    displayName: "Palmar\u00E8s";
+    pluralName: "evenements";
+    singularName: "palmares";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    date: Schema.Attribute.Date & Schema.Attribute.Required;
+    description: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::palmares.palmares"> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    titre: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
   };
@@ -1199,15 +1272,18 @@ declare module "@strapi/strapi" {
       "admin::transfer-token": AdminTransferToken;
       "admin::transfer-token-permission": AdminTransferTokenPermission;
       "admin::user": AdminUser;
+      "api::accueil.accueil": ApiAccueilAccueil;
       "api::article.article": ApiArticleArticle;
       "api::categorie.categorie": ApiCategorieCategorie;
       "api::contact.contact": ApiContactContact;
       "api::faq.faq": ApiFaqFaq;
+      "api::galerie.galerie": ApiGalerieGalerie;
       "api::gymnase.gymnase": ApiGymnaseGymnase;
       "api::hero.hero": ApiHeroHero;
       "api::historique.historique": ApiHistoriqueHistorique;
       "api::mot-du-president.mot-du-president": ApiMotDuPresidentMotDuPresident;
       "api::page-adherer.page-adherer": ApiPageAdhererPageAdherer;
+      "api::palmares.palmares": ApiPalmaresPalmares;
       "api::partenaire.partenaire": ApiPartenairePartenaire;
       "plugin::content-releases.release": PluginContentReleasesRelease;
       "plugin::content-releases.release-action": PluginContentReleasesReleaseAction;
