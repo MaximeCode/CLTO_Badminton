@@ -188,6 +188,7 @@ export function AdhererPage() {
     const introBloc = pageAdhererDatas?.blocs[0];
     const contentBlocs = pageAdhererDatas?.blocs.slice(1) ?? [];
     const casInscriptions = pageAdhererDatas?.cas_inscriptions ?? [];
+    const questionsParcours = pageAdhererDatas?.questions_parcours ?? [];
     const documents = pageAdhererDatas?.documents ?? [];
     return (
         <>
@@ -244,6 +245,7 @@ export function AdhererPage() {
 
                         <InscriptionWizard
                             casInscriptions={casInscriptions}
+                            questionsParcours={questionsParcours}
                             isLoading={!pageAdhererDatas && !loadError}
                             loadError={loadError}
                         />

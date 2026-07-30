@@ -23,6 +23,29 @@ export type EtapeInscription = {
   contenu: BlocksContent;
 };
 
+export type NodeKey =
+  | "q-deja-licence"
+  | "q-licence-2526"
+  | "q-licence-clto"
+  | "q-type-licence-a"
+  | "q-type-licence-b"
+  | "q-type-licence-c";
+
+export type AnswerKey = "oui" | "non" | "principale" | "complementaire";
+
+export type ReponseParcours = {
+  id: number;
+  answer_key: AnswerKey;
+  label: string;
+};
+
+export type QuestionParcours = {
+  id: number;
+  node_key: NodeKey;
+  question: string;
+  reponses: ReponseParcours[];
+};
+
 export type Document = {
   id: number;
   libelle: string;
@@ -35,6 +58,7 @@ export type PageAdherer = {
   id: number;
   documentId: string;
   blocs: ContenuBloc[];
+  questions_parcours: QuestionParcours[];
   cas_inscriptions: EtapeInscription[];
   documents: Document[];
 };

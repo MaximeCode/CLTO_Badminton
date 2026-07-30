@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { motion } from 'motion/react';
 import {
     AlertCircle,
@@ -10,16 +10,15 @@ import {
     RotateCcw,
 } from 'lucide-react';
 
-import type { CaseKey, EtapeInscription } from '@/types/pageAdhererType';
+import type {
+    CaseKey,
+    EtapeInscription,
+    NodeKey,
+    QuestionParcours,
+} from '@/types/pageAdhererType';
 import { BlocksRenderer } from './BlocksRenderer';
 
-type NodeId =
-    | 'q-deja-licence'
-    | 'q-licence-2526'
-    | 'q-licence-clto'
-    | 'q-type-licence-a'
-    | 'q-type-licence-b'
-    | 'q-type-licence-c';
+type NodeId = NodeKey;
 
 type ResultTarget = {
     type: 'result';
@@ -44,6 +43,7 @@ type HistoryEntry = {
 
 type InscriptionWizardProps = {
     casInscriptions: EtapeInscription[];
+    questionsParcours?: QuestionParcours[];
     isLoading: boolean;
     loadError: string | null;
 };
@@ -52,10 +52,11 @@ const START_NODE_ID: NodeId = 'q-deja-licence';
 
 const result = (caseKey: CaseKey): ResultTarget => ({ type: 'result', caseKey });
 
+/** Arbre de décision (structure + case_key en dur). Les libellés peuvent venir du CMS. */
 const DECISION_TREE: Record<NodeId, DecisionNode> = {
     'q-deja-licence': {
         id: 'q-deja-licence',
-        question: 'Ai-je déjà eu une licence ?',
+        question: 'Ai-je déjà eu une licence de badminton?',
         answers: [
             { id: 'oui', label: 'Oui', next: 'q-licence-2526' },
             { id: 'non', label: 'Non', next: result('cas_0') },
@@ -122,8 +123,39 @@ function findCmsCase(
     );
 }
 
+function mergeTreeWithCms(
+    questionsParcours: QuestionParcours[],
+): Record<NodeId, DecisionNode> {
+    const byNode = new Map(
+        questionsParcours.map((q) => [q.node_key, q] as const),
+    );
+
+    const merged = { ...DECISION_TREE };
+
+    (Object.keys(merged) as NodeId[]).forEach((nodeId) => {
+        const cmsQuestion = byNode.get(nodeId);
+        if (!cmsQuestion) return;
+
+        const labelByAnswer = new Map(
+            (cmsQuestion.reponses ?? []).map((r) => [r.answer_key, r.label] as const),
+        );
+
+        merged[nodeId] = {
+            ...merged[nodeId],
+            question: cmsQuestion.question || merged[nodeId].question,
+            answers: merged[nodeId].answers.map((answer) => ({
+                ...answer,
+                label: labelByAnswer.get(answer.id as never) ?? answer.label,
+            })),
+        };
+    });
+
+    return merged;
+}
+
 export function InscriptionWizard({
     casInscriptions,
+    questionsParcours = [],
     isLoading,
     loadError,
 }: InscriptionWizardProps) {
@@ -131,7 +163,12 @@ export function InscriptionWizard({
     const [resultCaseKey, setResultCaseKey] = useState<CaseKey | null>(null);
     const [history, setHistory] = useState<HistoryEntry[]>([]);
 
-    const currentNode = DECISION_TREE[currentNodeId];
+    const decisionTree = useMemo(
+        () => mergeTreeWithCms(questionsParcours),
+        [questionsParcours],
+    );
+
+    const currentNode = decisionTree[currentNodeId];
     const selectedCase = resultCaseKey
         ? findCmsCase(casInscriptions, resultCaseKey)
         : undefined;
@@ -193,26 +230,26 @@ export function InscriptionWizard({
                         </button>
                     )}
                 </div>
-<div className="w-full">
-                {history.length > 0 && (
-                    <ol className="mt-4 grid grid-cols-[auto_minmax(0,1fr)_auto] gap-y-2 text-sm text-primary-accent">
-                        {history.map((entry, index) => (
-                            <li
-                                key={`${entry.nodeId}-${index}`}
-                                className="col-span-3 grid grid-cols-subgrid items-baseline gap-x-3 rounded-lg bg-white/70 px-3 py-2"
-                            >
-                                <span className="font-semibold text-primary tabular-nums">
-                                    {index + 1}.
-                                                                </span>
-<span className="min-w-0">{entry.question}</span>
-                                <span className="font-semibold text-secondary text-right whitespace-nowrap">
-                                    {entry.answerLabel}
-                                </span>
-                            </li>
-                        ))}
-                    </ol>
-                )}
-</div>
+                <div className="w-full">
+                    {history.length > 0 && (
+                        <ol className="mt-4 grid grid-cols-[auto_minmax(0,1fr)_auto] gap-y-2 text-sm text-primary-accent">
+                            {history.map((entry, index) => (
+                                <li
+                                    key={`${entry.nodeId}-${index}`}
+                                    className="col-span-3 grid grid-cols-subgrid items-baseline gap-x-3 rounded-lg bg-white/70 px-3 py-2"
+                                >
+                                    <span className="font-semibold text-primary tabular-nums">
+                                        {index + 1}.
+                                    </span>
+                                    <span className="min-w-0">{entry.question}</span>
+                                    <span className="font-semibold text-secondary text-right whitespace-nowrap">
+                                        {entry.answerLabel}
+                                    </span>
+                                </li>
+                            ))}
+                        </ol>
+                    )}
+                </div>
             </div>
 
             <motion.div

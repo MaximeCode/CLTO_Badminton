@@ -16,6 +16,11 @@
       "component": "contenu-page.contenu",
       "repeatable": true
     },
+    "questions_parcours": {
+      "type": "component",
+      "component": "contenu-page.question-parcours",
+      "repeatable": true
+    },
     "cas_inscriptions": {
       "type": "component",
       "component": "contenu-page.etape-d-inscription",
