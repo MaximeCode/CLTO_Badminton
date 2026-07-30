@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_contenu_page_question_parcours",
+  "info": {
+    "displayName": "Question parcours",
+    "icon": "question",
+    "description": "Question du parcours d'inscription (libellés CMS)"
+  },
+  "options": {},
+  "attributes": {
+    "node_key": {
+      "type": "enumeration",
+      "enum": [
+        "q-deja-licence",
+        "q-licence-2526",
+        "q-licence-clto",
+        "q-type-licence-a",
+        "q-type-licence-b",
+        "q-type-licence-c"
+      ],
+      "required": true
+    },
+    "question": {
+      "type": "string",
+      "required": true
+    },
+    "reponses": {
+      "type": "component",
+      "repeatable": true,
+      "component": "contenu-page.reponse-parcours"
+    }
+  }
+}
