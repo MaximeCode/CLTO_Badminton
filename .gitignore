@@ -1,5 +1,9 @@
-backup.sql
+*.sql
 
 code_exemple
 
 backend/strapi-config/
+backend/src/extensions/documentation/documentation/1.0.0/full_documentation.json
+backend/types/generated/components.d.ts
+backend/types/generated/contentTypes.d.ts
+README_SEO.md
