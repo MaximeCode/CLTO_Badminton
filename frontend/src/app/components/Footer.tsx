@@ -30,7 +30,7 @@ function FooterMobileSection({
         aria-expanded={open}
         className="flex w-full items-center justify-between py-3 text-left"
       >
-        <h4 className="font-primary text-lg tracking-wide">{title}</h4>
+        <p className="font-primary text-lg tracking-wide">{title}</p>
         <ChevronDown
           size={18}
           className={`shrink-0 text-gray-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
@@ -62,7 +62,7 @@ export function Footer() {
         {/* Mobile */}
         <div className="lg:hidden">
           <div className="flex items-center gap-4 mb-5">
-            <img src={logo} alt="CLTO Badminton" className="h-14 w-auto shrink-0" />
+            <img src={logo} alt="CLTO Badminton Orléans" className="h-14 w-auto shrink-0" />
             <div className="min-w-0 flex-1">
               <div className="flex gap-2">
                 {socialLinks.map(({ href, icon: Icon, label }) => (
@@ -190,7 +190,7 @@ export function Footer() {
         <div className="hidden lg:grid lg:grid-cols-4 gap-12 mb-6">
           <div>
             <div className="mb-6">
-              <img src={logo} alt="CLTO Badminton" className="h-20 w-auto" />
+              <img src={logo} alt="CLTO Badminton Orléans" className="h-20 w-auto" />
             </div>
             <div className="flex gap-4">
               {socialLinks.map(({ href, icon: Icon, label }) => (
@@ -209,7 +209,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-primary text-xl mb-4 tracking-wide">Navigation</h4>
+            <p className="font-primary text-xl mb-4 tracking-wide">Navigation</p>
             <ul className="space-y-3">
               <li>
                 <Link to="/actualites" className="text-gray-400 hover:text-secondary transition-colors duration-200">
@@ -235,7 +235,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-primary text-xl mb-4 tracking-wide">Nos Publics</h4>
+            <p className="font-primary text-xl mb-4 tracking-wide">Nos Publics</p>
             <ul className="space-y-3">
               <li>
                 <Link to="/jeunes-loisirs" className="text-gray-400 hover:text-secondary transition-colors duration-200">
@@ -266,7 +266,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-primary text-xl mb-4 tracking-wide">Contact</h4>
+            <p className="font-primary text-xl mb-4 tracking-wide">Contact</p>
             {contact ? (
               <ul className="space-y-4">
                 <li className="flex items-start gap-3 text-gray-400">
@@ -302,7 +302,7 @@ export function Footer() {
 
         <div className="pt-4 md:pt-6 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-4 text-xs md:text-sm text-gray-400 text-center md:text-left">
-            <p>© {new Date().getFullYear()} CLTO Badminton. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} CLTO Badminton Orléans. Tous droits réservés.</p>
             <p>Site réalisé avec passion pour le badminton</p>
           </div>
         </div>

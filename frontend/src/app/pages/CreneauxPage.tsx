@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { PageHero } from "../components/PageHero";
+import { PageHero } from "../components/PageHero"
+import { Seo } from '../components/Seo';
 import { Section } from "../components/Section";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -363,9 +364,13 @@ export function CreneauxPage() {
 
   return (
     <>
+      <Seo
+        title="Créneaux"
+        description="Créneaux et planning d'entraînement du CLTO Badminton Orléans : horaires du club de badminton à Orléans."
+      />
       <PageHero
         title="CRÉNEAUX"
-        subtitle="Planning hebdomadaire des entraînements"
+        subtitle="Planning hebdomadaire des entraînements du CLTO Badminton à Orléans"
         image="https://images.unsplash.com/photo-1617962529235-262e8e777e48?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjB0cmFpbmluZyUyMHNjaGVkdWxlfGVufDF8fHx8MTc3NjMzNzE3NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
       />
 
@@ -386,11 +391,11 @@ export function CreneauxPage() {
                   size={40}
                 />
                 <div>
-                  <h3 className="font-['Bebas_Neue'] text-3xl text-[#0153b6]">
+                  <h2 className="font-['Bebas_Neue'] text-3xl text-[#0153b6]">
                     {format(new Date(selectedWeek.weekStart), "MMMM yyyy", {
                       locale: fr,
                     }).toUpperCase()}
-                  </h3>
+                  </h2>
                   <p className="text-gray-600 text-lg">
                     {selectedWeek.period}
                   </p>

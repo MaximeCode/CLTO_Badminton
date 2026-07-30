@@ -1,4 +1,5 @@
 import { PageHero } from '../../components/PageHero';
+import { Seo } from '../../components/Seo';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
 import { Users, Clock, Award, Heart, Star } from 'lucide-react';
@@ -53,9 +54,13 @@ const benefits = [
 export function JeunesPage() {
   return (
     <>
+      <Seo
+        title="Jeunes loisirs"
+        description="Espace jeunes loisirs du CLTO Badminton Orléans : apprentissage du badminton pour les 6-14 ans à Orléans."
+      />
       <PageHero
         title="JEUNES LOISIRS"
-        subtitle="L'apprentissage du badminton pour les jeunes de 6 à 14 ans"
+        subtitle="Apprentissage du badminton à Orléans pour les jeunes de 6 à 14 ans au CLTO"
         image="https://images.unsplash.com/photo-1642436978092-0f4b14112745?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaGlsZHJlbiUyMHBsYXlpbmclMjBiYWRtaW50b258ZW58MXx8fHwxNzc1OTI5Njk4fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
       />
 

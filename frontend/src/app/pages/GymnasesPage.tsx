@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { PageHero } from '../components/PageHero';
+import { Seo } from '../components/Seo';
 import { Section } from '../components/Section';
 import { motion } from 'motion/react';
 import { MapPin, Copy, Check, ExternalLink } from 'lucide-react';
@@ -63,6 +64,10 @@ export function GymnasesPage() {
 
   return (
     <>
+      <Seo
+        title="Gymnases"
+        description="Gymnases du CLTO Badminton Orléans : lieux de pratique et adresses des salles de badminton à Orléans."
+      />
       <PageHero
         title="LES GYMNASES"
         subtitle={`Découvrez nos ${gymsCount} gymnases répartis à Orléans`}

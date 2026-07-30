@@ -118,58 +118,46 @@ function renderBlock(
   block: BlocksRootNode,
   index: number,
   styles: VariantStyles,
+  headingOffset: number,
 ): React.ReactNode {
   const key = `block-${index}`;
 
   switch (block.type) {
     case "heading": {
       const heading = block as HeadingBlockNode;
+      const level = Math.min(6, Math.max(1, heading.level + headingOffset)) as
+        | 1
+        | 2
+        | 3
+        | 4
+        | 5
+        | 6;
       const className =
-        heading.level <= 2
+        level <= 2
           ? `mb-4 mt-10 first:mt-0 ${styles.heading}`
           : `mb-3 mt-8 ${styles.heading}`;
       const style =
-        heading.level <= 2 ? { fontFamily: "var(--font-heading)" } : undefined;
+        level <= 2 ? { fontFamily: "var(--font-heading)" } : undefined;
       const children = renderInline(heading.children, key, styles);
+      const sizeClass =
+        level === 1
+          ? "text-4xl md:text-5xl"
+          : level === 2
+            ? "text-3xl md:text-4xl"
+            : level === 3
+              ? "text-2xl"
+              : level === 4
+                ? "text-xl"
+                : level === 5
+                  ? "text-lg"
+                  : "text-base";
+      const Tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
-      switch (heading.level) {
-        case 1:
-          return (
-            <h1 key={key} className={`text-4xl md:text-5xl ${className}`} style={style}>
-              {children}
-            </h1>
-          );
-        case 2:
-          return (
-            <h2 key={key} className={`text-3xl md:text-4xl ${className}`} style={style}>
-              {children}
-            </h2>
-          );
-        case 3:
-          return (
-            <h3 key={key} className={`text-2xl ${className}`} style={style}>
-              {children}
-            </h3>
-          );
-        case 4:
-          return (
-            <h4 key={key} className={`text-xl ${className}`} style={style}>
-              {children}
-            </h4>
-          );
-        case 5:
-          return (
-            <h5 key={key} className={`text-lg ${className}`} style={style}>
-              {children}
-            </h5>
-          );
-        case 6:
-          return (
-            <h6 key={key} className={`text-base ${className}`} style={style}>
-              {children}
-            </h6>
-          );
-      }
+      return (
+        <Tag key={key} className={`${sizeClass} ${className}`} style={style}>
+          {children}
+        </Tag>
+      );
     }
     case "paragraph":
       return (
@@ -224,14 +212,27 @@ type BlocksRendererProps = {
   content: BlocksContent;
   /** `onPrimary` = texte clair pour fond coloré (ex. Mot du Président) */
   variant?: BlocksVariant;
+  /**
+   * Décale les niveaux de titre CMS (ex. 1 → h2) quand la page a déjà un h1.
+   * Utile pour les articles et blocs sous un titre de page.
+   */
+  headingOffset?: number;
 };
 
-export function BlocksRenderer({ content, variant = "default" }: BlocksRendererProps) {
+export function BlocksRenderer({
+  content,
+  variant = "default",
+  headingOffset = 0,
+}: BlocksRendererProps) {
   if (!content.length) {
     return null;
   }
 
   const styles = VARIANT_STYLES[variant];
 
-  return <div className="blocks-content">{content.map((block, i) => renderBlock(block, i, styles))}</div>;
+  return (
+    <div className="blocks-content">
+      {content.map((block, i) => renderBlock(block, i, styles, headingOffset))}
+    </div>
+  );
 }

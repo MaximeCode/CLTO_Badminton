@@ -1,4 +1,5 @@
 import { PageHero } from '../components/PageHero';
+import { Seo } from '../components/Seo';
 import { Section } from '../components/Section';
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'motion/react';
@@ -125,9 +126,13 @@ export function ActualitesPage() {
 
   return (
     <>
+      <Seo
+        title="Actualités"
+        description="Actualités du CLTO Badminton Orléans : résultats, événements et vie du club de badminton à Orléans."
+      />
       <PageHero
         title="ACTUALITÉS"
-        subtitle="Toutes les dernières nouvelles du CLTO Badminton"
+        subtitle="Toutes les dernières nouvelles du CLTO Badminton Orléans"
       />
 
       <Section className="bg-white">

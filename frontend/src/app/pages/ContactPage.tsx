@@ -1,4 +1,5 @@
 import { PageHero } from '../components/PageHero';
+import { Seo } from '../components/Seo';
 import { Section } from '../components/Section';
 import { motion } from 'motion/react';
 import { Mail, Phone, MapPin, Send, Check, Loader2 } from 'lucide-react';
@@ -85,9 +86,13 @@ export function ContactPage() {
 
   return (
     <>
+      <Seo
+        title="Contact"
+        description="Contactez le CLTO Badminton Orléans : adresse, email et formulaire pour rejoindre le club de badminton à Orléans."
+      />
       <PageHero
         title="CONTACT"
-        subtitle="Rejoignez-nous ou posez-nous vos questions"
+        subtitle="Contactez le CLTO Badminton Orléans ou posez-nous vos questions"
         image=""
       />
 
@@ -315,7 +320,7 @@ export function ContactPage() {
           </h2>
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="h-96 bg-gray-200 flex items-center justify-center">
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2604.795614571111!2d1.909339176549044!3d47.90425207613338!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f7751546555555%3A0x47f7751546555555!2s1%20Boulevard%20de%20Qu%C3%A9bec%2C%2045000%20Orl%C3%A9ans!5e0!3m2!1sfr!2sfr!4v1719787200000!5m2!1sfr!2sfr" width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Position xsur une carte Google Maps de la CLTO Badminton"></iframe>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2604.795614571111!2d1.909339176549044!3d47.90425207613338!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f7751546555555%3A0x47f7751546555555!2s1%20Boulevard%20de%20Qu%C3%A9bec%2C%2045000%20Orl%C3%A9ans!5e0!3m2!1sfr!2sfr!4v1719787200000!5m2!1sfr!2sfr" width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Siège du CLTO Badminton Orléans sur Google Maps"></iframe>
             </div>
           </div>
         </motion.div>

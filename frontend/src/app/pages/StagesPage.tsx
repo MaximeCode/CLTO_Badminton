@@ -2,6 +2,7 @@ import { motion } from 'motion/react';
 import { Calendar, Euro, Users, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router';
 import { PageHero } from '../components/PageHero';
+import { Seo } from '../components/Seo';
 
 const stages = [
   {
@@ -42,9 +43,13 @@ const stages = [
 export function StagesPage() {
   return (
     <>
+      <Seo
+        title="Stages"
+        description="Stages de badminton du CLTO Badminton Orléans pendant les vacances scolaires, pour tous les niveaux."
+      />
       <PageHero
         title="STAGES"
-        subtitle="Des stages encadrés pendant les vacances scolaires pour tous les niveaux"
+        subtitle="Stages de badminton encadrés par le CLTO à Orléans pendant les vacances scolaires"
         image="https://images.unsplash.com/photo-1599474924187-334a4ae5bd3c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjB0cmFpbmluZ3xlbnwxfHx8fDE3ODU0ODQyNjh8MA&ixlib=rb-4.1.0&q=80&w=1080"
       />
 

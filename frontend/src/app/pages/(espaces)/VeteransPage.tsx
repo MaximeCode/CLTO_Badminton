@@ -1,4 +1,5 @@
 import { PageHero } from '../../components/PageHero';
+import { Seo } from '../../components/Seo';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
 import { Clock, Users, Smile, ShieldCheck } from 'lucide-react';
@@ -42,9 +43,13 @@ const highlights = [
 export function VeteransPage() {
     return (
         <>
+      <Seo
+        title="Vieilles plumes"
+        description="Espace Vieilles plumes du CLTO Badminton Orléans : créneaux vétérans en jeu libre à Orléans."
+      />
             <PageHero
                 title="VIEILLES PLUMES"
-                subtitle="Des creneaux dedies en jeu libre, sans entrainements"
+                subtitle="Créneaux vétérans en jeu libre au CLTO Badminton Orléans"
                 image="https://images.unsplash.com/photo-1521537634581-0dced2fee2ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBjbHViJTIwaW5kb29yfGVufDF8fHx8MTc4NTQ4NDI2OHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
             />
 

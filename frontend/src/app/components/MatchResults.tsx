@@ -28,7 +28,7 @@ export function MatchResults() {
               <div className="flex-1 text-center">
                 <img
                   src={logo}
-                  alt="CLTO Badminton"
+                  alt="CLTO Badminton Orléans"
                   className="w-20 h-auto object-contain mx-auto mb-3"
                 />
 

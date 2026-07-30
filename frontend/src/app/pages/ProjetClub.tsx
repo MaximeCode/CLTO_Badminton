@@ -1,13 +1,21 @@
 import { motion } from "motion/react";
 import { PageHero } from "../components/PageHero"
 import { Section } from "../components/Section"
+import { Seo } from "../components/Seo"
 const projetclubHero = new URL('../../imports/Banniere_hello_asso.png', import.meta.url).href; // non définitif
 
 export function ProjetClub() {
   return (
     <>
+      <Seo
+        title="Projet club"
+        description="Projet club F.J.P.C.R 2024-2028 du CLTO Badminton Orléans : orientations et ambitions du club orléanais."
+      />
       <PageHero
+        title="PROJET CLUB"
+        subtitle="Le projet F.J.P.C.R 2024-2028 du CLTO Badminton à Orléans"
         image={projetclubHero}
+        imageAlt="Projet club CLTO Badminton Orléans"
       />
 
       <Section className="bg-white">
@@ -18,7 +26,6 @@ export function ProjetClub() {
           </div>
         </h2>
 
-        {/* Iframe avec le projet club */}
         <div className="px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

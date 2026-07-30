@@ -9,12 +9,16 @@ export async function getPartners(): Promise<Partner[]> {
       id: number;
       logos: {
         url: string;
+        alternativeText?: string | null;
+        name?: string | null;
       }[];
       type: "Partenaires badminton" | "Partenaires institutionnels" | "Partenaires entreprises";
     }) => ({
       id: item.id,
       logos: (item.logos ?? []).map((logo) => ({
         url: `${API_URL}${logo.url ?? ""}`,
+        alternativeText: logo.alternativeText ?? null,
+        name: logo.name ?? null,
       })),
       type: item.type,
     })

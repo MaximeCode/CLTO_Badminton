@@ -1,4 +1,5 @@
 import { PageHero } from '../components/PageHero';
+import { Seo } from '../components/Seo';
 import { motion } from 'motion/react';
 import { Construction, Home } from 'lucide-react';
 import { Link } from 'react-router';
@@ -178,6 +179,10 @@ function MaintenanceBlock() {
 export function OrganigrammePage() {
   return (
     <>
+      <Seo
+        title="Conseil d'administration"
+        description="Conseil d'administration et organigramme du CLTO Badminton Orléans, club de badminton à Orléans."
+      />
       <PageHero
         title="ORGANIGRAMME"
         subtitle="Organigramme 2025-2026 du CLTO Badminton"

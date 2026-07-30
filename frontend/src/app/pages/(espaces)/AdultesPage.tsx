@@ -1,4 +1,5 @@
 import { PageHero } from '../../components/PageHero';
+import { Seo } from '../../components/Seo';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
 import { Calendar, Clock, Users, Target, Heart, Trophy } from 'lucide-react';
@@ -66,9 +67,13 @@ const strengths = [
 export function AdultesPage() {
     return (
         <>
+      <Seo
+        title="Adultes compétiteurs"
+        description="Espace adultes compétiteurs du CLTO Badminton Orléans : entraînements et progression au club orléanais."
+      />
             <PageHero
                 title="ADULTES COMPÉTITEURS"
-                subtitle="Du loisir à la compétition, pratiquez le badminton à votre rythme"
+                subtitle="Du loisir à la compétition : pratiquez le badminton au CLTO Orléans à votre rythme"
                 image="https://images.unsplash.com/photo-1599390270093-232c3e476f95?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBjbHViJTIwYWR1bHRzfGVufDF8fHx8MTc4NTQ4NDUwMXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
             />
 
@@ -193,7 +198,7 @@ export function AdultesPage() {
                     transition={{ duration: 0.6 }}
                     className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-12 text-center shadow-lg text-white"
                 >
-                    <h3 className="font-primary text-4xl mb-4">PRÊT À COMMENCER ?</h3>
+                    <h2 className="font-primary text-4xl mb-4">PRÊT À COMMENCER ?</h2>
                     <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
                         Contactez-nous pour trouver le créneau adultes qui vous correspond.
                     </p>

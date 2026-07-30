@@ -1,4 +1,5 @@
 import { PageHero } from '../../components/PageHero';
+import { Seo } from '../../components/Seo';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
 import { Clock, Users, Heart, Smile } from 'lucide-react';
@@ -123,9 +124,13 @@ const benefits = [
 export function LoisirsPage() {
   return (
     <>
+      <Seo
+        title="Adultes loisirs"
+        description="Espace adultes loisirs du CLTO Badminton Orléans : badminton convivial et créneaux détente à Orléans."
+      />
       <PageHero
         title="ADULTES LOISIRS"
-        subtitle="Le badminton pour le plaisir et la convivialité"
+        subtitle="Badminton loisir et convivialité au CLTO Badminton Orléans"
         image="https://images.unsplash.com/photo-1765118384650-7660293e74f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjBsZWlzdXJlJTIwcmVjcmVhdGlvbmFsJTIwcGxheXxlbnwxfHx8fDE3NzU5Mjk2OTl8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
       />
 

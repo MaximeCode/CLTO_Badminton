@@ -2,6 +2,7 @@ import { useContext, useEffect, useState, type ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { ExternalLink, Mail, Phone, ChevronDown, MapPin, Download } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
+import { Seo } from '../components/Seo';
 import { InscriptionWizard } from '../components/InscriptionWizard';
 
 import { ContactContext } from '../contexts/ContactContext';
@@ -191,9 +192,13 @@ export function AdhererPage() {
     const documents = pageAdhererDatas?.documents ?? [];
     return (
         <>
+            <Seo
+                title="Adhérer"
+                description="Adhérer au CLTO Badminton Orléans : inscriptions, tarifs et démarches pour rejoindre le club de badminton à Orléans."
+            />
             <PageHero
                 title="ADHERER AU CLUB"
-                subtitle="Toutes les informations d'inscription pour la saison 2025-2026"
+                subtitle="Rejoignez le CLTO Badminton Orléans — inscriptions saison 2025-2026"
             />
 
             <section className="bg-linear-to-b from-[#f7fbff] via-white to-[#f5f9ff] py-10 md:py-16">
@@ -209,16 +214,16 @@ export function AdhererPage() {
                     >
                         {introBloc ? (
                             <>
-                                <h1 className="mb-3 font-primary text-3xl text-primary sm:mb-4 sm:text-4xl md:text-5xl lg:text-6xl">
+                                <h2 className="mb-3 font-primary text-3xl text-primary sm:mb-4 sm:text-4xl md:text-5xl lg:text-6xl">
                                     {introBloc.titre}
-                                </h1>
+                                </h2>
                                 {introBloc.sous_titre && (
                                     <p className="mb-2 text-lg font-semibold text-primary-accent sm:text-xl">
                                         {introBloc.sous_titre}
                                     </p>
                                 )}
                                 <div className="[&_p]:mb-0 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_p]:text-base">
-                                    <BlocksRenderer content={introBloc.contenu} />
+                                    <BlocksRenderer content={introBloc.contenu} headingOffset={1} />
                                 </div>
                             </>
                         ) : loadError ? (
@@ -262,7 +267,7 @@ export function AdhererPage() {
                                     onToggle={togglePanel}
                                 >
                                     <div className="[&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_p]:text-base [&_li]:text-sm sm:[&_li]:text-base [&_li]:text-primary-accent [&_a]:text-secondary">
-                                        <BlocksRenderer content={bloc.contenu} />
+                                        <BlocksRenderer content={bloc.contenu} headingOffset={1} />
                                     </div>
                                 </CollapsiblePanel>
                             ))

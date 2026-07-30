@@ -8,9 +8,9 @@ export function HomePageSectionTitle({ title, subtitle }: { title: string, subti
                 </h2>
             </div>
             {subtitle && (
-                <h4 className="text-xl text-primary-accent leading-5">
+                <p className="text-xl text-primary-accent leading-5">
                     {subtitle}
-                </h4>
+                </p>
             )}
         </div>
     );

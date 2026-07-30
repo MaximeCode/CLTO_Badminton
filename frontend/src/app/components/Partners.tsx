@@ -57,7 +57,7 @@ export function Partners() {
     <Section className="bg-[linear-gradient(180deg,#f7fbff_0%,#ffffff_40%)]">
       <HomePageSectionTitle
         title="ILS NOUS SOUTIENNENT"
-        subtitle="Nos partenaires accompagnent le club au quotidien et participent a son rayonnement local."
+        subtitle="Nos partenaires accompagnent le CLTO Badminton Orléans au quotidien et participent a son rayonnement local."
       />
 
       <div className="space-y-10">
@@ -90,7 +90,11 @@ export function Partners() {
                   >
                     <img
                       src={logo.url}
-                      alt={`${logo.url}`}
+                      alt={
+                        logo.alternativeText ||
+                        logo.name ||
+                        `Logo partenaire — ${partner.type}`
+                      }
 
                       className="max-h-16 md:max-h-[90px] w-auto object-contain grayscale-[12%] group-hover:grayscale-0 transition-all duration-200"
                       loading="lazy"

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap à publier dès que l’URL de production est figée
+# Sitemap: https://www.exemple-clto.fr/sitemap.xml
