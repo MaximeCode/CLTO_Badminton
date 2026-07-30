@@ -35,7 +35,7 @@ export function PresidentQuote() {
     return (
       <Section className="bg-white">
         <div className="flex flex-col items-center justify-center min-h-64">
-          <Loader2 size={40} className="text-[#0153b6] animate-spin mb-4" />
+          <Loader2 size={40} className="text-primary animate-spin mb-4" />
           <p className="text-gray-500 font-medium">Chargement des mots du président…</p>
         </div>
       </Section>

@@ -132,7 +132,7 @@ export function ActualitesPage() {
 
       <Section className="bg-white">
         <div className="grid lg:grid-cols-[260px_1fr] gap-8 items-start">
-          <aside className="lg:sticky lg:top-24 flex flex-col w-full max-w-[350px] bg-gray-50 border border-gray-200 rounded-lg p-3 md:p-5 shadow-sm">
+          <aside className="lg:sticky lg:top-24 flex flex-col w-full max-w-87.5 bg-gray-50 border border-gray-200 rounded-lg p-3 md:p-5 shadow-sm">
             {/* MOBILE */}
             <div className="lg:hidden w-full">
               <div className="flex items-start justify-between gap-3">

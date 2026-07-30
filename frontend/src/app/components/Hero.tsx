@@ -66,8 +66,8 @@ export function Hero<T extends HeroSlide = HeroSlide>({
       <section
         className={
           isInterclub
-            ? 'relative h-[52vh] min-h-[340px] lg:h-[70vh] lg:min-h-0 overflow-hidden bg-gray-200 flex flex-row items-center justify-center gap-4'
-            : 'relative h-[50vh] min-h-[320px] lg:h-[65vh] lg:min-h-0 overflow-hidden bg-gray-200 flex flex-row items-center justify-center gap-4'
+            ? 'relative h-[52vh] min-h-85 lg:h-[70vh] lg:min-h-0 overflow-hidden bg-gray-200 flex flex-row items-center justify-center gap-4'
+            : 'relative h-[50vh] min-h-80 lg:h-[65vh] lg:min-h-0 overflow-hidden bg-gray-200 flex flex-row items-center justify-center gap-4'
         }
       >
         {/* Loader2 icon */}
@@ -86,8 +86,8 @@ export function Hero<T extends HeroSlide = HeroSlide>({
     <section
       className={
         isInterclub
-          ? 'relative h-[52vh] min-h-[340px] lg:h-[70vh] lg:min-h-0 overflow-hidden'
-          : 'relative h-[50vh] min-h-[320px] lg:h-[65vh] lg:min-h-0 overflow-hidden'
+          ? 'relative h-[52vh] min-h-85 lg:h-[70vh] lg:min-h-0 overflow-hidden'
+          : 'relative h-[50vh] min-h-80 lg:h-[65vh] lg:min-h-0 overflow-hidden'
       }
     >
       <AnimatePresence mode="wait">
@@ -102,7 +102,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
           <div
             className={
               isInterclub
-                ? 'absolute inset-0 bg-cover bg-[center_25%] md:bg-center'
+                ? 'absolute inset-0 bg-cover bg-position-[center_25%] md:bg-center'
                 : 'absolute inset-0 bg-cover bg-center'
             }
             style={{ backgroundImage: `url(${slide.image})` }}
@@ -119,8 +119,8 @@ export function Hero<T extends HeroSlide = HeroSlide>({
           <div
             className={
               isInterclub
-                ? 'relative h-full max-w-[1280px] mx-auto px-4 sm:px-6 flex items-end md:items-center pt-16 pb-20 md:pt-0 md:pb-0'
-                : 'relative h-full max-w-[1280px] mx-auto px-4 sm:px-6 flex items-center pt-16 pb-20 md:pt-0 md:pb-0'
+                ? 'relative h-full max-w-7xl mx-auto px-4 sm:px-6 flex items-end md:items-center pt-16 pb-20 md:pt-0 md:pb-0'
+                : 'relative h-full max-w-7xl mx-auto px-4 sm:px-6 flex items-center pt-16 pb-20 md:pt-0 md:pb-0'
             }
           >
             <div className="flex flex-col">

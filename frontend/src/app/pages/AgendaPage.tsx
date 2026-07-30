@@ -18,13 +18,13 @@ export function AgendaPage() {
             <iframe
               title="Agenda Google du CLTO Badminton"
               src={GOOGLE_CALENDAR_EMBED_URL}
-              className="h-[600px] w-full md:h-[750px]"
+              className="h-150 w-full md:h-187.5"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
         ) : (
-          <div className="rounded-xl border border-dashed border-primary/30 bg-primary/[0.03] px-6 py-16 text-center">
+          <div className="rounded-xl border border-dashed border-primary/30 bg-primary/3 px-6 py-16 text-center">
             <p className="font-primary text-2xl text-primary mb-2">Calendrier à configurer</p>
             <p className="text-sm text-gray-600 max-w-md mx-auto">
               Renseignez <code className="text-secondary">GOOGLE_CALENDAR_EMBED_URL</code> dans{" "}

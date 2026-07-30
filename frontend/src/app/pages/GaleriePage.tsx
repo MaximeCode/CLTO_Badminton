@@ -82,7 +82,7 @@ export function GaleriePage() {
                 onClick={() => setSelectedAlbum(album)}
                 className="group text-left overflow-hidden rounded-xl border border-primary/10 bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-secondary/50 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
               >
-                <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                <div className="relative aspect-4/3 overflow-hidden bg-gray-100">
                   <ImageWithFallback
                     src={album.vignette.url}
                     alt={album.titre}
@@ -145,7 +145,7 @@ export function GaleriePage() {
                   <iframe
                     src={playerSrc}
                     title={selectedAlbum.titre}
-                    className="h-[50vh] w-full sm:h-[60vh] md:h-[680px]"
+                    className="h-[50vh] w-full sm:h-[60vh] md:h-170"
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"

@@ -196,8 +196,8 @@ export function AdhererPage() {
                 subtitle="Toutes les informations d'inscription pour la saison 2025-2026"
             />
 
-            <section className="bg-linear-to-b from-[#f7fbff] via-white to-[#f5f9ff] py-10 md:py-16">
-                <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
+            <section className="bg-linear-to-b from-primary/3 via-white to-primary/2 py-10 md:py-16">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6">
 
                     {/* Intro bloc */}
                     <motion.div
@@ -332,7 +332,7 @@ export function AdhererPage() {
                                                 download
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="group flex w-full items-center gap-3 rounded-xl border border-primary/15 bg-primary/[0.03] px-4 py-3 text-left transition-all duration-200 hover:border-secondary/40 hover:bg-secondary/10 hover:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+                                                className="group flex w-full items-center gap-3 rounded-xl border border-primary/15 bg-primary/3 px-4 py-3 text-left transition-all duration-200 hover:border-secondary/40 hover:bg-secondary/10 hover:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
                                             >
                                                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-white shadow-sm transition-transform duration-200 group-hover:scale-105">
                                                     <Download size={18} strokeWidth={2.25} />

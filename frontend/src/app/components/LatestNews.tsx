@@ -34,7 +34,7 @@ function NewsCard({ card }: { card: (typeof newsCards)[number] }) {
   return (
     <Link to={`/actualites/${card.id}`}>
       <div className="group bg-white rounded-lg overflow-hidden shadow-md cursor-pointer transition-all duration-300">
-        <div className="relative overflow-hidden aspect-[16/10]">
+        <div className="relative overflow-hidden aspect-16/10">
           <img
             src={card.image}
             alt={card.title}

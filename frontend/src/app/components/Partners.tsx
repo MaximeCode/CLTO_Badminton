@@ -36,7 +36,7 @@ export function Partners() {
     return (
       <Section className="bg-white">
         <div className="flex flex-col items-center justify-center min-h-64">
-          <Loader2 size={40} className="text-[#0153b6] animate-spin mb-4" />
+          <Loader2 size={40} className="text-primary animate-spin mb-4" />
           <p className="text-gray-500 font-medium">Chargement des partenaires…</p>
         </div>
       </Section>
@@ -86,13 +86,13 @@ export function Partners() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.3, delay: index * 0.04 }}
-                    className="group relative rounded-xl border border-primary/12 bg-white p-3 md:px-10 min-h-[100px] md:min-h-[120px] flex items-center justify-center transition-all duration-200 hover:border-secondary/70 hover:-translate-y-0.5 hover:shadow-[0_8px_18px_rgba(218,150,25,0.16)]"
+                    className="group relative rounded-xl border border-primary/12 bg-white p-3 md:px-10 min-h-25 md:min-h-30 flex items-center justify-center transition-all duration-200 hover:border-secondary/70 hover:-translate-y-0.5 hover:shadow-[0_8px_18px_rgba(218,150,25,0.16)]"
                   >
                     <img
                       src={logo.url}
                       alt={`${logo.url}`}
 
-                      className="max-h-16 md:max-h-[90px] w-auto object-contain grayscale-[12%] group-hover:grayscale-0 transition-all duration-200"
+                      className="max-h-16 md:max-h-22.5 w-auto object-contain grayscale-12 group-hover:grayscale-0 transition-all duration-200"
                       loading="lazy"
                     />
                   </motion.div>

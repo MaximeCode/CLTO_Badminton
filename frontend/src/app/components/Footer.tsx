@@ -58,7 +58,7 @@ export function Footer() {
 
   return (
     <footer className="relative bg-footer text-white overflow-hidden">
-      <div className="relative max-w-[1280px] mx-auto px-6 py-4 md:pt-10 md:pb-6">
+      <div className="relative max-w-7xl mx-auto px-6 py-4 md:pt-10 md:pb-6">
         {/* Mobile */}
         <div className="lg:hidden">
           <div className="flex items-center gap-4 mb-5">

@@ -85,13 +85,13 @@ export function FAQPage() {
       />
 
       {loadError && (
-        <div className="max-w-[1280px] mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <p className="text-red-600">{loadError}</p>
         </div>
       )}
 
       <section className="py-12 md:py-20 bg-white">
-        <div className="max-w-[1280px] mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -158,7 +158,7 @@ export function FAQPage() {
       </section>
 
       <section className="py-12 md:py-20 bg-gray-50">
-        <div className="max-w-[1280px] mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

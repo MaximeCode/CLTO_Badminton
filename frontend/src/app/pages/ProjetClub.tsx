@@ -25,7 +25,7 @@ export function ProjetClub() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="max-w-[1280px] mx-auto border-2 border-gray-200 rounded-lg overflow-hidden my-8"
+            className="max-w-7xl mx-auto border-2 border-gray-200 rounded-lg overflow-hidden my-8"
           >
             <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQK4X4eELLRKJUtgXSpSS7OV6Y9rZPwfvbs76DA6xvIhTy5xyVmbf_ho0W0Tc2aPonUJNcJfWUlkDwW/pubembed?start=false&loop=false&delayms=5000" width="100%" height="680" allowFullScreen={true} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Projet Club F.J.P.C.R | 2024 - 2028"></iframe>
           </motion.div>

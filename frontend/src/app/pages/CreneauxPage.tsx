@@ -312,9 +312,9 @@ export function CreneauxPage() {
   const getTypeBadgeClass = (type: TimeSlot["type"]) => {
     switch (type) {
       case "Élite":
-        return "bg-[#0153b6]";
+        return "bg-primary";
       case "Perfectionnement":
-        return "bg-[#da9619]";
+        return "bg-secondary";
       case "Loisirs":
         return "bg-green-600";
       default:
@@ -378,15 +378,15 @@ export function CreneauxPage() {
           transition={{ duration: 0.6 }}
           className="mb-8"
         >
-          <div className="bg-white rounded-xl p-6 shadow-lg border-2 border-[#0153b6]">
+          <div className="bg-white rounded-xl p-6 shadow-lg border-2 border-primary">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="flex items-center gap-4">
                 <Calendar
-                  className="text-[#0153b6]"
+                  className="text-primary"
                   size={40}
                 />
                 <div>
-                  <h3 className="font-['Bebas_Neue'] text-3xl text-[#0153b6]">
+                  <h3 className="font-primary text-3xl text-primary">
                     {format(new Date(selectedWeek.weekStart), "MMMM yyyy", {
                       locale: fr,
                     }).toUpperCase()}
@@ -401,7 +401,7 @@ export function CreneauxPage() {
                 <button
                   onClick={goToPreviousWeek}
                   disabled={selectedWeekIndex <= 0}
-                  className="p-3 bg-gray-100 hover:bg-[#0153b6] hover:text-white rounded-lg transition-colors duration-200"
+                  className="p-3 bg-gray-100 hover:bg-primary hover:text-white rounded-lg transition-colors duration-200"
                 >
                   <ChevronLeft size={24} />
                 </button>
@@ -418,7 +418,7 @@ export function CreneauxPage() {
                 <button
                   onClick={goToNextWeek}
                   disabled={selectedWeekIndex >= WEEKS.length - 1}
-                  className="p-3 bg-gray-100 hover:bg-[#0153b6] hover:text-white rounded-lg transition-colors duration-200"
+                  className="p-3 bg-gray-100 hover:bg-primary hover:text-white rounded-lg transition-colors duration-200"
                 >
                   <ChevronRight size={24} />
                 </button>
@@ -437,8 +437,8 @@ export function CreneauxPage() {
         >
           <div className="bg-white rounded-xl p-6 shadow-lg border-2 border-gray-200">
             <div className="flex items-center gap-3 mb-4">
-              <Filter className="text-[#0153b6]" size={24} />
-              <h3 className="font-['Bebas_Neue'] text-2xl text-[#0153b6]">
+              <Filter className="text-primary" size={24} />
+              <h3 className="font-primary text-2xl text-primary">
                 FILTRES
               </h3>
               <button
@@ -460,7 +460,7 @@ export function CreneauxPage() {
                   <button
                     onClick={() => toggleType("Élite")}
                     className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${selectedTypes.includes("Élite")
-                      ? "bg-[#0153b6] text-white shadow-md scale-105"
+                      ? "bg-primary text-white shadow-md scale-105"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                       }`}
                   >
@@ -486,7 +486,7 @@ export function CreneauxPage() {
                     className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${selectedTypes.includes(
                       "Perfectionnement",
                     )
-                      ? "bg-[#da9619] text-white shadow-md scale-105"
+                      ? "bg-secondary text-white shadow-md scale-105"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                       }`}
                   >
@@ -538,7 +538,7 @@ export function CreneauxPage() {
                   <button
                     onClick={() => toggleSessionKind("Entraînement")}
                     className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${selectedSessionKinds.includes("Entraînement")
-                      ? "bg-[#0153b6] text-white shadow-md scale-105"
+                      ? "bg-primary text-white shadow-md scale-105"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                       }`}
                   >
@@ -570,7 +570,7 @@ export function CreneauxPage() {
                 <select
                   value={selectedGym}
                   onChange={(e) => setSelectedGym(e.target.value)}
-                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0153b6] focus:border-[#0153b6] text-gray-700 bg-white"
+                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-gray-700 bg-white"
                 >
                   {availableGyms.map((gym) => (
                     <option key={gym} value={gym}>
@@ -587,7 +587,7 @@ export function CreneauxPage() {
                 {timeSlots.length} créneau
                 {timeSlots.length > 1 ? "x" : ""} affiché
                 {timeSlots.length > 1 ? "s" : ""}{" "}
-                <span className="text-[#0153b6] font-semibold">
+                <span className="text-primary font-semibold">
                   • {selectedGym}
                 </span>
                 <span className="text-gray-500"> • </span>
@@ -620,9 +620,9 @@ export function CreneauxPage() {
                 className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden"
               >
                 {daySlotsData.length === 0 ? (
-                  <div className={`px-4 py-3 flex items-center justify-between ${isCurrentDay ? "bg-[#da9619]" : "bg-[#0153b6]"}`}>
+                  <div className={`px-4 py-3 flex items-center justify-between ${isCurrentDay ? "bg-secondary" : "bg-primary"}`}>
                     <div>
-                      <p className="font-['Bebas_Neue'] text-2xl text-white leading-none">
+                      <p className="font-primary text-2xl text-white leading-none">
                         {day}
                       </p>
                       <p className="text-sm text-white/70">
@@ -636,11 +636,11 @@ export function CreneauxPage() {
                 ) : (
                   <>
                 <button
-                  className={`w-full flex items-center justify-between px-4 py-3 ${isCurrentDay ? "bg-[#da9619]" : "bg-[#0153b6]"}`}
+                  className={`w-full flex items-center justify-between px-4 py-3 ${isCurrentDay ? "bg-secondary" : "bg-primary"}`}
                   onClick={() => setOpenDay(openDay === day ? null : day)}
                 >
                   <div className="text-left">
-                    <p className="font-['Bebas_Neue'] text-2xl text-white leading-none">
+                    <p className="font-primary text-2xl text-white leading-none">
                       {day}
                     </p>
                     <p className="text-sm text-blue-100">
@@ -689,7 +689,7 @@ export function CreneauxPage() {
                                   </>
                                 ) : (
                                   <>
-                                    <Dumbbell size={13} className="text-[#0153b6]" />
+                                    <Dumbbell size={13} className="text-primary" />
                                     Entraînement
                                   </>
                                 )}
@@ -725,7 +725,7 @@ export function CreneauxPage() {
           className="hidden md:block bg-white rounded-xl shadow-xl overflow-hidden border-2 border-gray-200"
         >
           {/* Days Header */}
-          <div className="grid grid-cols-[56px_repeat(7,minmax(0,1fr))] lg:grid-cols-[64px_repeat(7,minmax(0,1fr))] bg-[#0153b6] border-b-2 border-gray-300">
+          <div className="grid grid-cols-[56px_repeat(7,minmax(0,1fr))] lg:grid-cols-[64px_repeat(7,minmax(0,1fr))] bg-primary border-b-2 border-gray-300">
             <div className="px-1 py-4 border-r border-blue-400"></div>
             {weekDays.map((day, index) => {
               const dayDate = addDays(weekStart, index);
@@ -734,10 +734,10 @@ export function CreneauxPage() {
               return (
                 <div
                   key={day}
-                  className={`px-2 py-4 text-center border-r border-blue-400 last:border-r-0 ${isCurrentDay ? "bg-[#da9619]" : ""
+                  className={`px-2 py-4 text-center border-r border-blue-400 last:border-r-0 ${isCurrentDay ? "bg-secondary" : ""
                     }`}
                 >
-                  <div className="font-['Bebas_Neue'] text-xl lg:text-2xl text-white">
+                  <div className="font-primary text-xl lg:text-2xl text-white">
                     {day}
                   </div>
                   <div
@@ -881,7 +881,7 @@ export function CreneauxPage() {
                                   }}
                                   className="absolute inset-0 bg-gray-900/95 p-3 z-10 flex flex-col gap-2 text-xs"
                                 >
-                                  <div className="font-['Bebas_Neue'] text-lg text-[#da9619] mb-1">
+                                  <div className="font-primary text-lg text-secondary mb-1">
                                     {slot.type}
                                   </div>
                                   <div className="flex items-center gap-2">
@@ -928,7 +928,7 @@ export function CreneauxPage() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mt-8 bg-white rounded-xl p-6 shadow-lg border-2 border-gray-200"
         >
-          <h3 className="font-['Bebas_Neue'] text-2xl text-[#0153b6] mb-4">
+          <h3 className="font-primary text-2xl text-primary mb-4">
             LÉGENDE
           </h3>
           <div className="grid md:grid-cols-3 gap-4">
@@ -975,7 +975,7 @@ export function CreneauxPage() {
               </div>
             </div>
           </div>
-          <p className="mt-4 text-sm text-gray-600 bg-blue-50 p-3 rounded-lg border-l-4 border-[#0153b6]">
+          <p className="mt-4 text-sm text-gray-600 bg-blue-50 p-3 rounded-lg border-l-4 border-primary">
             💡 <strong>Astuce:</strong> Survolez un créneau
             pour voir tous les détails (responsable,
             téléphone, gymnase)

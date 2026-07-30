@@ -46,7 +46,7 @@ export function FeaturedNews() {
     return (
       <Section className="bg-white">
         <div className="flex flex-col items-center justify-center min-h-64">
-          <Loader2 size={40} className="text-[#0153b6] animate-spin mb-4" />
+          <Loader2 size={40} className="text-primary animate-spin mb-4" />
           <p className="text-gray-500 font-medium">Chargement des actualités à la Une…</p>
         </div>
       </Section>
@@ -86,7 +86,7 @@ export function FeaturedNews() {
           className=""
         >
           <Link to={`/actualite/${featuredArticle.documentId}`} className="group cursor-pointer">
-            <div className="relative overflow-hidden rounded-lg mb-4 aspect-[16/10]">
+            <div className="relative overflow-hidden rounded-lg mb-4 aspect-16/10">
               <img
                 src={featuredArticle.vignette.url}
                 alt={featuredArticle.titre}

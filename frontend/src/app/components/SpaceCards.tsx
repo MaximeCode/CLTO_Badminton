@@ -49,7 +49,7 @@ function SpaceCard({ space }: { space: Space }) {
   const Icon = space.icon;
 
   return (
-    <div className="group relative h-full max-h-[300px] rounded-lg overflow-hidden cursor-pointer aspect-[3/4]">
+    <div className="group relative h-full max-h-75 rounded-lg overflow-hidden cursor-pointer aspect-3/4">
       <div
         className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
       // style={{ backgroundImage: `url(${space.image})` }}

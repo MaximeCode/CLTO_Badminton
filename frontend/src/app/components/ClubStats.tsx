@@ -73,21 +73,21 @@ export function ClubStats() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: index * 0.1 }}
-            className="group relative overflow-hidden bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-[#da9619]"
+            className="group relative overflow-hidden bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-secondary"
           >
-            <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-[#0153b6] to-[#da9619]" />
+            <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-primary to-secondary" />
 
             <div className="flex justify-center mb-4">
-              <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-full bg-linear-to-br from-[#0153b6] to-[#0a69d1] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-full bg-linear-to-br from-primary-accent to-primary flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
                 <stat.icon className="text-white w-6 h-6 lg:w-7 lg:h-7 xl:w-8 xl:h-8" />
               </div>
             </div>
 
-            <div className="font-['Bebas_Neue'] text-5xl xl:text-6xl text-[#0153b6] mb-2 text-center">
+            <div className="font-primary text-5xl xl:text-6xl text-primary mb-2 text-center">
               {stat.value}
             </div>
 
-            <div className="text-lg font-bold text-[#da9619] uppercase tracking-wide text-center mb-1">
+            <div className="text-lg font-bold text-secondary uppercase tracking-wide text-center mb-1">
               {stat.label}
             </div>
 
@@ -95,7 +95,7 @@ export function ClubStats() {
               {stat.description}
             </div>
 
-            <div className="absolute inset-0 bg-linear-to-br from-[#0153b6]/5 to-[#da9619]/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
+            <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-secondary/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
           </motion.div>
         ))}
       </div>
@@ -115,7 +115,7 @@ export function ClubStats() {
                 transition={{ duration: 0.4, delay: index * 0.05 }}
                 className="sm:w-sm rounded-xl border border-primary/10 bg-white/80 px-4 py-5 text-center shadow-sm hover:border-secondary/40 hover:shadow-md transition-all duration-200"
               >
-                <div className="font-['Bebas_Neue'] text-3xl md:text-4xl text-primary leading-none mb-2">
+                <div className="font-primary text-3xl md:text-4xl text-primary leading-none mb-2">
                   {stat.chiffre}
                 </div>
                 <div className="text-xs sm:text-sm text-secondary leading-snug">

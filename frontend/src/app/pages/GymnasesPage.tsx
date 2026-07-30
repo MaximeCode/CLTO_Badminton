@@ -179,7 +179,7 @@ export function GymnasesPage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="h-[600px] lg:h-full min-h-[500px] rounded-lg overflow-hidden shadow-xl sticky top-24 bg-gray-100"
+            className="h-150 lg:h-full min-h-125 rounded-lg overflow-hidden shadow-xl sticky top-24 bg-gray-100"
           >
             <GymMap
               gyms={gyms}

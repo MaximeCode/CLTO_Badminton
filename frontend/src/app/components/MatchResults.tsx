@@ -80,7 +80,7 @@ export function MatchResults() {
           </div>
         </motion.div>
 
-        {/* <div className="max-w-[1280px] mx-auto px-4 my-12">
+        {/* <div className="max-w-7xl mx-auto px-4 my-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -92,7 +92,7 @@ export function MatchResults() {
               id="interclub-iframe"
               width="100%"
               height="700px"
-              className="h-[700px] w-full rounded-lg border-2 border-gray-200"
+              className="h-175 w-full rounded-lg border-2 border-gray-200"
               src={`https://icbad.ffbad.org/rencontre/772074`}
             ></iframe>
           </motion.div>

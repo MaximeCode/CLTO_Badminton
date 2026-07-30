@@ -10,7 +10,7 @@ export function PageHero({ title = '', subtitle = '', image }: PageHeroProps) {
   const hasImage = Boolean(image);
 
   return (
-    <div className="relative h-[160px] sm:h-[240px] md:h-[320px] overflow-hidden">
+    <div className="relative h-40 sm:h-60 md:h-80 overflow-hidden">
       <div
         className={`absolute inset-0 ${hasImage ? 'bg-cover bg-center' : ''}`}
         style={
@@ -26,7 +26,7 @@ export function PageHero({ title = '', subtitle = '', image }: PageHeroProps) {
           <div className="absolute inset-0 bg-linear-to-b from-black/80 via-black/60 to-black/45 md:bg-linear-to-r md:from-black/70 md:via-black/50 md:to-black/30" />
         )}
       </div>
-      <div className="relative h-full max-w-[1280px] mx-auto px-4 sm:px-6 pt-6 sm:pt-10 md:pt-0 flex flex-col justify-center">
+      <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 pt-6 sm:pt-10 md:pt-0 flex flex-col justify-center">
         <div>
           <div className="flex items-stretch gap-3 sm:gap-4 mb-2 sm:mb-3 md:mb-4">
             <div className="w-1.5 shrink-0 rounded-full bg-secondary" />

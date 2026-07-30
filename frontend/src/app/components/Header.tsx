@@ -126,7 +126,7 @@ export function Header() {
       ref={headerRef}
       className="sticky top-0 z-50 border-t-2 border-secondary bg-white shadow-sm"
     >
-      <div className="mx-auto max-w-[1280px] px-6">
+      <div className="mx-auto max-w-7xl px-6">
         <div className="flex h-20 items-center justify-between">
           <Link
             to="/"
@@ -204,7 +204,7 @@ export function Header() {
                   {isOpen && (
                     <div
                       id={dropdownId}
-                      className="animate-in fade-in slide-in-from-top-2 absolute left-0 top-full mt-0 min-w-[200px] overflow-hidden rounded-md bg-white shadow-lg duration-200"
+                      className="animate-in fade-in slide-in-from-top-2 absolute left-0 top-full mt-0 min-w-50 overflow-hidden rounded-md bg-white shadow-lg duration-200"
                     >
                       {item.items?.map((subItem) => {
                         const isSubItemActive =

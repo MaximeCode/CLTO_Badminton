@@ -140,7 +140,7 @@ export function InterclubPage() {
                   id="interclub-iframe"
                   width="100%"
                   height="560px"
-                  className="h-[560px] sm:h-[620px] md:h-[700px] w-full rounded-lg border-2 border-gray-200"
+                  className="h-140 sm:h-155 md:h-175 w-full rounded-lg border-2 border-gray-200"
                   src={currentUrl}
                   title="Résultats interclubs FFBAD"
                 />
@@ -176,7 +176,7 @@ export function InterclubPage() {
         >
           <iframe
             src="https://drive.google.com/file/d/1SuZ97p0mvD4RfVJGT8CXJQ3w8r4Vr0RW/preview"
-            className="h-[560px] w-full sm:h-[620px] md:h-[700px]"
+            className="h-140 w-full sm:h-155 md:h-175"
             allow="autoplay"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"

@@ -88,7 +88,7 @@ export function InterclubRankings() {
         return (
             <Section className="bg-linear-to-b from-gray-50 to-white">
                 <div className="flex flex-col items-center justify-center min-h-64">
-                    <Loader2 size={40} className="text-[#0153b6] animate-spin mb-4" />
+                    <Loader2 size={40} className="text-primary animate-spin mb-4" />
                     <p className="text-gray-500 font-medium">Chargement des classements…</p>
                 </div>
             </Section>
@@ -138,7 +138,7 @@ export function InterclubRankings() {
                                 onClick={() => setSelectedIndex(index)}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className={`relative px-4 md:px-6 py-2 md:py-3 rounded-xl font-['Bebas_Neue'] text-xl transition-all duration-300 ${isActive
+                                className={`relative px-4 md:px-6 py-2 md:py-3 rounded-xl font-primary text-xl transition-all duration-300 ${isActive
                                     ? 'text-white shadow-xl scale-105'
                                     : 'bg-white text-gray-700 shadow-md hover:shadow-lg'
                                     }`}
@@ -165,7 +165,7 @@ export function InterclubRankings() {
                     key={selected.division}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="font-['Bebas_Neue'] text-2xl md:text-3xl mb-2 text-center"
+                    className="font-primary text-2xl md:text-3xl mb-2 text-center"
                     style={{ color: accentColor }}
                 >
                     {divConfig.label} - {selected.competitionName}
@@ -380,7 +380,7 @@ function RankingCard({
                         className="shrink-0 w-14 h-14 rounded-lg flex flex-col items-center justify-center shadow-md text-white"
                         style={{ backgroundColor: accentColor }}
                     >
-                        <span className="font-['Bebas_Neue'] text-2xl md:text-3xl leading-none">
+                        <span className="font-primary text-2xl md:text-3xl leading-none">
                             {team.position}
                         </span>
                         <span className="text-[10px] opacity-80 uppercase">place</span>
@@ -419,7 +419,7 @@ function RankingCard({
 
                             <div className="shrink-0 md:hidden text-center">
                                 <div
-                                    className="font-['Bebas_Neue'] text-4xl md:text-5xl leading-none"
+                                    className="font-primary text-4xl md:text-5xl leading-none"
                                     style={{ color: accentColor }}
                                 >
                                     {team.points}
@@ -431,7 +431,7 @@ function RankingCard({
 
                     <div className="shrink-0 hidden md:block text-center">
                         <div
-                            className="font-['Bebas_Neue'] text-4xl md:text-5xl leading-none"
+                            className="font-primary text-4xl md:text-5xl leading-none"
                             style={{ color: accentColor }}
                         >
                             {team.points}
@@ -483,7 +483,7 @@ function StatPill({
     return (
         <div className="shrink-0 text-center md:flex md:justify-center items-center gap-2">
             <div
-                className="flex items-center justify-center gap-0.5 font-['Bebas_Neue'] text-base md:text-xl leading-none"
+                className="flex items-center justify-center gap-0.5 font-primary text-base md:text-xl leading-none"
                 style={{ color: resolvedColor }}
             >
                 {Icon && <Icon size={16} strokeWidth={2.5} />}

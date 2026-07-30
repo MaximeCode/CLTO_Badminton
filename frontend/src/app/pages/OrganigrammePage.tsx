@@ -102,7 +102,7 @@ function MemberCard({ member, isExecutive = false }: { member: OrgMember; isExec
       ].join(' ')}
     >
       {/* Decorative gradient bar */}
-      <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-[#0153b6] to-[#da9619]" />
+      <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-primary to-secondary" />
 
       <div className="flex flex-col items-center gap-4 text-center">
         <div className="relative">
@@ -131,7 +131,7 @@ function MaintenanceBlock() {
         transition={{ duration: 0.55 }}
         className="relative mx-auto max-w-4xl overflow-hidden rounded-2xl border-2 border-primary/15 bg-white shadow-sm"
       >
-        <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-[#0153b6] to-[#da9619]" />
+        <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-primary to-secondary" />
 
         <div className="grid items-center gap-8 p-6 pt-8 md:grid-cols-2 md:gap-10 md:p-10 md:pt-12">
           <div className="order-2 text-center md:order-1 md:text-left">

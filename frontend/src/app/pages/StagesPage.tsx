@@ -49,7 +49,7 @@ export function StagesPage() {
       />
 
       <section className="py-12 md:py-20 bg-white">
-        <div className="max-w-[1280px] mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -107,7 +107,7 @@ export function StagesPage() {
       </section>
 
       <section className="py-12 md:py-20 bg-gray-50">
-        <div className="max-w-[1280px] mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
