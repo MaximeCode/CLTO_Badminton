@@ -14,10 +14,10 @@ module.exports = {
 
         try {
             await strapi.plugins['email'].services.email.send({
-                to: 'contact@cltobadminton.fr',
-                from: 'no-reply@cltobadminton.fr',
+                to: process.env.SMTP_TO || 'maxbaudedu28@gmail.com',
+                from: process.env.SMTP_FROM || 'no-reply@cltobadminton.fr',
                 replyTo: email,
-                subject: `Nouveau message du formulaire de contact — ${name}`,
+                subject: `Nouveau message du formulaire de contact — ${subject} — ${name}`,
                 text,
                 html,
             });

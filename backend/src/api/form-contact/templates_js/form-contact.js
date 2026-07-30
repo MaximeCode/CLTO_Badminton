@@ -85,9 +85,7 @@ function buildContactEmail({ name, email, phone, subject, message }) {
                       <p style="margin:0 0 10px;font-size:13px;font-weight:600;color:${BRAND.muted};text-transform:uppercase;letter-spacing:0.04em;">
                         Message
                       </p>
-                      <p style="margin:0;font-size:16px;line-height:1.6;color:${BRAND.foreground};white-space:pre-wrap;">
-                        ${safeMessage}
-                      </p>
+                      <p style="margin:0;font-size:16px;line-height:1.6;color:${BRAND.foreground};white-space:pre-wrap;">${safeMessage}</p>
                     </td>
                   </tr>
                 </table>
