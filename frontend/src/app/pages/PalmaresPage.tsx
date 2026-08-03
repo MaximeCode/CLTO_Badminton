@@ -27,7 +27,6 @@ export function PalmaresPage() {
 
   return (
     <>
-      <iframe src='https://www.flickr.com/photos/200185781@N08/albums/72177720326583533/player/' width={1024} height={680} frameBorder="0" allowFullScreen={true} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="TITRE"></iframe>
       <PageHero
         title="PALMARÈS"
         subtitle="Les performances et distinctions du CLTO Badminton"

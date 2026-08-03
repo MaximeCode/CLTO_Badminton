@@ -13,89 +13,6 @@ import { PageAdherer, Document } from '@/types/pageAdhererType';
 import { getPageAdherer } from '@/api/strapi/pageAdherer';
 import { BlocksRenderer } from '../components/BlocksRenderer';
 
-/* OLD DATA 
-
-const docs = [
-    { label: 'Certificat Médical 25-26', href: '#' },
-    { label: 'Autorisation parentale 25-26', href: '#' },
-    { label: 'Créneaux 25-26', href: '#' },
-];
-
-const adhesionCases = [
-    {
-        id: 'cas-1',
-        title: "Cas 1 - Je n'avais pas de licence FFBad pendant la saison 2024-2025",
-        content: [
-            "Cliquez sur ce lien pour accéder au dossier d'inscription : https://adherer.ffbad.club/CLTO45",
-            "A noter : si avez déjà été licencié dans un club avant la saison 24-25, le secrétariat fera le rapprochement lors de la réception du 
-            dossier.",
-        ],
-    },
-    {
-        id: 'cas-2',
-        title: "Cas 2 - J'étais licencié au CLTO Badminton pendant la saison 2024-2025",
-        content: [
-            "Vous recevrez un mail courant août avec un lien personnalisé pour votre réinscription. Si le lien ne fonctionne pas ou si vous ne 
-            recevez pas le mail, suivez la procédure ci-dessous :",
-            '1. Rendez-vous sur le site www.myffbad.fr',
-            "2. Connectez-vous à votre compte à l'aide de vos identifiants (numéro de licence et mot de passe personnel)",
-            '3. Cliquez sur votre nom pour afficher le menu',
-            "4. Cliquez sur « renouveler votre adhésion »",
-            '5. Vous êtes sur le dossier (pré complété), laissez-vous guider !',
-        ],
-    },
-    {
-        id: 'cas-3',
-        title: "Cas 3 - J'avais une licence dans un autre club pendant la saison 2024-2025",
-        content: [
-            '1. Rendez-vous sur le site www.myffbad.fr',
-            "2. Connectez-vous à votre compte à l'aide de vos identifiants (numéro de licence et mot de passe personnel)",
-            '3. Dans la barre de recherche, écrivez "CLTO" puis indiquez "un club" dans le menu déroulant',
-            '4. Cliquez sur "je m\'inscris dans ce club"',
-            '5. Vous êtes sur le dossier, laissez-vous guider !',
-        ],
-    },
-    {
-        id: 'cas-4',
-        title: "Cas 4 - J'ai déjà une licence dans un autre club pour la saison 2025-2026 (demande de licence complémentaire)",
-        content: [
-            "Si vous êtes déjà licencié dans un club mais que vous souhaitez bénéficier des créneaux du CLTO pour compléter votre semaine, deux 
-            possibilités s'offrent à vous :",
-            'Licence complémentaire Loisir : accès à tous les créneaux de jeu libre Loisir.',
-            'Licence complémentaire compétiteur : accès aux créneaux de jeu libre compétiteur, et possibilité de prendre un supplément 
-            entraînement.',
-            '1. Complétez la demande de licence complémentaire : LIEN',
-            "2. Si votre demande est acceptée, vous serez alors invité à compléter votre dossier en ligne de la même façon que pour une nouvelle 
-            licence classique.",
-            '3. Rendez-vous sur le site www.myffbad.fr',
-            "4. Connectez-vous à votre compte à l'aide de vos identifiants (numéro de licence et mot de passe personnel)",
-            '5. Dans la barre de recherche, écrivez "CLTO" puis indiquez "un club" dans le menu déroulant',
-            '6. Cliquez sur "je m\'inscris dans ce club"',
-            '7. Vous êtes sur le dossier, laissez-vous guider !',
-        ],
-        warning:
-            "Attention : Les licences complémentaires compétiteur sont soumises à validation par le CA : chaque candidature sera analysée en 
-            fonction des places disponibles, de l'intérêt pour le joueur, et de l'intérêt pour les deux clubs.",
-    },
-];
-
-const paymentMethods = [
-    "Carte bancaire : nouveau, lors de la réception du 2e mail de validation reçu de la FFBad. Ce mode permet un paiement en 2 ou 3 fois et la 
-    validation automatique de la licence. A privilégier.",
-    'Virement (IBAN : FR76 3004 7146 7000 0203 5420 117) en totalité et une seule fois. Merci d’indiquer "LICENCE" et le nom du joueur en libellé.
-    ',
-    "Chèque bancaire (ordre : CLTO Badminton), paiement autorisé en trois fois maximum sur trois mois consécutifs. La totalité des chèques doit 
-    être remise en même temps.",
-    "Dispositif Pass' Loisir : 80 € de réduction maximale, valable pour les licences jeunes uniquement pour les familles éligibles. Date limite : 
-    10 novembre 2025.",
-    'Dispositif Pass-Sport : 70 € de réduction, valable sur les licences jeunes et licences étudiantes boursières. Date limite : 31 décembre 2025.
-    ',
-    "Dispositif Yep's : 20 € de réduction, valable pour les 15-25 ans. Date limite : 15 décembre 2025.",
-    "Chèques vacances (format dématérialisé privilégié), Coupons Sport, Chèque Up Sport & Loisir, espèces (uniquement en cas d'impossibilité d'un 
-    autre moyen).",
-];
- */
-
 function SectionTitle({ title, subtitle }: { title: string; subtitle?: string }) {
     return (
         <div className="mb-4 lg:mb-8">
@@ -193,7 +110,7 @@ export function AdhererPage() {
         <>
             <PageHero
                 title="ADHERER AU CLUB"
-                subtitle="Toutes les informations d'inscription pour la saison 2025-2026"
+                subtitle="Toutes les informations d'inscription pour la saison 2026-2027"
             />
 
             <section className="bg-linear-to-b from-primary/3 via-white to-primary/2 py-10 md:py-16">

@@ -83,6 +83,8 @@ export function ContactPage() {
     });
   };
 
+  const formClasses = "w-full px-4 py-2 md:py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none transition-colors";
+
   return (
     <>
       <PageHero
@@ -179,7 +181,7 @@ export function ContactPage() {
               ENVOYEZ-NOUS UN MESSAGE
             </h2>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
               <div>
                 <label htmlFor="name" className="block text-gray-700 mb-2">
                   Nom et prénom *
@@ -191,7 +193,7 @@ export function ContactPage() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none transition-colors"
+                  className={formClasses}
                 />
               </div>
 
@@ -206,7 +208,7 @@ export function ContactPage() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none transition-colors"
+                  className={formClasses}
                 />
               </div>
 
@@ -220,7 +222,7 @@ export function ContactPage() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none transition-colors"
+                  className={formClasses}
                 />
               </div>
 
@@ -234,7 +236,7 @@ export function ContactPage() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none transition-colors"
+                  className={formClasses}
                 >
                   <option value="">Sélectionnez un sujet</option>
                   {mailSubjectGroups.map((group) => (
@@ -262,7 +264,7 @@ export function ContactPage() {
                   onChange={handleChange}
                   required
                   rows={6}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none transition-colors resize-none"
+                  className={formClasses + " resize-none"}
                 />
               </div>
 

@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import { Hero, type HeroSlide } from "../components/Hero";
 import { getInterclubTeams } from "@/api/icbad_local/interclub";
 import type { InterclubTeamSummary } from "@/types/interclubType";
-import { groupTeamsByIcbadUrl } from "@/utils/interclubUtils";
+import { formatDivision, groupTeamsByIcbadUrl } from "@/utils/interclubUtils";
 import { Section } from "../components/Section";
 
 export function InterclubPage() {
@@ -40,47 +40,50 @@ export function InterclubPage() {
       />
 
       {/* Bloc de liaison */}
-      <Section className="bg-gray-100">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="grid md:grid-cols-3 gap-8 text-center"
-        >
-          <div className="flex flex-col items-center gap-3">
-            <div className="bg-primary text-white w-14 h-14 rounded-full flex items-center justify-center">
-              <Users className="h-7 w-7" />
+      {teams.length > 0 && (
+        <Section className="bg-gray-100">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="grid md:grid-cols-3 gap-8 text-center"
+          >
+            <div className="flex flex-col items-center gap-3">
+              <div className="bg-primary text-white w-14 h-14 rounded-full flex items-center justify-center">
+                <Users className="h-7 w-7" />
+              </div>
+              <h3 className="font-primary text-xl text-primary">{teams.length} équipes engagées</h3>
+              <p className="text-gray-600 text-sm">
+                De la {formatDivision(teams[0].division)} à la {formatDivision(teams[teams.length - 1].division)}, le CLTO aligne {teams.length} équipes dans les championnats par équipes cette saison.
+              </p>
             </div>
-            <h3 className="font-primary text-xl text-primary">5 équipes engagées</h3>
-            <p className="text-gray-600 text-sm">
-              De la Nationale 2 à la Départementale 1, le CLTO aligne cinq équipes dans les championnats par équipes cette saison.
-            </p>
-          </div>
-          <div className="flex flex-col items-center gap-3">
-            <div className="bg-primary text-white w-14 h-14 rounded-full flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
-              </svg>
+            <div className="flex flex-col items-center gap-3">
+              <div className="bg-primary text-white w-14 h-14 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </div>
+              <h3 className="font-primary text-xl text-primary">Esprit d'équipe</h3>
+              <p className="text-gray-600 text-sm">
+                Les interclubs sont avant tout une aventure collective. Chaque rencontre est l'occasion de représenter le club avec fierté et solidarité.
+              </p>
             </div>
-            <h3 className="font-primary text-xl text-primary">Esprit d'équipe</h3>
-            <p className="text-gray-600 text-sm">
-              Les interclubs sont avant tout une aventure collective. Chaque rencontre est l'occasion de représenter le club avec fierté et solidarité.
-            </p>
-          </div>
-          <div className="flex flex-col items-center gap-3">
-            <div className="bg-primary text-white w-14 h-14 rounded-full flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
+            <div className="flex flex-col items-center gap-3">
+              <div className="bg-primary text-white w-14 h-14 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+              </div>
+              <h3 className="font-primary text-xl text-primary">Septembre — Juin</h3>
+              <p className="text-gray-600 text-sm">
+                La saison interclubs s'étend de septembre à juin.
+              </p>
             </div>
-            <h3 className="font-primary text-xl text-primary">Septembre — Avril</h3>
-            <p className="text-gray-600 text-sm">
-              La saison interclubs s'étend de septembre à avril.
-            </p>
-          </div>
-        </motion.div>
-      </Section>
+          </motion.div>
+        </Section>
+      )}
+
 
       <Section className="bg-white">
         <motion.div

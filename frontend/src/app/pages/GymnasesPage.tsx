@@ -78,10 +78,10 @@ export function GymnasesPage() {
           className="text-center mb-16"
         >
           <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-            NOS {gymsCount} GYMNASES
+            {gymsCount} GYMNASES
           </h2>
           <p className="text-gray-600 text-md md:text-lg max-w-2xl mx-auto">
-            Le CLTO Badminton dispose de {gymsCount} gymnases dans Orléans pour vous offrir de nombreux créneaux
+            Le CLTO Badminton dispose de {gymsCount} lieux dans Orléans pour pratiquer le badminton et vous offrir de nombreux créneaux
             d'entraînement
           </p>
         </motion.div>

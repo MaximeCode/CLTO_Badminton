@@ -1,3 +1,5 @@
+import type { Categorie } from "./categoriesType";
+
 export type Galerie = {
   id: number;
   documentId: string;
@@ -6,4 +8,5 @@ export type Galerie = {
     url: string;
   };
   url_album: string;
+  galerie_categorie: Categorie | null;
 };

@@ -193,26 +193,26 @@ export function InscriptionWizard({
                         </button>
                     )}
                 </div>
-<div className="w-full">
-                {history.length > 0 && (
-                    <ol className="mt-4 grid grid-cols-[auto_minmax(0,1fr)_auto] gap-y-2 text-sm text-primary-accent">
-                        {history.map((entry, index) => (
-                            <li
-                                key={`${entry.nodeId}-${index}`}
-                                className="col-span-3 grid grid-cols-subgrid items-baseline gap-x-3 rounded-lg bg-white/70 px-3 py-2"
-                            >
-                                <span className="font-semibold text-primary tabular-nums">
-                                    {index + 1}.
-                                                                </span>
-<span className="min-w-0">{entry.question}</span>
-                                <span className="font-semibold text-secondary text-right whitespace-nowrap">
-                                    {entry.answerLabel}
-                                </span>
-                            </li>
-                        ))}
-                    </ol>
-                )}
-</div>
+                <div className="w-full">
+                    {history.length > 0 && (
+                        <ol className="mt-4 grid grid-cols-[auto_minmax(0,1fr)_auto] gap-y-2 text-sm text-primary-accent">
+                            {history.map((entry, index) => (
+                                <li
+                                    key={`${entry.nodeId}-${index}`}
+                                    className="col-span-3 grid grid-cols-subgrid items-baseline gap-x-3 rounded-lg bg-white/70 px-3 py-2"
+                                >
+                                    <span className="font-semibold text-primary tabular-nums">
+                                        {index + 1}.
+                                    </span>
+                                    <span className="min-w-0">{entry.question}</span>
+                                    <span className="font-semibold text-secondary text-right whitespace-nowrap">
+                                        {entry.answerLabel}
+                                    </span>
+                                </li>
+                            ))}
+                        </ol>
+                    )}
+                </div>
             </div>
 
             <motion.div

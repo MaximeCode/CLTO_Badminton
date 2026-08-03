@@ -5,13 +5,17 @@ import { PageHero } from "../components/PageHero";
 import { Section } from "../components/Section";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import type { Galerie } from "@/types/galerieType";
+import type { Categorie } from "@/types/categoriesType";
 import { getFlickrPlayerSrc, getGalerie } from "@/api/strapi/galerie";
+import { getGalerieCategories } from "@/api/strapi/galerie-categories";
 
 export function GaleriePage() {
   const [albums, setAlbums] = useState<Galerie[]>([]);
+  const [categories, setCategories] = useState<Categorie[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedAlbum, setSelectedAlbum] = useState<Galerie | null>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | "all">("all");
 
   useEffect(() => {
     async function loadData() {
@@ -19,6 +23,7 @@ export function GaleriePage() {
         setLoadError(null);
         setLoading(true);
         setAlbums(await getGalerie());
+        setCategories(await getGalerieCategories());
       } catch (error) {
         console.error("Error loading galerie:", error);
         setLoadError(
@@ -49,6 +54,11 @@ export function GaleriePage() {
 
   const playerSrc = selectedAlbum ? getFlickrPlayerSrc(selectedAlbum.url_album) : null;
 
+  const filteredAlbums =
+    selectedCategoryId === "all"
+      ? albums
+      : albums.filter((album) => album.galerie_categorie?.id === selectedCategoryId);
+
   return (
     <>
       <PageHero
@@ -69,9 +79,56 @@ export function GaleriePage() {
           <p className="text-center text-gray-500">Aucun album pour le moment.</p>
         )}
 
-        {!loading && !loadError && albums.length > 0 && (
+        {!loading && !loadError && categories.length > 0 && (
+          <>
+            <h2 className="font-primary text-2xl md:text-3xl text-primary mb-4">Filtrer par catégorie :</h2>
+            <nav
+              aria-label="Catégories de la galerie"
+              className="mb-10 flex flex-wrap items-center gap-2 sm:gap-3"
+            >
+              <button
+                type="button"
+                onClick={() => setSelectedCategoryId("all")}
+                aria-pressed={selectedCategoryId === "all"}
+                className={[
+                  "rounded-md border-2 px-4 py-2 font-primary text-md transition-all duration-200 sm:px-2 sm:text-lg",
+                  selectedCategoryId === "all"
+                    ? "border-primary bg-primary text-white shadow-sm"
+                    : "border-primary/15 bg-white text-primary hover:border-secondary hover:text-secondary",
+                ].join(" ")}
+              >
+                Toutes
+              </button>
+              {categories.map((category) => {
+                const isActive = selectedCategoryId === category.id;
+                return (
+                  <button
+                    key={category.id}
+                    type="button"
+                    onClick={() => setSelectedCategoryId(category.id)}
+                    aria-pressed={isActive}
+                    className={[
+                      "rounded-md border-2 px-4 py-2 font-primary text-md transition-all duration-200 sm:px-2 sm:text-lg",
+                      isActive
+                        ? "border-secondary bg-secondary text-white shadow-sm"
+                        : "border-primary/15 bg-white text-primary hover:border-secondary hover:text-secondary",
+                    ].join(" ")}
+                  >
+                    {category.libelle}
+                  </button>
+                );
+              })}
+            </nav>
+          </>
+        )}
+
+        {!loading && !loadError && albums.length > 0 && filteredAlbums.length === 0 && (
+          <p className="text-center text-gray-500">Aucun album dans cette catégorie.</p>
+        )}
+
+        {!loading && !loadError && filteredAlbums.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {albums.map((album, index) => (
+            {filteredAlbums.map((album, index) => (
               <motion.button
                 key={album.id}
                 type="button"
@@ -107,7 +164,7 @@ export function GaleriePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+            className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6"
             role="dialog"
             aria-modal="true"
             aria-label={selectedAlbum.titre}

@@ -193,7 +193,7 @@ export function JeunesPage() {
             JEUNES LOISIRS
           </h2>
           <p className="text-gray-600 text-lg max-w-3xl mx-auto">
-            Fonctionnement, compétitions, avantages et informations utiles pour la saison <strong>2025/2026</strong>.
+            Fonctionnement, compétitions, avantages et informations utiles pour la saison <strong>2026/2027</strong>.
           </p>
         </motion.div>
 

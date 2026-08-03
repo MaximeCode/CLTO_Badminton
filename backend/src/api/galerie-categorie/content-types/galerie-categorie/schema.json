@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "galerie_categories",
+  "info": {
+    "singularName": "galerie-categorie",
+    "pluralName": "galerie-categories",
+    "displayName": "Galerie Catégories"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "libelle": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

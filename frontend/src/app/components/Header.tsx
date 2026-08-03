@@ -25,10 +25,11 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   {
-    title: "Créneaux",
+    title: "Jouer",
     items: [
       { label: "Créneaux", path: "/creneaux" },
       { label: "Gymnases", path: "/gymnases" },
+      { label: "Stages", path: "/stages" },
     ],
   },
   {

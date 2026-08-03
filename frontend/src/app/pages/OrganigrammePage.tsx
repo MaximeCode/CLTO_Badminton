@@ -180,7 +180,7 @@ export function OrganigrammePage() {
     <>
       <PageHero
         title="ORGANIGRAMME"
-        subtitle="Organigramme 2025-2026 du CLTO Badminton"
+        subtitle="Organigramme 2026-2027 du CLTO Badminton"
         image={bandeauBureau}
       />
 

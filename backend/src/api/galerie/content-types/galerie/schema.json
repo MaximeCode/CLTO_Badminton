@@ -19,11 +19,18 @@
       "type": "media",
       "multiple": false,
       "required": true,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     },
     "url_album": {
       "type": "string",
       "required": true
+    },
+    "galerie_categorie": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::galerie-categorie.galerie-categorie"
     }
   }
 }

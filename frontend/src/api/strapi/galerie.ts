@@ -1,10 +1,9 @@
 import { API_URL, fetchAPI } from "../Client";
 import type { Galerie } from "@/types/galerieType";
+import type { Categorie } from "@/types/categoriesType";
 
 export async function getGalerie(): Promise<Galerie[]> {
-  const { data } = await fetchAPI(
-    "/api/galeries?populate[vignette][fields][0]=url&sort[0]=createdAt:desc"
-  );
+  const { data } = await fetchAPI("/api/galeries?populate=*&sort[0]=createdAt:desc");
 
   return data.map(
     (item: {
@@ -13,6 +12,7 @@ export async function getGalerie(): Promise<Galerie[]> {
       titre: string;
       vignette?: { url?: string } | null;
       url_album: string;
+      galerie_categorie?: Categorie | null;
     }) => ({
       id: item.id,
       documentId: item.documentId,
@@ -21,6 +21,7 @@ export async function getGalerie(): Promise<Galerie[]> {
         url: `${API_URL}${item.vignette?.url ?? ""}`,
       },
       url_album: item.url_album,
+      galerie_categorie: item.galerie_categorie ?? null,
     })
   );
 }
