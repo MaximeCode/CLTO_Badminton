@@ -30,12 +30,13 @@ export function PolitiqueConfidentialitePage() {
               Le responsable du traitement des données personnelles collectées via le présent site
               est l&apos;association&nbsp;:
             </p>
-            <ul className="list-none space-y-1 pl-0 border-l-2 border-secondary pl-4 my-4">
+            <ul className="list-none space-y-1 border-l-2 border-secondary pl-4 my-4">
               <li>
-                <strong>CLTO BADMINTON</strong>, association déclarée
+                <strong>Cercle Laïque des Tourelles Orléans Badminton (CLTO BADMINTON)</strong>,
+                association déclarée
               </li>
               <li>1 boulevard de Québec, 45000 Orléans</li>
-              <li>SIRET : 482 737 038 00034</li>
+              <li>RNA : W452000403 — SIRET : 482 737 038 00034</li>
               <li>
                 Email :{' '}
                 <a href="mailto:contact@cltobadminton.fr" className="text-secondary hover:underline">

@@ -31,7 +31,8 @@ export function MentionsLegalesPage() {
             </p>
             <ul className="list-none space-y-1 pl-0 border-l-2 border-secondary pl-4 my-4">
               <li>
-                <strong>Dénomination :</strong> CLTO BADMINTON
+                <strong>Dénomination :</strong> Cercle Laïque des Tourelles Orléans Badminton
+                (CLTO BADMINTON)
               </li>
               <li>
                 <strong>Forme juridique :</strong> Association déclarée (loi du 1er juillet 1901)
@@ -40,19 +41,22 @@ export function MentionsLegalesPage() {
                 <strong>Siège social :</strong> 1 boulevard de Québec, 45000 Orléans, France
               </li>
               <li>
+                <strong>N° RNA :</strong> W452000403
+              </li>
+              <li>
                 <strong>SIREN :</strong> 482 737 038
               </li>
               <li>
                 <strong>SIRET (siège) :</strong> 482 737 038 00034
               </li>
               <li>
-                <strong>Code APE :</strong> 9312Z — Activités de clubs de sports
+                <strong>Code APE / NAF :</strong> 93.12Z — Activités de clubs de sports
               </li>
               <li>
-                <strong>N° RNA :</strong> [À COMPLÉTER]
+                <strong>Immatriculation INSEE :</strong> depuis le 1er janvier 2005
               </li>
               <li>
-                <strong>N° TVA intracommunautaire :</strong> [À COMPLÉTER]
+                <strong>Qualité :</strong> Entreprise de l&apos;Économie Sociale et Solidaire (ESS)
               </li>
               <li>
                 <strong>Téléphone :</strong>{' '}
@@ -69,7 +73,9 @@ export function MentionsLegalesPage() {
             </ul>
             <p>
               L&apos;association CLTO Badminton est un club sportif dont l&apos;objet est la
-              pratique, l&apos;enseignement et la promotion du badminton à Orléans et ses environs.
+              pratique sportive du badminton, ainsi que toutes les actions propres à promouvoir et
+              à valoriser ce sport à Orléans et ses environs. Elle n&apos;est pas assujettie à la
+              TVA (pas de numéro de TVA intracommunautaire).
             </p>
           </LegalSection>
 
