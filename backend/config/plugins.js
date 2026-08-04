@@ -12,8 +12,7 @@ module.exports = ({ env }) => ({
                 auth: env('SMTP_USERNAME')
                     ? {
                         user: env('SMTP_USERNAME'),
-                        // Strip accidental quotes from env_file / docker parsing
-                        pass: String(env('SMTP_PASSWORD', '')).replace(/^["']|["']$/g, ''),
+                        pass: env('SMTP_PASSWORD'),
                     }
                     : undefined,
                 ignoreTLS: env.bool('SMTP_IGNORE_TLS', env('SMTP_HOST', 'localhost') === 'localhost'),

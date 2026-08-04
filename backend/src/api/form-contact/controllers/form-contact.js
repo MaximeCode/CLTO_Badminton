@@ -22,6 +22,7 @@ module.exports = {
                 html,
             });
             ctx.send({ message: 'Email envoyé avec succès' });
+            console.info(ctx.request.body);
         } catch (error) {
             console.error('[LOG] sendmail: Erreur lors de l\'envoi de l\'email', error);
             return ctx.internalServerError('Erreur lors de l\'envoi de l\'email');

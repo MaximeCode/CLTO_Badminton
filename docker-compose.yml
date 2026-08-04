@@ -29,8 +29,8 @@ services:
 
     networks:
       - max_network
-    ports:
-      - "5173:80"
+    # ports:
+      # - "5173:80"
 
   ## STRAPI ##
   backend:
@@ -59,13 +59,13 @@ services:
       # Port Strapi interne
       - "traefik.http.services.cltobadminton-strapi.loadbalancer.server.port=1337"
 
-      # Basic Auth
-      - "traefik.http.routers.cltobadminton-strapi.middlewares=preprod-auth@file"
+      # Pas de Basic Auth ici : conflit avec les 401 de Strapi (boucle navigateur)
+      # - "traefik.http.routers.cltobadminton-strapi.middlewares=preprod-auth@file"
 
     networks:
       - max_network
-    ports:
-      - "1337:1337"
+    # ports:
+      # - "1337:1337"
 
     volumes:
       - strapi_uploads:/backend/public/uploads
