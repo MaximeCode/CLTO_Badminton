@@ -21,7 +21,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Palmarès", path: "/palmares" },
       { label: "Documents officiels", path: "/documents" },
       { label: "Historique", path: "/historique" },
-      { label: "Galerie", path: "/galerie" },
+      // { label: "Galerie", path: "/galerie" },
     ],
   },
   {
@@ -38,13 +38,17 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Jeunes Loisirs", path: "/jeunes-loisirs" },
       { label: "Jeunes Compétiteurs", path: "/jeunes-competiteurs" },
       { label: "Adultes Loisirs", path: "/adultes-loisirs" },
-      { label: "Adultes compétiteurs", path: "/adultes-competiteurs" },
+      { label: "Adultes Compétiteurs", path: "/adultes-competiteurs" },
       { label: "Vieilles plumes", path: "/vieilles-plumes" },
     ],
   },
   {
     title: "Interclubs",
     path: "/interclub",
+  },
+  {
+    title: "Galerie",
+    path: "/galerie",
   },
   {
     title: "Contact",
