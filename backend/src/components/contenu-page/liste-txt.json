@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_contenu_page_liste_txts",
+  "info": {
+    "displayName": "liste_txt"
+  },
+  "options": {},
+  "attributes": {
+    "contenu": {
+      "type": "text",
+      "required": true
+    }
+  },
+  "config": {}
+}

@@ -1,38 +1,41 @@
+import { useEffect, useState } from 'react';
 import { PageHero } from '../../components/PageHero';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
 import {
   Trophy,
   Calendar,
-  Users,
   BookOpen,
   Gift,
   ShoppingBag,
-  Medal,
   CheckCircle,
-  Info,
 } from 'lucide-react';
 import { Link } from 'react-router';
-
-const tutoriels = [
-  {
-    icon: BookOpen,
-    title: 'Inscription aux tournois',
-    description:
-      'Découvrez pas à pas comment vous inscrire à un tournoi homologué : recherche de tournoi, choix des tableaux et validation de l\'inscription.',
-  },
-];
-
-const avantages = [
-  'Championnats départemental et régional pris en charge intégralement par le club',
-  'Volants en plumes fournis pendant tous les entraînements compétiteurs et créneaux jeu libre loisirs',
-  'Gratuités tournois selon votre niveau (de 1 tournoi gratuit à 200 € de prise en charge)',
-  'Accès aux créneaux compétiteurs encadrés par l\'entraîneur tout au long de la saison',
-  'Covoiturage organisé avec les autres membres du club pour les déplacements en tournois',
-  'Suivi individuel de la progression et conseils personnalisés de l\'entraîneur',
-];
+import { getPublicsJeunesCompetiteurs } from '@/api/strapi/publics';
+import type { PublicJeunesCompetiteurs } from '@/types/publicsType';
+import { BlocksRenderer } from '@/app/components/BlocksRenderer';
 
 export function CompetiteursPage() {
+  const [data, setData] = useState<PublicJeunesCompetiteurs | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        setLoadError(null);
+        const result = await getPublicsJeunesCompetiteurs();
+        console.log('getPublicsJeunesCompetiteurs:', result);
+        setData(result);
+      } catch (error) {
+        console.error('Error loading data:', error);
+        setLoadError(
+          error instanceof Error ? error.message : 'Impossible de charger les données.',
+        );
+      }
+    }
+    loadData();
+  }, []);
+
   return (
     <>
       <PageHero
@@ -56,63 +59,34 @@ export function CompetiteursPage() {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-gray-50 rounded-lg p-8 shadow-lg hover:shadow-xl transition-shadow duration-300"
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <h3 className="font-primary text-2xl text-primary">Cours encadrés</h3>
-            </div>
-            <div className="space-y-3 text-gray-700">
-              <p>
-                Les cours encadrés sont validés par l'entraîneur. La participation régulière est indispensable pour progresser et bénéficier pleinement des avantages compétiteurs.
-              </p>
-              <p>
-                Le club fournit les volants en plumes pendant tous les entraînements et créneaux de jeu libre compétiteurs, <strong>hors vacances scolaires</strong>.
-              </p>
-              <p className="flex items-start gap-2">
-                <Info size={18} className="text-secondary shrink-0 mt-0.5" />
-                <span>
-                  Attention : des changements ont eu lieu cette saison concernant les gymnases, les niveaux de groupes et les horaires. Consultez la page créneaux pour les informations à jour.
-                </span>
-              </p>
-            </div>
-            <div className="mt-4">
-              <Link
-                to="/creneaux"
-                className="inline-flex items-center gap-2 text-secondary font-semibold hover:underline"
-              >
-                <Calendar size={16} />
-                Voir tous les créneaux
-              </Link>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="bg-gray-50 rounded-lg p-8 shadow-lg hover:shadow-xl transition-shadow duration-300"
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <h3 className="font-primary text-2xl text-primary">Organisation des séances</h3>
-            </div>
-            <div className="space-y-3 text-gray-700">
-              <p>
-                Les séances compétiteurs sont organisées par niveaux afin de proposer un travail technique et tactique adapté à chaque joueur.
-              </p>
-              <p>
-                Des créneaux de jeu libre compétiteurs sont également disponibles pour compléter les entraînements encadrés et multiplier le temps de jeu.
-              </p>
-              <p>
-                En cas d'absence prévue, merci de prévenir l'entraîneur à l'avance par message ou par e-mail.
-              </p>
-            </div>
-          </motion.div>
+          {data?.entrainements.map((entrainement, index) => (
+            <motion.div
+              key={entrainement.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="bg-gray-50 rounded-lg p-8 shadow-lg hover:shadow-xl transition-shadow duration-300"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <h3 className="font-primary text-2xl text-primary">{entrainement.titre}</h3>
+              </div>
+              <div className="space-y-3 text-gray-700 [&_a]:text-secondary [&_p]:mb-2 [&_strong]:font-semibold">
+                <BlocksRenderer content={entrainement.contenu} />
+              </div>
+              {/* {index === 0 && (
+                <div className="mt-4">
+                  <Link
+                    to="/creneaux"
+                    className="inline-flex items-center gap-2 text-secondary font-semibold hover:underline"
+                  >
+                    <Calendar size={16} />
+                    Voir tous les créneaux
+                  </Link>
+                </div>
+              )} */}
+            </motion.div>
+          ))}
         </div>
       </Section>
 
@@ -130,19 +104,25 @@ export function CompetiteursPage() {
           </h2>
         </motion.div>
 
-        <div className="grid gap-8"> {/* lg:grid-cols-3 */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 max-w-lg mx-auto"
-          >
-            <h3 className="font-primary text-xl text-primary mb-3">Comment s'inscrire ?</h3>
-            <p className="text-gray-600 text-sm leading-relaxed">
-              L'inscription aux tournois se fait via votre compte joueur. La procédure complète est détaillée dans le tutoriel dédié ci-dessous. En cas de question, contactez directement l'entraîneur.
-            </p>
-          </motion.div>
+        <div className="grid gap-8 lg:grid-cols-3">
+          {data?.tournois_competitions.map((item, index) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 max-w-lg mx-auto w-full"
+            >
+              <h3 className="font-primary text-2xl text-primary mb-3">{item.titre}</h3>
+              {item.sous_titre && (
+                <p className="text-gray-500 text-sm mb-2">{item.sous_titre}</p>
+              )}
+              <div className="text-gray-600 leading-relaxed [&_a]:text-secondary [&_p]:mb-2">
+                <BlocksRenderer content={item.contenu} size="sm" />
+              </div>
+            </motion.div>
+          ))}
         </div>
       </Section>
 
@@ -195,25 +175,27 @@ export function CompetiteursPage() {
           </p>
         </motion.div>
 
-        {tutoriels.map((tuto, index) => {
-          const Icon = tuto.icon;
-          return (
-            <motion.div
-              key={tuto.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-gray-50 rounded-lg p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 text-center max-w-lg mx-auto"
-            >
-              <div className="bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5">
-                <Icon size={30} />
-              </div>
-              <h3 className="font-primary text-2xl text-primary mb-3">{tuto.title}</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">{tuto.description}</p>
-            </motion.div>
-          );
-        })}
+        {data?.tutoriels.map((tuto, index) => (
+          <motion.div
+            key={tuto.id}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            className="bg-gray-50 rounded-lg p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 text-center max-w-lg mx-auto"
+          >
+            <div className="bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5">
+              <BookOpen size={30} />
+            </div>
+            <h3 className="font-primary text-2xl text-primary mb-3">{tuto.titre}</h3>
+            {tuto.sous_titre && (
+              <p className="text-gray-500 text-sm mb-2">{tuto.sous_titre}</p>
+            )}
+            <div className="text-gray-600 leading-relaxed [&_a]:text-secondary [&_p]:mb-2">
+              <BlocksRenderer content={tuto.contenu} size="sm" />
+            </div>
+          </motion.div>
+        ))}
       </Section>
 
       {/* Avantages compétiteurs */}
@@ -243,10 +225,10 @@ export function CompetiteursPage() {
               Vos avantages
             </h3>
             <ul className="space-y-3">
-              {avantages.map((avantage, index) => (
-                <li key={index} className="flex items-start gap-3 text-gray-700">
+              {data?.les_avantages.map((avantage) => (
+                <li key={avantage.id} className="flex items-start gap-3 text-gray-700">
                   <CheckCircle size={20} className="text-secondary shrink-0 mt-0.5" />
-                  <span>{avantage}</span>
+                  <span>{avantage.contenu}</span>
                 </li>
               ))}
             </ul>
@@ -265,14 +247,26 @@ export function CompetiteursPage() {
                 Vente de volants
               </h3>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Le club propose à ses adhérents compétiteurs des volants <strong>Forza S6000</strong> à tarif préférentiel. Ces volants de qualité sont idéaux pour l'entraînement et les tournois.
+                Le club propose à ses adhérents compétiteurs des volants à tarif préférentiel. Ces volants de qualité sont idéaux pour l'entraînement et les tournois.
               </p>
-              <div className="bg-secondary/10 rounded-lg p-4 mb-6">
-                <p className="text-secondary font-bold text-xl text-center">
-                  Forza S6000 — <span className="text-2xl">26,50 €</span> / tube
-                </p>
-                <p className="text-gray-500 text-sm text-center mt-1">Tarif réservé aux adhérents CLTO</p>
-              </div>
+              {data?.prix_volants.map((item) => (
+                <div key={item.id} className="bg-secondary/10 rounded-lg p-4 mb-4">
+                  <p className="text-secondary font-bold text-xl text-center">
+                    {item.volants} —{' '}
+                    <span className="text-2xl">
+                      {Number(item.prix).toLocaleString('fr-FR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}{' '}
+                      €
+                    </span>{' '}
+                    / tube
+                  </p>
+                  <p className="text-gray-500 text-sm text-center mt-1">
+                    Tarif réservé aux adhérents CLTO
+                  </p>
+                </div>
+              ))}
             </div>
             <a
               href="https://www.helloasso.com/associations/clto-badminton/boutiques/commandes-groupees"
@@ -308,6 +302,7 @@ export function CompetiteursPage() {
           </Link>
         </motion.div>
       </Section>
+
     </>
   );
 }

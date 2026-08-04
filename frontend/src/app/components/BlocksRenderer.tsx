@@ -12,6 +12,7 @@ import React from "react";
 type InlineNode = TextInlineNode | { type: "link"; url: string; children: TextInlineNode[] };
 
 type BlocksVariant = "default" | "onPrimary";
+type BlocksSize = "sm" | "base" | "lg";
 
 type VariantStyles = {
   paragraph: string;
@@ -22,30 +23,59 @@ type VariantStyles = {
   quote: string;
   code: string;
   figcaption: string;
+  list: string;
 };
 
-const VARIANT_STYLES: Record<BlocksVariant, VariantStyles> = {
+/** Text size for paragraphs / lists. Default `lg` preserves existing look. */
+const SIZE_CLASSES: Record<BlocksVariant, Record<BlocksSize, string>> = {
   default: {
-    paragraph: "mb-4 text-lg text-foreground/80 leading-relaxed",
+    sm: "text-sm",
+    base: "text-base",
+    lg: "text-lg",
+  },
+  onPrimary: {
+    sm: "text-sm",
+    base: "text-base",
+    lg: "text-base sm:text-lg",
+  },
+};
+
+const VARIANT_STYLES: Record<BlocksVariant, Omit<VariantStyles, "paragraph" | "quote" | "list">> = {
+  default: {
     heading: "text-primary",
     strong: "text-primary",
     underline: "text-primary",
     link: "text-[var(--burgundy)] underline hover:opacity-80",
-    quote: "mb-6 border-l-4 border-[var(--burgundy)] pl-6 italic text-muted-foreground",
     code: "rounded bg-muted px-1.5 py-0.5 text-sm font-mono",
     figcaption: "mt-2 text-center text-sm text-muted-foreground",
   },
   onPrimary: {
-    paragraph: "mb-3 sm:mb-4 text-base sm:text-lg text-white/90 leading-relaxed",
     heading: "text-white",
     strong: "text-secondary",
     underline: "text-secondary",
     link: "text-secondary underline hover:opacity-80",
-    quote: "mb-6 border-l-4 border-secondary pl-6 italic text-white/80",
     code: "rounded bg-white/15 px-1.5 py-0.5 text-sm font-mono text-white",
     figcaption: "mt-2 text-center text-sm text-white/70",
   },
 };
+
+function resolveStyles(variant: BlocksVariant, size: BlocksSize): VariantStyles {
+  const base = VARIANT_STYLES[variant];
+  const sizeClass = SIZE_CLASSES[variant][size];
+  const paragraphSpacing = variant === "onPrimary" ? "mb-3 sm:mb-4" : "mb-4";
+  const quoteBorder =
+    variant === "onPrimary"
+      ? "mb-6 border-l-4 border-secondary pl-6 italic text-white/80"
+      : "mb-6 border-l-4 border-[var(--burgundy)] pl-6 italic text-muted-foreground";
+  const paragraphColor = variant === "onPrimary" ? "text-white/90" : "text-foreground/80";
+
+  return {
+    ...base,
+    paragraph: `${paragraphSpacing} ${sizeClass} ${paragraphColor} leading-relaxed`,
+    quote: `${quoteBorder} ${sizeClass}`,
+    list: sizeClass,
+  };
+}
 
 function renderInline(
   nodes: InlineNode[],
@@ -94,8 +124,8 @@ function renderList(
   const Tag = list.format === "ordered" ? "ol" : "ul";
   const listClass =
     list.format === "ordered"
-      ? "list-decimal pl-6 space-y-2"
-      : "list-disc pl-6 space-y-2";
+      ? `list-decimal pl-6 space-y-2 ${styles.list}`
+      : `list-disc pl-6 space-y-2 ${styles.list}`;
 
   return (
     <Tag key={key} className={listClass}>
@@ -224,14 +254,20 @@ type BlocksRendererProps = {
   content: BlocksContent;
   /** `onPrimary` = texte clair pour fond coloré (ex. Mot du Président) */
   variant?: BlocksVariant;
+  /** Taille du texte des paragraphes / listes. Défaut `lg` = comportement historique. */
+  size?: BlocksSize;
 };
 
-export function BlocksRenderer({ content, variant = "default" }: BlocksRendererProps) {
+export function BlocksRenderer({
+  content,
+  variant = "default",
+  size = "lg",
+}: BlocksRendererProps) {
   if (!content.length) {
     return null;
   }
 
-  const styles = VARIANT_STYLES[variant];
+  const styles = resolveStyles(variant, size);
 
   return <div className="blocks-content">{content.map((block, i) => renderBlock(block, i, styles))}</div>;
 }

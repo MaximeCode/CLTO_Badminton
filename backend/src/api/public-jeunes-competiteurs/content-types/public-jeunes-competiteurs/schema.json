@@ -1,0 +1,41 @@
+{
+  "kind": "singleType",
+  "collectionName": "publics_jeunes_competiteurs",
+  "info": {
+    "singularName": "public-jeunes-competiteurs",
+    "pluralName": "publics-jeunes-competiteurs",
+    "displayName": "Public Jeunes Compétiteurs"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "entrainements": {
+      "type": "component",
+      "component": "infos-publics.carte-d-informations",
+      "repeatable": true,
+      "required": false
+    },
+    "tournois_competitions": {
+      "type": "component",
+      "component": "contenu-page.contenu",
+      "repeatable": true
+    },
+    "tutoriels": {
+      "type": "component",
+      "component": "contenu-page.contenu",
+      "repeatable": true
+    },
+    "les_avantages": {
+      "type": "component",
+      "component": "contenu-page.liste-txt",
+      "repeatable": true
+    },
+    "prix_volants": {
+      "type": "component",
+      "component": "infos-publics.vente-volants",
+      "repeatable": true
+    }
+  }
+}

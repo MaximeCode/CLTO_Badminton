@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_infos_publics_vente_volants",
+  "info": {
+    "displayName": "vente_volants",
+    "icon": "priceTag"
+  },
+  "options": {},
+  "attributes": {
+    "volants": {
+      "type": "string",
+      "required": true
+    },
+    "prix": {
+      "type": "decimal",
+      "required": true
+    }
+  },
+  "config": {}
+}

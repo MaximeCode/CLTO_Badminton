@@ -6,8 +6,36 @@ export type InformationsPublic = {
   contenu: BlocksContent;
 };
 
-export type Public = {
+export type ContenuPublic = {
+  id: number;
+  titre: string;
+  sous_titre?: string;
+  contenu: BlocksContent;
+};
+
+export type AvantagePublic = {
+  id: number;
+  contenu: string;
+};
+
+export type PrixVolant = {
+  id: number;
+  volants: string;
+  prix: number;
+};
+
+export type PublicJeunesLoisirs = {
   id: number;
   documentId: string;
   informations: InformationsPublic[];
+};
+
+export type PublicJeunesCompetiteurs = {
+  id: number;
+  documentId: string;
+  entrainements: InformationsPublic[];
+  tournois_competitions: ContenuPublic[];
+  tutoriels: ContenuPublic[];
+  les_avantages: AvantagePublic[];
+  prix_volants: PrixVolant[];
 };
