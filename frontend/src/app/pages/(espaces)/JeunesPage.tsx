@@ -3,6 +3,10 @@ import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
 import { Users, Clock, Award, Heart, Star } from 'lucide-react';
 import { Link } from 'react-router';
+import { InformationsPublic } from '@/types/publicsType';
+import { useEffect, useState } from 'react';
+import { getPublicsJeunesLoisirs } from '@/api/strapi/publics';
+import { BlocksRenderer } from '@/app/components/BlocksRenderer';
 
 const ageGroups = [
   {
@@ -51,6 +55,27 @@ const benefits = [
 ];
 
 export function JeunesPage() {
+
+  const [cartesInfos, setCartesInfos] = useState<InformationsPublic[] | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        setLoadError(null);
+        const data = await getPublicsJeunesLoisirs();
+        setCartesInfos(data.informations);
+        console.log('cartesInfos:', data.informations);
+      } catch (error) {
+        console.error('Error loading data:', error);
+        setLoadError(
+          error instanceof Error ? error.message : 'Impossible de charger les données.',
+        );
+      }
+    }
+    loadData();
+  }, []);
+
   return (
     <>
       <PageHero
@@ -198,93 +223,21 @@ export function JeunesPage() {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          <motion.article
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-white rounded-lg p-8 shadow-lg"
-          >
-            <h3 className="font-primary text-3xl text-primary mb-4">Fonctionnement</h3>
-            <div className="space-y-4 text-gray-700">
-              <p>
-                Chaque jeune bénéficie d&apos;un créneau encadré par semaine de 1h30, inclus dans le tarif de la
-                licence.
-              </p>
-              <p>
-                Pour les compétiteurs confirmés, les créneaux « Perfectionnement » et « Elite » sont accessibles sur
-                demande des parents et avis des entraîneurs, avec un engagement à participer à au moins deux
-                créneaux hebdomadaires et à cinq compétitions par saison.
-              </p>
-              <p>
-                Les juniors sont orientés vers les créneaux adultes. Certains jeunes compétiteurs haut niveau peuvent
-                aussi rejoindre des créneaux adultes sur accord du coordinateur.
-              </p>
-              <p>
-                En complément, les jeunes peuvent participer aux créneaux de jeu libre du week-end, à condition
-                d&apos;être accompagnés d&apos;un adulte responsable sur place.
-              </p>
-            </div>
-          </motion.article>
-
-          <motion.article
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="bg-white rounded-lg p-8 shadow-lg"
-          >
-            <h3 className="font-primary text-3xl text-primary mb-4">Compétitions</h3>
-            <p className="text-gray-700 mb-4">
-              Les jeunes reçoivent régulièrement des informations par courriel pour s&apos;inscrire aux compétitions
-              adaptées à leur niveau.
-            </p>
-            <ul className="space-y-2 text-gray-700 list-disc pl-6">
-              <li>Plateau Minibad : rencontre départementale.</li>
-              <li>Trophée Départemental Jeune (TDJ) : de NC à P10 ou de P10 à R6.</li>
-              <li>Circuit Régional Jeune (CRJ) : pour compétiteurs aguerris.</li>
-              <li>Circuit Elite Jeune (CEJ) : pour les joueurs sélectionnés lors des BAC.</li>
-            </ul>
-          </motion.article>
-
-          <motion.article
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white rounded-lg p-8 shadow-lg"
-          >
-            <h3 className="font-primary text-3xl text-primary mb-4">Les avantages club</h3>
-            <ul className="space-y-2 text-gray-700 list-disc pl-6">
-              <li>Les inscriptions aux compétitions sont gérées et payées par le club.</li>
-              <li>Un t-shirt est offert à tous les jeunes qui participent à au moins une compétition.</li>
-              <li>Des aides financières du club sont prévues et détaillées dans les documents dédiés.</li>
-              <li>Les adhérents bénéficient aussi de réductions chez des partenaires équipementiers.</li>
-            </ul>
-          </motion.article>
-
-          <motion.article
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="bg-white rounded-lg p-8 shadow-lg"
-          >
-            <h3 className="font-primary text-3xl text-primary mb-4">La commission jeunes</h3>
-            <div className="space-y-4 text-gray-700">
-              <p>
-                Elle réunit des bénévoles, des membres du Conseil d&apos;Administration, des parents et des jeunes
-                cadets/juniors. Elle contribue aux décisions et à l&apos;organisation des événements jeunes.
-              </p>
-              <p>
-                Des formations sont proposées (table de marque, juge de ligne, arbitrage, encadrement) et prises en
-                charge par le club.
-              </p>
-              <p>
-                Contact : <a className="text-primary hover:underline" href="mailto:commission.jeunes@cltobadminton.fr">commission.jeunes@cltobadminton.fr</a>
-              </p>
-            </div>
-          </motion.article>
+          {cartesInfos?.map((carteInfo) => (
+            <motion.article
+              key={carteInfo.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="bg-white rounded-lg p-8 shadow-lg"
+            >
+              <h3 className="font-primary text-3xl text-primary mb-4">{carteInfo.titre}</h3>
+              <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
+                <BlocksRenderer content={carteInfo.contenu} />
+              </div>
+            </motion.article>
+          ))}
         </div>
       </Section>
 

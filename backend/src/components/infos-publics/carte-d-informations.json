@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_infos_publics_carte_d_informations",
+  "info": {
+    "displayName": "Carte d'informations",
+    "icon": "book"
+  },
+  "options": {},
+  "attributes": {
+    "titre": {
+      "type": "string",
+      "required": true
+    },
+    "contenu": {
+      "type": "blocks",
+      "required": true
+    }
+  },
+  "config": {}
+}
