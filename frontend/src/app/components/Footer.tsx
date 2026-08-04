@@ -302,8 +302,18 @@ export function Footer() {
 
         <div className="pt-4 md:pt-6 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-4 text-xs md:text-sm text-gray-400 text-center md:text-left">
-            <p>© {new Date().getFullYear()} CLTO Badminton. All rights reserved.</p>
-            <p>Site réalisé avec passion pour le badminton</p>
+            <p>© {new Date().getFullYear()} CLTO Badminton. Tous droits réservés.</p>
+            <p>
+              Site réalisé avec passion pour le badminton, par <a href="https://my-portfolio-maxime-baude.vercel.app/" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors underline">Maxime BAUDE</a>
+            </p>
+            <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 underline" aria-label="Informations légales">
+              <Link to="/mentions-legales" className="hover:text-secondary transition-colors">
+                Mentions légales
+              </Link>
+              <Link to="/politique-de-confidentialite" className="hover:text-secondary transition-colors">
+                Politique de confidentialité
+              </Link>
+            </nav>
           </div>
         </div>
       </div>

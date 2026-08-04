@@ -35,5 +35,20 @@ module.exports = ({ env }) => ({
     promoteEE: env.bool('FLAG_PROMOTE_EE', true),
     docLinks: env.bool('FLAG_DOC_LINKS', true),
   },
-  url: "/admin",
+  url: "/clto-admin",
+  cookie: {
+    path: "/clto-admin",
+    sameSite: 'lax',
+  },
+  rateLimit: {
+    enabled: true,
+    // Fenêtre de quinze minutes.
+    interval: { min: 15 },
+    // Maximum de cinq tentatives pendant cette fenêtre.
+    max: 5,
+    // Les réponses commencent à être ralenties après la première tentative.
+    delayAfter: 1,
+    // Temps d'attente de trois secondes.
+    timeWait: 3000,
+  },
 });

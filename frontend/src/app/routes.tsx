@@ -18,8 +18,10 @@ import { StagesPage } from './pages/StagesPage';
 import { ProjetClub } from './pages/ProjetClub';
 import { DocumentsPage } from './pages/DocumentsPage';
 import { GaleriePage } from './pages/GaleriePage';
+import { MentionsLegalesPage } from './pages/MentionsLegalesPage';
 import { OrganigrammePage } from './pages/OrganigrammePage';
 import { PalmaresPage } from './pages/PalmaresPage';
+import { PolitiqueConfidentialitePage } from './pages/PolitiqueConfidentialitePage';
 
 // Espaces
 import { CompetiteursPage } from './pages/(espaces)/CompetiteursPage';
@@ -56,6 +58,8 @@ export const router = createBrowserRouter([
       { path: 'faq', Component: FAQPage },
       { path: 'stages', Component: StagesPage },
       { path: 'adherer', Component: AdhererPage },
+      { path: 'mentions-legales', Component: MentionsLegalesPage },
+      { path: 'politique-de-confidentialite', Component: PolitiqueConfidentialitePage },
       { path: '*', Component: NotFound },
     ],
   },
