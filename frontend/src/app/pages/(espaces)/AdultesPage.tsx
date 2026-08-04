@@ -30,8 +30,8 @@ const weeklySessions = [
 const formats = [
     {
         icon: Users,
-        title: 'Loisir',
-        description: 'Pour jouer régulièrement dans une ambiance conviviale, sans pression.',
+        title: 'Entraide',
+        description: 'Pour jouer régulièrement dans une ambiance conviviale et partagée.',
     },
     {
         icon: Target,
