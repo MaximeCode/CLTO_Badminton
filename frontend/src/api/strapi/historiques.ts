@@ -2,7 +2,7 @@ import { fetchAPI } from "../Client";
 import type { Historique } from "@/types/historiquesType";
 
 export async function getHistoriques(): Promise<Historique[]> {
-  const { data } = await fetchAPI("/api/historiques?populate=*&order[date]=desc");
+  const { data } = await fetchAPI("/api/historiques?populate=*&sort=date:desc");
 
   return data.map(
     (item: {

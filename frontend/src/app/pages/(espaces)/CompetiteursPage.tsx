@@ -71,7 +71,7 @@ export function CompetiteursPage() {
               <div className="flex items-center gap-3 mb-4">
                 <h3 className="font-primary text-2xl text-primary">{entrainement.titre}</h3>
               </div>
-              <div className="space-y-3 text-gray-700 [&_a]:text-secondary [&_p]:mb-2 [&_strong]:font-semibold">
+              <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
                 <BlocksRenderer content={entrainement.contenu} />
               </div>
               {/* {index === 0 && (
