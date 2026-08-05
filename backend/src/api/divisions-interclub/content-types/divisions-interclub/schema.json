@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "divisions_interclubs",
+  "info": {
+    "singularName": "divisions-interclub",
+    "pluralName": "divisions-interclubs",
+    "displayName": "Divisions interclub"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nom_court": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "Nom_complet": {
+      "type": "string",
+      "required": false
+    },
+    "Ordre": {
+      "type": "integer",
+      "required": true,
+      "default": 12
+    }
+  }
+}

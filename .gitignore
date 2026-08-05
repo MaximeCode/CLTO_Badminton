@@ -7,3 +7,6 @@ backend/src/extensions/documentation/documentation/1.0.0/full_documentation.json
 backend/types/generated/components.d.ts
 backend/types/generated/contentTypes.d.ts
 README_SEO.md
+screen_txt_a_modifier
+/*.txt
+/*.json

@@ -17,16 +17,9 @@ module.exports = ({ strapi }) => ({
   findAll: async (ctx) => {
     const uid = 'plugin::icbad-scraper.interclub-team';
 
-    // Ordre métier : N1 → N2 → N3 → R1 → R2 → R3 → D1-A → D1-B → D2-A → D2-B → D3 → D4
-    const DIVISION_ORDER = [
-      'N1', 'N2', 'N3',
-      'R1', 'R2', 'R3',
-      'D1-A', 'D1-B', 'D2-A', 'D2-B', 'D3', 'D4',
-    ];
-
     const entries = await strapi.documents(uid).findMany({
       fields: [
-        'teamSlug', 'teamLabel', 'division', 'competitionName', 'season',
+        'teamSlug', 'teamLabel', 'competitionName', 'season',
         'cltoPosition', 'cltoPoints', 'cltoPlayed', 'cltoWon', 'cltoDraw',
         'cltoLost', 'cltoBonusPlus', 'cltoBonusMinus',
         'cltoMatchDiff', 'cltoSetDiff', 'cltoPtsDiff',
@@ -37,13 +30,16 @@ module.exports = ({ strapi }) => ({
         image: {
           fields: ['url', 'alternativeText', 'width', 'height'],
         },
+        divisions_interclub: {
+          fields: ['Nom_court', 'Nom_complet', 'Ordre'],
+        },
       },
     });
 
     const sorted = [...entries].sort((a, b) => {
-      const orderA = DIVISION_ORDER.indexOf(a.division);
-      const orderB = DIVISION_ORDER.indexOf(b.division);
-      return (orderA === -1 ? 999 : orderA) - (orderB === -1 ? 999 : orderB);
+      const orderA = a.divisions_interclub?.Ordre ?? 999;
+      const orderB = b.divisions_interclub?.Ordre ?? 999;
+      return orderA - orderB;
     });
 
     ctx.body = { data: sorted };
@@ -59,6 +55,9 @@ module.exports = ({ strapi }) => ({
       populate: {
         image: {
           fields: ['url', 'alternativeText', 'width', 'height'],
+        },
+        divisions_interclub: {
+          fields: ['Nom_court', 'Nom_complet', 'Ordre'],
         },
       },
     });

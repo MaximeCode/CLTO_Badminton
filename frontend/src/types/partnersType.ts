@@ -3,5 +3,5 @@ export type Partner = {
   logos: {
     url: string;
   }[];
-  type: "Partenaires badminton" | "Partenaires institutionnels" | "Partenaires entreprises";
+  type: string;
 };

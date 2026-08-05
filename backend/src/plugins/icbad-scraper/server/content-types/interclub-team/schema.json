@@ -19,35 +19,35 @@
     }
   },
   "attributes": {
-    "teamSlug": {
-      "type": "string",
-      "required": true,
-      "unique": true,
-      "description": "Identifiant unique ex: 'clto-n2'"
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
     },
     "teamLabel": {
       "type": "string",
       "required": true,
       "description": "Libellé affiché ex: 'CLTO N2'"
     },
-    "division": {
-      "type": "enumeration",
-      "enum": [
-        "N1",
-        "N2",
-        "N3",
-        "R1",
-        "R2",
-        "R3",
-        "D1-A",
-        "D1-B",
-        "D2-A",
-        "D2-B",
-        "D3",
-        "D4"
-      ],
-      "required": true,
-      "unique": true
+    "teamSlug": {
+      "type": "string",
+      "required": false,
+      "unique": true,
+      "description": "Identifiant unique (auto si vide) ex: 'clto-n2'"
+    },
+    "desc": {
+      "type": "text"
+    },
+    "objectif": {
+      "type": "string"
+    },
+    "divisions_interclub": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::divisions-interclub.divisions-interclub"
     },
     "icbadUrl": {
       "type": "string",
@@ -120,17 +120,6 @@
     "scrapeError": {
       "type": "string",
       "description": "Message d'erreur du dernier scraping si échec"
-    },
-    "image": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images"
-      ]
-    },
-    "desc": {
-      "type": "text"
     }
   }
 }

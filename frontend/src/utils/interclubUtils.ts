@@ -1,34 +1,27 @@
+import type { Divisions } from "@/types/divisionsType";
 import type { InterclubTeamSummary } from "@/types/interclubType";
 
-export function formatDivision(division: string) {
-  switch (division) {
-    case "N1":
-      return "Nationale 1";
-    case "N2":
-      return "Nationale 2";
-    case "N3":
-      return "Nationale 3";
-    case "R1":
-      return "Régionale 1";
-    case "R2":
-      return "Régionale 2";
-    case "R3":
-      return "Régionale 3";
-    case "D1-A":
-      return "Départementale 1";
-    case "D1-B":
-      return "Départementale 1";
-    case "D2-A":
-      return "Départementale 2";
-    case "D2-B":
-      return "Départementale 2";
-    case "D3":
-      return "Départementale 3";
-    case "D4":
-      return "Départementale 4";
-    default:
-      return division;
-  }
+export function getDivisionLabel(division: Divisions | null | undefined) {
+  if (!division) return "";
+  return division.Nom_complet || division.Nom_court;
+}
+
+/** Couleur d'accent dérivée du niveau (N / R / D), sans liste de codes en dur */
+export function getDivisionAccentColor(nomCourt: string | null | undefined) {
+  if (!nomCourt) return "#0153b6";
+  const code = nomCourt.toUpperCase();
+  if (code.startsWith("PRENAT") || code.startsWith("N")) return "#dc2626";
+  if (code.startsWith("PREREG") || code.startsWith("R")) return "#0153b6";
+  if (code.startsWith("D")) return "#16a34a";
+  return "#0153b6";
+}
+
+export function sortTeamsByDivision(teams: InterclubTeamSummary[]) {
+  return [...teams].sort((a, b) => {
+    const orderA = a.divisions_interclub?.Ordre ?? 999;
+    const orderB = b.divisions_interclub?.Ordre ?? 999;
+    return orderA - orderB;
+  });
 }
 
 /** Une entrée de menu par URL IcBAD ; les competitionName distincts sont joints (ex: poule A / poule B) */
@@ -44,7 +37,7 @@ export function groupTeamsByIcbadUrl(teams: InterclubTeamSummary[]) {
 
   return [...byUrl.entries()].map(([icbadUrl, group]) => {
     const first = group[0];
-    const divisionLabel = formatDivision(first.division);
+    const divisionLabel = getDivisionLabel(first.divisions_interclub);
 
     const poolsLabel = [
       ...new Set(

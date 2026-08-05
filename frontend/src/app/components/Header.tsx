@@ -59,8 +59,7 @@ const NAV_ITEMS: NavItem[] = [
   },
 ];
 
-const SHOP_URL =
-  "https://www.helloasso.com/associations/clto-badminton/boutiques/commandes-groupees";
+const SHOP_URL = `${import.meta.env.VITE_HELLOASSO_URL}/boutiques/commandes-groupees`;
 
 const CTA_BUTTON_BASE =
   "hidden items-center justify-center gap-1.5 rounded-md px-1.5 py-1 lg:text-white lg:hover:text-white transition-colors duration-200 md:flex lg:px-1 lg:py-2 xl:gap-2 xl:px-4";
@@ -143,7 +142,7 @@ export function Header() {
 
           {/* MD Devices (780px) */}
           <nav
-            className="mx-4 hidden items-center gap-3 md:flex md:gap-6 xl:gap-8"
+            className="mx-4 hidden items-center gap-2 md:flex md:gap-4 xl:gap-6"
             aria-label="Navigation principale"
           >
             {NAV_ITEMS.map((item) => {
@@ -238,25 +237,25 @@ export function Header() {
           <div className="flex gap-1 text-sm lg:gap-2 lg:text-base">
             <Link
               to="/adherer"
-              title="Rejoindre le club"
+              title="Nous rejoindre"
               className={JOIN_CLUB_BUTTON_CLASS}
             >
               <JoinClubIcon className="h-7 w-7 lg:h-5 lg:w-5 xl:h-7 xl:w-7" />
-              <span className="sr-only">Rejoindre le club</span>
-              <span className="hidden lg:block">Rejoindre le club</span>
+              <span className="sr-only">Nous rejoindre</span>
+              <span className="hidden lg:block">Nous rejoindre</span>
             </Link>
 
             {/* No <Link> because it's an external link */}
             <a
               href={SHOP_URL}
-              title="Visiter la boutique"
+              title="Notre boutique"
               target="_blank"
               rel="noopener noreferrer"
               className={SHOP_BUTTON_CLASS}
             >
               <ShopIcon className="h-8 w-8 lg:h-5 lg:w-5 xl:h-8 xl:w-8" />
-              <span className="sr-only">Visiter la boutique</span>
-              <span className="hidden lg:block">Visiter la boutique</span>
+              <span className="sr-only">Notre boutique</span>
+              <span className="hidden lg:block">Notre boutique</span>
             </a>
           </div>
 
@@ -352,7 +351,7 @@ export function Header() {
                 onClick={closeMobileMenu}
               >
                 <JoinClubIcon />
-                Rejoindre le club
+                Nous rejoindre
               </Link>
 
               <a
@@ -363,7 +362,7 @@ export function Header() {
                 onClick={closeMobileMenu}
               >
                 <ShopIcon />
-                Visiter la boutique
+                Notre boutique
               </a>
             </div>
           </nav>

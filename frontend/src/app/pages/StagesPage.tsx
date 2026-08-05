@@ -5,14 +5,17 @@ import { PageHero } from '../components/PageHero';
 import { Section } from '../components/Section';
 import { useEffect, useState } from 'react';
 import { getStages } from '@/api/strapi/stage';
+import { getParametresGlobaux } from '@/api/strapi/parametre-globaux';
 import { Stage } from '@/types/stageType';
 import { BlocksRenderer } from '../components/BlocksRenderer';
 import { formatDateRange } from '@/utils/formatDate';
 
 const stageHero = new URL('../../imports/Banniere_stage.png', import.meta.url).href;
-const HELLOASSO_URL = import.meta.env.VITE_HELLOASSO_URL;
+const HELLOASSO_URL_FALLBACK = import.meta.env.VITE_HELLOASSO_URL as string;
+
 export function StagesPage() {
   const [stages, setStages] = useState<Stage[] | null>(null);
+  const [helloassoUrl, setHelloassoUrl] = useState(HELLOASSO_URL_FALLBACK);
   const [loadError, setLoadError] = useState<string | null>(null);
 
   // Fetch datas
@@ -20,10 +23,14 @@ export function StagesPage() {
     async function loadData() {
       try {
         setLoadError(null);
-        console.log('Loading data...');
-        const data = await getStages();
-        console.log('stages loaded:', data);
-        setStages(data);
+        const [stagesData, parametres] = await Promise.all([
+          getStages(),
+          getParametresGlobaux(),
+        ]);
+        setStages(stagesData);
+        setHelloassoUrl(
+          parametres?.lien_accueil_helloasso?.trim() || HELLOASSO_URL_FALLBACK,
+        );
       } catch (error) {
         console.error('Error loading data:', error);
         setLoadError(
@@ -122,7 +129,7 @@ export function StagesPage() {
           </p>
           <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
-              href={HELLOASSO_URL}
+              href={helloassoUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-md bg-secondary px-8 py-3 text-white transition-colors duration-200 hover:bg-secondary-accent"

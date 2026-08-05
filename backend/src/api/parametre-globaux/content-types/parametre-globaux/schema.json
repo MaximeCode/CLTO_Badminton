@@ -1,0 +1,21 @@
+{
+  "kind": "singleType",
+  "collectionName": "parametres_globaux",
+  "info": {
+    "singularName": "parametre-globaux",
+    "pluralName": "parametres-globaux",
+    "displayName": "Paramètres globaux"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "lien_accueil_helloasso": {
+      "type": "string"
+    },
+    "lien_charte_interclub": {
+      "type": "string"
+    }
+  }
+}

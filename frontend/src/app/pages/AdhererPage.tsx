@@ -110,7 +110,7 @@ export function AdhererPage() {
         <>
             <PageHero
                 title="ADHERER AU CLUB"
-                subtitle="Toutes les informations d'inscription pour la saison 2026-2027"
+                subtitle="Retrouvez toutes les informations pour rejoindre le CLTO Badminton"
             />
 
             <section className="bg-linear-to-b from-primary/3 via-white to-primary/2 py-10 md:py-16">

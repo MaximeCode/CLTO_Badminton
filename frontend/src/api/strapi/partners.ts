@@ -10,7 +10,7 @@ export async function getPartners(): Promise<Partner[]> {
       logos: {
         url: string;
       }[];
-      type: "Partenaires badminton" | "Partenaires institutionnels" | "Partenaires entreprises";
+      type: string;
     }) => ({
       id: item.id,
       logos: (item.logos ?? []).map((logo) => ({

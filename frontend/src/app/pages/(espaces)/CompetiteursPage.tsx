@@ -58,7 +58,7 @@ export function CompetiteursPage() {
           </h2>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className={`max-w-4xl mx-auto grid gap-8${data?.entrainements?.length ? ` lg:grid-cols-${data.entrainements.length}` : " lg:grid-cols-1"}`}>
           {data?.entrainements.map((entrainement, index) => (
             <motion.div
               key={entrainement.id}
@@ -85,42 +85,6 @@ export function CompetiteursPage() {
                   </Link>
                 </div>
               )} */}
-            </motion.div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Tournois & Inscriptions */}
-      <Section className="bg-gray-50">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-            TOURNOIS & INSCRIPTIONS
-          </h2>
-        </motion.div>
-
-        <div className="grid gap-8 lg:grid-cols-3">
-          {data?.tournois_competitions.map((item, index) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 max-w-lg mx-auto w-full"
-            >
-              <h3 className="font-primary text-2xl text-primary mb-3">{item.titre}</h3>
-              {item.sous_titre && (
-                <p className="text-gray-500 text-sm mb-2">{item.sous_titre}</p>
-              )}
-              <div className="text-gray-600 leading-relaxed [&_a]:text-secondary [&_p]:mb-2">
-                <BlocksRenderer content={item.contenu} size="sm" />
-              </div>
             </motion.div>
           ))}
         </div>
@@ -153,49 +117,9 @@ export function CompetiteursPage() {
             Le championnat départemental individuel et le championnat régional individuel sont <strong>intégralement pris en charge</strong> par le CLTO Badminton pour tous les compétiteurs inscrits.
           </p>
           <p className="text-white/90 leading-relaxed">
-            Les volants en plumes sont fournis par le club pour ces compétitions. Aucune dépense supplémentaire n'est à prévoir de votre côté.
+            Les volants sont fournis par le club pour ces compétitions. Aucune dépense supplémentaire n'est à prévoir de votre côté.
           </p>
         </motion.div>
-      </Section>
-
-      {/* Tutoriels */}
-      <Section className="bg-white">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-            TUTORIELS
-          </h2>
-          <p className="text-gray-600 text-lg">
-            Tout ce que vous devez savoir pour gérer vos inscriptions.
-          </p>
-        </motion.div>
-
-        {data?.tutoriels.map((tuto, index) => (
-          <motion.div
-            key={tuto.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            className="bg-gray-50 rounded-lg p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 text-center max-w-lg mx-auto"
-          >
-            <div className="bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5">
-              <BookOpen size={30} />
-            </div>
-            <h3 className="font-primary text-2xl text-primary mb-3">{tuto.titre}</h3>
-            {tuto.sous_titre && (
-              <p className="text-gray-500 text-sm mb-2">{tuto.sous_titre}</p>
-            )}
-            <div className="text-gray-600 leading-relaxed [&_a]:text-secondary [&_p]:mb-2">
-              <BlocksRenderer content={tuto.contenu} size="sm" />
-            </div>
-          </motion.div>
-        ))}
       </Section>
 
       {/* Avantages compétiteurs */}
@@ -269,7 +193,7 @@ export function CompetiteursPage() {
               ))}
             </div>
             <a
-              href="https://www.helloasso.com/associations/clto-badminton/boutiques/commandes-groupees"
+              href={`${import.meta.env.VITE_HELLOASSO_URL}/boutiques/commandes-groupees`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200 text-center"
@@ -294,12 +218,6 @@ export function CompetiteursPage() {
           <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
             Pour toute question sur l'espace compétiteurs, les inscriptions aux tournois ou les championnats, notre équipe est à votre disposition.
           </p>
-          <Link
-            to="/contact"
-            className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
-          >
-            Nous contacter
-          </Link>
         </motion.div>
       </Section>
 

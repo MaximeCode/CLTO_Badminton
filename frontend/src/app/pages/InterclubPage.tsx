@@ -1,16 +1,23 @@
 import { useEffect, useMemo, useState } from "react";
-import { ExternalLink, Users } from "lucide-react";
+import { Users } from "lucide-react";
 import { motion } from "motion/react";
 import { Hero, type HeroSlide } from "../components/Hero";
 import { getInterclubTeams } from "@/api/icbad_local/interclub";
+import { getParametresGlobaux } from "@/api/strapi/parametre-globaux";
 import type { InterclubTeamSummary } from "@/types/interclubType";
-import { formatDivision, groupTeamsByIcbadUrl } from "@/utils/interclubUtils";
+import { getDivisionLabel, groupTeamsByIcbadUrl } from "@/utils/interclubUtils";
 import { Section } from "../components/Section";
+
+/** Convertit un lien Google Drive « partage » en URL d'embed `/preview`. */
+function toGoogleDrivePreviewUrl(url: string): string {
+  return url.replace("/view?usp=sharing", "/preview");
+}
 
 export function InterclubPage() {
   const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([]);
   const [teams, setTeams] = useState<InterclubTeamSummary[]>([]);
   const [currentUrl, setCurrentUrl] = useState("");
+  const [charteUrl, setCharteUrl] = useState("");
 
   const resultMenuItems = useMemo(() => groupTeamsByIcbadUrl(teams), [teams]);
 
@@ -29,6 +36,13 @@ export function InterclubPage() {
           description: team.desc ?? "",
         }))
       );
+    });
+
+    getParametresGlobaux().then((parametres) => {
+      const lien = parametres?.lien_charte_interclub?.trim();
+      if (lien) {
+        setCharteUrl(toGoogleDrivePreviewUrl(lien));
+      }
     });
   }, []);
 
@@ -55,7 +69,7 @@ export function InterclubPage() {
               </div>
               <h3 className="font-primary text-xl text-primary">{teams.length} équipes engagées</h3>
               <p className="text-gray-600 text-sm">
-                De la {formatDivision(teams[0].division)} à la {formatDivision(teams[teams.length - 1].division)}, le CLTO aligne {teams.length} équipes dans les championnats par équipes cette saison.
+                De la {getDivisionLabel(teams[0].divisions_interclub)} à la {getDivisionLabel(teams[teams.length - 1].divisions_interclub)}, le CLTO aligne {teams.length} équipes dans les championnats par équipes cette saison.
               </p>
             </div>
             <div className="flex flex-col items-center gap-3">
@@ -170,22 +184,24 @@ export function InterclubPage() {
           </p>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="overflow-hidden rounded-lg border-2 border-gray-200 bg-white"
-        >
-          <iframe
-            src="https://drive.google.com/file/d/1SuZ97p0mvD4RfVJGT8CXJQ3w8r4Vr0RW/preview"
-            className="h-140 w-full sm:h-155 md:h-175"
-            allow="autoplay"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Charte des interclubs"
-          />
-        </motion.div>
+        {charteUrl && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="overflow-hidden rounded-lg border-2 border-gray-200 bg-white"
+          >
+            <iframe
+              src={charteUrl}
+              className="h-140 w-full sm:h-155 md:h-175"
+              allow="autoplay"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Charte des interclubs"
+            />
+          </motion.div>
+        )}
       </Section>
     </>
   );

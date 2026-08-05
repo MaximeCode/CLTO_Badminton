@@ -249,6 +249,15 @@ ex `Cercle Laïque des Tourelles Orléans Badminton **(45-CLTO-1)**`.
 Ces routes nécessitent une authentification content-api : un **API Token**
 Strapi (Paramètres → API Tokens) passé en header `Authorization: Bearer <token>`.
 
+### Commande à exécuter pour le scraping manuel de toutes les équipes
+
+```bash
+curl.exe -X POST http://localhost:1337/api/icbad-scraper/scrape -H "Authorization: Bearer TOKEN_FROM_STRAPI_SETTINGS"
+
+```
+
+> Réponse attendue : **{"message":"Scraping lancé en arrière-plan pour toutes les équipes."}**
+
 ### Documentation Swagger
 
 Le plugin de documentation Strapi ne détecte pas les routes custom automatiquement.

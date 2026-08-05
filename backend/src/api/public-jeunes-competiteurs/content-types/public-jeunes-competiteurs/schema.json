@@ -22,11 +22,6 @@
       "component": "contenu-page.contenu",
       "repeatable": true
     },
-    "tutoriels": {
-      "type": "component",
-      "component": "contenu-page.contenu",
-      "repeatable": true
-    },
     "les_avantages": {
       "type": "component",
       "component": "contenu-page.liste-txt",

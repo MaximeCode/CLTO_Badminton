@@ -1,3 +1,5 @@
+import type { Divisions } from "@/types/divisionsType";
+
 export type InterclubTeamRanking = {
   position: number;
   teamName: string;
@@ -21,7 +23,7 @@ export type InterclubTeamRanking = {
 export type InterclubTeamSummary = {
   teamSlug: string;
   teamLabel: string;
-  division: string;
+  divisions_interclub: Divisions | null;
   competitionName: string;
   season: string;
   cltoPosition: number | null;
@@ -37,7 +39,7 @@ export type InterclubTeamSummary = {
   cltoPtsDiff: number | null;
   lastScrapedAt: string | null;
   scrapeError: string | null;
-  ranking: InterclubTeamRanking[];
+  ranking: InterclubTeamRanking[] | null;
   icbadUrl: string;
   image: { url: string } | null;
   desc: string | null;

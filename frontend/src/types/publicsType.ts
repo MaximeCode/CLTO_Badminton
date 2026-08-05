@@ -35,7 +35,6 @@ export type PublicJeunesCompetiteurs = {
   documentId: string;
   entrainements: InformationsPublic[];
   tournois_competitions: ContenuPublic[];
-  tutoriels: ContenuPublic[];
   les_avantages: AvantagePublic[];
   prix_volants: PrixVolant[];
 };

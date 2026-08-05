@@ -20,14 +20,8 @@
       ]
     },
     "type": {
-      "type": "enumeration",
-      "required": true,
-      "default": "Partenaires badminton",
-      "enum": [
-        "Partenaires badminton",
-        "Partenaires institutionnels",
-        "Partenaires entreprises"
-      ]
+      "type": "string",
+      "required": true
     }
   }
 }

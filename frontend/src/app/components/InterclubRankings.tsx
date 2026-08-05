@@ -15,31 +15,18 @@ import {
 } from 'lucide-react';
 import { getInterclubTeams } from '@/api/icbad_local/interclub';
 import type { InterclubTeamRanking, InterclubTeamSummary } from '@/types/interclubType';
+import {
+    getDivisionAccentColor,
+    getDivisionLabel,
+    sortTeamsByDivision,
+} from '@/utils/interclubUtils';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
 import { Section } from './Section';
 import { Button } from './Button';
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
 
-const DIVISION_CONFIG: Record<string, { label: string; color: string; order: number }> = {
-    'N1': { label: 'Nationale 1', color: '#dc2626', order: 1 },
-    'N2': { label: 'Nationale 2', color: '#dc2626', order: 2 },
-    'N3': { label: 'Nationale 3', color: '#dc2626', order: 3 },
-    'R1': { label: 'Régionale 1', color: '#0153b6', order: 4 },
-    'R2': { label: 'Régionale 2', color: '#0153b6', order: 5 },
-    'R3': { label: 'Régionale 3', color: '#0153b6', order: 6 },
-    'D1-A': { label: 'Départementale 1 - A', color: '#16a34a', order: 7 },
-    'D1-B': { label: 'Départementale 1 - B', color: '#16a34a', order: 8 },
-    'D2-A': { label: 'Départementale 2 - A', color: '#16a34a', order: 9 },
-    'D2-B': { label: 'Départementale 2 - B', color: '#16a34a', order: 10 },
-    'D3': { label: 'Départementale 3', color: '#16a34a', order: 11 },
-    'D4': { label: 'Départementale 4', color: '#16a34a', order: 12 },
-};
-
 const PEEK_HEIGHT_PX = 28;
-
-const getDivisionConfig = (division: string) =>
-    DIVISION_CONFIG[division] ?? { label: division, color: '#0153b6', order: 99 };
 
 const isCltoTeam = (team: InterclubTeamRanking) =>
     team.isClto || team.teamCode?.toUpperCase().includes('CLTO');
@@ -61,14 +48,7 @@ export function InterclubRankings() {
             try {
                 setLoading(true);
                 const data: InterclubTeamSummary[] = await getInterclubTeams();
-
-                const sorted = [...data].sort((a, b) => {
-                    const orderA = getDivisionConfig(a.division).order;
-                    const orderB = getDivisionConfig(b.division).order;
-                    return orderA - orderB;
-                });
-
-                setTeams(sorted);
+                setTeams(sortTeamsByDivision(data));
             } catch (err) {
                 setError('Impossible de charger les classements. Veuillez réessayer.');
                 console.error('[InterclubRankings] Erreur fetch:', err);
@@ -107,9 +87,9 @@ export function InterclubRankings() {
     }
 
     const selected = teams[selectedIndex];
-    const divConfig = getDivisionConfig(selected.division);
-    const accentColor = divConfig.color;
-    const ranking = selected.ranking;
+    const divisionLabel = getDivisionLabel(selected.divisions_interclub);
+    const accentColor = getDivisionAccentColor(selected.divisions_interclub?.Nom_court);
+    const ranking = selected.ranking ?? [];
     const cltoIndex = ranking.findIndex(isCltoTeam);
     const cltoPosition =
         cltoIndex >= 0 ? ranking[cltoIndex].position : (selected.cltoPosition ?? null);
@@ -130,7 +110,8 @@ export function InterclubRankings() {
 
                 <div className="flex flex-wrap justify-center gap-3 mb-8">
                     {teams.map((team, index) => {
-                        const cfg = getDivisionConfig(team.division);
+                        const shortLabel = team.divisions_interclub?.Nom_court ?? team.teamLabel;
+                        const color = getDivisionAccentColor(team.divisions_interclub?.Nom_court);
                         const isActive = selectedIndex === index;
                         return (
                             <motion.button
@@ -143,15 +124,15 @@ export function InterclubRankings() {
                                     : 'bg-white text-gray-700 shadow-md hover:shadow-lg'
                                     }`}
                                 style={{
-                                    backgroundColor: isActive ? cfg.color : undefined,
+                                    backgroundColor: isActive ? color : undefined,
                                 }}
                             >
-                                <span className="relative z-10">{team.division}</span>
+                                <span className="relative z-10">{shortLabel}</span>
                                 {isActive && (
                                     <motion.div
                                         layoutId="activeTab"
                                         className="absolute inset-0 rounded-xl"
-                                        style={{ backgroundColor: cfg.color }}
+                                        style={{ backgroundColor: color }}
                                         initial={false}
                                         transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                                     />
@@ -162,13 +143,13 @@ export function InterclubRankings() {
                 </div>
 
                 <motion.h3
-                    key={selected.division}
+                    key={selected.teamSlug}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="font-primary text-2xl md:text-3xl mb-2 text-center"
                     style={{ color: accentColor }}
                 >
-                    {divConfig.label} - {selected.competitionName}
+                    {divisionLabel} - {selected.competitionName}
                 </motion.h3>
 
                 <div className="text-center mt-2">

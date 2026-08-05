@@ -124,8 +124,8 @@ function renderList(
   const Tag = list.format === "ordered" ? "ol" : "ul";
   const listClass =
     list.format === "ordered"
-      ? `list-decimal pl-6 space-y-2 ${styles.list}`
-      : `list-disc pl-6 space-y-2 ${styles.list}`;
+      ? `list-decimal pl-6 space-y-2`
+      : `list-disc pl-6 space-y-2`;
 
   return (
     <Tag key={key} className={listClass}>

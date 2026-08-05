@@ -4,89 +4,18 @@
  * scraper.js — Service Strapi v5
  *
  * Responsabilités :
- *  - Récupérer le HTML de chaque URL IcBAD configurée
+ *  - Lire les Interclub Team créées dans Strapi (admin)
+ *  - Récupérer le HTML de chaque URL IcBAD
  *  - Parser les données via icbad-parser
- *  - Upsert (créer ou mettre à jour) chaque entrée interclub-team en base
+ *  - Mettre à jour les données scrapées (classement, matches, stats…)
  *  - Exposer scrapeAll() et scrapeOne(teamSlug)
  */
 
 const fetch = require('node-fetch');
 const { parseIcbad } = require('../utils/icbad-parser');
+const { slugifyTeamLabel } = require('../utils/slugify');
 
-/**
- * Configuration des 5 équipes CLTO.
- *
- * ⚠️  Remplacez les URLs par les vraies URLs de chaque poule IcBAD.
- *     Le teamCode doit correspondre exactement au sigle dans le HTML IcBAD.
- * 
- * ⚠️  Penser à mettre à jour les Divisions dans plugins\icbad-scraper\server\content-types\interclub-team\schema.json
- */
-const TEAMS_CONFIG = [
-  {
-    teamSlug: 'clto-n2',
-    teamLabel: 'CLTO N2',
-    division: 'N2',
-    icbadTeamCode: '45-CLTO-1',
-    icbadUrl: 'https://icbad.ffbad.org/competition/2500383/tableau/14022',
-    season: '2025-2026',
-  },
-  {
-    teamSlug: 'clto-n3',
-    teamLabel: 'CLTO N3',
-    division: 'N3',
-    icbadTeamCode: '45-CLTO-2',
-    icbadUrl: 'https://icbad.ffbad.org/competition/2500384/tableau/14026',
-    season: '2025-2026',
-  },
-  {
-    teamSlug: 'clto-r2',
-    teamLabel: 'CLTO R2',
-    division: 'R2',
-    icbadTeamCode: '45-CLTO-3',
-    icbadUrl: 'https://icbad.ffbad.org/competition/2500080/tableau/14097',
-    season: '2025-2026',
-  },
-  {
-    teamSlug: 'clto-d1a',
-    teamLabel: 'CLTO D1-A',
-    division: 'D1-A',
-    icbadTeamCode: '45-CLTO-1',
-    icbadUrl: 'https://icbad.ffbad.org/competition/2501074/tableau/14555',
-    season: '2025-2026',
-  },
-  {
-    teamSlug: 'clto-d1b',
-    teamLabel: 'CLTO D1-B',
-    division: 'D1-B',
-    icbadTeamCode: '45-CLTO-2',
-    icbadUrl: 'https://icbad.ffbad.org/competition/2501074/tableau/14556',
-    season: '2025-2026',
-  },
-  {
-    teamSlug: 'clto-d2a',
-    teamLabel: 'CLTO D2-A',
-    division: 'D2-A',
-    icbadTeamCode: '45-CLTO-6',
-    icbadUrl: 'https://icbad.ffbad.org/competition/2501077/tableau/14407',
-    season: '2025-2026',
-  },
-  {
-    teamSlug: 'clto-d2b',
-    teamLabel: 'CLTO D2-B',
-    division: 'D2-B',
-    icbadTeamCode: '45-CLTO-7',
-    icbadUrl: 'https://icbad.ffbad.org/competition/2501077/tableau/14406',
-    season: '2025-2026',
-  },
-  {
-    teamSlug: 'clto-d3',
-    teamLabel: 'CLTO D3',
-    division: 'D3',
-    icbadTeamCode: '45-CLTO-1',
-    icbadUrl: 'https://icbad.ffbad.org/competition/2501079/tableau/15522',
-    season: '2025-2026',
-  },
-];
+const UID = 'plugin::icbad-scraper.interclub-team';
 
 // Délai entre deux requêtes pour ne pas surcharger IcBAD (ms)
 const FETCH_DELAY_MS = 2000;
@@ -94,8 +23,57 @@ const FETCH_DELAY_MS = 2000;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
+ * Assure un teamSlug : si null/vide, le génère depuis teamLabel et le persiste.
+ */
+const ensureTeamSlug = async (strapi, team) => {
+  if (team.teamSlug) {
+    return team.teamSlug;
+  }
+
+  if (!team.teamLabel) {
+    return null;
+  }
+
+  const teamSlug = slugifyTeamLabel(team.teamLabel);
+  await strapi.documents(UID).update({
+    documentId: team.documentId,
+    data: { teamSlug },
+  });
+
+  strapi.log.info(
+    `[icbad-scraper] 🏷️  teamSlug généré pour "${team.teamLabel}" → "${teamSlug}"`
+  );
+
+  return teamSlug;
+};
+
+/**
+ * Charge toutes les équipes Interclub Team depuis Strapi.
+ */
+const loadTeamsFromStrapi = async (strapi) => {
+  return strapi.documents(UID).findMany({
+    fields: [
+      'teamSlug',
+      'teamLabel',
+      'icbadUrl',
+      'icbadTeamCode',
+      'season',
+    ],
+    populate: {
+      divisions_interclub: {
+        fields: ['Nom_court', 'Nom_complet', 'Ordre'],
+      },
+    },
+  });
+};
+
+/**
+ * Indique si l'équipe a les champs minimum pour scraper IcBAD.
+ */
+const isScrapable = (team) => Boolean(team.icbadUrl && team.icbadTeamCode);
+
+/**
  * Récupère le HTML d'une URL IcBAD.
- * Retourne null en cas d'erreur réseau.
  */
 const fetchHtml = async (url) => {
   const response = await fetch(url, {
@@ -116,154 +94,159 @@ const fetchHtml = async (url) => {
 };
 
 /**
- * Upsert une entrée interclub-team en base Strapi.
- * Cherche par teamSlug (unique). Crée si absent, met à jour sinon.
+ * Met à jour une équipe existante avec les données scrapées.
+ * Ne touche pas aux champs éditoriaux (teamLabel, season, division, url, code…).
  */
-const upsertTeam = async (strapi, teamConfig, parsedData) => {
-  const uid = 'plugin::icbad-scraper.interclub-team';
-
+const updateScrapedData = async (strapi, team, parsedData) => {
   const { competitionName, ranking, matches, bonuses } = parsedData;
-
-  // Extraire les stats CLTO depuis le classement
   const cltoRow = ranking.find((r) => r.isClto);
 
-  const payload = {
-    teamSlug: teamConfig.teamSlug,
-    teamLabel: teamConfig.teamLabel,
-    division: teamConfig.division,
-    icbadUrl: teamConfig.icbadUrl,
-    icbadTeamCode: teamConfig.icbadTeamCode,
-    competitionName,
-    season: teamConfig.season,
-    ranking,
-    matches,
-    bonuses,
-    lastScrapedAt: new Date().toISOString(),
-    scrapeError: null,
-
-    // Dénormalisé CLTO
-    cltoPosition: cltoRow?.position ?? null,
-    cltoPoints: cltoRow?.points ?? null,
-    cltoPlayed: cltoRow?.played ?? null,
-    cltoWon: cltoRow?.won ?? null,
-    cltoDraw: cltoRow?.draw ?? null,
-    cltoLost: cltoRow?.lost ?? null,
-    cltoBonusPlus: cltoRow?.bonusPlus ?? null,
-    cltoBonusMinus: cltoRow?.bonusMinus ?? null,
-    cltoMatchDiff: cltoRow?.matchDiff ?? null,
-    cltoSetDiff: cltoRow?.setDiff ?? null,
-    cltoPtsDiff: cltoRow?.ptsDiff ?? null,
-  };
-
-  // Chercher une entrée existante
-  const existing = await strapi.documents(uid).findFirst({
-    filters: { teamSlug: teamConfig.teamSlug },
+  await strapi.documents(UID).update({
+    documentId: team.documentId,
+    data: {
+      competitionName,
+      ranking,
+      matches,
+      bonuses,
+      lastScrapedAt: new Date().toISOString(),
+      scrapeError: null,
+      cltoPosition: cltoRow?.position ?? null,
+      cltoPoints: cltoRow?.points ?? null,
+      cltoPlayed: cltoRow?.played ?? null,
+      cltoWon: cltoRow?.won ?? null,
+      cltoDraw: cltoRow?.draw ?? null,
+      cltoLost: cltoRow?.lost ?? null,
+      cltoBonusPlus: cltoRow?.bonusPlus ?? null,
+      cltoBonusMinus: cltoRow?.bonusMinus ?? null,
+      cltoMatchDiff: cltoRow?.matchDiff ?? null,
+      cltoSetDiff: cltoRow?.setDiff ?? null,
+      cltoPtsDiff: cltoRow?.ptsDiff ?? null,
+    },
   });
 
-  if (existing) {
-    await strapi.documents(uid).update({
-      documentId: existing.documentId,
-      data: payload,
-    });
-    strapi.log.info(
-      `[icbad-scraper] ✅  Mis à jour : ${teamConfig.teamLabel} (position: ${cltoRow?.position ?? '?'}, ${cltoRow?.points ?? '?'} pts)`
-    );
-  } else {
-    await strapi.documents(uid).create({ data: payload });
-    strapi.log.info(
-      `[icbad-scraper] ✅  Créé : ${teamConfig.teamLabel}`
-    );
-  }
+  const divisionLabel = team.divisions_interclub?.Nom_court ?? '?';
+  strapi.log.info(
+    `[icbad-scraper] ✅  Mis à jour : ${team.teamLabel} [${divisionLabel}] (position: ${cltoRow?.position ?? '?'}, ${cltoRow?.points ?? '?'} pts)`
+  );
 };
 
 /**
  * Enregistre une erreur de scraping sans écraser les données existantes.
  */
-const recordError = async (strapi, teamConfig, errorMessage) => {
-  const uid = 'plugin::icbad-scraper.interclub-team';
-
-  const existing = await strapi.documents(uid).findFirst({
-    filters: { teamSlug: teamConfig.teamSlug },
+const recordError = async (strapi, team, errorMessage) => {
+  await strapi.documents(UID).update({
+    documentId: team.documentId,
+    data: {
+      scrapeError: errorMessage,
+      lastScrapedAt: new Date().toISOString(),
+    },
   });
 
-  const errorPayload = {
-    scrapeError: errorMessage,
-    lastScrapedAt: new Date().toISOString(),
-  };
-
-  if (existing) {
-    await strapi.documents(uid).update({
-      documentId: existing.documentId,
-      data: errorPayload,
-    });
-  } else {
-    // Créer une entrée minimale pour tracer l'erreur
-    await strapi.documents(uid).create({
-      data: {
-        ...errorPayload,
-        teamSlug: teamConfig.teamSlug,
-        teamLabel: teamConfig.teamLabel,
-        division: teamConfig.division,
-        icbadUrl: teamConfig.icbadUrl,
-        season: teamConfig.season,
-      },
-    });
-  }
-
   strapi.log.error(
-    `[icbad-scraper] ❌  Erreur ${teamConfig.teamLabel} : ${errorMessage}`
+    `[icbad-scraper] ❌  Erreur ${team.teamLabel} : ${errorMessage}`
   );
 };
 
 /**
- * Scrape une seule équipe par son slug.
+ * Scrape une entrée Interclub Team déjà chargée depuis Strapi.
  */
-const scrapeOne = async (strapi, teamSlug) => {
-  const teamConfig = TEAMS_CONFIG.find((t) => t.teamSlug === teamSlug);
-  if (!teamConfig) {
-    throw new Error(`Équipe inconnue : ${teamSlug}`);
+const scrapeTeamEntry = async (strapi, team) => {
+  const teamSlug = await ensureTeamSlug(strapi, team);
+  const label = team.teamLabel || teamSlug || team.documentId;
+
+  if (!isScrapable(team)) {
+    strapi.log.warn(
+      `[icbad-scraper] ⏭️  Ignoré : "${label}" — icbadUrl ou icbadTeamCode manquant.`
+    );
+    return {
+      success: false,
+      skipped: true,
+      teamSlug,
+      teamLabel: team.teamLabel,
+      reason: 'icbadUrl ou icbadTeamCode manquant',
+    };
   }
 
-  strapi.log.info(`[icbad-scraper] 🔄  Scraping ${teamConfig.teamLabel} — ${teamConfig.icbadUrl}`);
+  strapi.log.info(
+    `[icbad-scraper] 🔄  Scraping ${team.teamLabel} — ${team.icbadUrl}`
+  );
 
   try {
-    const html = await fetchHtml(teamConfig.icbadUrl);
-    const parsedData = parseIcbad(html, teamConfig.icbadTeamCode);
-    await upsertTeam(strapi, teamConfig, parsedData);
-    return { success: true, teamSlug, teamLabel: teamConfig.teamLabel };
+    const html = await fetchHtml(team.icbadUrl);
+    const parsedData = parseIcbad(html, team.icbadTeamCode);
+    await updateScrapedData(strapi, { ...team, teamSlug }, parsedData);
+    return { success: true, teamSlug, teamLabel: team.teamLabel };
   } catch (err) {
-    await recordError(strapi, teamConfig, err.message);
-    return { success: false, teamSlug, error: err.message };
+    await recordError(strapi, team, err.message);
+    return { success: false, teamSlug, teamLabel: team.teamLabel, error: err.message };
   }
 };
 
 /**
- * Scrape toutes les équipes configurées, avec délai entre chaque requête.
+ * Scrape une seule équipe par son slug (entrée Strapi).
+ */
+const scrapeOne = async (strapi, teamSlug) => {
+  const team = await strapi.documents(UID).findFirst({
+    filters: { teamSlug },
+    fields: [
+      'teamSlug',
+      'teamLabel',
+      'icbadUrl',
+      'icbadTeamCode',
+      'season',
+    ],
+    populate: {
+      divisions_interclub: {
+        fields: ['Nom_court', 'Nom_complet', 'Ordre'],
+      },
+    },
+  });
+
+  if (!team) {
+    throw new Error(`Équipe introuvable en base pour le slug : ${teamSlug}`);
+  }
+
+  return scrapeTeamEntry(strapi, team);
+};
+
+/**
+ * Scrape toutes les équipes présentes dans Strapi, avec délai entre chaque requête.
  */
 const scrapeAll = async (strapi) => {
-  strapi.log.info('[icbad-scraper] 🚀  Début du scraping de toutes les équipes…');
+  strapi.log.info('[icbad-scraper] 🚀  Début du scraping des équipes Strapi…');
+
+  const teams = await loadTeamsFromStrapi(strapi);
+
+  if (teams.length === 0) {
+    strapi.log.warn(
+      '[icbad-scraper] Aucune Interclub Team en base — rien à scraper.'
+    );
+    return [];
+  }
 
   const results = [];
 
-  for (let i = 0; i < TEAMS_CONFIG.length; i++) {
-    const teamConfig = TEAMS_CONFIG[i];
-    const result = await scrapeOne(strapi, teamConfig.teamSlug);
+  for (let i = 0; i < teams.length; i++) {
+    const result = await scrapeTeamEntry(strapi, teams[i]);
     results.push(result);
 
-    // Pause entre les requêtes (sauf après la dernière)
-    if (i < TEAMS_CONFIG.length - 1) {
+    if (i < teams.length - 1) {
       await sleep(FETCH_DELAY_MS);
     }
   }
 
   const successCount = results.filter((r) => r.success).length;
-  const errorCount = results.filter((r) => !r.success).length;
+  const skippedCount = results.filter((r) => r.skipped).length;
+  const errorCount = results.filter((r) => !r.success && !r.skipped).length;
 
   strapi.log.info(
-    `[icbad-scraper] 🏁  Scraping terminé — ${successCount} succès, ${errorCount} erreur(s)`
+    `[icbad-scraper] 🏁  Scraping terminé — ${successCount} succès, ${skippedCount} ignoré(s), ${errorCount} erreur(s)`
   );
 
   return results;
 };
 
-module.exports = { scrapeAll, scrapeOne, TEAMS_CONFIG };
+module.exports = {
+  scrapeAll,
+  scrapeOne,
+};

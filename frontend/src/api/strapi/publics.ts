@@ -37,12 +37,6 @@ export async function getPublicsJeunesCompetiteurs(): Promise<PublicJeunesCompet
       sous_titre: item.sous_titre,
       contenu: item.contenu,
     })),
-    tutoriels: (data.tutoriels ?? []).map((item: ContenuPublic) => ({
-      id: item.id,
-      titre: item.titre,
-      sous_titre: item.sous_titre,
-      contenu: item.contenu,
-    })),
     les_avantages: (data.les_avantages ?? []).map((item: AvantagePublic) => ({
       id: item.id,
       contenu: item.contenu,

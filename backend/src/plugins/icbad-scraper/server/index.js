@@ -29,6 +29,22 @@ module.exports = () => ({
    * Enregistre le cron job nocturne (02h30, Europe/Paris).
    */
   register({ strapi }) {
+    // Auto-génère teamSlug à la création si absent
+    strapi.documents.use(async (context, next) => {
+      if (
+        context.uid === 'plugin::icbad-scraper.interclub-team' &&
+        context.action === 'create' &&
+        context.params?.data
+      ) {
+        const { data } = context.params;
+        if (!data.teamSlug && data.teamLabel) {
+          const { slugifyTeamLabel } = require('./utils/slugify');
+          data.teamSlug = slugifyTeamLabel(data.teamLabel);
+        }
+      }
+      return next();
+    });
+
     // ADD icbad-scraper plugin into documentation
     if (strapi.plugin('documentation')) {
       strapi
@@ -123,17 +139,8 @@ module.exports = () => ({
 
       if (count === 0) {
         strapi.log.info(
-          '[icbad-scraper] 🆕  Base vide — scraping initial dans 5s…'
+          '[icbad-scraper] Aucune Interclub Team en base — créez-les dans l\'admin (teamLabel, icbadUrl, icbadTeamCode, season, division), puis lancez POST /api/icbad-scraper/scrape.'
         );
-        const { scrapeAll } = strapi
-          .plugin('icbad-scraper')
-          .service('scraper');
-
-        setTimeout(() => {
-          scrapeAll(strapi).catch((err) => {
-            strapi.log.error('[icbad-scraper] Erreur scraping initial :', err.message);
-          });
-        }, 5000);
       } else {
         strapi.log.info(
           `[icbad-scraper] ✅  ${count} équipe(s) enregistrées en base.`

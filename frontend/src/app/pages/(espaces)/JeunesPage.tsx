@@ -222,7 +222,7 @@ export function JeunesPage() {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className={cartesInfos && cartesInfos.length > 2 ? "grid lg:grid-cols-2 gap-8" : "max-w-4xl mx-auto"}>
           {cartesInfos?.map((carteInfo) => (
             <motion.article
               key={carteInfo.id}
