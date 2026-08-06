@@ -1,5 +1,5 @@
 import { API_URL, fetchAPI } from "../Client";
-import type { Article, ArticleCreatedBy } from "@/types/articlesType";
+import type { Article } from "@/types/articlesType";
 import type { BlocksContent } from "@/types/blocks";
 import type { Categorie } from "@/types/categoriesType";
 
@@ -20,7 +20,6 @@ export async function getArticles(): Promise<Article[]> {
       contenu: BlocksContent;
       categorie: Categorie;
       createdAt: Date;
-      createdBy: ArticleCreatedBy | null;
     }) => ({
       id: item.id,
       documentId: item.documentId,
@@ -32,7 +31,6 @@ export async function getArticles(): Promise<Article[]> {
       contenu: item.contenu,
       categorie: item.categorie,
       createdAt: item.createdAt,
-      createdBy: item.createdBy ?? null,
     })
   );
 }
@@ -54,7 +52,6 @@ export async function getFeaturedArticles(): Promise<Article[]> {
       contenu: BlocksContent;
       categorie: Categorie;
       createdAt: Date;
-      createdBy: ArticleCreatedBy | null;
     }) => ({
       id: item.id,
       documentId: item.documentId,
@@ -66,7 +63,6 @@ export async function getFeaturedArticles(): Promise<Article[]> {
       contenu: item.contenu,
       categorie: item.categorie,
       createdAt: item.createdAt,
-      createdBy: item.createdBy ?? null,
     })
   );
 }
@@ -87,6 +83,5 @@ export async function getOneArticle(documentId: string): Promise<Article | null>
     contenu: data.contenu,
     categorie: data.categorie,
     createdAt: data.createdAt,
-    createdBy: data.createdBy ?? null,
   };
 }

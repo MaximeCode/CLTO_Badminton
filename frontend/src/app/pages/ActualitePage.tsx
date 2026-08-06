@@ -174,30 +174,18 @@ export function ActualitePage() {
             <article>
               <BlocksRenderer content={article?.contenu ?? []} />
             </article>
-
-            <footer className="pt-6 border-t border-gray-200">
-              <div className="flex items-center gap-3">
-                <img
-                  src={userAvatar}
-                  alt="Auteur de l'article"
-                  className="h-12 w-12 rounded-full object-cover border border-gray-200"
-                />
-                <div>
-                  <p className="text-gray-900">
-                    Publié par {article?.createdBy?.username || article?.createdBy?.firstname ? (
-                      <span className="font-semibold">
-                        {article.createdBy.username
-                          ?? [article.createdBy.firstname, article.createdBy.lastname].filter(Boolean).join(" ")}
-                      </span>
-                    ) : (
-                      <span className="italic text-gray-500">Auteur mystérieux</span>
-                    )}
-                  </p>
-                </div>
-              </div>
-            </footer>
           </section>
         )}
+
+        <div className="mb-6">
+          <Link
+            to="/actualites"
+            className="inline-flex items-center gap-2 rounded-md border border-primary/30 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/10 transition-colors"
+          >
+            <ArrowLeft size={16} />
+            Retour aux articles
+          </Link>
+        </div>
       </Section>
     </>
   );
