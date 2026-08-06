@@ -1,40 +1,40 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import { Smile, Trophy, Target, Medal, Feather } from 'lucide-react';
+import { Smile, Target, Medal, Feather, Building2 } from 'lucide-react';
 import { Link } from 'react-router';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
 import { Section } from './Section';
 
 const spaces = [
   {
-    title: 'JEUNES LOISIRS',
+    title: 'JEUNES',
     icon: Smile,
     color: 'primary' as const,
-    link: '/jeunes-loisirs',
-  },
-  {
-    title: 'JEUNES COMPÉTITEURS',
-    icon: Trophy,
-    color: 'secondary' as const,
-    link: '/jeunes-competiteurs',
+    link: '/jeunes',
   },
   {
     title: 'ADULTES LOISIRS',
     icon: Target,
-    color: 'primary' as const,
+    color: 'secondary' as const,
     link: '/adultes-loisirs',
   },
   {
     title: 'ADULTES COMPÉTITEURS',
     icon: Medal,
-    color: 'secondary' as const,
+    color: 'primary' as const,
     link: '/adultes-competiteurs',
   },
   {
     title: 'VIEILLES PLUMES',
     icon: Feather,
-    color: 'primary' as const,
+    color: 'secondary' as const,
     link: '/vieilles-plumes',
+  },
+  {
+    title: 'ENTREPRISE',
+    icon: Building2,
+    color: 'primary' as const,
+    link: '/entreprise',
   },
 ];
 

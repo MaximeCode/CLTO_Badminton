@@ -34,7 +34,8 @@
     "categorie": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::categorie.categorie"
+      "target": "api::categorie.categorie",
+      "required": true
     },
     "a_la_une": {
       "type": "boolean",

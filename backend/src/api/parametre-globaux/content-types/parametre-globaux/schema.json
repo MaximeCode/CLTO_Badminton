@@ -16,6 +16,10 @@
     },
     "lien_charte_interclub": {
       "type": "string"
+    },
+    "saison_id": {
+      "type": "integer",
+      "required": true
     }
   }
 }

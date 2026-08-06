@@ -84,7 +84,7 @@ export function StagesPage() {
                 </div>
                 <div className="flex items-start gap-3 text-gray-700">
                   <MapPin size={20} className="mt-0.5 shrink-0 text-secondary" />
-                  <span className="font-semibold">{stage.gymnase.libelle}</span>
+                  <span className="font-semibold">{stage.gymnase}</span>
                 </div>
                 <div className="flex items-start gap-3 text-gray-700">
                   <Users size={20} className="mt-0.5 shrink-0 text-secondary" />

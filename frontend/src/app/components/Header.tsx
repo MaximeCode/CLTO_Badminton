@@ -35,11 +35,11 @@ const NAV_ITEMS: NavItem[] = [
   {
     title: "Nos Publics",
     items: [
-      { label: "Jeunes Loisirs", path: "/jeunes-loisirs" },
-      { label: "Jeunes Compétiteurs", path: "/jeunes-competiteurs" },
+      { label: "Jeunes", path: "/jeunes" },
       { label: "Adultes Loisirs", path: "/adultes-loisirs" },
       { label: "Adultes Compétiteurs", path: "/adultes-competiteurs" },
       { label: "Vieilles plumes", path: "/vieilles-plumes" },
+      { label: "Entreprise", path: "/entreprise" },
     ],
   },
   {

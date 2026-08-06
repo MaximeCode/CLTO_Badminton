@@ -1,0 +1,35 @@
+{
+  "kind": "singleType",
+  "collectionName": "publics_adultes_loisirs",
+  "info": {
+    "singularName": "public-adultes-loisirs",
+    "pluralName": "publics-adultes-loisirs",
+    "displayName": "Public Adultes Loisirs"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "prix_licence": {
+      "type": "decimal",
+      "required": true
+    },
+    "envie_de_progresser": {
+      "type": "component",
+      "component": "infos-publics.carte-d-informations",
+      "repeatable": false,
+      "required": true
+    },
+    "vie_du_club": {
+      "type": "component",
+      "component": "infos-publics.carte-d-informations",
+      "repeatable": true
+    },
+    "les_avantages": {
+      "type": "component",
+      "component": "contenu-page.liste-txt",
+      "repeatable": true
+    }
+  }
+}

@@ -47,7 +47,8 @@
     "divisions_interclub": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::divisions-interclub.divisions-interclub"
+      "target": "api::divisions-interclub.divisions-interclub",
+      "required": true
     },
     "icbadUrl": {
       "type": "string",

@@ -24,9 +24,8 @@
       "required": true
     },
     "gymnase": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::gymnase.gymnase"
+      "type": "string",
+      "required": true
     },
     "public": {
       "type": "string",

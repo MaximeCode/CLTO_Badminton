@@ -1,0 +1,40 @@
+{
+  "kind": "singleType",
+  "collectionName": "publics_jeunes",
+  "info": {
+    "singularName": "public-jeunes",
+    "pluralName": "publics-jeunes",
+    "displayName": "Public Jeunes"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "informations": {
+      "type": "component",
+      "component": "infos-publics.carte-d-informations",
+      "repeatable": true
+    },
+    "entrainements": {
+      "type": "component",
+      "component": "infos-publics.carte-d-informations",
+      "repeatable": true
+    },
+    "tournois_competitions": {
+      "type": "component",
+      "component": "contenu-page.contenu",
+      "repeatable": true
+    },
+    "les_avantages": {
+      "type": "component",
+      "component": "contenu-page.liste-txt",
+      "repeatable": true
+    },
+    "prix_volants": {
+      "type": "component",
+      "component": "infos-publics.vente-volants",
+      "repeatable": true
+    }
+  }
+}

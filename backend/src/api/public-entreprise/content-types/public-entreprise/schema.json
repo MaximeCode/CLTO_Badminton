@@ -1,0 +1,32 @@
+{
+  "kind": "singleType",
+  "collectionName": "publics_entreprise",
+  "info": {
+    "singularName": "public-entreprise",
+    "pluralName": "publics-entreprise",
+    "displayName": "Public Entreprise"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "flyer": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "partenariat": {
+      "type": "component",
+      "component": "infos-publics.carte-d-informations",
+      "repeatable": true
+    },
+    "lien_dossier_partenariat": {
+      "type": "string"
+    }
+  }
+}

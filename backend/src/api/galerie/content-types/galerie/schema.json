@@ -30,7 +30,8 @@
     "galerie_categorie": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::galerie-categorie.galerie-categorie"
+      "target": "api::galerie-categorie.galerie-categorie",
+      "required": true
     }
   }
 }

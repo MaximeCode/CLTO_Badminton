@@ -82,7 +82,7 @@ const DECISION_TREE: Record<NodeId, DecisionNode> = {
         question: 'Je souhaite une licence…',
         answers: [
             { id: 'principale', label: 'Principale', next: result('cas_1_1') },
-            { id: 'complementaire', label: 'Complémentaire', next: result('cas_1_2') },
+            { id: 'exterieure', label: 'Extérieure', next: result('cas_1_2') },
         ],
     },
     'q-type-licence-b': {
@@ -90,7 +90,7 @@ const DECISION_TREE: Record<NodeId, DecisionNode> = {
         question: 'Je souhaite une licence…',
         answers: [
             { id: 'principale', label: 'Principale', next: result('cas_2_1') },
-            { id: 'complementaire', label: 'Complémentaire', next: result('cas_2_2') },
+            { id: 'exterieure', label: 'Extérieure', next: result('cas_2_2') },
         ],
     },
     'q-type-licence-c': {
@@ -98,7 +98,7 @@ const DECISION_TREE: Record<NodeId, DecisionNode> = {
         question: 'Je souhaite une licence…',
         answers: [
             { id: 'principale', label: 'Principale', next: result('cas_3_1') },
-            { id: 'complementaire', label: 'Complémentaire', next: result('cas_3_2') },
+            { id: 'exterieure', label: 'Extérieure', next: result('cas_3_2') },
         ],
     },
 };

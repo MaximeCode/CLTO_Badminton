@@ -119,13 +119,8 @@ export function Footer() {
           >
             <ul className="space-y-2">
               <li>
-                <Link to="/jeunes-loisirs" className="text-gray-400 hover:text-secondary transition-colors text-sm">
-                  Jeunes Loisirs
-                </Link>
-              </li>
-              <li>
-                <Link to="/jeunes-competiteurs" className="text-gray-400 hover:text-secondary transition-colors text-sm">
-                  Jeunes Compétiteurs
+                <Link to="/jeunes" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Jeunes
                 </Link>
               </li>
               <li>
@@ -141,6 +136,11 @@ export function Footer() {
               <li>
                 <Link to="/vieilles-plumes" className="text-gray-400 hover:text-secondary transition-colors text-sm">
                   Vieilles plumes
+                </Link>
+              </li>
+              <li>
+                <Link to="/entreprise" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Entreprise
                 </Link>
               </li>
             </ul>
@@ -238,13 +238,8 @@ export function Footer() {
             <h4 className="font-primary text-xl mb-4 tracking-wide">Nos Publics</h4>
             <ul className="space-y-3">
               <li>
-                <Link to="/jeunes-loisirs" className="text-gray-400 hover:text-secondary transition-colors duration-200">
-                  Jeunes Loisirs
-                </Link>
-              </li>
-              <li>
-                <Link to="/jeunes-competiteurs" className="text-gray-400 hover:text-secondary transition-colors duration-200">
-                  Jeunes Compétiteurs
+                <Link to="/jeunes" className="text-gray-400 hover:text-secondary transition-colors duration-200">
+                  Jeunes
                 </Link>
               </li>
               <li>
@@ -260,6 +255,11 @@ export function Footer() {
               <li>
                 <Link to="/vieilles-plumes" className="text-gray-400 hover:text-secondary transition-colors duration-200">
                   Vieilles plumes
+                </Link>
+              </li>
+              <li>
+                <Link to="/entreprise" className="text-gray-400 hover:text-secondary transition-colors duration-200">
+                  Entreprise
                 </Link>
               </li>
             </ul>

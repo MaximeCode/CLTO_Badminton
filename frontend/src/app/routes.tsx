@@ -1,5 +1,5 @@
 // Imports sorted alphabetically for clarity and maintainability
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, Navigate } from 'react-router';
 import { Layout } from './components/Layout';
 
 // Pages brut
@@ -23,13 +23,13 @@ import { OrganigrammePage } from './pages/OrganigrammePage';
 import { PalmaresPage } from './pages/PalmaresPage';
 import { PolitiqueConfidentialitePage } from './pages/PolitiqueConfidentialitePage';
 
-// Espaces
-import { CompetiteursPage } from './pages/(espaces)/CompetiteursPage';
-import { AdultesPage } from './pages/(espaces)/AdultesPage';
-import { JeunesPage } from './pages/(espaces)/JeunesPage';
-import { LoisirsPage } from './pages/(espaces)/LoisirsPage';
+// Publics
+import { AdultesCompetiteursPage } from './pages/(publics)/AdultesCompetiteursPage';
+import { AdultesLoisirsPage } from './pages/(publics)/AdultesLoisirsPage';
+import { EntreprisePage } from './pages/(publics)/EntreprisePage';
+import { JeunesPage } from './pages/(publics)/JeunesPage';
+import { VieillesPlumesPage } from './pages/(publics)/VieillesPlumesPage';
 import { NotFound } from './pages/NotFound';
-import { VeteransPage } from './pages/(espaces)/VeteransPage';
 
 export const router = createBrowserRouter([
   {
@@ -49,11 +49,13 @@ export const router = createBrowserRouter([
       { path: 'interclub', Component: InterclubPage },
       { path: 'projet-club', Component: ProjetClub },
       { path: 'documents', Component: DocumentsPage },
-      { path: 'jeunes-loisirs', Component: JeunesPage },
-      { path: 'jeunes-competiteurs', Component: CompetiteursPage },
-      { path: 'adultes-loisirs', Component: LoisirsPage },
-      { path: 'adultes-competiteurs', Component: AdultesPage },
-      { path: 'vieilles-plumes', Component: VeteransPage },
+      { path: 'jeunes', Component: JeunesPage },
+      { path: 'jeunes-loisirs', element: <Navigate to="/jeunes" replace /> },
+      { path: 'jeunes-competiteurs', element: <Navigate to="/jeunes" replace /> },
+      { path: 'adultes-loisirs', Component: AdultesLoisirsPage },
+      { path: 'adultes-competiteurs', Component: AdultesCompetiteursPage },
+      { path: 'vieilles-plumes', Component: VieillesPlumesPage },
+      { path: 'entreprise', Component: EntreprisePage },
       { path: 'contact', Component: ContactPage },
       { path: 'faq', Component: FAQPage },
       { path: 'stages', Component: StagesPage },

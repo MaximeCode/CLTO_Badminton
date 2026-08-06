@@ -1,7 +1,6 @@
 import { BlocksContent } from "@/types/blocks";
 import { fetchAPI } from "../Client";
 import type { Stage } from "@/types/stageType";
-import { Gymnase } from "@/types/gymnasesType";
 
 export async function getStages(): Promise<Stage[]> {
   const { data } = await fetchAPI("/api/stages?populate=*");
@@ -17,7 +16,7 @@ export async function getStages(): Promise<Stage[]> {
       autre_infos: string;
       description: BlocksContent;
       lien: string;
-      gymnase: Gymnase;
+      gymnase: string;
     }) => ({
       id: item.id,
       documentId: item.documentId,

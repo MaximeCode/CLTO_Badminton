@@ -1,9 +1,11 @@
 export type Gymnase = {
   id: number;
-  documentId: string;
-  libelle: string;
+  nom: string;
+  nom_court: string;
   adresse: string;
-  latitude: number;
-  longitude: number;
-  terrains: number;
+  /** Nombre de terrains — non fourni par l'API gestion pour l'instant */
+  nb_terrain: string | null;
+  /** Coordonnées — à peupler plus tard pour la carte */
+  latitude?: number;
+  longitude?: number;
 };

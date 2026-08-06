@@ -109,7 +109,7 @@ export function GymMap({
           }}
         >
           <Popup>
-            <span className="font-semibold">{gym.libelle}</span>
+            <span className="font-semibold">{gym.nom}</span>
             <br />
             <span className="text-sm text-gray-600">{gym.adresse}</span>
           </Popup>

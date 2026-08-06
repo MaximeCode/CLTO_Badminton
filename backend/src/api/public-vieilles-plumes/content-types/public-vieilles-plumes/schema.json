@@ -1,0 +1,25 @@
+{
+  "kind": "singleType",
+  "collectionName": "publics_vieilles_plumes",
+  "info": {
+    "singularName": "public-vieilles-plumes",
+    "pluralName": "publics-vieilles-plumes",
+    "displayName": "Public Vieilles Plumes"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "tournois_competitions": {
+      "type": "component",
+      "component": "infos-publics.carte-d-informations",
+      "repeatable": true
+    },
+    "les_avantages": {
+      "type": "component",
+      "component": "contenu-page.liste-txt",
+      "repeatable": true
+    }
+  }
+}

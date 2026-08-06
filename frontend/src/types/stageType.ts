@@ -1,5 +1,4 @@
 import type { BlocksContent } from "@/types/blocks";
-import { Gymnase } from "./gymnasesType";
 
 export type Stage = {
   id: number;
@@ -11,5 +10,5 @@ export type Stage = {
   autre_infos: string;
   description: BlocksContent;
   lien: string;
-  gymnase: Gymnase;
+  gymnase: string;
 };

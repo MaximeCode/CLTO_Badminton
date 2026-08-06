@@ -12,6 +12,7 @@ export async function getParametresGlobaux(): Promise<ParametreGlobaux | null> {
       documentId: data.documentId,
       lien_accueil_helloasso: data.lien_accueil_helloasso ?? null,
       lien_charte_interclub: data.lien_charte_interclub ?? null,
+      saison_id: data.saison_id ?? null,
     };
   } catch (error) {
     // Strapi renvoie 404 tant que le single type n'a pas été créé / publié

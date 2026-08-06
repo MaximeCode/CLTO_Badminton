@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { PageHero } from '../components/PageHero';
 import { Section } from '../components/Section';
 import { motion } from 'motion/react';
-import { MapPin, Copy, Check, ExternalLink } from 'lucide-react';
+import { MapPin, Copy, Check } from 'lucide-react';
+// import { ExternalLink } from 'lucide-react';
 
 import type { Gymnase } from '../../types/gymnasesType';
-import { getGymnases } from '../../api/strapi/gymnases';
-import { GymMap } from '../components/GymMap';
+import { getGymnases } from '../../api/gestion/gymnases';
+import { getParametresGlobaux } from '../../api/strapi/parametre-globaux';
+// import { GymMap } from '../components/GymMap';
 import gymnaseChardon from '../../imports/gymnase_chardon.jpg';
 
 export function GymnasesPage() {
@@ -22,10 +24,10 @@ export function GymnasesPage() {
       value: gymsCount,
       label: "Gymnases",
     },
-    {
-      value: gyms.reduce((sum, gym) => sum + gym.terrains, 0),
-      label: "Nombre de terrains total",
-    },
+    // {
+    //   value: gyms.reduce((sum, gym) => sum + Number(gym.nb_terrain ?? 0), 0),
+    //   label: "Nombre de terrains total",
+    // },
     {
       value: "57h",
       label: "Heures de créneaux total par semaine",
@@ -38,18 +40,21 @@ export function GymnasesPage() {
     setTimeout(() => setCopiedAddress(null), 2000);
   };
 
-  const openInMaps = (gym: Gymnase) => {
-    window.open(`https://www.google.com/maps/search/?api=1&query=${gym.latitude},${gym.longitude}`, '_blank');
-  };
+  // const openInMaps = (gym: Gymnase) => {
+  //   window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(gym.adresse)}`, '_blank');
+  // };
 
   // Fetch datas
   useEffect(() => {
     async function loadData() {
       try {
         setLoadError(null);
-        console.log('Loading data...');
-        const data = await getGymnases();
-        console.log('data loaded:', data);
+        const parametres = await getParametresGlobaux();
+        const saisonId = parametres?.saison_id;
+        if (saisonId == null) {
+          throw new Error("L'identifiant de saison n'est pas configuré.");
+        }
+        const data = await getGymnases(saisonId);
         setGyms(data);
       } catch (error) {
         console.error('Error loading data:', error);
@@ -86,6 +91,10 @@ export function GymnasesPage() {
           </p>
         </motion.div>
 
+        {loadError && (
+          <p className="mb-8 text-center text-red-600">{loadError}</p>
+        )}
+
         <div className="grid lg:grid-cols-2 gap-4 md:gap-8">
           {/* Gymnase List */}
           <motion.div
@@ -93,7 +102,7 @@ export function GymnasesPage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="space-y-4"
+            className="space-y-4 lg:col-span-2 max-w-3xl mx-auto w-full"
           >
             {gyms.map((gym, index) => (
               <motion.div
@@ -114,17 +123,19 @@ export function GymnasesPage() {
                   </div>
                   <div className="flex-1">
                     <h3 className="font-primary text-2xl text-primary mb-2">
-                      {gym.libelle}
+                      {gym.nom}
                     </h3>
                     <p className="text-gray-600 mb-3 text-sm md:text-base">{gym.adresse}</p>
                     <div className="flex items-center justify-between flex-wrap gap-3">
+                      {/*
                       <div className="flex items-center gap-2 bg-linear-to-r from-primary to-primary-accent text-white px-4 py-2 rounded-lg shadow-md">
                         <div className="text-center flex-1 flex flex-row-reverse justify-center items-center gap-2">
                           <p className="text-xs opacity-90">Terrains</p>
-                          <p className="font-primary text-xl md:text-3xl">{gym.terrains}</p>
+                          <p className="font-primary text-xl md:text-3xl">{gym.nb_terrain}</p>
                         </div>
                       </div>
-                      <div className="flex gap-2">
+                      */}
+                      <div className="flex gap-2 ml-auto">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
@@ -144,6 +155,7 @@ export function GymnasesPage() {
                             </>
                           )}
                         </button>
+                        {/*
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
@@ -154,6 +166,7 @@ export function GymnasesPage() {
                           <ExternalLink size={16} />
                           <span className="text-sm hidden sm:inline">Itinéraire</span>
                         </button>
+                        */}
                       </div>
                     </div>
                   </div>
@@ -173,7 +186,7 @@ export function GymnasesPage() {
             )}
           </motion.div>
 
-          {/* Map */}
+          {/* Map — à réactiver quand les coordonnées seront disponibles
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -190,11 +203,11 @@ export function GymnasesPage() {
               {selectedGym ? (
                 <>
                   <h3 className="font-primary text-xl text-primary mb-1">
-                    {selectedGym.libelle}
+                    {selectedGym.nom}
                   </h3>
                   <p className="text-sm text-gray-600 mb-2">{selectedGym.adresse}</p>
                   <p className="text-sm">
-                    <strong>{selectedGym.terrains}</strong> terrain{selectedGym.terrains > 1 ? 's' : ''}
+                    <strong>{selectedGym.nb_terrain}</strong> terrain{(Number(selectedGym.nb_terrain) > 1) ? 's' : ''}
                   </p>
                 </>
               ) : (
@@ -208,7 +221,9 @@ export function GymnasesPage() {
                 </>
               )}
             </div>
-          </motion.div>          </div>
+          </motion.div>
+          */}
+        </div>
 
         {/* Info Section */}
         <motion.div
@@ -221,7 +236,7 @@ export function GymnasesPage() {
           <h3 className="font-primary text-2xl sm:text-3xl mb-5 md:mb-6 text-center md:text-left">
             Total des équipements
           </h3>
-          <div className="flex flex-col divide-y divide-white/20 sm:grid sm:grid-cols-3 sm:divide-y-0 sm:gap-6">
+          <div className="flex flex-col divide-y divide-white/20 sm:grid sm:grid-cols-2 sm:divide-y-0 sm:gap-6">
             {equipmentStats.map((stat) => (
               <div
                 key={stat.label}
