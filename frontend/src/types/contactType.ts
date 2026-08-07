@@ -1,6 +1,6 @@
-export type Contact = {
-  id: number;
-  documentId: string;
+import type { Base } from "@/types/baseType";
+
+export type Contact = Base & {
   telephone: string;
   email: string;
   adresse: string;

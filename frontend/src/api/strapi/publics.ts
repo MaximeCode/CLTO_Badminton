@@ -9,8 +9,8 @@ import type {
   ContenuPublic,
   AvantagePublic,
   PrixVolant,
-  PublicMedia,
 } from "@/types/publicsType";
+import type { Media } from "@/types/baseType";
 
 function mapInformations(items: InformationsPublic[] | null | undefined): InformationsPublic[] {
   return (items ?? []).map((item) => ({
@@ -44,7 +44,7 @@ function mapPrixVolants(items: PrixVolant[] | null | undefined): PrixVolant[] {
   }));
 }
 
-function mapMedia(media: PublicMedia | null | undefined): PublicMedia {
+function mapMedia(media: Media | null | undefined): Media {
   if (!media) {
     return {
       id: 0,
@@ -70,12 +70,10 @@ function mapMedia(media: PublicMedia | null | undefined): PublicMedia {
 function mapBannerFields(data: {
   titre?: string | null;
   description?: string | null;
-  image_bandeau?: PublicMedia | null;
 }) {
   return {
     titre: data.titre ?? null,
     description: data.description ?? null,
-    image_bandeau: mapMedia(data.image_bandeau),
   };
 }
 

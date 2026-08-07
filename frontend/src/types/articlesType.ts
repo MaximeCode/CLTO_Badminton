@@ -1,9 +1,8 @@
 import type { BlocksContent } from "@/types/blocks";
+import type { Base } from "@/types/baseType";
 import type { Categorie } from "./categoriesType";
 
-export type Article = {
-  id: number;
-  documentId: string;
+export type Article = Base & {
   titre: string;
   vignette: {
     url: string;

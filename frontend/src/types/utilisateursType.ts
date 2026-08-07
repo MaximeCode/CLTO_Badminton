@@ -1,6 +1,6 @@
-export type Utilisateur = {
-  id: number;
-  documentId: string;
+import type { Base } from "@/types/baseType";
+
+export type Utilisateur = Base & {
   username: string;
   email: string;
   confirmed: boolean;

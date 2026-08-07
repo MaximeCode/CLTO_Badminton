@@ -11,6 +11,7 @@ export async function getMotPresident(): Promise<MotPresident | null> {
 
     return {
       id: data.id,
+      documentId: data.documentId,
       discours: data.discours,
       portrait: {
         url: `${API_URL}${data.portrait?.url ?? ""}`,

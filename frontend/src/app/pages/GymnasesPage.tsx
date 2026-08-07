@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { PageHero } from '../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
 import { motion } from 'motion/react';
 import { MapPin, Copy, Check, ExternalLink } from 'lucide-react';
@@ -8,9 +10,10 @@ import type { Gymnase } from '../../types/gymnasesType';
 import { getGymnases } from '../../api/gestion/gymnases';
 import { getParametresGlobaux } from '../../api/strapi/parametre-globaux';
 import { GymMap } from '../components/GymMap';
-import gymnaseChardon from '../../imports/gymnase_chardon.jpg';
 
 export function GymnasesPage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.GYMNASES);
+
   const [selectedGym, setSelectedGym] = useState<Gymnase | null>(null);
   const [copiedAddress, setCopiedAddress] = useState<number | null>(null);
 
@@ -86,7 +89,7 @@ export function GymnasesPage() {
       <PageHero
         title="LES GYMNASES"
         subtitle={`Découvrez nos ${gymsCount} gymnases répartis à Orléans`}
-        image={gymnaseChardon}
+        image={bandeauImage}
       />
 
       <Section className="bg-white">

@@ -1,24 +1,15 @@
-export type EvenementMedia = {
-  id: number;
-  documentId: string;
-  name: string;
-  alternativeText?: string | null;
-  url: string;
-  mime?: string;
-  width?: number | null;
-  height?: number | null;
-};
+import type { Base, Media } from "@/types/baseType";
 
-export type Evenement = {
-  id: number;
-  documentId: string;
+export type EvenementMedia = Media;
+
+export type Evenement = Base & {
   titre: string;
   date: string;
   detail_date: string | null;
   lieu: string;
   horaire: string;
   petite_description: string | null;
-  affiche: EvenementMedia;
+  affiche: Media;
   lien_inscription_benevole: string;
   lien_inscription_tournoi: string | null;
 };

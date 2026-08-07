@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { PageHero } from '../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
 import { BlocksRenderer } from '../components/BlocksRenderer';
 import { getPageFormations } from '@/api/strapi/pageBlockContent';
 import type { PageBlockContent } from '@/types/pageBlockContentType';
 
 export function FormationsPage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.FORMATIONS);
+
   const [data, setData] = useState<PageBlockContent | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -30,6 +34,7 @@ export function FormationsPage() {
       <PageHero
         title="FORMATIONS"
         subtitle="GEO, arbitre et autres formations proposées par le club"
+        image={bandeauImage}
       />
 
       <Section className="bg-gray-50">

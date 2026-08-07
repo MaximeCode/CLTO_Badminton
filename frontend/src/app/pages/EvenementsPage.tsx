@@ -1,6 +1,8 @@
 import { motion } from 'motion/react';
 import { Calendar, Clock, MapPin } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
 import { useEffect, useState } from 'react';
 import { getEvenements } from '@/api/strapi/evenement';
@@ -8,6 +10,8 @@ import type { Evenement } from '@/types/evenementType';
 import { stringifyDate } from '@/utils/formatDate';
 
 export function EvenementsPage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.EVENEMENTS);
+
   const [evenements, setEvenements] = useState<Evenement[] | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -29,7 +33,7 @@ export function EvenementsPage() {
 
   return (
     <>
-      <PageHero title="ÉVÉNEMENTS" />
+      <PageHero title={BANDEAU_PAGES.EVENEMENTS} image={bandeauImage} />
 
       <Section className="py-12 md:py-20 bg-white">
         <motion.div

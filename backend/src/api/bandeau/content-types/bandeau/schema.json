@@ -1,0 +1,54 @@
+{
+  "kind": "collectionType",
+  "collectionName": "bandeaux",
+  "info": {
+    "singularName": "bandeau",
+    "pluralName": "bandeaux",
+    "displayName": "Bandeau"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "page": {
+      "type": "enumeration",
+      "enum": [
+        "ACTUALITÉS",
+        "ADHERER AU CLUB",
+        "AGENDA",
+        "BÉNÉVOLES",
+        "CONTACT",
+        "CRÉNEAUX",
+        "Documents officiels",
+        "ÉVÉNEMENTS",
+        "FAQ",
+        "FORMATIONS",
+        "GALERIE",
+        "HISTORIQUE",
+        "LES GYMNASES",
+        "MENTIONS LÉGALES",
+        "ORGANIGRAMME",
+        "PALMARÈS",
+        "POLITIQUE DE CONFIDENTIALITÉ",
+        "PROJET CLUB",
+        "PUBLIC ADULTES COMPÉTITEURS",
+        "PUBLIC ADULTES LOISIRS",
+        "PUBLIC ENTREPRISE",
+        "PUBLIC JEUNES",
+        "PUBLIC VIEILLES PLUMES Seniors 60 ans et +",
+        "STAGES"
+      ],
+      "required": true,
+      "unique": true
+    },
+    "image_bandeau": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

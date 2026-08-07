@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
 import { PageHero } from "../components/PageHero";
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from "../components/Section";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import type { Galerie } from "@/types/galerieType";
@@ -11,6 +13,8 @@ import { getGalerieCategories } from "@/api/strapi/galerie-categories";
 import { stringifyDate } from "@/utils/formatDate";
 
 export function GaleriePage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.GALERIE);
+
   const [albums, setAlbums] = useState<Galerie[]>([]);
   const [categories, setCategories] = useState<Categorie[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -65,6 +69,7 @@ export function GaleriePage() {
       <PageHero
         title="GALERIE"
         subtitle="Les albums photos des événements du CLTO Badminton"
+        image={bandeauImage}
       />
 
       <Section className="bg-white">

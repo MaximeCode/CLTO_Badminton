@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 import { PageHero } from "../components/PageHero";
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from "../components/Section";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -160,6 +162,8 @@ const getWeekDistance = (date: Date, week: WeekData) => {
 };
 
 export function CreneauxPage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.CRENEAUX);
+
   const [selectedDate, setSelectedDate] = useState<Date>(
     new Date(new Date()),
   );
@@ -429,7 +433,7 @@ export function CreneauxPage() {
       <PageHero
         title="CRÉNEAUX"
         subtitle="Planning hebdomadaire des entraînements"
-        image="https://images.unsplash.com/photo-1617962529235-262e8e777e48?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjB0cmFpbmluZyUyMHNjaGVkdWxlfGVufDF8fHx8MTc3NjMzNzE3NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+        image={bandeauImage}
       />
 
       <Section className="bg-gray-50" width_subdiv={2000}>

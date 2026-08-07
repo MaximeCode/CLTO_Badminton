@@ -1,6 +1,6 @@
-export type Divisions = {
-  id: number;
-  documentId: string;
+import type { Base } from "@/types/baseType";
+
+export type Divisions = Base & {
   Nom_court: string;
   Nom_complet: string | null;
   Ordre: number;

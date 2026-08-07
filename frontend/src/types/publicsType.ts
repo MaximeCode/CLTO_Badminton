@@ -1,4 +1,5 @@
 import type { BlocksContent } from "@/types/blocks";
+import type { Base, Media } from "@/types/baseType";
 
 export type InformationsPublic = {
   id: number;
@@ -24,54 +25,45 @@ export type PrixVolant = {
   prix: number;
 };
 
-export type PublicMedia = {
-  id: number;
-  documentId: string;
-  name: string;
-  alternativeText?: string | null;
-  url: string;
-  mime?: string;
-  width?: number | null;
-  height?: number | null;
-};
-
-type PublicBase = {
-  id: number;
-  documentId: string;
+type PublicFields = {
   titre?: string | null;
   description?: string | null;
-  image_bandeau?: PublicMedia | null;
 };
 
-export type PublicAdultesCompetiteurs = PublicBase & {
-  tournois_competitions: ContenuPublic[];
-  les_avantages: AvantagePublic[];
-};
+export type PublicAdultesCompetiteurs = Base &
+  PublicFields & {
+    tournois_competitions: ContenuPublic[];
+    les_avantages: AvantagePublic[];
+  };
 
-export type PublicAdultesLoisirs = PublicBase & {
-  prix_licence: number;
-  envie_de_progresser: InformationsPublic;
-  vie_du_club: InformationsPublic[];
-  les_avantages: AvantagePublic[];
-};
+export type PublicAdultesLoisirs = Base &
+  PublicFields & {
+    prix_licence: number;
+    envie_de_progresser: InformationsPublic;
+    vie_du_club: InformationsPublic[];
+    les_avantages: AvantagePublic[];
+  };
 
-export type PublicEntreprise = PublicBase & {
-  lien_dossier_partenariat?: string | null;
-  flyer: PublicMedia;
-  partenariat: InformationsPublic[];
-  les_avantages: AvantagePublic[];
-};
+export type PublicEntreprise = Base &
+  PublicFields & {
+    lien_dossier_partenariat?: string | null;
+    flyer: Media;
+    partenariat: InformationsPublic[];
+    les_avantages: AvantagePublic[];
+  };
 
-export type PublicJeunes = PublicBase & {
-  informations: InformationsPublic[];
-  entrainements: InformationsPublic[];
-  tournois_competitions: ContenuPublic[];
-  les_avantages: AvantagePublic[];
-  prix_volants: PrixVolant[];
-};
+export type PublicJeunes = Base &
+  PublicFields & {
+    informations: InformationsPublic[];
+    entrainements: InformationsPublic[];
+    tournois_competitions: ContenuPublic[];
+    les_avantages: AvantagePublic[];
+    prix_volants: PrixVolant[];
+  };
 
-export type PublicVieillesPlumes = PublicBase & {
-  format_simple: BlocksContent;
-  tournois_competitions: InformationsPublic[];
-  les_avantages: AvantagePublic[];
-};
+export type PublicVieillesPlumes = Base &
+  PublicFields & {
+    format_simple: BlocksContent;
+    tournois_competitions: InformationsPublic[];
+    les_avantages: AvantagePublic[];
+  };

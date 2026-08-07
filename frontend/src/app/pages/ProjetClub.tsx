@@ -1,13 +1,17 @@
 import { motion } from "motion/react";
 import { PageHero } from "../components/PageHero"
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from "../components/Section"
-const projetclubHero = new URL('../../imports/Banniere_hello_asso.png', import.meta.url).href;
 
 export function ProjetClub() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.PROJET_CLUB);
+
   return (
     <>
       <PageHero
-        image={projetclubHero}
+        title={BANDEAU_PAGES.PROJET_CLUB}
+        image={bandeauImage}
       />
 
       <Section className="bg-white">

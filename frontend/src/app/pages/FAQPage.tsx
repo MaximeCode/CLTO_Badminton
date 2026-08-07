@@ -2,11 +2,15 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import type { Faq } from '../../types/faqsType';
 import { getFaqs } from '@/api/strapi/faqs';
 import { Section } from '../components/Section';
 
 export function FAQPage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.FAQ);
+
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [faqs, setFaqs] = useState<Faq[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -39,6 +43,7 @@ export function FAQPage() {
       <PageHero
         title="FAQ"
         subtitle="Toutes les réponses à vos questions sur le club et la pratique du badminton"
+        image={bandeauImage}
       />
 
       {loadError && (

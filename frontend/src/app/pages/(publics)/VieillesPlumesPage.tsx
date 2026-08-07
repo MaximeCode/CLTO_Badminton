@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PageHero } from '../../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
 import { Clock, Users, Smile, ShieldCheck, Gift, CheckCircle } from 'lucide-react';
@@ -38,6 +40,8 @@ function cardsGridClass(count: number) {
 }
 
 export function VieillesPlumesPage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.VIEILLES_PLUMES);
+
   const [data, setData] = useState<PublicVieillesPlumes | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -64,9 +68,9 @@ export function VieillesPlumesPage() {
   return (
     <>
       <PageHero
-        title={data?.titre || "VIEILLES PLUMES Seniors 60 ans et +"}
+        title={data?.titre || BANDEAU_PAGES.VIEILLES_PLUMES}
         subtitle={data?.description || "Des créneaux dédiés en jeu libre, sans entraînements"}
-        image={data?.image_bandeau?.url}
+        image={bandeauImage}
       />
 
       <Section className="bg-gray-50">

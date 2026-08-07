@@ -1,5 +1,7 @@
 import { Link } from 'react-router';
 import { PageHero } from '../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
 
 function LegalSection({ title, children }: { title: string; children: React.ReactNode }) {
@@ -12,11 +14,14 @@ function LegalSection({ title, children }: { title: string; children: React.Reac
 }
 
 export function MentionsLegalesPage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.MENTIONS_LEGALES);
+
   return (
     <>
       <PageHero
         title="MENTIONS LÉGALES"
         subtitle="Informations légales relatives au site du CLTO Badminton"
+        image={bandeauImage}
       />
 
       <Section className="bg-white">

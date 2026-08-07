@@ -7,12 +7,14 @@ export async function getPartners(): Promise<Partner[]> {
   return data.map(
     (item: {
       id: number;
+      documentId: string;
       logos: {
         url: string;
       }[];
       type: string;
     }) => ({
       id: item.id,
+      documentId: item.documentId,
       logos: (item.logos ?? []).map((logo) => ({
         url: `${API_URL}${logo.url ?? ""}`,
       })),

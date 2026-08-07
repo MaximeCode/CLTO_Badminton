@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PageHero } from '../../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
 import { Calendar, Clock, Users, Target, Heart, Trophy, Gift, CheckCircle } from 'lucide-react';
@@ -51,6 +53,8 @@ function cardsGridClass(count: number) {
 }
 
 export function AdultesCompetiteursPage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.ADULTES_COMPETITEURS);
+
   const [data, setData] = useState<PublicAdultesCompetiteurs | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -76,9 +80,9 @@ export function AdultesCompetiteursPage() {
   return (
     <>
       <PageHero
-        title={data?.titre || "ADULTES COMPÉTITEURS"}
+        title={data?.titre || BANDEAU_PAGES.ADULTES_COMPETITEURS}
         subtitle={data?.description || "Du loisir à la compétition, pratiquez le badminton à votre rythme"}
-        image={data?.image_bandeau?.url}
+        image={bandeauImage}
       />
 
       <Section className="bg-gray-50">

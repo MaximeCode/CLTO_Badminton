@@ -1,8 +1,7 @@
 import type { BlocksContent } from "@/types/blocks";
+import type { Base } from "@/types/baseType";
 
-export type Stage = {
-  id: number;
-  documentId: string;
+export type Stage = Base & {
   titre: string;
   date_debut: Date;
   date_fin: Date;

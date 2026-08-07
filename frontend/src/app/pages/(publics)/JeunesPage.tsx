@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PageHero } from '../../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
 import {
@@ -47,6 +49,8 @@ function cardsGridClass(count: number) {
 }
 
 export function JeunesPage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.JEUNES);
+
   const [data, setData] = useState<PublicJeunes | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -75,9 +79,9 @@ export function JeunesPage() {
   return (
     <>
       <PageHero
-        title={data?.titre || "JEUNES"}
+        title={data?.titre || BANDEAU_PAGES.JEUNES}
         subtitle={data?.description || "L'apprentissage et la compétition pour les jeunes, du loisir à la performance"}
-        image={data?.image_bandeau?.url}
+        image={bandeauImage}
       />
 
       <Section className="bg-gray-50">

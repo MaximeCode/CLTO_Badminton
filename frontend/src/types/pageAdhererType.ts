@@ -1,4 +1,5 @@
 import type { BlocksContent } from "@/types/blocks";
+import type { Base } from "@/types/baseType";
 
 export type ContenuBloc = {
   id: number;
@@ -31,9 +32,7 @@ export type Document = {
   };
 };
 
-export type PageAdherer = {
-  id: number;
-  documentId: string;
+export type PageAdherer = Base & {
   blocs: ContenuBloc[];
   cas_inscriptions: EtapeInscription[];
   documents: Document[];

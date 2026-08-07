@@ -25,7 +25,7 @@ function mapMedia(media: EvenementMedia | null | undefined): EvenementMedia {
 }
 
 export async function getEvenements(): Promise<Evenement[]> {
-  const { data } = await fetchAPI("/api/evenements?populate=*&sort[0]=date:desc");
+  const { data } = await fetchAPI("/api/evenements?populate=*&sort[0]=date:asc");
 
   return data.map(
     (item: {

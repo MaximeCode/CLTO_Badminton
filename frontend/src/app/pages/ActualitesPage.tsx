@@ -1,4 +1,6 @@
 import { PageHero } from '../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'motion/react';
@@ -36,6 +38,8 @@ function ArticleCardSkeleton() {
 }
 
 export function ActualitesPage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.ACTUALITES);
+
   const [articles, setArticles] = useState<Article[]>([]);
   const [categories, setCategories] = useState<Categorie[]>([]);
   const [loading, setLoading] = useState(true);
@@ -131,6 +135,7 @@ export function ActualitesPage() {
       <PageHero
         title="ACTUALITÉS"
         subtitle="Toutes les dernières nouvelles du CLTO Badminton"
+        image={bandeauImage}
       />
 
       <Section className="bg-white">

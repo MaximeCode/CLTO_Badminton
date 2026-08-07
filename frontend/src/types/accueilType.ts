@@ -1,3 +1,5 @@
+import type { Base } from "@/types/baseType";
+
 export type StatsClub = {
   id: number;
   chiffre: number;
@@ -12,9 +14,7 @@ export type LabelNomEtLogo = {
   };
 };
 
-export type Accueil = {
-  id: number;
-  documentId: string;
+export type Accueil = Base & {
   stats_club: StatsClub[];
   labels: LabelNomEtLogo[];
 };

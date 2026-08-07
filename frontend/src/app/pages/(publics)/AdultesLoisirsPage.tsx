@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PageHero } from '../../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
 import {
@@ -51,6 +53,8 @@ function cardsGridClass(count: number) {
 }
 
 export function AdultesLoisirsPage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.ADULTES_LOISIRS);
+
   const [data, setData] = useState<PublicAdultesLoisirs | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -76,9 +80,9 @@ export function AdultesLoisirsPage() {
   return (
     <>
       <PageHero
-        title={data?.titre || "ADULTES LOISIRS"}
+        title={data?.titre || BANDEAU_PAGES.ADULTES_LOISIRS}
         subtitle={data?.description || "Le badminton pour le plaisir et la convivialité"}
-        image={data?.image_bandeau?.url}
+        image={bandeauImage}
       />
 
       <Section className="bg-gray-50">

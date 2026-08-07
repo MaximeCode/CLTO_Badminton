@@ -1,8 +1,9 @@
 import { PageHero } from '../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { motion } from 'motion/react';
 import { Construction, Home } from 'lucide-react';
 import { Link } from 'react-router';
-import bandeauBureau from '../../imports/bandeau-bureau.jpg';
 import maintenanceImage from '../../imports/organigramme-maintenance.jpg';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { Section } from '../components/Section';
@@ -176,12 +177,14 @@ function MaintenanceBlock() {
 }
 
 export function OrganigrammePage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.ORGANIGRAMME);
+
   return (
     <>
       <PageHero
         title="ORGANIGRAMME"
         subtitle="Organigramme 2026-2027 du CLTO Badminton"
-        image={bandeauBureau}
+        image={bandeauImage}
       />
 
       {isInMaintenance ? (

@@ -1,5 +1,7 @@
 import { Link } from 'react-router';
 import { PageHero } from '../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
 
 function LegalSection({ title, children }: { title: string; children: React.ReactNode }) {
@@ -12,11 +14,14 @@ function LegalSection({ title, children }: { title: string; children: React.Reac
 }
 
 export function PolitiqueConfidentialitePage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.POLITIQUE_CONFIDENTIALITE);
+
   return (
     <>
       <PageHero
         title="POLITIQUE DE CONFIDENTIALITÉ"
         subtitle="Protection des données personnelles — CLTO Badminton"
+        image={bandeauImage}
       />
 
       <Section className="bg-white">

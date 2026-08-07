@@ -1,11 +1,19 @@
 import { motion } from "motion/react";
 import { PageHero } from "../components/PageHero"
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from "../components/Section"
 
 export function DocumentsPage() {
+    const bandeauImage = useBandeauImage(BANDEAU_PAGES.DOCUMENTS);
+
     return (
         <>
-            <PageHero title="Documents officiels" subtitle="Dans cette rubrique, retrouvez tous les documents que vous cherchez, documents d'inscriptions, fiche de frais, fondamentaux financiers..." />
+            <PageHero
+                title={BANDEAU_PAGES.DOCUMENTS}
+                subtitle="Dans cette rubrique, retrouvez tous les documents que vous cherchez, documents d'inscriptions, fiche de frais, fondamentaux financiers..."
+                image={bandeauImage}
+            />
 
             <Section className="bg-white">
                 {/* Iframe avec le projet club */}

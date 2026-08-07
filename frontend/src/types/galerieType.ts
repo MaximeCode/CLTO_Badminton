@@ -1,8 +1,7 @@
+import type { Base } from "@/types/baseType";
 import type { Categorie } from "./categoriesType";
 
-export type Galerie = {
-  id: number;
-  documentId: string;
+export type Galerie = Base & {
   titre: string;
   vignette: {
     url: string;

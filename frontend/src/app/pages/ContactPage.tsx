@@ -1,4 +1,6 @@
 import { PageHero } from '../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
 import { motion } from 'motion/react';
 import { Mail, Phone, MapPin, Send, Check, Loader2 } from 'lucide-react';
@@ -33,6 +35,8 @@ const mailSubjectGroups = [
 
 
 export function ContactPage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.CONTACT);
+
   const contact = useContext<Contact | null>(ContactContext);
 
   const [formData, setFormData] = useState({
@@ -90,7 +94,7 @@ export function ContactPage() {
       <PageHero
         title="CONTACT"
         subtitle="Rejoignez-nous ou posez-nous vos questions"
-        image=""
+        image={bandeauImage}
       />
 
       <Section className="bg-white">

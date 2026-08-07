@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PageHero } from '../../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
 import { Building2, ExternalLink, FileDown, Gift, CheckCircle } from 'lucide-react';
@@ -8,6 +10,8 @@ import type { PublicEntreprise } from '@/types/publicsType';
 import { BlocksRenderer } from '@/app/components/BlocksRenderer';
 
 export function EntreprisePage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.ENTREPRISE);
+
   const [data, setData] = useState<PublicEntreprise | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -36,9 +40,9 @@ export function EntreprisePage() {
   return (
     <>
       <PageHero
-        title={data?.titre || "ENTREPRISE"}
+        title={data?.titre || BANDEAU_PAGES.ENTREPRISE}
         subtitle={data?.description || "Partenariats et offres pour les entreprises"}
-        image={data?.image_bandeau?.url}
+        image={bandeauImage}
       />
 
       {hasFlyerOrPartenariat && (

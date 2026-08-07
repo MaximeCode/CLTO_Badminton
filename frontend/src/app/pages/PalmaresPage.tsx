@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { PageHero } from '../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
 import { motion } from 'motion/react';
 import type { Palmares } from '../../types/palmaresType';
@@ -7,6 +9,8 @@ import { getPalmares } from '@/api/strapi/palmares';
 import { stringifyDate } from '@/utils/formatDate';
 
 export function PalmaresPage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.PALMARES);
+
   const [palmares, setPalmares] = useState<Palmares[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -31,6 +35,7 @@ export function PalmaresPage() {
       <PageHero
         title="PALMARÈS"
         subtitle="Les performances et distinctions du CLTO Badminton"
+        image={bandeauImage}
       />
 
       <Section className="bg-white">

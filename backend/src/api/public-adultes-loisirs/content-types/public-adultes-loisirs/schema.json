@@ -17,13 +17,6 @@
     "description": {
       "type": "text"
     },
-    "image_bandeau": {
-      "type": "media",
-      "multiple": false,
-      "allowedTypes": [
-        "images"
-      ]
-    },
     "prix_licence": {
       "type": "decimal",
       "required": true

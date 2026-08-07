@@ -2,6 +2,8 @@ import { useContext, useEffect, useState, type ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { ExternalLink, Mail, Phone, ChevronDown, MapPin, Download } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { InscriptionWizard } from '../components/InscriptionWizard';
 
 import { ContactContext } from '../contexts/ContactContext';
@@ -74,6 +76,8 @@ function CollapsiblePanel({
 }
 
 export function AdhererPage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.ADHERER);
+
     const [openPanel, setOpenPanel] = useState<string | null>(null);
 
     const togglePanel = (id: string) => {
@@ -111,6 +115,7 @@ export function AdhererPage() {
             <PageHero
                 title="ADHERER AU CLUB"
                 subtitle="Retrouvez toutes les informations pour rejoindre le CLTO Badminton"
+                image={bandeauImage}
             />
 
             <section className="bg-linear-to-b from-primary/3 via-white to-primary/2 py-10 md:py-16">

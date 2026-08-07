@@ -2,6 +2,8 @@ import { motion } from 'motion/react';
 import { Calendar, Euro, Users, MapPin, Clock, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router';
 import { PageHero } from '../components/PageHero';
+import { useBandeauImage } from '@/hooks/useBandeauImage';
+import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
 import { useEffect, useState } from 'react';
 import { getStages } from '@/api/strapi/stage';
@@ -10,10 +12,11 @@ import { Stage } from '@/types/stageType';
 import { BlocksRenderer } from '../components/BlocksRenderer';
 import { formatDateRange } from '@/utils/formatDate';
 
-const stageHero = new URL('../../imports/Banniere_stage.png', import.meta.url).href;
 const HELLOASSO_URL_FALLBACK = import.meta.env.VITE_HELLOASSO_URL as string;
 
 export function StagesPage() {
+  const bandeauImage = useBandeauImage(BANDEAU_PAGES.STAGES);
+
   const [stages, setStages] = useState<Stage[] | null>(null);
   const [helloassoUrl, setHelloassoUrl] = useState(HELLOASSO_URL_FALLBACK);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -45,7 +48,7 @@ export function StagesPage() {
       <PageHero
         title="STAGES"
         subtitle="Des stages encadrés pour progresser et préparer la saison"
-        image={stageHero}
+        image={bandeauImage}
       />
 
       <Section className="py-12 md:py-20 bg-white">
