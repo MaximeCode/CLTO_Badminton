@@ -68,8 +68,8 @@ export function GymnasesPage() {
         if (saisonId == null) {
           throw new Error("L'identifiant de saison n'est pas configuré.");
         }
-        // const data = await getGymnases(saisonId);
-        const data = await getGymnases(`allGymnases`);
+        const data = await getGymnases(saisonId); // PP / PROD
+        // const data = await getGymnases(`allGymnases`); // DEV
         setGyms(data);
       } catch (error) {
         console.error('Error loading data gymnases:', error);
