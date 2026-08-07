@@ -26,6 +26,7 @@ const NAV_ITEMS: NavItem[] = [
   {
     title: "Pratiquer",
     items: [
+      { label: "Adhérer", path: "/adherer" },
       { label: "Créneaux", path: "/creneaux" },
       { label: "Gymnases", path: "/gymnases" },
       { label: "Agenda", path: "/agenda" },
