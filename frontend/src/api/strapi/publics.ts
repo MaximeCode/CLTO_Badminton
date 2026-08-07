@@ -140,6 +140,7 @@ export async function getPublicVieillesPlumes(): Promise<PublicVieillesPlumes> {
     id: data.id,
     documentId: data.documentId,
     ...mapBannerFields(data),
+    format_simple: data.format_simple ?? [],
     tournois_competitions: mapInformations(data.tournois_competitions),
     les_avantages: mapAvantages(data.les_avantages),
   };

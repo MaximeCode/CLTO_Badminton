@@ -61,10 +61,89 @@ async function enablePublicReadPermissions(strapi) {
   );
 }
 
+const ADMIN_CONTENT_ROLE_CODES = ['strapi-editor', 'strapi-author'];
+
+/**
+ * Synchronise les permissions de champs (RBAC admin) pour Editor / Author.
+ *
+ * Quand un nouveau champ est ajouté à un Content-Type déjà autorisé,
+ * Strapi ne coche pas automatiquement la case correspondante dans
+ * Settings → Administration panel → Roles. On réécrit `properties.fields`
+ * avec la liste complète des champs (même logique que le core Strapi).
+ *
+ * Ne crée pas de nouvelles actions (create/read/update…) : uniquement
+ * l’élargissement des champs sur les permissions déjà présentes.
+ * Idempotent. Écrase une restriction manuelle volontaire sur certains champs.
+ */
+async function syncAdminRoleFieldPermissions(strapi) {
+  const contentTypeService = strapi.service('admin::content-type');
+  const permissionService = strapi.service('admin::permission');
+
+  for (const code of ADMIN_CONTENT_ROLE_CODES) {
+    const role = await strapi.db.query('admin::role').findOne({
+      where: { code },
+      populate: ['permissions'],
+    });
+
+    if (!role) {
+      strapi.log.warn(`[permissions] Rôle admin "${code}" introuvable — skip`);
+      continue;
+    }
+
+    let updatedCount = 0;
+
+    for (const permission of role.permissions ?? []) {
+      const { action, subject, properties } = permission;
+
+      if (!subject?.startsWith('api::')) continue;
+      if (!strapi.contentTypes[subject]) continue;
+      // Pas encore de liste de champs = permission non concernée (ex. delete/publish)
+      if (!Array.isArray(properties?.fields)) continue;
+
+      const actionConfig = permissionService.actionProvider.get(action);
+      const appliesToFields = actionConfig?.options?.applyToProperties?.includes('fields');
+      if (!appliesToFields) continue;
+
+      const allFields = contentTypeService.getNestedFields(strapi.contentTypes[subject], {
+        components: strapi.components,
+      });
+
+      const currentFields = properties.fields;
+      const sameLength = currentFields.length === allFields.length;
+      const sameSet =
+        sameLength &&
+        allFields.every((field) => currentFields.includes(field));
+
+      if (sameSet) continue;
+
+      await strapi.db.query('admin::permission').update({
+        where: { id: permission.id },
+        data: {
+          properties: {
+            ...properties,
+            fields: allFields,
+          },
+        },
+      });
+
+      updatedCount += 1;
+    }
+
+    if (updatedCount === 0) {
+      strapi.log.info(`[permissions] Admin ${code}: champs déjà à jour`);
+    } else {
+      strapi.log.info(
+        `[permissions] Admin ${code}: ${updatedCount} permission(s) champs synchronisée(s)`,
+      );
+    }
+  }
+}
+
 module.exports = {
-  register(/* { strapi } */) {},
+  register(/* { strapi } */) { },
 
   async bootstrap({ strapi }) {
     await enablePublicReadPermissions(strapi);
+    await syncAdminRoleFieldPermissions(strapi);
   },
 };

@@ -59,6 +59,7 @@ export function VieillesPlumesPage() {
 
   const tournois = data?.tournois_competitions ?? [];
   const avantages = data?.les_avantages ?? [];
+  const formatSimple = data?.format_simple ?? [];
 
   return (
     <>
@@ -106,23 +107,24 @@ export function VieillesPlumesPage() {
         </div>
       </Section>
 
-      <Section className="bg-white">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="bg-gray-50 rounded-lg p-12 text-center shadow-lg"
-        >
-          <h2 className="font-primary text-4xl text-primary mb-4">
-            UN FORMAT SIMPLE
-          </h2>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Pas d'entraînement dirigé : les séances sont organisées en jeu libre pour
-            privilégier le plaisir, les échanges et la régularité.
-          </p>
-        </motion.div>
-      </Section>
+      {formatSimple.length > 0 && (
+        <Section className="bg-white">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-gray-50 rounded-lg p-12 text-center shadow-lg"
+          >
+            <h2 className="font-primary text-4xl text-primary mb-4">
+              UN FORMAT SIMPLE
+            </h2>
+            <div className="text-gray-600 text-lg max-w-2xl mx-auto [&_p]:mb-2">
+              <BlocksRenderer content={formatSimple} />
+            </div>
+          </motion.div>
+        </Section>
+      )}
 
       {tournois.length > 0 && (
         <Section className="bg-gray-50">

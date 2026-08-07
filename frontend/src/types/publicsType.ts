@@ -71,6 +71,7 @@ export type PublicJeunes = PublicBase & {
 };
 
 export type PublicVieillesPlumes = PublicBase & {
+  format_simple: BlocksContent;
   tournois_competitions: InformationsPublic[];
   les_avantages: AvantagePublic[];
 };
