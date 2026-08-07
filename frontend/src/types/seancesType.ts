@@ -40,3 +40,13 @@ export type CreneauWeek = {
 export const CRENEAU_TYPES = ["Élite", "Perfectionnement", "Initiation", "Intermédiaire"] as const;
 
 export type CreneauType = (typeof CRENEAU_TYPES)[number];
+
+export const CRENEAU_PUBLICS = [
+  "Compétiteurs",
+  "Famille",
+  "Jeunes",
+  "Loisirs",
+  "Vétérans",
+] as const;
+
+export type CreneauPublic = (typeof CRENEAU_PUBLICS)[number];

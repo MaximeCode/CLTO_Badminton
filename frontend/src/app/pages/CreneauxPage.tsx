@@ -20,9 +20,9 @@ import {
 } from "lucide-react";
 import { format, isToday, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import { getSeances } from "@/api/gestion/seances";
+import { getSeances, getSeancesAout26 } from "@/api/gestion/seances";
 import { getParametresGlobaux } from "@/api/strapi/parametre-globaux";
-import { CRENEAU_TYPES, type CreneauWeek, type Seance } from "@/types/seancesType";
+import { CRENEAU_PUBLICS, CRENEAU_TYPES, type CreneauWeek, type Seance } from "@/types/seancesType";
 import {
   WEEK_DAYS,
   addDaysToWeekStart,
@@ -106,6 +106,7 @@ export function CreneauxPage() {
     "Entraînement",
     "Jeu libre",
   ]);
+  const [selectedPublics, setSelectedPublics] = useState<string[]>([...CRENEAU_PUBLICS]);
   const [selectedGym, setSelectedGym] = useState<string>(ALL_GYMS);
 
   useEffect(() => {
@@ -121,7 +122,11 @@ export function CreneauxPage() {
         const seances = import.meta.env.VITE_ENV === "dev"
           ? await getSeances() // DEV
           : await getSeances(saisonId); // PP / PROD
-        const grouped = groupSeancesByWeek(seances);
+
+        const seancesAout26 = import.meta.env.VITE_ENV === "dev"
+          ? await getSeancesAout26() // DEV
+          : await getSeancesAout26(16); // PP / PROD
+        const grouped = groupSeancesByWeek([...seances, ...seancesAout26]);
         setWeeks(grouped);
 
         if (grouped.length > 0) {
@@ -178,7 +183,11 @@ export function CreneauxPage() {
       slot.sessionKind === "Jeu libre"
         ? true
         : slot.types.some((type) => selectedTypes.includes(type));
-    return gymMatch && sessionKindMatch && typeMatch;
+    // Sans PUBLIC → toujours visible ; sinon au moins un public sélectionné
+    const publicMatch =
+      slot.publics.length === 0 ||
+      slot.publics.some((pub) => selectedPublics.includes(pub));
+    return gymMatch && sessionKindMatch && typeMatch && publicMatch;
   };
 
   const timeSlots = allTimeSlots.filter(matchesFilters);
@@ -195,9 +204,16 @@ export function CreneauxPage() {
     );
   };
 
+  const togglePublic = (pub: string) => {
+    setSelectedPublics((prev) =>
+      prev.includes(pub) ? prev.filter((p) => p !== pub) : [...prev, pub],
+    );
+  };
+
   const resetFilters = () => {
     setSelectedTypes([...CRENEAU_TYPES]);
     setSelectedSessionKinds(["Entraînement", "Jeu libre"]);
+    setSelectedPublics([...CRENEAU_PUBLICS]);
     setSelectedGym(ALL_GYMS);
   };
 
@@ -400,7 +416,7 @@ export function CreneauxPage() {
                   </button>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
                       Type d'entraînement
@@ -463,6 +479,32 @@ export function CreneauxPage() {
                           Jeu libre
                         </div>
                       </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                      Public
+                    </label>
+                    <div className="flex flex-wrap gap-3">
+                      {CRENEAU_PUBLICS.map((pub) => {
+                        const active = selectedPublics.includes(pub);
+                        return (
+                          <button
+                            key={pub}
+                            onClick={() => togglePublic(pub)}
+                            className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${active
+                              ? "bg-primary text-white shadow-md scale-105"
+                              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                              }`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <Users size={16} />
+                              {pub}
+                            </div>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
 
@@ -729,7 +771,7 @@ export function CreneauxPage() {
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3 }}
-                                className="absolute rounded-lg shadow-md cursor-pointer pointer-events-auto overflow-hidden transition-[height,left,width,z-index] duration-200"
+                                className="absolute rounded-lg shadow-md pointer-events-auto overflow-hidden transition-[height,left,width,z-index] duration-200"
                                 style={{
                                   top: `${top}px`,
                                   left: leftStyle,
@@ -783,20 +825,20 @@ export function CreneauxPage() {
                                         </span>
                                       </div>
                                       <div className="flex items-center gap-2">
-                                        <User size={14} />
+                                        <User size={16} />
                                         <span className="line-clamp-2">
                                           {slot.leader}
                                         </span>
                                       </div>
                                       {slot.types.length > 0 && (
                                         <div className="flex items-center gap-2">
-                                          <Dumbbell size={14} />
+                                          <Dumbbell size={16} />
                                           <span>{slot.types.join(" / ")}</span>
                                         </div>
                                       )}
                                       {slot.publics.length > 0 && (
                                         <div className="flex items-center gap-2">
-                                          <Users size={14} />
+                                          <Users size={16} />
                                           <span>{slot.publics.join(", ")}</span>
                                         </div>
                                       )}

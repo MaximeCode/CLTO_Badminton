@@ -1,0 +1,906 @@
+[
+  {
+    "id": "1",
+    "creneau_id": "202602",
+    "nom": "Matchs pour tous",
+    "gymnase_id": "202514",
+    "date_seance": "2026-08-17",
+    "jour_semaine": "1",
+    "debut_creneau": "09:00:00",
+    "fin_creneau": "13:30:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": "",
+    "date_creation": "2026-08-04 16:00:16",
+    "date_modification": "2026-08-04 16:08:24",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Pierre Dessaux",
+    "gymnase_nom_court": "DESSAUX",
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "creneau_id": "202603",
+    "nom": "Matchs pour tous",
+    "gymnase_id": "202514",
+    "date_seance": "2026-08-17",
+    "jour_semaine": "1",
+    "debut_creneau": "13:30:00",
+    "fin_creneau": "18:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": "",
+    "date_creation": "2026-08-04 16:00:16",
+    "date_modification": "2026-08-04 16:08:48",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Pierre Dessaux",
+    "gymnase_nom_court": "DESSAUX",
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "creneau_id": "202600",
+    "nom": "Matchs pour tous",
+    "gymnase_id": "202511",
+    "date_seance": "2026-08-17",
+    "jour_semaine": "1",
+    "debut_creneau": "18:00:00",
+    "fin_creneau": "22:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": "",
+    "date_creation": "2026-08-04 16:00:16",
+    "date_modification": "2026-08-04 16:29:47",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Georges Chardon",
+    "gymnase_nom_court": "CHARDON",
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "creneau_id": "202605",
+    "nom": "Matchs pour tous",
+    "gymnase_id": "202514",
+    "date_seance": "2026-08-18",
+    "jour_semaine": "2",
+    "debut_creneau": "09:00:00",
+    "fin_creneau": "14:30:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": null,
+    "date_creation": "2026-08-04 16:26:16",
+    "date_modification": "2026-08-04 16:26:16",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Pierre Dessaux",
+    "gymnase_nom_court": "DESSAUX",
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "creneau_id": "202606",
+    "nom": "Matchs pour tous",
+    "gymnase_id": "202511",
+    "date_seance": "2026-08-18",
+    "jour_semaine": "2",
+    "debut_creneau": "18:00:00",
+    "fin_creneau": "22:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": null,
+    "date_creation": "2026-08-04 16:26:16",
+    "date_modification": "2026-08-04 16:26:16",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Georges Chardon",
+    "gymnase_nom_court": "CHARDON",
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  },
+  {
+    "id": "10",
+    "creneau_id": "202610",
+    "nom": "Stage de reprise Joueurs CLTO",
+    "gymnase_id": "202511",
+    "date_seance": "2026-08-19",
+    "jour_semaine": "3",
+    "debut_creneau": "09:00:00",
+    "fin_creneau": "16:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": "Inscription :\r\nhttps://www.helloasso.com/associations/clto-badminton/evenements/stage-de-rentree-jeunes-et-adultes-joueurs-clto",
+    "date_creation": "2026-08-04 16:37:46",
+    "date_modification": "2026-08-04 16:38:16",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Georges Chardon",
+    "gymnase_nom_court": "CHARDON",
+    "ENCADREMENT": [
+      {
+        "code": "DEBUTANT",
+        "libelle": "Débutant"
+      },
+      {
+        "code": "ELITE",
+        "libelle": "Élite"
+      },
+      {
+        "code": "INTERMEDIAIRE",
+        "libelle": "Intermédiaire"
+      },
+      {
+        "code": "PERFECTIONNEMENT",
+        "libelle": "Perfectionnement"
+      }
+    ],
+    "ENTRAINEUR": [
+      {
+        "code": "6688864",
+        "libelle": "Thomas HUBOUD-PERRON"
+      },
+      {
+        "code": "6824032",
+        "libelle": "Yohan HENAULT"
+      }
+    ],
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "creneau_id": "202560",
+    "nom": "Matchs loisirs",
+    "gymnase_id": "202514",
+    "date_seance": "2026-08-19",
+    "jour_semaine": "3",
+    "debut_creneau": "18:00:00",
+    "fin_creneau": "22:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": null,
+    "date_creation": "2026-08-04 16:30:34",
+    "date_modification": "2026-08-04 16:30:34",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Pierre Dessaux",
+    "gymnase_nom_court": "DESSAUX"
+  },
+  {
+    "id": "11",
+    "creneau_id": "202611",
+    "nom": "Stage de reprise Joueurs CLTO",
+    "gymnase_id": "202511",
+    "date_seance": "2026-08-20",
+    "jour_semaine": "4",
+    "debut_creneau": "09:00:00",
+    "fin_creneau": "16:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": "Inscription :\r\nhttps://www.helloasso.com/associations/clto-badminton/evenements/stage-de-rentree-jeunes-et-adultes-joueurs-clto",
+    "date_creation": "2026-08-04 16:37:46",
+    "date_modification": "2026-08-04 16:38:43",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Georges Chardon",
+    "gymnase_nom_court": "CHARDON",
+    "ENCADREMENT": [
+      {
+        "code": "DEBUTANT",
+        "libelle": "Débutant"
+      },
+      {
+        "code": "ELITE",
+        "libelle": "Élite"
+      },
+      {
+        "code": "INTERMEDIAIRE",
+        "libelle": "Intermédiaire"
+      },
+      {
+        "code": "PERFECTIONNEMENT",
+        "libelle": "Perfectionnement"
+      }
+    ],
+    "ENTRAINEUR": [
+      {
+        "code": "6688864",
+        "libelle": "Thomas HUBOUD-PERRON"
+      },
+      {
+        "code": "6824032",
+        "libelle": "Yohan HENAULT"
+      }
+    ],
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "creneau_id": "202608",
+    "nom": "Matchs pour tous",
+    "gymnase_id": "202511",
+    "date_seance": "2026-08-20",
+    "jour_semaine": "4",
+    "debut_creneau": "18:00:00",
+    "fin_creneau": "22:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": null,
+    "date_creation": "2026-08-04 16:31:08",
+    "date_modification": "2026-08-04 16:31:08",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Georges Chardon",
+    "gymnase_nom_court": "CHARDON",
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  },
+  {
+    "id": "12",
+    "creneau_id": "202612",
+    "nom": "Stage de reprise Joueurs CLTO",
+    "gymnase_id": "202511",
+    "date_seance": "2026-08-21",
+    "jour_semaine": "5",
+    "debut_creneau": "09:00:00",
+    "fin_creneau": "16:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": "Inscription :\r\nhttps://www.helloasso.com/associations/clto-badminton/evenements/stage-de-rentree-jeunes-et-adultes-joueurs-clto",
+    "date_creation": "2026-08-04 16:37:46",
+    "date_modification": "2026-08-04 16:50:31",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Georges Chardon",
+    "gymnase_nom_court": "CHARDON",
+    "ENCADREMENT": [
+      {
+        "code": "DEBUTANT",
+        "libelle": "Débutant"
+      },
+      {
+        "code": "ELITE",
+        "libelle": "Élite"
+      },
+      {
+        "code": "INTERMEDIAIRE",
+        "libelle": "Intermédiaire"
+      },
+      {
+        "code": "PERFECTIONNEMENT",
+        "libelle": "Perfectionnement"
+      }
+    ],
+    "ENTRAINEUR": [
+      {
+        "code": "6688864",
+        "libelle": "Thomas HUBOUD-PERRON"
+      },
+      {
+        "code": "6824032",
+        "libelle": "Yohan HENAULT"
+      }
+    ],
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "creneau_id": "202609",
+    "nom": "Matchs pour tous",
+    "gymnase_id": "202511",
+    "date_seance": "2026-08-21",
+    "jour_semaine": "5",
+    "debut_creneau": "18:00:00",
+    "fin_creneau": "22:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": null,
+    "date_creation": "2026-08-04 16:31:27",
+    "date_modification": "2026-08-04 16:31:27",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Georges Chardon",
+    "gymnase_nom_court": "CHARDON",
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "creneau_id": "202604",
+    "nom": "Match pour tous",
+    "gymnase_id": "202515",
+    "date_seance": "2026-08-23",
+    "jour_semaine": "0",
+    "debut_creneau": "09:00:00",
+    "fin_creneau": "13:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": null,
+    "date_creation": "2026-08-04 16:31:53",
+    "date_modification": "2026-08-04 16:31:53",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Jacques Barthélémy 2",
+    "gymnase_nom_court": "BARTHELEMY 2",
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  },
+  {
+    "id": "13",
+    "creneau_id": "202600",
+    "nom": "Matchs pour tous",
+    "gymnase_id": "202511",
+    "date_seance": "2026-08-24",
+    "jour_semaine": "1",
+    "debut_creneau": "18:00:00",
+    "fin_creneau": "22:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": null,
+    "date_creation": "2026-08-04 17:15:43",
+    "date_modification": "2026-08-04 17:15:43",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Georges Chardon",
+    "gymnase_nom_court": "CHARDON",
+    "ENCADREMENT": [
+      {
+        "code": "DEBUTANT",
+        "libelle": "Débutant"
+      },
+      {
+        "code": "ELITE",
+        "libelle": "Élite"
+      },
+      {
+        "code": "INTERMEDIAIRE",
+        "libelle": "Intermédiaire"
+      },
+      {
+        "code": "PERFECTIONNEMENT",
+        "libelle": "Perfectionnement"
+      }
+    ],
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  },
+  {
+    "id": "14",
+    "creneau_id": "202606",
+    "nom": "Matchs pour tous",
+    "gymnase_id": "202511",
+    "date_seance": "2026-08-25",
+    "jour_semaine": "2",
+    "debut_creneau": "18:00:00",
+    "fin_creneau": "22:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": null,
+    "date_creation": "2026-08-04 17:15:43",
+    "date_modification": "2026-08-04 17:15:43",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Georges Chardon",
+    "gymnase_nom_court": "CHARDON",
+    "ENCADREMENT": [
+      {
+        "code": "DEBUTANT",
+        "libelle": "Débutant"
+      },
+      {
+        "code": "ELITE",
+        "libelle": "Élite"
+      },
+      {
+        "code": "INTERMEDIAIRE",
+        "libelle": "Intermédiaire"
+      },
+      {
+        "code": "PERFECTIONNEMENT",
+        "libelle": "Perfectionnement"
+      }
+    ],
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  },
+  {
+    "id": "15",
+    "creneau_id": "202560",
+    "nom": "Matchs loisirs",
+    "gymnase_id": "202514",
+    "date_seance": "2026-08-26",
+    "jour_semaine": "3",
+    "debut_creneau": "18:00:00",
+    "fin_creneau": "22:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": null,
+    "date_creation": "2026-08-04 17:15:43",
+    "date_modification": "2026-08-04 17:15:43",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Pierre Dessaux",
+    "gymnase_nom_court": "DESSAUX"
+  },
+  {
+    "id": "16",
+    "creneau_id": "202608",
+    "nom": "Matchs pour tous",
+    "gymnase_id": "202511",
+    "date_seance": "2026-08-27",
+    "jour_semaine": "4",
+    "debut_creneau": "18:00:00",
+    "fin_creneau": "22:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": null,
+    "date_creation": "2026-08-04 17:15:44",
+    "date_modification": "2026-08-04 17:15:44",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Georges Chardon",
+    "gymnase_nom_court": "CHARDON",
+    "ENCADREMENT": [
+      {
+        "code": "DEBUTANT",
+        "libelle": "Débutant"
+      },
+      {
+        "code": "ELITE",
+        "libelle": "Élite"
+      },
+      {
+        "code": "INTERMEDIAIRE",
+        "libelle": "Intermédiaire"
+      },
+      {
+        "code": "PERFECTIONNEMENT",
+        "libelle": "Perfectionnement"
+      }
+    ],
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  },
+  {
+    "id": "17",
+    "creneau_id": "202609",
+    "nom": "Matchs pour tous",
+    "gymnase_id": "202511",
+    "date_seance": "2026-08-28",
+    "jour_semaine": "5",
+    "debut_creneau": "18:00:00",
+    "fin_creneau": "22:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": null,
+    "date_creation": "2026-08-04 17:15:44",
+    "date_modification": "2026-08-04 17:15:44",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Georges Chardon",
+    "gymnase_nom_court": "CHARDON",
+    "ENCADREMENT": [
+      {
+        "code": "DEBUTANT",
+        "libelle": "Débutant"
+      },
+      {
+        "code": "ELITE",
+        "libelle": "Élite"
+      },
+      {
+        "code": "INTERMEDIAIRE",
+        "libelle": "Intermédiaire"
+      },
+      {
+        "code": "PERFECTIONNEMENT",
+        "libelle": "Perfectionnement"
+      }
+    ],
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  },
+  {
+    "id": "18",
+    "creneau_id": "202604",
+    "nom": "Match pour tous",
+    "gymnase_id": "202515",
+    "date_seance": "2026-08-30",
+    "jour_semaine": "0",
+    "debut_creneau": "09:00:00",
+    "fin_creneau": "13:00:00",
+    "encadre": "0",
+    "origine": "creneau",
+    "actif": "1",
+    "visible": "1",
+    "saison_id": "16",
+    "commentaire": null,
+    "date_creation": "2026-08-04 17:15:44",
+    "date_modification": "2026-08-04 17:15:44",
+    "numLicence_creation": "000000",
+    "numLicence_modification": "000000",
+    "gymnase_nom": "Jacques Barthélémy 2",
+    "gymnase_nom_court": "BARTHELEMY 2",
+    "PUBLIC": [
+      {
+        "code": "COMPETITEURS",
+        "libelle": "Compétiteurs"
+      },
+      {
+        "code": "FAMILLE",
+        "libelle": "Famille"
+      },
+      {
+        "code": "JEUNES",
+        "libelle": "Jeunes"
+      },
+      {
+        "code": "LOISIRS",
+        "libelle": "Loisirs"
+      },
+      {
+        "code": "VETERANS",
+        "libelle": "Vétérans"
+      }
+    ]
+  }
+]

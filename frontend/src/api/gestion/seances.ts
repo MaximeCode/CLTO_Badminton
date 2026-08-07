@@ -85,3 +85,28 @@ export async function getSeances(saisonId: number = 17): Promise<Seance[]> {
       return a.debut.localeCompare(b.debut);
     });
 }
+
+/**
+ * Récupère les séances depuis l'API gestion CLTO pour une saison donnée.
+ * Filtre : actif=1, visible=1, et saison_id correspondant.
+ */
+export async function getSeancesAout26(saisonId: number = 16): Promise<Seance[]> {
+  const { data } =
+    import.meta.env.VITE_ENV === "dev"
+      ? await fetchFakeAPIGestion("allSeancesAout26") // DEV
+      : await fetchAPIGestion(`/api/seances/${saisonId}`); // PP / PROD
+
+  return (data as SeanceApiItem[])
+    .filter(
+      (item) =>
+        item.actif === "1" &&
+        item.visible === "1" &&
+        (item.saison_id == null || Number(item.saison_id) === saisonId)
+    )
+    .map(mapSeance)
+    .sort((a, b) => {
+      const byDate = a.dateSeance.localeCompare(b.dateSeance);
+      if (byDate !== 0) return byDate;
+      return a.debut.localeCompare(b.debut);
+    });
+}
