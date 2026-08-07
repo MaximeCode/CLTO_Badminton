@@ -14,24 +14,23 @@ const NAV_ITEMS: NavItem[] = [
   {
     title: "Le Club",
     items: [
-      { label: "Formations", path: "/formations" },
-      { label: "Bénévoles", path: "/benevoles" },
-      { label: "Agenda", path: "/agenda" },
-      { label: "Événements", path: "/evenements" },
-      { label: "Organigramme", path: "/organigramme" },
+      { label: "Historique", path: "/historique" },
       { label: "Projet Club", path: "/projet-club" },
+      { label: "Organigramme", path: "/organigramme" },
+      { label: "Bénévoles", path: "/benevoles" },
+      { label: "Événements", path: "/evenements" },
       { label: "Palmarès", path: "/palmares" },
       { label: "Documents officiels", path: "/documents" },
-      { label: "Historique", path: "/historique" },
     ],
   },
   {
     title: "Pratiquer",
     items: [
-      { label: "Adhérer", path: "/adherer" },
       { label: "Créneaux", path: "/creneaux" },
       { label: "Gymnases", path: "/gymnases" },
+      { label: "Agenda", path: "/agenda" },
       { label: "Stages", path: "/stages" },
+      { label: "Formations", path: "/formations" },
     ],
   },
   {
