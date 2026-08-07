@@ -19,7 +19,7 @@ export function GymnasesPage() {
   const [loadError, setLoadError] = useState<string | null>(null);
 
   const totalTerrains = gyms.reduce(
-    (sum, gym) => sum + (gym.nb_terrains ?? 0),
+    (sum, gym) => sum + (gym.capacite_terrain ?? 0),
     0,
   );
 
@@ -142,14 +142,14 @@ export function GymnasesPage() {
                     </h3>
                     <p className="text-gray-600 mb-3 text-sm md:text-base">{gym.adresse}</p>
                     <div className="flex items-center justify-between flex-wrap gap-3">
-                      {gym.nb_terrains != null && (
+                      {/* {gym.nb_terrains != null && (
                         <div className="flex items-center gap-2 bg-linear-to-r from-primary to-primary-accent text-white px-4 py-2 rounded-lg shadow-md">
                           <div className="text-center flex-1 flex flex-row-reverse justify-center items-center gap-2">
                             <p className="text-xs opacity-90">Terrains</p>
                             <p className="font-primary text-xl md:text-3xl">{gym.nb_terrains}</p>
                           </div>
                         </div>
-                      )}
+                      )} */}
                       <div className="flex gap-2 ml-auto">
                         <button
                           onClick={(e) => {
@@ -220,12 +220,12 @@ export function GymnasesPage() {
                     {selectedGym.nom}
                   </h3>
                   <p className="text-sm text-gray-600 mb-2">{selectedGym.adresse}</p>
-                  {selectedGym.nb_terrains != null && (
+                  {/* {selectedGym.nb_terrains != null && (
                     <p className="text-sm">
                       <strong>{selectedGym.nb_terrains}</strong>{' '}
                       terrain{selectedGym.nb_terrains > 1 ? 's' : ''}
                     </p>
-                  )}
+                  )} */}
                 </>
               ) : (
                 <>

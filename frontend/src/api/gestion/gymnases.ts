@@ -29,7 +29,7 @@ export async function getGymnases(saisonId: number): Promise<Gymnase[]> {
       capacite_cours: string | null;
       latitude: string | null;
       longitude: string | null;
-      nb_terrains: string | null;
+      // nb_terrains: string | null;
     }) => ({
       id: Number(item.id),
       nom: item.nom,
@@ -41,7 +41,7 @@ export async function getGymnases(saisonId: number): Promise<Gymnase[]> {
       capacite_cours: parseNullableNumber(item.capacite_cours),
       latitude: parseNullableNumber(item.latitude),
       longitude: parseNullableNumber(item.longitude),
-      nb_terrains: parseNullableNumber(item.nb_terrains),
+      // nb_terrains: parseNullableNumber(item.nb_terrains),
     })
   );
 }
