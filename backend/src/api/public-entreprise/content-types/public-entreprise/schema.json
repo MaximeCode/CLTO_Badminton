@@ -17,6 +17,13 @@
     "description": {
       "type": "text"
     },
+    "image_bandeau": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
     "flyer": {
       "type": "media",
       "multiple": false,

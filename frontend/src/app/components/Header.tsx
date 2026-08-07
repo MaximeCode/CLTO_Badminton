@@ -39,7 +39,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Jeunes", path: "/jeunes" },
       { label: "Adultes Loisirs", path: "/adultes-loisirs" },
       { label: "Adultes Compétiteurs", path: "/adultes-competiteurs" },
-      { label: "Vieilles plumes", path: "/vieilles-plumes" },
+      { label: "VIEILLES PLUMES Seniors 60 ans et +", path: "/vieilles-plumes" },
       { label: "Entreprise", path: "/entreprise" },
     ],
   },

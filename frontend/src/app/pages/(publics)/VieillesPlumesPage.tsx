@@ -63,8 +63,9 @@ export function VieillesPlumesPage() {
   return (
     <>
       <PageHero
-        title={data?.titre || "VIEILLES PLUMES"}
+        title={data?.titre || "VIEILLES PLUMES Seniors 60 ans et +"}
         subtitle={data?.description || "Des créneaux dédiés en jeu libre, sans entraînements"}
+        image={data?.image_bandeau?.url}
       />
 
       <Section className="bg-gray-50">

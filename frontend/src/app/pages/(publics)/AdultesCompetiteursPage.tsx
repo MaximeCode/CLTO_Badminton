@@ -78,6 +78,7 @@ export function AdultesCompetiteursPage() {
       <PageHero
         title={data?.titre || "ADULTES COMPÉTITEURS"}
         subtitle={data?.description || "Du loisir à la compétition, pratiquez le badminton à votre rythme"}
+        image={data?.image_bandeau?.url}
       />
 
       <Section className="bg-gray-50">

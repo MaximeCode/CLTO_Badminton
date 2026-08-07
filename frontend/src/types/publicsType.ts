@@ -40,6 +40,7 @@ type PublicBase = {
   documentId: string;
   titre?: string | null;
   description?: string | null;
+  image_bandeau?: PublicMedia | null;
 };
 
 export type PublicAdultesCompetiteurs = PublicBase & {

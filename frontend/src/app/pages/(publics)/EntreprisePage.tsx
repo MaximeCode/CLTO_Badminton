@@ -38,7 +38,7 @@ export function EntreprisePage() {
       <PageHero
         title={data?.titre || "ENTREPRISE"}
         subtitle={data?.description || "Partenariats et offres pour les entreprises"}
-        image="https://images.unsplash.com/photo-1497366216548-37526070297c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+        image={data?.image_bandeau?.url}
       />
 
       {hasFlyerOrPartenariat && (

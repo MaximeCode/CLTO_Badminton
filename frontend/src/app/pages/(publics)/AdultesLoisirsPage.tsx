@@ -78,6 +78,7 @@ export function AdultesLoisirsPage() {
       <PageHero
         title={data?.titre || "ADULTES LOISIRS"}
         subtitle={data?.description || "Le badminton pour le plaisir et la convivialité"}
+        image={data?.image_bandeau?.url}
       />
 
       <Section className="bg-gray-50">

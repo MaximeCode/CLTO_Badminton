@@ -141,7 +141,7 @@ export function Footer() {
               </li>
               <li>
                 <Link to="/vieilles-plumes" className="text-gray-400 hover:text-secondary transition-colors text-sm">
-                  Vieilles plumes
+                  VIEILLES PLUMES Seniors 60 ans et +
                 </Link>
               </li>
               <li>
@@ -277,7 +277,7 @@ export function Footer() {
               </li>
               <li>
                 <Link to="/vieilles-plumes" className="sm:text-sm md:text-base text-gray-400 hover:text-secondary transition-colors duration-200">
-                  Vieilles plumes
+                  VIEILLES PLUMES<br />Seniors 60 ans et +
                 </Link>
               </li>
               <li>

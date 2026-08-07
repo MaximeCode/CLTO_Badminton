@@ -67,10 +67,15 @@ function mapMedia(media: PublicMedia | null | undefined): PublicMedia {
   };
 }
 
-function mapBannerFields(data: { titre?: string | null; description?: string | null }) {
+function mapBannerFields(data: {
+  titre?: string | null;
+  description?: string | null;
+  image_bandeau?: PublicMedia | null;
+}) {
   return {
     titre: data.titre ?? null,
     description: data.description ?? null,
+    image_bandeau: mapMedia(data.image_bandeau),
   };
 }
 

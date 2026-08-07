@@ -77,6 +77,7 @@ export function JeunesPage() {
       <PageHero
         title={data?.titre || "JEUNES"}
         subtitle={data?.description || "L'apprentissage et la compétition pour les jeunes, du loisir à la performance"}
+        image={data?.image_bandeau?.url}
       />
 
       <Section className="bg-gray-50">
