@@ -24,7 +24,7 @@ type OrgSection = {
 };
 
 const executiveBoard: OrgMember[] = [
-  { name: 'Steve Bandou-Niatoll', role: 'Président', image: placeholderPhoto },
+  { name: 'Steve Bandou-Naitoll', role: 'Président', image: placeholderPhoto },
   { name: 'Mathieu Alves', role: 'Vice-président', detail: 'Vie sportive', image: placeholderPhoto },
   { name: 'XX', role: 'Vice-président', detail: 'Vie administrative', image: placeholderPhoto },
   { name: 'Philippe Maire', role: 'Trésorier', image: placeholderPhoto },
@@ -84,7 +84,7 @@ const commissionSections: OrgSection[] = [
     title: 'Annexes',
     members: [
       { name: 'Elodie Ricaud', role: 'Responsable', detail: 'Ecoresponsabilité', image: placeholderPhoto },
-      { name: 'Steve Bandou-Niatoll', role: 'Responsable', detail: 'Informatique', image: placeholderPhoto },
+      { name: 'Steve Bandou-Naitoll', role: 'Responsable', detail: 'Informatique', image: placeholderPhoto },
       { name: 'Maxime Baude', role: 'Informatique', image: placeholderPhoto },
     ],
   },

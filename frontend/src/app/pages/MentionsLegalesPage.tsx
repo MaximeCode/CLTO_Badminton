@@ -87,7 +87,7 @@ export function MentionsLegalesPage() {
           <LegalSection title="2. Directeur de la publication">
             <p>
               Le directeur de la publication est{' '}
-              <strong>Steve BANDOU-NIATOLL</strong>, en qualité de président de l&apos;association
+              <strong>Steve BANDOU-NAITOLL</strong>, en qualité de président de l&apos;association
               CLTO Badminton.
             </p>
           </LegalSection>

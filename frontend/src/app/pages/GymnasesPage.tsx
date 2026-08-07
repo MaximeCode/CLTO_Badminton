@@ -71,9 +71,13 @@ export function GymnasesPage() {
         if (saisonId == null) {
           throw new Error("L'identifiant de saison n'est pas configuré.");
         }
-        const data = await getGymnases(saisonId); // PP / PROD
-        // const data = await getGymnases(); // DEV
-        setGyms(data);
+        if (import.meta.env.VITE_ENV === "dev") {
+          const data = await getGymnases(); // DEV
+          setGyms(data);
+        } else {
+          const data = await getGymnases(saisonId); // PP / PROD
+          setGyms(data);
+        }
       } catch (error) {
         console.error('Error loading data gymnases:', error);
         setLoadError(

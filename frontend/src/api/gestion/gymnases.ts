@@ -45,8 +45,10 @@ function mapGymnase(item: GymnaseApiItem): Gymnase {
  * Filtre : actif=1, visible=1, et saison_id correspondant.
  */
 export async function getGymnases(saisonId: number = 17): Promise<Gymnase[]> {
-  const { data } = await fetchAPIGestion(`/api/gymnases/${saisonId}`); // PP / PROD
-  // const { data } = await fetchFakeAPIGestion(`allGymnases`); // DEV
+  const { data } =
+    import.meta.env.VITE_ENV === "dev"
+      ? await fetchFakeAPIGestion("allGymnases") // DEV
+      : await fetchAPIGestion(`/api/gymnases/${saisonId}`); // PP / PROD
 
   return (data as GymnaseApiItem[])
     .filter(

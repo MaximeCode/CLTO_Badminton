@@ -124,7 +124,7 @@ export function PresidentQuote() {
             </div>
 
             <div className="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-white/30">
-              <div className="text-white font-medium text-sm sm:text-base">Steve BANDOU-NIATOLL</div>
+              <div className="text-white font-medium text-sm sm:text-base">Steve BANDOU-NAITOLL</div>
               <div className="text-secondary text-xs sm:text-sm font-bold">Président du CLTO Badminton</div>
             </div>
           </motion.div>
@@ -140,7 +140,7 @@ export function PresidentQuote() {
               <div className="absolute -inset-3 sm:-inset-4 border-3 sm:border-4 border-secondary rotate-2 sm:rotate-3" />
               <ImageWithFallback
                 src={motPresident.portrait.url ?? ""}
-                alt="Steve Bandou-Niatoll, Président du CLTO Badminton Orléans"
+                alt="Steve Bandou-Naitoll, Président du CLTO Badminton Orléans"
                 className="relative rounded-lg object-cover aspect-3/4"
               />
             </div>
