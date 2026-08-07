@@ -3,13 +3,14 @@ import { useEffect, useState } from 'react';
 import { Users, Trophy, Clock, Target } from 'lucide-react';
 import { getInterclubTeams } from '@/api/icbad_local/interclub';
 import { getAccueil } from '@/api/strapi/accueil';
-import type { StatsClub } from '@/types/accueilType';
+import type { LabelNomEtLogo, StatsClub } from '@/types/accueilType';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
 import { Section } from './Section';
 
 export function ClubStats() {
   const [teamsCount, setTeamsCount] = useState<string>('…');
   const [extraStats, setExtraStats] = useState<StatsClub[]>([]);
+  const [labels, setLabels] = useState<LabelNomEtLogo[]>([]);
 
   useEffect(() => {
     getInterclubTeams()
@@ -19,8 +20,14 @@ export function ClubStats() {
 
   useEffect(() => {
     getAccueil()
-      .then((accueil) => setExtraStats(accueil?.stats_club ?? []))
-      .catch(() => setExtraStats([]));
+      .then((accueil) => {
+        setExtraStats(accueil?.stats_club ?? []);
+        setLabels(accueil?.labels ?? []);
+      })
+      .catch(() => {
+        setExtraStats([]);
+        setLabels([]);
+      });
   }, []);
 
   const stats = [
@@ -121,6 +128,47 @@ export function ClubStats() {
                 <div className="text-xs sm:text-sm text-secondary leading-snug">
                   {stat.desc}
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {labels.length > 0 && (
+        <div className="mt-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <HomePageSectionTitle title="Nos labels" />
+          </motion.div>
+
+          <div className="lg:w-5/6 mx-auto grid grid-cols-[repeat(auto-fit,minmax(9.5rem,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(11rem,1fr))] gap-4 md:gap-6">
+            {labels.map((item, index) => (
+              <motion.div
+                key={`${item.id}-${item.label}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: index * 0.06 }}
+                className="group relative overflow-hidden rounded-2xl border border-primary/10 bg-white p-5 md:p-6 text-center shadow-sm hover:border-secondary/50 hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-linear-to-r from-primary to-secondary" />
+
+                <div className="flex items-center justify-center min-h-20 md:min-h-24 mb-4">
+                  <img
+                    src={item.logo.url}
+                    alt={item.label}
+                    className="max-h-16 md:max-h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                </div>
+
+                <p className="text-sm md:text-base font-semibold text-primary leading-snug">
+                  {item.label}
+                </p>
               </motion.div>
             ))}
           </div>

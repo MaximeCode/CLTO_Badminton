@@ -22,6 +22,8 @@ import {
 } from "date-fns";
 import { fr } from "date-fns/locale";
 
+const ALL_GYMS = "Tous";
+
 interface TimeSlot {
   id: string;
   gym: string;
@@ -122,7 +124,7 @@ const WEEKS: WeekData[] = [
       { id: "jeu-4", day: "Jeudi", dateLabel: "14/05/2026", gym: "Fouillade", time: "20h00 - 22h00", trainer: "Thomas Huboud-Perron", type: "Élite", description: "Adultes - Elite (2e seance)" },
       { id: "jeu-5", day: "Jeudi", dateLabel: "14/05/2026", gym: "Chardon", time: "18h00 - 20h00", trainer: "Thomas Huboud-Perron / Martin Lamy", type: "Élite", description: "Jeunes - Elite / Perf" },
       { id: "ven-1", day: "Vendredi", dateLabel: "15/05/2026", gym: "Chardon", time: "20h00 - 22h00", trainer: "Salma Agrebi / Benjamin Vu", type: "Loisirs", description: "Jeu libre Loisirs - Tout public" },
-      { id: "ven-2", day: "Vendredi", dateLabel: "15/05/2026", gym: "Desseaux", time: "19h30 - 22h00", trainer: "Ouvreur recherche", type: "Perfectionnement", description: "Jeu libre Competiteurs", comment: "Alerte: ouvreur recherche, ce creneau peut etre annule." },
+      { id: "ven-2", day: "Vendredi", dateLabel: "15/05/2026", gym: "Dessaux", time: "19h30 - 22h00", trainer: "Ouvreur recherche", type: "Perfectionnement", description: "Jeu libre Competiteurs", comment: "Alerte: ouvreur recherche, ce creneau peut etre annule." },
       { id: "ven-3", day: "Vendredi", dateLabel: "15/05/2026", gym: "Chardon", time: "13h00 - 14h00", trainer: "Ouvreur recherche", type: "Loisirs", description: "Jeu libre Senior / Entreprise", comment: "Alerte: ouvreur recherche, ce creneau peut etre annule." },
     ],
   },
@@ -156,7 +158,7 @@ const getWeekDistance = (date: Date, week: WeekData) => {
   if (dateTime > end.getTime()) return dateTime - end.getTime();
   return 0;
 };
-// TYPE CALENDAR
+
 export function CreneauxPage() {
   const [selectedDate, setSelectedDate] = useState<Date>(
     new Date(new Date()),
@@ -176,7 +178,7 @@ export function CreneauxPage() {
     "Entraînement",
     "Jeu libre",
   ]);
-  const [selectedGym, setSelectedGym] = useState<string>("Chardon");
+  const [selectedGym, setSelectedGym] = useState<string>(ALL_GYMS);
 
   const selectedWeek = useMemo(
     () =>
@@ -219,7 +221,7 @@ export function CreneauxPage() {
     if (slot.ferie) return false;
     const typeMatch = selectedTypes.includes(slot.type);
     const gymMatch =
-      slot.gym === selectedGym;
+      selectedGym === ALL_GYMS || slot.gym === selectedGym;
     const sessionKind = slot.description.toLowerCase().includes("jeu libre")
       ? "Jeu libre"
       : "Entraînement";
@@ -249,7 +251,7 @@ export function CreneauxPage() {
   const resetFilters = () => {
     setSelectedTypes(["Élite", "Perfectionnement", "Loisirs"]);
     setSelectedSessionKinds(["Entraînement", "Jeu libre"]);
-    setSelectedGym("Chardon");
+    setSelectedGym(ALL_GYMS);
   };
 
   const toMinutes = (time: string) => {
@@ -259,7 +261,7 @@ export function CreneauxPage() {
 
   const weekTimedSlots = allTimeSlots.filter((slot) => {
     if (slot.ferie) return false;
-    if (slot.gym !== selectedGym) return false;
+    if (selectedGym !== ALL_GYMS && slot.gym !== selectedGym) return false;
     if (!selectedTypes.includes(slot.type)) return false;
 
     const sessionKind = slot.description.toLowerCase().includes("jeu libre")
@@ -279,7 +281,7 @@ export function CreneauxPage() {
   // - first visible line = previous full hour before first slot
   // - last visible line = next full hour after last slot
   const startHour = Math.floor(minStartMinutes / 60);
-  const endHour = Math.ceil(maxEndMinutes / 60);
+  const endHour = Math.ceil(maxEndMinutes / 60 + 1);
   const timeGrid = Array.from(
     { length: endHour - startHour + 1 },
     (_, index) => `${String(startHour + index).padStart(2, "0")}:00`,
@@ -351,6 +353,67 @@ export function CreneauxPage() {
     return (durationMinutes / 60) * 80; // 80px per hour
   };
 
+  /**
+   * Place overlapping slots side by side within a day column
+   * (Google Calendar style: shared width per collision cluster).
+   */
+  const layoutDaySlots = (slots: TimeSlot[]) => {
+    const sorted = [...slots].sort((a, b) => {
+      const startDiff = toMinutes(a.startTime) - toMinutes(b.startTime);
+      if (startDiff !== 0) return startDiff;
+      return toMinutes(b.endTime) - toMinutes(a.endTime);
+    });
+
+    const columnEnds: number[] = [];
+    const laidOut = sorted.map((slot) => {
+      const startMin = toMinutes(slot.startTime);
+      const endMin = toMinutes(slot.endTime);
+      let columnIndex = columnEnds.findIndex((endTime) => endTime <= startMin);
+
+      if (columnIndex === -1) {
+        columnIndex = columnEnds.length;
+        columnEnds.push(endMin);
+      } else {
+        columnEnds[columnIndex] = endMin;
+      }
+
+      return { ...slot, startMin, endMin, columnIndex };
+    });
+
+    // Connected components of overlapping slots → shared columnCount
+    const parent = laidOut.map((_, i) => i);
+    const find = (i: number): number =>
+      parent[i] === i ? i : (parent[i] = find(parent[i]));
+    const union = (a: number, b: number) => {
+      parent[find(a)] = find(b);
+    };
+
+    for (let i = 0; i < laidOut.length; i++) {
+      for (let j = i + 1; j < laidOut.length; j++) {
+        if (
+          laidOut[i].startMin < laidOut[j].endMin &&
+          laidOut[j].startMin < laidOut[i].endMin
+        ) {
+          union(i, j);
+        }
+      }
+    }
+
+    const clusterColumns = new Map<number, number>();
+    laidOut.forEach((slot, i) => {
+      const root = find(i);
+      clusterColumns.set(
+        root,
+        Math.max(clusterColumns.get(root) ?? 0, slot.columnIndex + 1),
+      );
+    });
+
+    return laidOut.map((slot, i) => ({
+      ...slot,
+      columnCount: clusterColumns.get(find(i)) ?? 1,
+    }));
+  };
+
   const goToPreviousWeek = () => {
     const previousWeek = WEEKS[Math.max(0, selectedWeekIndex - 1)];
     setSelectedDate(new Date(previousWeek.weekStart));
@@ -369,7 +432,7 @@ export function CreneauxPage() {
         image="https://images.unsplash.com/photo-1617962529235-262e8e777e48?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWRtaW50b24lMjB0cmFpbmluZyUyMHNjaGVkdWxlfGVufDF8fHx8MTc3NjMzNzE3NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
       />
 
-      <Section className="bg-gray-50" width_subdiv={1600}>
+      <Section className="bg-gray-50" width_subdiv={2000}>
         {/* Calendar Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -538,7 +601,7 @@ export function CreneauxPage() {
                   <button
                     onClick={() => toggleSessionKind("Entraînement")}
                     className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${selectedSessionKinds.includes("Entraînement")
-                      ? "bg-primary text-white shadow-md scale-105"
+                      ? "ring-2 ring-primary text-primary shadow-md scale-105"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                       }`}
                   >
@@ -550,7 +613,7 @@ export function CreneauxPage() {
                   <button
                     onClick={() => toggleSessionKind("Jeu libre")}
                     className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${selectedSessionKinds.includes("Jeu libre")
-                      ? "bg-green-600 text-white shadow-md scale-105"
+                      ? "ring-2 ring-green-600 text-green-600 shadow-md scale-105"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                       }`}
                   >
@@ -572,6 +635,7 @@ export function CreneauxPage() {
                   onChange={(e) => setSelectedGym(e.target.value)}
                   className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-gray-700 bg-white"
                 >
+                  <option value={ALL_GYMS}>{ALL_GYMS}</option>
                   {availableGyms.map((gym) => (
                     <option key={gym} value={gym}>
                       {gym}
@@ -587,13 +651,6 @@ export function CreneauxPage() {
                 {timeSlots.length} créneau
                 {timeSlots.length > 1 ? "x" : ""} affiché
                 {timeSlots.length > 1 ? "s" : ""}{" "}
-                <span className="text-primary font-semibold">
-                  • {selectedGym}
-                </span>
-                <span className="text-gray-500"> • </span>
-                <span className="font-semibold text-gray-700">
-                  {selectedSessionKinds.join(" + ")}
-                </span>
               </p>
             </div>
           </div>
@@ -622,7 +679,7 @@ export function CreneauxPage() {
                 {daySlotsData.length === 0 ? (
                   <div className={`px-4 py-3 flex items-center justify-between ${isCurrentDay ? "bg-secondary" : "bg-primary"}`}>
                     <div>
-                      <p className="font-primary text-2xl text-white leading-none">
+                      <p className="font-primary text-xl text-white leading-none">
                         {day}
                       </p>
                       <p className="text-sm text-white/70">
@@ -635,80 +692,80 @@ export function CreneauxPage() {
                   </div>
                 ) : (
                   <>
-                <button
-                  className={`w-full flex items-center justify-between px-4 py-3 ${isCurrentDay ? "bg-secondary" : "bg-primary"}`}
-                  onClick={() => setOpenDay(openDay === day ? null : day)}
-                >
-                  <div className="text-left">
-                    <p className="font-primary text-2xl text-white leading-none">
-                      {day}
-                    </p>
-                    <p className="text-sm text-blue-100">
-                      {format(dayDate, "dd MMMM yyyy", { locale: fr })}
-                    </p>
-                  </div>
-                  <ChevronDown
-                    size={20}
-                    className={`text-white transition-transform duration-200 ${openDay === day ? "rotate-180" : ""}`}
-                  />
-                </button>
-
-                <AnimatePresence>
-                  {openDay === day && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="overflow-hidden"
+                    <button
+                      className={`w-full flex items-center justify-between px-4 py-3 ${isCurrentDay ? "bg-secondary" : "bg-primary"}`}
+                      onClick={() => setOpenDay(openDay === day ? null : day)}
                     >
-                        <div className="p-3 space-y-3">
-                          {daySlotsData.map((slot) => (
-                            <div
-                              key={slot.id}
-                              className="rounded-lg border border-gray-200 p-3 bg-gray-50"
-                            >
-                              <div className="flex items-center justify-between gap-3">
-                                <p className="font-semibold text-gray-900">
-                                  {slot.startTime} - {slot.endTime}
+                      <div className="text-left">
+                        <p className="font-primary text-xl text-white leading-none">
+                          {day}
+                        </p>
+                        <p className="text-sm text-blue-100">
+                          {format(dayDate, "dd MMMM yyyy", { locale: fr })}
+                        </p>
+                      </div>
+                      <ChevronDown
+                        size={20}
+                        className={`text-white transition-transform duration-200 ${openDay === day ? "rotate-180" : ""}`}
+                      />
+                    </button>
+
+                    <AnimatePresence>
+                      {openDay === day && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="p-3 space-y-3">
+                            {daySlotsData.map((slot) => (
+                              <div
+                                key={slot.id}
+                                className="rounded-lg border border-gray-200 p-3 bg-gray-50"
+                              >
+                                <div className="flex items-center justify-between gap-3">
+                                  <p className="font-semibold text-gray-900">
+                                    {slot.startTime} - {slot.endTime}
+                                  </p>
+                                  <span
+                                    className={`inline-block px-2 py-1 rounded-full text-xs font-semibold text-white ${getTypeBadgeClass(slot.type)}`}
+                                  >
+                                    {slot.type}
+                                  </span>
+                                </div>
+                                <p className="mt-2 text-sm text-gray-800">
+                                  {slot.description}
                                 </p>
-                                <span
-                                  className={`inline-block px-2 py-1 rounded-full text-xs font-semibold text-white ${getTypeBadgeClass(slot.type)}`}
-                                >
-                                  {slot.type}
-                                </span>
-                              </div>
-                              <p className="mt-2 text-sm text-gray-800">
-                                {slot.description}
-                              </p>
-                              <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-white px-2 py-1 text-xs font-semibold text-gray-700 border border-gray-200">
-                                {isFreeSession(slot.description) ? (
-                                  <>
-                                    <Gamepad2 size={13} className="text-[#16a34a]" />
-                                    Jeu libre
-                                  </>
-                                ) : (
-                                  <>
-                                    <Dumbbell size={13} className="text-primary" />
-                                    Entraînement
-                                  </>
+                                <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-white px-2 py-1 text-xs font-semibold text-gray-700 border border-gray-200">
+                                  {isFreeSession(slot.description) ? (
+                                    <>
+                                      <Gamepad2 size={13} className="text-[#16a34a]" />
+                                      Jeu libre
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Dumbbell size={13} className="text-primary" />
+                                      Entraînement
+                                    </>
+                                  )}
+                                </div>
+                                <div className="mt-2 text-xs text-gray-600 space-y-1">
+                                  <p>📍 {slot.gym}</p>
+                                  <p>👤 {slot.leader}</p>
+                                </div>
+                                {slot.comment && (
+                                  <p className="mt-2 text-xs text-yellow-800 bg-yellow-50 border-l-4 border-yellow-400 p-2 rounded">
+                                    ⚠️ {slot.comment}
+                                  </p>
                                 )}
                               </div>
-                              <div className="mt-2 text-xs text-gray-600 space-y-1">
-                                <p>📍 {slot.gym}</p>
-                                <p>👤 {slot.leader}</p>
-                              </div>
-                              {slot.comment && (
-                                <p className="mt-2 text-xs text-yellow-800 bg-yellow-50 border-l-4 border-yellow-400 p-2 rounded">
-                                  ⚠️ {slot.comment}
-                                </p>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </>
                 )}
               </div>
@@ -773,8 +830,8 @@ export function CreneauxPage() {
               {weekDays.map((day, dayIndex) => {
                 const dayDate = addDays(weekStart, dayIndex);
                 const isCurrentDay = isToday(dayDate);
-                const daySlotsData = timeSlots.filter(
-                  (slot) => slot.day === day,
+                const daySlotsData = layoutDaySlots(
+                  timeSlots.filter((slot) => slot.day === day),
                 );
 
                 return (
@@ -804,7 +861,8 @@ export function CreneauxPage() {
                         const bgColor = getTypeColor(
                           slot.type,
                         );
-                        const isSlotHovered = hoveredSlot === slot.id;
+                        const slotKey = `${slot.id}-${slot.startTime}-${slot.gym}`;
+                        const isSlotHovered = hoveredSlot === slotKey;
                         const baseHeight = Math.max(height - 4, 56);
                         const expandedHeight = Math.max(
                           baseHeight,
@@ -817,31 +875,53 @@ export function CreneauxPage() {
                         const visibleHeight = isSlotHovered
                           ? Math.min(expandedHeight, maxHeightWithinColumn)
                           : baseHeight;
+                        const columnWidth = 100 / slot.columnCount;
+                        const leftStyle = isSlotHovered
+                          ? "4px"
+                          : `calc(${slot.columnIndex * columnWidth}% + 2px)`;
+                        const widthStyle = isSlotHovered
+                          ? "calc(100% - 8px)"
+                          : `calc(${columnWidth}% - 4px)`;
 
                         return (
                           <motion.div
-                            key={slot.id}
+                            key={slotKey}
                             initial={{
                               opacity: 0,
                               scale: 0.8,
                             }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.3 }}
-                            className="absolute left-1 right-1 rounded-lg shadow-md cursor-pointer pointer-events-auto overflow-hidden transition-[height,z-index] duration-200"
+                            className="absolute rounded-lg shadow-md cursor-pointer pointer-events-auto overflow-hidden transition-[height,left,width,z-index] duration-200"
                             style={{
                               top: `${top}px`,
+                              left: leftStyle,
+                              width: widthStyle,
                               height: `${visibleHeight}px`,
                               backgroundColor: bgColor,
-                              zIndex: isSlotHovered ? 30 : 1,
+                              zIndex: isSlotHovered
+                                ? 40
+                                : 1 + slot.columnIndex,
                             }}
                             onMouseEnter={() =>
-                              setHoveredSlot(slot.id)
+                              setHoveredSlot(slotKey)
                             }
                             onMouseLeave={() =>
                               setHoveredSlot(null)
                             }
                           >
                             <div className="p-2 h-full flex flex-col justify-between text-white relative">
+                              <div className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-white/20 px-1.5 py-0.5 text-base font-semibold">
+                                {isFreeSession(slot.description) ? (
+                                  <>
+                                    <Gamepad2 size={11} />
+                                  </>
+                                ) : (
+                                  <>
+                                    <Dumbbell size={11} />
+                                  </>
+                                )}
+                              </div>
                               <div>
                                 <div className="font-bold text-sm mb-1">
                                   {slot.startTime} -{" "}
@@ -850,26 +930,13 @@ export function CreneauxPage() {
                                 <div className="text-xs font-semibold">
                                   {slot.type}
                                 </div>
-                                <div className="mt-1 inline-flex items-center gap-1 rounded-full bg-white/20 px-1.5 py-0.5 text-[11px] font-semibold">
-                                  {isFreeSession(slot.description) ? (
-                                    <>
-                                      <Gamepad2 size={11} />
-                                      Jeu libre
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Dumbbell size={11} />
-                                      Entraînement
-                                    </>
-                                  )}
-                                </div>
                                 <div className="text-xs opacity-90 mt-1 line-clamp-1">
                                   {slot.gym}
                                 </div>
                               </div>
 
                               {/* Hover Details */}
-                              {hoveredSlot === slot.id && (
+                              {isSlotHovered && (
                                 <motion.div
                                   initial={{
                                     opacity: 0,

@@ -4,6 +4,7 @@ import { Section } from '../components/Section';
 import { motion } from 'motion/react';
 import type { Palmares } from '../../types/palmaresType';
 import { getPalmares } from '@/api/strapi/palmares';
+import { stringifyDate } from '@/utils/formatDate';
 
 export function PalmaresPage() {
   const [palmares, setPalmares] = useState<Palmares[]>([]);
@@ -69,7 +70,7 @@ export function PalmaresPage() {
                 <div className="md:w-5/12 w-full">
                   <div className="bg-gray-50 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <div className="font-primary text-xl lg:text-2xl text-secondary mb-2 capitalize">
-                      {new Date(event.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'short', day: 'numeric' })}
+                      {stringifyDate(event.date, 'numeric', 'short', 'numeric')}
                     </div>
                     <h3 className="font-primary text-2xl lg:text-4xl text-primary mb-3">
                       {event.titre}

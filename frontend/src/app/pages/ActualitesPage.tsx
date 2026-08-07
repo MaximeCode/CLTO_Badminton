@@ -10,6 +10,7 @@ import { getArticles } from '@/api/strapi/articles';
 import type { Categorie } from '@/types/categoriesType';
 import { getCategories } from '@/api/strapi/categories';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
+import { stringifyDate } from '@/utils/formatDate';
 
 function ArticleCardSkeleton() {
   return (
@@ -77,7 +78,9 @@ export function ActualitesPage() {
       return articles.filter((article) => article.a_la_une);
     }
 
-    return articles.filter((article) => article.categorie.libelle === selectedCategory);
+    return articles.filter((article) =>
+      article.categories.some((categorie) => categorie.libelle === selectedCategory),
+    );
   }, [selectedCategory, articles]);
 
   const categoryFilters = (
@@ -200,8 +203,15 @@ export function ActualitesPage() {
                         alt={article.titre}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
-                      <div className="absolute top-4 left-4 bg-secondary text-white px-4 py-1 rounded-full text-sm">
-                        {article.categorie.libelle}
+                      <div className="absolute top-4 left-4 flex flex-wrap gap-2 max-w-[70%]">
+                        {article.categories.map((categorie) => (
+                          <span
+                            key={categorie.id}
+                            className="bg-secondary text-white px-4 py-1 rounded-full text-sm"
+                          >
+                            {categorie.libelle}
+                          </span>
+                        ))}
                       </div>
                       {article.a_la_une && (
                         <div
@@ -215,22 +225,20 @@ export function ActualitesPage() {
                     <div className="p-6">
                       <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
                         <Calendar size={16} />
-                        <span>{new Date(article.createdAt).toLocaleDateString("fr-FR", {
-                          day: "numeric",
-                          month: "long",
-                          year: "numeric",
-                        })}</span>
+                        <span>{stringifyDate(article.createdAt, "numeric", "long", "numeric")}</span>
                       </div>
                       <h3 className="font-primary text-2xl text-primary mb-3 group-hover:text-secondary transition-colors">
                         {article.titre}
                       </h3>
                       <div className="mb-4 flex flex-wrap gap-2">
-                        <span
-                          key={article.categorie.id}
-                          className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600"
-                        >
-                          {article.categorie.libelle}
-                        </span>
+                        {article.categories.map((categorie) => (
+                          <span
+                            key={categorie.id}
+                            className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600"
+                          >
+                            {categorie.libelle}
+                          </span>
+                        ))}
                       </div>
                       <button className="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
                         Lire la suite

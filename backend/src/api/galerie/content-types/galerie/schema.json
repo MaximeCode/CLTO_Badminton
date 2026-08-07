@@ -27,11 +27,14 @@
       "type": "string",
       "required": true
     },
+    "date": {
+      "type": "date",
+      "required": true
+    },
     "galerie_categorie": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::galerie-categorie.galerie-categorie",
-      "required": true
+      "target": "api::galerie-categorie.galerie-categorie"
     }
   }
 }

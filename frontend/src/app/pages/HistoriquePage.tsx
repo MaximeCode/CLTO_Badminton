@@ -4,6 +4,7 @@ import { Section } from '../components/Section';
 import { motion } from 'motion/react';
 import type { Historique } from '../../types/historiquesType';
 import { getHistoriques } from '@/api/strapi/historiques';
+import { stringifyDate } from '@/utils/formatDate';
 
 export function HistoriquePage() {
   const [historiques, setHistoriques] = useState<Historique[]>([]);
@@ -69,7 +70,7 @@ export function HistoriquePage() {
                 <article className="md:w-5/12 w-full">
                   <div className="bg-gray-50 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <div className="font-primary text-xl lg:text-2xl text-secondary mb-2 capitalize">
-                      {new Date(event.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'short', day: 'numeric' })}
+                      {stringifyDate(event.date, 'numeric', 'short', 'numeric')}
                     </div>
                     <div className="font-primary text-2xl lg:text-3xl text-primary mb-3">
                       {event.titre}

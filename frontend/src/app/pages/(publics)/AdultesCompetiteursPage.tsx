@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { PageHero } from '../../components/PageHero';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
-import { Calendar, Clock, Users, Target, Heart, Trophy } from 'lucide-react';
+import { Calendar, Clock, Users, Target, Heart, Trophy, Gift, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router';
 import { getPublicAdultesCompetiteurs } from '@/api/strapi/publics';
 import type { PublicAdultesCompetiteurs } from '@/types/publicsType';
@@ -71,12 +71,13 @@ export function AdultesCompetiteursPage() {
   }, []);
 
   const tournois = data?.tournois_competitions ?? [];
+  const avantages = data?.les_avantages ?? [];
 
   return (
     <>
       <PageHero
-        title="ADULTES COMPÉTITEURS"
-        subtitle="Du loisir à la compétition, pratiquez le badminton à votre rythme"
+        title={data?.titre || "ADULTES COMPÉTITEURS"}
+        subtitle={data?.description || "Du loisir à la compétition, pratiquez le badminton à votre rythme"}
       />
 
       <Section className="bg-gray-50">
@@ -151,6 +152,43 @@ export function AdultesCompetiteursPage() {
               </motion.div>
             ))}
           </div>
+        </Section>
+      )}
+
+      {avantages.length > 0 && (
+        <Section className="bg-white">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
+              LES AVANTAGES
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-gray-50 rounded-lg p-8 shadow-lg max-w-3xl mx-auto"
+          >
+            <h3 className="font-primary text-2xl text-primary mb-5 flex items-center gap-2">
+              <Gift size={24} className="text-secondary" />
+              Vos avantages
+            </h3>
+            <ul className="space-y-3">
+              {avantages.map((avantage) => (
+                <li key={avantage.id} className="flex items-start gap-3 text-gray-700">
+                  <CheckCircle size={20} className="text-secondary shrink-0 mt-0.5" />
+                  <span>{avantage.contenu}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
         </Section>
       )}
 

@@ -4,9 +4,10 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import type { Article } from '@/types/articlesType';
 import { useEffect, useState } from 'react';
 import { getOneArticle } from '@/api/strapi/articles';
+import { extractTextFromBlocks } from '@/utils/blocksText';
+import { stringifyDate } from '@/utils/formatDate';
 import { BlocksRenderer } from '../components/BlocksRenderer';
 import { motion } from 'motion/react';
-import { extractTextFromBlocks } from '@/utils/blocksText';
 
 const userAvatar = new URL('../../imports/user.png', import.meta.url).href;
 
@@ -154,16 +155,17 @@ export function ActualitePage() {
           <section className="bg-white rounded-lg shadow-lg p-8 md:p-10 space-y-8 text-gray-700 leading-relaxed">
             <header className="border-b border-gray-200 pb-6">
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-                <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 font-semibold text-primary">
-                  {article?.categorie.libelle}
-                </span>
+                {article?.categories.map((categorie) => (
+                  <span
+                    key={categorie.id}
+                    className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 font-semibold text-primary"
+                  >
+                    {categorie.libelle}
+                  </span>
+                ))}
                 <span>
                   Publié le {article?.createdAt
-                    ? new Date(article.createdAt).toLocaleDateString("fr-FR", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })
+                    ? stringifyDate(article.createdAt, "numeric", "long", "numeric")
                     : ""}
                 </span>
                 <span>•</span>
@@ -177,7 +179,7 @@ export function ActualitePage() {
           </section>
         )}
 
-        <div className="mb-6">
+        <div className="mt-6">
           <Link
             to="/actualites"
             className="inline-flex items-center gap-2 rounded-md border border-primary/30 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/10 transition-colors"

@@ -233,7 +233,7 @@ function renderBlock(
           <img
             src={src}
             alt={block.image.alternativeText ?? block.image.name}
-            className="w-full rounded-2xl shadow-md max-h-100 object-cover"
+            className="w-full rounded-2xl shadow-md max-h-150 object-contain"
             width={block.image.width}
             height={block.image.height}
           />

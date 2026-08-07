@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "page_benevoles",
+  "info": {
+    "singularName": "page-benevole",
+    "pluralName": "page-benevoles",
+    "displayName": "Page Bénévoles"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "contenu": {
+      "type": "blocks"
+    }
+  }
+}

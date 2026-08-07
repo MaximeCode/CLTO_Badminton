@@ -34,7 +34,7 @@ const espritLoisirs = [
   },
   {
     icon: Scale,
-    title: 'Parité',
+    title: 'Ouvert à toutes et à tous',
     description: 'Des créneaux ouverts à toutes et tous, pour jouer ensemble sans distinction.',
   },
   {
@@ -76,8 +76,8 @@ export function AdultesLoisirsPage() {
   return (
     <>
       <PageHero
-        title="ADULTES LOISIRS"
-        subtitle="Le badminton pour le plaisir et la convivialité"
+        title={data?.titre || "ADULTES LOISIRS"}
+        subtitle={data?.description || "Le badminton pour le plaisir et la convivialité"}
       />
 
       <Section className="bg-gray-50">
@@ -128,7 +128,7 @@ export function AdultesLoisirsPage() {
             className="p-12 text-center"
           >
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-              TARIFS ATTRACTIFS
+              TARIF ATTRACTIF
             </h2>
             <p className="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
               L'adhésion au club vous donne accès à tous les créneaux loisir de la semaine

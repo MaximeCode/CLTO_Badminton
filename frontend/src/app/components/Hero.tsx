@@ -1,6 +1,17 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { isInternalAppLink } from '../../utils/resolveAppLink';
+
+const ctaClassName =
+  'inline-block cursor-pointer bg-secondary text-white text-sm sm:text-base px-5 py-2.5 sm:px-8 sm:py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200';
+
+const ctaMotionProps = {
+  initial: { y: 20, opacity: 0 },
+  animate: { y: 0, opacity: 1 },
+  transition: { delay: 0.5 },
+} as const;
 
 export type HeroSlide = {
   id: number;
@@ -9,6 +20,7 @@ export type HeroSlide = {
   title: string;
   description: string;
   cta?: string;
+  lien?: string;
 };
 
 type HeroProps<T extends HeroSlide = HeroSlide> = {
@@ -170,15 +182,24 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                   {slide.description}
                 </motion.p>
 
-                {slide.cta && (
-                  <motion.button
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.5 }}
-                    className="bg-secondary text-white text-sm sm:text-base px-5 py-2.5 sm:px-8 sm:py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
-                  >
-                    {slide.cta} →
-                  </motion.button>
+                {slide.cta && slide.lien && (
+                  isInternalAppLink(slide.lien) ? (
+                    <motion.div {...ctaMotionProps} className="w-fit">
+                      <Link to={slide.lien} className={ctaClassName}>
+                        {slide.cta} →
+                      </Link>
+                    </motion.div>
+                  ) : (
+                    <motion.a
+                      {...ctaMotionProps}
+                      className={ctaClassName}
+                      href={slide.lien}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {slide.cta} →
+                    </motion.a>
+                  )
                 )}
               </div>
 

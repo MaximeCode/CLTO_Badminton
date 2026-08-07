@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { PageHero } from '../../components/PageHero';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
-import { Building2, ExternalLink, FileDown } from 'lucide-react';
+import { Building2, ExternalLink, FileDown, Gift, CheckCircle } from 'lucide-react';
 import { getPublicEntreprise } from '@/api/strapi/publics';
 import type { PublicEntreprise } from '@/types/publicsType';
 import { BlocksRenderer } from '@/app/components/BlocksRenderer';
@@ -28,6 +28,7 @@ export function EntreprisePage() {
   }, []);
 
   const partenariat = data?.partenariat ?? [];
+  const avantages = data?.les_avantages ?? [];
   const flyerUrl = data?.flyer?.url;
   const dossierUrl = data?.lien_dossier_partenariat;
   const hasFlyerOrPartenariat = Boolean(flyerUrl) || partenariat.length > 0;
@@ -35,8 +36,8 @@ export function EntreprisePage() {
   return (
     <>
       <PageHero
-        title="ENTREPRISE"
-        subtitle="Partenariats et offres pour les entreprises"
+        title={data?.titre || "ENTREPRISE"}
+        subtitle={data?.description || "Partenariats et offres pour les entreprises"}
         image="https://images.unsplash.com/photo-1497366216548-37526070297c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
       />
 
@@ -95,6 +96,43 @@ export function EntreprisePage() {
               </motion.div>
             )}
           </div>
+        </Section>
+      )}
+
+      {avantages.length > 0 && (
+        <Section className="bg-gray-50">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
+              LES AVANTAGES
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-white rounded-lg p-8 shadow-lg max-w-3xl mx-auto"
+          >
+            <h3 className="font-primary text-2xl text-primary mb-5 flex items-center gap-2">
+              <Gift size={24} className="text-secondary" />
+              Vos avantages
+            </h3>
+            <ul className="space-y-3">
+              {avantages.map((avantage) => (
+                <li key={avantage.id} className="flex items-start gap-3 text-gray-700">
+                  <CheckCircle size={20} className="text-secondary shrink-0 mt-0.5" />
+                  <span>{avantage.contenu}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
         </Section>
       )}
 

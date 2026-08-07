@@ -63,8 +63,8 @@ export function VieillesPlumesPage() {
   return (
     <>
       <PageHero
-        title="VIEILLES PLUMES"
-        subtitle="Des créneaux dédiés en jeu libre, sans entraînements"
+        title={data?.titre || "VIEILLES PLUMES"}
+        subtitle={data?.description || "Des créneaux dédiés en jeu libre, sans entraînements"}
       />
 
       <Section className="bg-gray-50">

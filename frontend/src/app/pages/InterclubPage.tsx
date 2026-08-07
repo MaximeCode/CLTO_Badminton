@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Users } from "lucide-react";
+import { ExternalLink, Users } from "lucide-react";
 import { motion } from "motion/react";
 import { Hero, type HeroSlide } from "../components/Hero";
 import { getInterclubTeams } from "@/api/icbad_local/interclub";
@@ -7,6 +7,8 @@ import { getParametresGlobaux } from "@/api/strapi/parametre-globaux";
 import type { InterclubTeamSummary } from "@/types/interclubType";
 import { getDivisionLabel, groupTeamsByIcbadUrl } from "@/utils/interclubUtils";
 import { Section } from "../components/Section";
+
+const ICBAD_URL = "https://icbad.ffbad.org/";
 
 /** Convertit un lien Google Drive « partage » en URL d'embed `/preview`. */
 function toGoogleDrivePreviewUrl(url: string): string {
@@ -143,6 +145,17 @@ export function InterclubPage() {
                 </span>
               </li>
             ))}
+            <li className="w-full pt-1">
+              <a
+                href={ICBAD_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex w-full min-w-0 flex-row items-center justify-center gap-2 px-3 py-2.5 sm:py-3 border-2 border-secondary rounded-sm bg-secondary text-white hover:bg-secondary-accent transition-colors duration-200 text-xs sm:text-sm font-semibold"
+              >
+                Voir sur Icbad
+                <ExternalLink className="h-4 w-4 shrink-0" />
+              </a>
+            </li>
           </ul>
           <div className="min-w-0 flex-1">
             <motion.div

@@ -42,9 +42,8 @@ const benefits = [
 ];
 
 function cardsGridClass(count: number) {
-  if (count <= 1) return 'max-w-4xl mx-auto';
-  if (count === 2) return 'grid lg:grid-cols-2 gap-8';
-  return 'grid md:grid-cols-2 lg:grid-cols-3 gap-8';
+  if (count == 1) return 'max-w-4xl mx-auto';
+  return 'grid lg:grid-cols-2 gap-8';
 }
 
 export function JeunesPage() {
@@ -76,8 +75,8 @@ export function JeunesPage() {
   return (
     <>
       <PageHero
-        title="JEUNES"
-        subtitle="L'apprentissage et la compétition pour les jeunes, du loisir à la performance"
+        title={data?.titre || "JEUNES"}
+        subtitle={data?.description || "L'apprentissage et la compétition pour les jeunes, du loisir à la performance"}
       />
 
       <Section className="bg-gray-50">

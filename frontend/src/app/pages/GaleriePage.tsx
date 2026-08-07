@@ -8,6 +8,7 @@ import type { Galerie } from "@/types/galerieType";
 import type { Categorie } from "@/types/categoriesType";
 import { getFlickrPlayerSrc, getGalerie } from "@/api/strapi/galerie";
 import { getGalerieCategories } from "@/api/strapi/galerie-categories";
+import { stringifyDate } from "@/utils/formatDate";
 
 export function GaleriePage() {
   const [albums, setAlbums] = useState<Galerie[]>([]);
@@ -147,10 +148,16 @@ export function GaleriePage() {
                   />
                 </div>
                 <div className="p-4">
-                  <h3 className="font-primary text-xl md:text-2xl text-primary group-hover:text-secondary transition-colors">
+                  <time
+                    dateTime={album.date}
+                    className="text-sm text-secondary font-medium"
+                  >
+                    {stringifyDate(album.date, "numeric", "long", "numeric")}
+                  </time>
+                  <h3 className="mt-1 font-primary text-xl md:text-2xl text-primary group-hover:text-secondary transition-colors">
                     {album.titre}
                   </h3>
-                  <p className="mt-1 text-sm text-secondary font-medium">Voir l&apos;album</p>
+                  <p className="mt-1 text-sm text-gray-500 font-medium">Voir l&apos;album</p>
                 </div>
               </motion.button>
             ))}
@@ -184,9 +191,17 @@ export function GaleriePage() {
               className="relative z-10 w-full max-w-5xl overflow-hidden rounded-xl bg-white shadow-2xl"
             >
               <div className="flex items-center justify-between gap-3 border-b border-primary/10 px-4 py-3 sm:px-5">
-                <h2 className="font-primary text-xl sm:text-2xl text-primary truncate">
-                  {selectedAlbum.titre}
-                </h2>
+                <div className="min-w-0">
+                  <h2 className="font-primary text-xl sm:text-2xl text-primary truncate">
+                    {selectedAlbum.titre}
+                  </h2>
+                  <time
+                    dateTime={selectedAlbum.date}
+                    className="mt-0.5 block text-sm text-secondary"
+                  >
+                    {stringifyDate(selectedAlbum.date, "numeric", "long", "numeric")}
+                  </time>
+                </div>
                 <button
                   type="button"
                   onClick={() => setSelectedAlbum(null)}

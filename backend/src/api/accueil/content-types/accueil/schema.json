@@ -13,8 +13,13 @@
   "attributes": {
     "stats_club": {
       "type": "component",
-      "repeatable": true,
-      "component": "stats.stats-club"
+      "component": "stats.stats-club",
+      "repeatable": true
+    },
+    "labels": {
+      "type": "component",
+      "component": "stats.nom-et-logo",
+      "repeatable": true
     }
   }
 }

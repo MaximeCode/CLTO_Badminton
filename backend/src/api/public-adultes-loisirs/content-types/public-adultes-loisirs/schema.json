@@ -11,6 +11,12 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "titre": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
     "prix_licence": {
       "type": "decimal",
       "required": true

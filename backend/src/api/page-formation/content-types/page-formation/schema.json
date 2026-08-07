@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "page_formations",
+  "info": {
+    "singularName": "page-formation",
+    "pluralName": "page-formations",
+    "displayName": "Page Formations"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "contenu": {
+      "type": "blocks"
+    }
+  }
+}

@@ -10,6 +10,6 @@ export type Article = {
   };
   a_la_une: boolean;
   contenu: BlocksContent;
-  categorie: Categorie;
+  categories: Categorie[];
   createdAt: Date;
 };

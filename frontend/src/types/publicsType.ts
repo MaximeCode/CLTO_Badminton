@@ -35,32 +35,33 @@ export type PublicMedia = {
   height?: number | null;
 };
 
-export type PublicAdultesCompetiteurs = {
+type PublicBase = {
   id: number;
   documentId: string;
-  tournois_competitions: ContenuPublic[];
+  titre?: string | null;
+  description?: string | null;
 };
 
-export type PublicAdultesLoisirs = {
-  id: number;
-  documentId: string;
+export type PublicAdultesCompetiteurs = PublicBase & {
+  tournois_competitions: ContenuPublic[];
+  les_avantages: AvantagePublic[];
+};
+
+export type PublicAdultesLoisirs = PublicBase & {
   prix_licence: number;
   envie_de_progresser: InformationsPublic;
   vie_du_club: InformationsPublic[];
   les_avantages: AvantagePublic[];
 };
 
-export type PublicEntreprise = {
-  id: number;
-  documentId: string;
+export type PublicEntreprise = PublicBase & {
   lien_dossier_partenariat?: string | null;
   flyer: PublicMedia;
   partenariat: InformationsPublic[];
+  les_avantages: AvantagePublic[];
 };
 
-export type PublicJeunes = {
-  id: number;
-  documentId: string;
+export type PublicJeunes = PublicBase & {
   informations: InformationsPublic[];
   entrainements: InformationsPublic[];
   tournois_competitions: ContenuPublic[];
@@ -68,9 +69,7 @@ export type PublicJeunes = {
   prix_volants: PrixVolant[];
 };
 
-export type PublicVieillesPlumes = {
-  id: number;
-  documentId: string;
+export type PublicVieillesPlumes = PublicBase & {
   tournois_competitions: InformationsPublic[];
   les_avantages: AvantagePublic[];
 };

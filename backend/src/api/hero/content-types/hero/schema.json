@@ -35,8 +35,9 @@
         "files"
       ]
     },
-    "interclub": {
-      "type": "boolean"
+    "lien": {
+      "type": "string",
+      "required": true
     }
   }
 }

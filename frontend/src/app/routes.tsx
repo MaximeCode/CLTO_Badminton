@@ -22,6 +22,8 @@ import { MentionsLegalesPage } from './pages/MentionsLegalesPage';
 import { OrganigrammePage } from './pages/OrganigrammePage';
 import { PalmaresPage } from './pages/PalmaresPage';
 import { PolitiqueConfidentialitePage } from './pages/PolitiqueConfidentialitePage';
+import { FormationsPage } from './pages/FormationsPage';
+import { BenevolesPage } from './pages/BenevolesPage';
 
 // Publics
 import { AdultesCompetiteursPage } from './pages/(publics)/AdultesCompetiteursPage';
@@ -60,6 +62,8 @@ export const router = createBrowserRouter([
       { path: 'faq', Component: FAQPage },
       { path: 'stages', Component: StagesPage },
       { path: 'adherer', Component: AdhererPage },
+      { path: 'formations', Component: FormationsPage },
+      { path: 'benevoles', Component: BenevolesPage },
       { path: 'mentions-legales', Component: MentionsLegalesPage },
       { path: 'politique-de-confidentialite', Component: PolitiqueConfidentialitePage },
       { path: '*', Component: NotFound },

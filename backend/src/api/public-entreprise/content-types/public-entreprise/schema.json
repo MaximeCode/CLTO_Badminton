@@ -11,6 +11,12 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "titre": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
     "flyer": {
       "type": "media",
       "multiple": false,
@@ -27,6 +33,11 @@
     },
     "lien_dossier_partenariat": {
       "type": "string"
+    },
+    "les_avantages": {
+      "type": "component",
+      "component": "contenu-page.liste-txt",
+      "repeatable": true
     }
   }
 }

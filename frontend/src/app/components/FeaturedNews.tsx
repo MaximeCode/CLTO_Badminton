@@ -8,15 +8,8 @@ import { Section } from './Section';
 import type { Article } from '@/types/articlesType';
 import { getFeaturedArticles } from '@/api/strapi/articles';
 import { extractTextFromBlocks } from '@/utils/blocksText';
+import { stringifyDate } from '@/utils/formatDate';
 import { Button } from './Button';
-
-function formatArticleDate(date: Date | string) {
-  return new Date(date).toLocaleDateString('fr-FR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-}
 
 export function FeaturedNews() {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -92,10 +85,15 @@ export function FeaturedNews() {
                 alt={featuredArticle.titre}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
-              <div className="absolute top-4 left-4">
-                <span className="bg-secondary text-white px-3 py-1 rounded-md text-sm font-medium">
-                  {featuredArticle.categorie.libelle}
-                </span>
+              <div className="absolute top-4 left-4 flex flex-wrap gap-2 max-w-[70%]">
+                {featuredArticle.categories.map((categorie) => (
+                  <span
+                    key={categorie.id}
+                    className="bg-secondary text-white px-3 py-1 rounded-md text-sm font-medium"
+                  >
+                    {categorie.libelle}
+                  </span>
+                ))}
               </div>
             </div>
             <div>
@@ -108,7 +106,7 @@ export function FeaturedNews() {
                 </p>
               )}
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500">{formatArticleDate(featuredArticle.createdAt)}</span>
+                <span className="text-sm text-gray-500">{stringifyDate(featuredArticle.createdAt, 'numeric', 'long', 'numeric')}</span>
                 <span
                   className="text-primary hover:text-primary-accent font-medium flex items-center gap-2 group-hover:gap-3 transition-all duration-200"
                 >
@@ -145,7 +143,7 @@ export function FeaturedNews() {
                   <h4 className="font-primary text-xl text-gray-900 mb-2 group-hover:text-secondary transition-colors duration-200">
                     {article.titre}
                   </h4>
-                  <span className="text-sm text-gray-500">{formatArticleDate(article.createdAt)}</span>
+                  <span className="text-sm text-gray-500">{stringifyDate(article.createdAt, 'numeric', 'long', 'numeric')}</span>
                 </div>
               </Link>
             </motion.div>

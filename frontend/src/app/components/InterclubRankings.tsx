@@ -23,6 +23,7 @@ import {
 import { HomePageSectionTitle } from './homePage_SectionTitle';
 import { Section } from './Section';
 import { Button } from './Button';
+import { stringifyDate } from '@/utils/formatDate';
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
 
@@ -301,11 +302,7 @@ export function InterclubRankings() {
                     <p className="text-xs text-gray-400">
                         Données issues de icbad.ffbad.org ·{' '}
                         {selected.lastScrapedAt
-                            ? `mis à jour le ${new Date(selected.lastScrapedAt).toLocaleDateString('fr-FR', {
-                                day: '2-digit',
-                                month: 'long',
-                                year: 'numeric',
-                            })}`
+                            ? `mis à jour le ${stringifyDate(selected.lastScrapedAt, '2-digit', 'long', 'numeric')}`
                             : 'données non disponibles'}
                     </p>
                 </div>

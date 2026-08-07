@@ -31,11 +31,11 @@
       "type": "blocks",
       "required": true
     },
-    "categorie": {
+    "categories": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "manyToMany",
       "target": "api::categorie.categorie",
-      "required": true
+      "inversedBy": "articles"
     },
     "a_la_une": {
       "type": "boolean",

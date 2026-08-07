@@ -8,5 +8,6 @@ export type Galerie = {
     url: string;
   };
   url_album: string;
+  date: string;
   galerie_categorie: Categorie | null;
 };

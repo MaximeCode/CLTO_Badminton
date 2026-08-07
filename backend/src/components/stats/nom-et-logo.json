@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_stats_nom_et_logos",
+  "info": {
+    "displayName": "Nom et logo",
+    "icon": "information"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  },
+  "config": {}
+}

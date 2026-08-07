@@ -185,50 +185,6 @@ export function AdhererPage() {
                             ))
                         }
 
-                        {/* Contact panel — hardcoded, uses ContactContext */}
-                        <CollapsiblePanel
-                            id="contact"
-                            title="Nous contacter"
-                            openPanel={openPanel}
-                            onToggle={togglePanel}
-                        >
-                            <div className="space-y-4 text-sm text-primary-accent sm:text-base">
-                                <p className="flex items-center gap-2">
-                                    <MapPin size={16} className="shrink-0" />
-                                    {contact?.adresse}
-                                </p>
-                                <p className="flex items-center gap-2">
-                                    <Phone size={16} className="shrink-0" />
-                                    {contact?.telephone}
-                                </p>
-                                <p className="flex items-center gap-2">
-                                    <Mail size={16} className="shrink-0" />
-                                    {contact?.email}
-                                </p>
-                                <p>
-                                    <strong>{contact ? joinDays(contact.jour_accueils_physique) : '—'}&nbsp;:</strong>{' '}
-                                    {contact ? `${formatTime(contact.heure_debut_accueils_physique)} à ${formatTime(contact.heure_fin_accueils_physique)}` : '—'} — accueil physique
-                                </p>
-                                <p>
-                                    <strong>{contact ? joinDays(contact.jour_accueils_a_distance) : '—'}&nbsp;:</strong>{' '}
-                                    {contact ? `${formatTime(contact.heure_debut_accueils_a_distance)} à ${formatTime(contact.heure_fin_accueils_a_distance)}` : '—'} — uniquement par téléphone, SMS, WhatsApp ou par mail
-                                </p>
-                                <p className="text-sm">
-                                    Des bénévoles du club sont présents régulièrement sur les créneaux. N&apos;hésitez pas à faire appel
-                                    à eux en cas de difficulté.
-                                </p>
-                                <div className="pt-2">
-                                    <Link
-                                        to="/contact"
-                                        className="inline-flex items-center gap-2 rounded-md bg-secondary px-5 py-2 text-white font-medium hover:bg-secondary/80 transition-colors"
-                                    >
-                                        Plus d&apos;informations sur la page Contact
-                                        <ExternalLink size={16} className="shrink-0" />
-                                    </Link>
-                                </div>
-                            </div>
-                        </CollapsiblePanel>
-
                         {/* Documents panel */}
                         <CollapsiblePanel
                             id="documents"
@@ -270,6 +226,50 @@ export function AdhererPage() {
                                         </li>
                                     ))}
                                 </ul>
+                            </div>
+                        </CollapsiblePanel>
+
+                        {/* Contact panel — hardcoded, uses ContactContext (dernier bloc) */}
+                        <CollapsiblePanel
+                            id="contact"
+                            title="Nous contacter"
+                            openPanel={openPanel}
+                            onToggle={togglePanel}
+                        >
+                            <div className="space-y-4 text-sm text-primary-accent sm:text-base">
+                                <p className="flex items-center gap-2">
+                                    <MapPin size={16} className="shrink-0" />
+                                    {contact?.adresse}
+                                </p>
+                                <p className="flex items-center gap-2">
+                                    <Phone size={16} className="shrink-0" />
+                                    {contact?.telephone}
+                                </p>
+                                <p className="flex items-center gap-2">
+                                    <Mail size={16} className="shrink-0" />
+                                    {contact?.email}
+                                </p>
+                                <p>
+                                    <strong>{contact ? joinDays(contact.jour_accueils_physique) : '—'}&nbsp;:</strong>{' '}
+                                    {contact ? `${formatTime(contact.heure_debut_accueils_physique)} à ${formatTime(contact.heure_fin_accueils_physique)}` : '—'} — accueil physique
+                                </p>
+                                <p>
+                                    <strong>{contact ? joinDays(contact.jour_accueils_a_distance) : '—'}&nbsp;:</strong>{' '}
+                                    {contact ? `${formatTime(contact.heure_debut_accueils_a_distance)} à ${formatTime(contact.heure_fin_accueils_a_distance)}` : '—'} — uniquement par téléphone, SMS, WhatsApp ou par mail
+                                </p>
+                                <p className="text-sm">
+                                    Des bénévoles du club sont présents régulièrement sur les créneaux. N&apos;hésitez pas à faire appel
+                                    à eux en cas de difficulté.
+                                </p>
+                                <div className="pt-2">
+                                    <Link
+                                        to="/faq"
+                                        className="inline-flex items-center gap-2 rounded-md bg-secondary px-5 py-2 text-white font-medium hover:bg-secondary/80 transition-colors"
+                                    >
+                                        Voir la FAQ
+                                        <ExternalLink size={16} className="shrink-0" />
+                                    </Link>
+                                </div>
                             </div>
                         </CollapsiblePanel>
                     </div>

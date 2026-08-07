@@ -12,7 +12,7 @@ export function HomePage() {
   const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([]);
 
   useEffect(() => {
-    getHeros(false).then((heros) => {
+    getHeros().then((heros) => {
       setHeroSlides(
         heros.map((h) => ({
           id: h.id,
@@ -21,6 +21,7 @@ export function HomePage() {
           title: h.titre,
           description: h.description ?? '',
           cta: h.libelle_btn,
+          lien: h.lien ?? '',
         }))
       );
     });
@@ -29,9 +30,9 @@ export function HomePage() {
   return (
     <>
       <Hero slides={heroSlides} />
+      <FeaturedNews />
       <ClubStats />
       <InterclubRankings />
-      <FeaturedNews />
       <SpaceCards />
       <PresidentQuote />
       <Partners />

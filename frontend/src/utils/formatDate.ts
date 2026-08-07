@@ -14,6 +14,19 @@ function formatMonth(date: Date): string {
   return format(date, "MMMM", { locale: fr });
 }
 
+export function stringifyDate(
+  date: string | Date,
+  day: "numeric" | "2-digit",
+  month: "numeric" | "2-digit" | "long" | "short" | "narrow",
+  year: "numeric" | "2-digit",
+): string {
+  return new Date(date).toLocaleDateString("fr-FR", {
+    day,
+    month,
+    year,
+  });
+}
+
 /** "Du 1er au 10 août 2026" | "Du 30 juillet au 5 août 2026" */
 export function formatDateRange(debut: string | Date, fin: string | Date): string {
   const start = typeof debut === "string" ? parseISO(debut) : debut;

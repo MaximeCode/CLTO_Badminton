@@ -67,12 +67,21 @@ function mapMedia(media: PublicMedia | null | undefined): PublicMedia {
   };
 }
 
+function mapBannerFields(data: { titre?: string | null; description?: string | null }) {
+  return {
+    titre: data.titre ?? null,
+    description: data.description ?? null,
+  };
+}
+
 export async function getPublicAdultesCompetiteurs(): Promise<PublicAdultesCompetiteurs> {
   const { data } = await fetchAPI(`/api/public-adultes-competiteurs?populate=*`);
   return {
     id: data.id,
     documentId: data.documentId,
+    ...mapBannerFields(data),
     tournois_competitions: mapContenus(data.tournois_competitions),
+    les_avantages: mapAvantages(data.les_avantages),
   };
 }
 
@@ -81,6 +90,7 @@ export async function getPublicAdultesLoisirs(): Promise<PublicAdultesLoisirs> {
   return {
     id: data.id,
     documentId: data.documentId,
+    ...mapBannerFields(data),
     prix_licence: data.prix_licence,
     envie_de_progresser: {
       id: data.envie_de_progresser.id,
@@ -97,9 +107,11 @@ export async function getPublicEntreprise(): Promise<PublicEntreprise> {
   return {
     id: data.id,
     documentId: data.documentId,
+    ...mapBannerFields(data),
     lien_dossier_partenariat: data.lien_dossier_partenariat ?? null,
     flyer: mapMedia(data.flyer),
     partenariat: mapInformations(data.partenariat),
+    les_avantages: mapAvantages(data.les_avantages),
   };
 }
 
@@ -108,6 +120,7 @@ export async function getPublicJeunes(): Promise<PublicJeunes> {
   return {
     id: data.id,
     documentId: data.documentId,
+    ...mapBannerFields(data),
     informations: mapInformations(data.informations),
     entrainements: mapInformations(data.entrainements),
     tournois_competitions: mapContenus(data.tournois_competitions),
@@ -121,6 +134,7 @@ export async function getPublicVieillesPlumes(): Promise<PublicVieillesPlumes> {
   return {
     id: data.id,
     documentId: data.documentId,
+    ...mapBannerFields(data),
     tournois_competitions: mapInformations(data.tournois_competitions),
     les_avantages: mapAvantages(data.les_avantages),
   };

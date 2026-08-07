@@ -5,8 +5,8 @@ export type Hero = {
   titre: string;
   description?: string;
   libelle_btn: string;
-  interclub: boolean;
   image: {
     url: string;
   };
+  lien?: string;
 };

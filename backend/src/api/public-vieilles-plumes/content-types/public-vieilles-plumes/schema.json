@@ -11,6 +11,12 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "titre": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
     "tournois_competitions": {
       "type": "component",
       "component": "infos-publics.carte-d-informations",
