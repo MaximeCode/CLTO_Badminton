@@ -17,6 +17,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Formations", path: "/formations" },
       { label: "Bénévoles", path: "/benevoles" },
       { label: "Agenda", path: "/agenda" },
+      { label: "Évènements", path: "/evenements" },
       { label: "Organigramme", path: "/organigramme" },
       { label: "Projet Club", path: "/projet-club" },
       { label: "Palmarès", path: "/palmares" },

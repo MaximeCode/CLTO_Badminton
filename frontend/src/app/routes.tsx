@@ -17,6 +17,7 @@ import { FAQPage } from './pages/FAQPage';
 import { StagesPage } from './pages/StagesPage';
 import { ProjetClub } from './pages/ProjetClub';
 import { DocumentsPage } from './pages/DocumentsPage';
+import { EvenementsPage } from './pages/EvenementsPage';
 import { GaleriePage } from './pages/GaleriePage';
 import { MentionsLegalesPage } from './pages/MentionsLegalesPage';
 import { OrganigrammePage } from './pages/OrganigrammePage';
@@ -46,6 +47,7 @@ export const router = createBrowserRouter([
       { path: 'palmares', Component: PalmaresPage },
       { path: 'organigramme', Component: OrganigrammePage },
       { path: 'agenda', Component: AgendaPage },
+      { path: 'evenements', Component: EvenementsPage },
       { path: 'gymnases', Component: GymnasesPage },
       { path: 'creneaux', Component: CreneauxPage },
       { path: 'interclub', Component: InterclubPage },

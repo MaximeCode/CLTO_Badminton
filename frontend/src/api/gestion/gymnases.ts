@@ -6,17 +6,28 @@ type GymnaseApiItem = {
   id: string;
   nom: string;
   nom_court: string;
+  capacite_terrain: string | null;
+  capacite_jeu_libre: string | null;
+  capacite_entrainement: string | null;
+  capacite_cours: string | null;
   saison_id: string;
   adresse: string;
   code_postal: string;
   ville: string;
   actif: string;
   visible: string;
-  // nb_terrain?: string | null;
+  longitude: string | null;
+  latitude: string | null;
 };
 
 function formatAdresse(item: GymnaseApiItem): string {
   return `${item.adresse}, ${item.code_postal} ${item.ville}`;
+}
+
+function parseNullableNumber(value: string | null | undefined): number | null {
+  if (value === null || value === undefined || value === "") return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
 }
 
 function mapGymnase(item: GymnaseApiItem): Gymnase {
@@ -25,8 +36,12 @@ function mapGymnase(item: GymnaseApiItem): Gymnase {
     nom: item.nom,
     nom_court: item.nom_court,
     adresse: formatAdresse(item),
-    // nb_terrain: item.nb_terrain ?? null,
-    nb_terrain: null,
+    capacite_terrain: parseNullableNumber(item.capacite_terrain),
+    capacite_jeu_libre: parseNullableNumber(item.capacite_jeu_libre),
+    capacite_entrainement: parseNullableNumber(item.capacite_entrainement),
+    capacite_cours: parseNullableNumber(item.capacite_cours),
+    latitude: parseNullableNumber(item.latitude),
+    longitude: parseNullableNumber(item.longitude),
   };
 }
 

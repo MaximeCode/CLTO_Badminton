@@ -9,8 +9,17 @@ const SECONDARY = '#da9619';
 // Fallback center on Orléans when no gyms are loaded yet
 const ORLEANS_CENTER: [number, number] = [47.902, 1.909];
 
+type GymnaseWithCoords = Gymnase & {
+  latitude: number;
+  longitude: number;
+};
+
 function isValidCoord(value: unknown): value is number {
   return typeof value === 'number' && Number.isFinite(value);
+}
+
+function hasCoords(gym: Gymnase): gym is GymnaseWithCoords {
+  return isValidCoord(gym.latitude) && isValidCoord(gym.longitude);
 }
 
 function createMarkerIcon(isSelected: boolean) {
@@ -34,30 +43,20 @@ function MapViewController({
   gyms,
   selectedGym,
 }: {
-  gyms: Gymnase[];
+  gyms: GymnaseWithCoords[];
   selectedGym: Gymnase | null;
 }) {
   const map = useMap();
 
   useEffect(() => {
-    if (
-      selectedGym &&
-      isValidCoord(selectedGym.latitude) &&
-      isValidCoord(selectedGym.longitude)
-    ) {
+    if (selectedGym && hasCoords(selectedGym)) {
       map.flyTo([selectedGym.latitude, selectedGym.longitude], 16, { duration: 0.6 });
       return;
     }
 
     if (gyms.length === 0) return;
 
-    const validPoints = gyms
-      .filter((g) => isValidCoord(g.latitude) && isValidCoord(g.longitude))
-      .map((g) => [g.latitude, g.longitude] as [number, number]);
-
-    if (validPoints.length === 0) return;
-
-    const bounds = L.latLngBounds(validPoints);
+    const bounds = L.latLngBounds(gyms.map((g) => [g.latitude, g.longitude]));
     if (bounds.isValid()) {
       map.fitBounds(bounds, { padding: [56, 56], maxZoom: 14 });
     }
@@ -75,10 +74,7 @@ export function GymMap({
   selectedGym: Gymnase | null;
   onSelectGym: (gym: Gymnase) => void;
 }) {
-  const validGyms = useMemo(
-    () => gyms.filter((g) => isValidCoord(g.latitude) && isValidCoord(g.longitude)),
-    [gyms],
-  );
+  const validGyms = useMemo(() => gyms.filter(hasCoords), [gyms]);
 
   const center = useMemo((): [number, number] => {
     if (validGyms.length === 0) return ORLEANS_CENTER;
@@ -112,6 +108,14 @@ export function GymMap({
             <span className="font-semibold">{gym.nom}</span>
             <br />
             <span className="text-sm text-gray-600">{gym.adresse}</span>
+            {gym.capacite_terrain != null && (
+              <>
+                <br />
+                <span className="text-sm">
+                  {gym.capacite_terrain} terrain{gym.capacite_terrain > 1 ? 's' : ''}
+                </span>
+              </>
+            )}
           </Popup>
         </Marker>
       ))}

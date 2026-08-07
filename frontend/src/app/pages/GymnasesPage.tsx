@@ -19,15 +19,20 @@ export function GymnasesPage() {
   const gymsCount = gyms.length;
   const [loadError, setLoadError] = useState<string | null>(null);
 
+  const totalTerrains = gyms.reduce(
+    (sum, gym) => sum + (gym.capacite_terrain ?? 0),
+    0,
+  );
+
   const equipmentStats = [
     {
       value: gymsCount,
       label: "Gymnases",
     },
-    // {
-    //   value: gyms.reduce((sum, gym) => sum + Number(gym.nb_terrain ?? 0), 0),
-    //   label: "Nombre de terrains total",
-    // },
+    {
+      value: totalTerrains,
+      label: "Nombre de terrains total",
+    },
     {
       value: "57h",
       label: "Heures de créneaux total par semaine",
@@ -41,7 +46,17 @@ export function GymnasesPage() {
   };
 
   // const openInMaps = (gym: Gymnase) => {
-  //   window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(gym.adresse)}`, '_blank');
+  //   if (gym.latitude != null && gym.longitude != null) {
+  //     window.open(
+  //       `https://www.google.com/maps/search/?api=1&query=${gym.latitude},${gym.longitude}`,
+  //       '_blank',
+  //     );
+  //     return;
+  //   }
+  //   window.open(
+  //     `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(gym.adresse)}`,
+  //     '_blank',
+  //   );
   // };
 
   // Fetch datas
@@ -57,7 +72,7 @@ export function GymnasesPage() {
         const data = await getGymnases(saisonId);
         setGyms(data);
       } catch (error) {
-        console.error('Error loading data:', error);
+        console.error('Error loading data gymnases:', error);
         setLoadError(
           error instanceof Error ? error.message : 'Impossible de charger les données.',
         );
@@ -127,14 +142,14 @@ export function GymnasesPage() {
                     </h3>
                     <p className="text-gray-600 mb-3 text-sm md:text-base">{gym.adresse}</p>
                     <div className="flex items-center justify-between flex-wrap gap-3">
-                      {/*
-                      <div className="flex items-center gap-2 bg-linear-to-r from-primary to-primary-accent text-white px-4 py-2 rounded-lg shadow-md">
-                        <div className="text-center flex-1 flex flex-row-reverse justify-center items-center gap-2">
-                          <p className="text-xs opacity-90">Terrains</p>
-                          <p className="font-primary text-xl md:text-3xl">{gym.nb_terrain}</p>
+                      {gym.capacite_terrain != null && (
+                        <div className="flex items-center gap-2 bg-linear-to-r from-primary to-primary-accent text-white px-4 py-2 rounded-lg shadow-md">
+                          <div className="text-center flex-1 flex flex-row-reverse justify-center items-center gap-2">
+                            <p className="text-xs opacity-90">Terrains</p>
+                            <p className="font-primary text-xl md:text-3xl">{gym.capacite_terrain}</p>
+                          </div>
                         </div>
-                      </div>
-                      */}
+                      )}
                       <div className="flex gap-2 ml-auto">
                         <button
                           onClick={(e) => {
@@ -186,7 +201,7 @@ export function GymnasesPage() {
             )}
           </motion.div>
 
-          {/* Map — à réactiver quand les coordonnées seront disponibles
+          {/* Map — à réactiver quand les coordonnées seront renseignées
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -206,9 +221,12 @@ export function GymnasesPage() {
                     {selectedGym.nom}
                   </h3>
                   <p className="text-sm text-gray-600 mb-2">{selectedGym.adresse}</p>
-                  <p className="text-sm">
-                    <strong>{selectedGym.nb_terrain}</strong> terrain{(Number(selectedGym.nb_terrain) > 1) ? 's' : ''}
-                  </p>
+                  {selectedGym.capacite_terrain != null && (
+                    <p className="text-sm">
+                      <strong>{selectedGym.capacite_terrain}</strong>{' '}
+                      terrain{selectedGym.capacite_terrain > 1 ? 's' : ''}
+                    </p>
+                  )}
                 </>
               ) : (
                 <>
@@ -236,7 +254,7 @@ export function GymnasesPage() {
           <h3 className="font-primary text-2xl sm:text-3xl mb-5 md:mb-6 text-center md:text-left">
             Total des équipements
           </h3>
-          <div className="flex flex-col divide-y divide-white/20 sm:grid sm:grid-cols-2 sm:divide-y-0 sm:gap-6">
+          <div className="flex flex-col divide-y divide-white/20 sm:grid sm:grid-cols-3 sm:divide-y-0 sm:gap-6">
             {equipmentStats.map((stat) => (
               <div
                 key={stat.label}

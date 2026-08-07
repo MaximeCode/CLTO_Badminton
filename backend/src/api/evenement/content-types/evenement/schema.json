@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "evenements",
+  "info": {
+    "singularName": "evenement",
+    "pluralName": "evenements",
+    "displayName": "Évènement"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "titre": {
+      "type": "string",
+      "required": true
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "lieu": {
+      "type": "string",
+      "required": true
+    },
+    "horaire": {
+      "type": "string",
+      "required": true
+    },
+    "petite_description": {
+      "type": "text"
+    },
+    "affiche": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "lien_inscription_benevole": {
+      "type": "string",
+      "required": true
+    },
+    "lien_inscription_tournoi": {
+      "type": "string"
+    }
+  }
+}

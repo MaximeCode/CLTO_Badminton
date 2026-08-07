@@ -3,9 +3,10 @@ export type Gymnase = {
   nom: string;
   nom_court: string;
   adresse: string;
-  /** Nombre de terrains — non fourni par l'API gestion pour l'instant */
-  nb_terrain: string | null;
-  /** Coordonnées — à peupler plus tard pour la carte */
-  latitude?: number;
-  longitude?: number;
+  capacite_terrain: number | null;
+  capacite_jeu_libre: number | null;
+  capacite_entrainement: number | null;
+  capacite_cours: number | null;
+  latitude: number | null;
+  longitude: number | null;
 };

@@ -2,7 +2,7 @@ import { fetchAPI } from "../Client";
 import type { Palmares } from "@/types/palmaresType";
 
 export async function getPalmares(): Promise<Palmares[]> {
-  const { data } = await fetchAPI("/api/evenements?populate=*&sort=date:desc");
+  const { data } = await fetchAPI("/api/palmaress?populate=*&sort=date:desc");
 
   return data.map(
     (item: {
@@ -22,7 +22,7 @@ export async function getPalmares(): Promise<Palmares[]> {
 }
 
 export async function getOnePalmares(documentId: string): Promise<Palmares> {
-  const { data } = await fetchAPI(`/api/evenements/${documentId}?populate=*`);
+  const { data } = await fetchAPI(`/api/palmaress/${documentId}?populate=*`);
   return {
     id: data.id,
     documentId: data.documentId,

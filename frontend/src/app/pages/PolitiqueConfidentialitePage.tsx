@@ -124,6 +124,24 @@ export function PolitiqueConfidentialitePage() {
                 administrer les contenus du site.
               </li>
               <li>
+                <strong>Flickr</strong> — hébergement et diffusion de la galerie photos du club
+                (albums intégrés sur le site). Lorsque vous consultez la galerie, des données de
+                connexion techniques peuvent être traitées par Flickr selon sa propre politique
+                de confidentialité.
+              </li>
+              <li>
+                <strong>Google Drive</strong> — hébergement et consultation de certains documents
+                mis à disposition sur le site (par exemple la charte interclubs). L&apos;accès à
+                ces documents peut entraîner un traitement de données par Google selon ses
+                conditions propres.
+              </li>
+              <li>
+                <strong>OpenStreetMap</strong> — fond de carte utilisé pour localiser les
+                gymnases. La consultation de la carte peut générer des requêtes techniques
+                (adresse IP, etc.) auprès des serveurs de tuiles OpenStreetMap, soumis à leurs
+                conditions d&apos;utilisation.
+              </li>
+              <li>
                 <strong>HelloAsso</strong> — plateforme tierce d&apos;inscription et de paiement
                 pour certains événements (ex. stages). Lorsque vous utilisez HelloAsso, vos données
                 sont également traitées par HelloAsso selon sa propre politique de

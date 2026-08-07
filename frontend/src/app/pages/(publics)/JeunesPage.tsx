@@ -118,49 +118,6 @@ export function JeunesPage() {
         </div>
       </Section>
 
-      <Section className="bg-linear-to-r from-primary to-primary-accent text-white">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center"
-        >
-          <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6">
-            <span className="text-secondary font-semibold">Reconnaissance FFBAD</span>
-          </div>
-          <h2 className="font-primary text-5xl md:text-6xl mb-6">
-            ÉCOLE 4 ÉTOILES
-          </h2>
-          <div className="flex items-center justify-center gap-2 mb-6">
-            {[1, 2, 3, 4].map((star) => (
-              <Star key={star} size={48} fill="#da9619" className="text-secondary" />
-            ))}
-            <Star size={48} className="text-white/30" />
-          </div>
-          <p className="text-lg md:text-xl max-w-3xl mx-auto mb-4">
-            Notre école de badminton est labellisée <strong>4 étoiles</strong> par la Fédération Française de Badminton (FFBAD)
-          </p>
-          <p className="text-white/90 max-w-2xl mx-auto mb-8">
-            Cette reconnaissance témoigne de la qualité de notre enseignement, de nos infrastructures et de notre encadrement. Notre objectif : décrocher la 5ème étoile l'année prochaine !
-          </p>
-          <div className="grid md:grid-cols-3 gap-8 mt-12">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-              <div className="text-4xl font-primary text-secondary mb-2">Excellence</div>
-              <p className="text-sm text-white/90">Formation de qualité reconnue</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-              <div className="text-4xl font-primary text-secondary mb-2">Encadrement</div>
-              <p className="text-sm text-white/90">Entraîneurs diplômés FFBAD</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-              <div className="text-4xl font-primary text-secondary mb-2">Progression</div>
-              <p className="text-sm text-white/90">Objectif 5ème étoile en 2027</p>
-            </div>
-          </div>
-        </motion.div>
-      </Section>
-
       {informations.length > 0 && (
         <Section className="bg-gray-50">
           <motion.div
@@ -268,6 +225,49 @@ export function JeunesPage() {
           </div>
         </Section>
       )}
+
+      <Section className="bg-linear-to-r from-primary to-primary-accent text-white">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
+          <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6">
+            <span className="text-secondary font-semibold">Reconnaissance FFBAD</span>
+          </div>
+          <h2 className="font-primary text-5xl md:text-6xl mb-6">
+            ÉCOLE 4 ÉTOILES
+          </h2>
+          <div className="flex items-center justify-center gap-2 mb-6">
+            {[1, 2, 3, 4].map((star) => (
+              <Star key={star} size={48} fill="#da9619" className="text-secondary" />
+            ))}
+            <Star size={48} className="text-white/30" />
+          </div>
+          <p className="text-lg md:text-xl max-w-3xl mx-auto mb-4">
+            Notre école de badminton est labellisée <strong>4 étoiles</strong> par la Fédération Française de Badminton (FFBAD)
+          </p>
+          <p className="text-white/90 max-w-2xl mx-auto mb-8">
+            Cette reconnaissance témoigne de la qualité de notre enseignement, de nos infrastructures et de notre encadrement. Notre objectif : décrocher la 5ème étoile l'année prochaine !
+          </p>
+          <div className="grid md:grid-cols-3 gap-8 mt-12">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+              <div className="text-4xl font-primary text-secondary mb-2">Excellence</div>
+              <p className="text-sm text-white/90">Formation de qualité reconnue</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+              <div className="text-4xl font-primary text-secondary mb-2">Encadrement</div>
+              <p className="text-sm text-white/90">Entraîneurs diplômés FFBAD</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+              <div className="text-4xl font-primary text-secondary mb-2">Progression</div>
+              <p className="text-sm text-white/90">Objectif 5ème étoile en 2027</p>
+            </div>
+          </div>
+        </motion.div>
+      </Section>
 
       <Section className="bg-white">
         <motion.div

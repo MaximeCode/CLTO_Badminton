@@ -82,7 +82,7 @@ export function MentionsLegalesPage() {
           <LegalSection title="2. Directeur de la publication">
             <p>
               Le directeur de la publication est{' '}
-              <strong>Véronique MARCHET</strong>, en qualité de présidente de l&apos;association
+              <strong>Steve BANDOU-NIATOLL</strong>, en qualité de président de l&apos;association
               CLTO Badminton.
             </p>
           </LegalSection>
@@ -127,6 +127,13 @@ export function MentionsLegalesPage() {
               Toute reproduction, représentation, modification, publication ou adaptation de tout
               ou partie des éléments du site, quel que soit le moyen ou le procédé utilisé, est
               interdite sans autorisation écrite préalable de l&apos;association.
+            </p>
+            <p>
+              Les photographies réalisées pour le club, notamment par{' '}
+              <strong>Véronique MARCHET</strong>, peuvent, avec l&apos;accord du conseil
+              d&apos;administration, faire l&apos;objet d&apos;une mention de crédit (prénom et
+              nom de l&apos;auteur) lors de leur publication sur le site ou les supports de
+              communication associés.
             </p>
             <p>
               Les photographies d&apos;adhérents, licenciés ou participants publiées sur le site
