@@ -2,13 +2,12 @@ import { useState, useEffect } from 'react';
 import { PageHero } from '../components/PageHero';
 import { Section } from '../components/Section';
 import { motion } from 'motion/react';
-import { MapPin, Copy, Check } from 'lucide-react';
-// import { ExternalLink } from 'lucide-react';
+import { MapPin, Copy, Check, ExternalLink } from 'lucide-react';
 
 import type { Gymnase } from '../../types/gymnasesType';
 import { getGymnases } from '../../api/gestion/gymnases';
 import { getParametresGlobaux } from '../../api/strapi/parametre-globaux';
-// import { GymMap } from '../components/GymMap';
+import { GymMap } from '../components/GymMap';
 import gymnaseChardon from '../../imports/gymnase_chardon.jpg';
 
 export function GymnasesPage() {
@@ -20,7 +19,7 @@ export function GymnasesPage() {
   const [loadError, setLoadError] = useState<string | null>(null);
 
   const totalTerrains = gyms.reduce(
-    (sum, gym) => sum + (gym.capacite_terrain ?? 0),
+    (sum, gym) => sum + (gym.nb_terrains ?? 0),
     0,
   );
 
@@ -45,19 +44,19 @@ export function GymnasesPage() {
     setTimeout(() => setCopiedAddress(null), 2000);
   };
 
-  // const openInMaps = (gym: Gymnase) => {
-  //   if (gym.latitude != null && gym.longitude != null) {
-  //     window.open(
-  //       `https://www.google.com/maps/search/?api=1&query=${gym.latitude},${gym.longitude}`,
-  //       '_blank',
-  //     );
-  //     return;
-  //   }
-  //   window.open(
-  //     `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(gym.adresse)}`,
-  //     '_blank',
-  //   );
-  // };
+  const openInMaps = (gym: Gymnase) => {
+    if (gym.latitude != null && gym.longitude != null) {
+      window.open(
+        `https://www.google.com/maps/search/?api=1&query=${gym.latitude},${gym.longitude}`,
+        '_blank',
+      );
+      return;
+    }
+    window.open(
+      `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(gym.adresse)}`,
+      '_blank',
+    );
+  };
 
   // Fetch datas
   useEffect(() => {
@@ -69,7 +68,8 @@ export function GymnasesPage() {
         if (saisonId == null) {
           throw new Error("L'identifiant de saison n'est pas configuré.");
         }
-        const data = await getGymnases(saisonId);
+        // const data = await getGymnases(saisonId);
+        const data = await getGymnases(`allGymnases`);
         setGyms(data);
       } catch (error) {
         console.error('Error loading data gymnases:', error);
@@ -142,11 +142,11 @@ export function GymnasesPage() {
                     </h3>
                     <p className="text-gray-600 mb-3 text-sm md:text-base">{gym.adresse}</p>
                     <div className="flex items-center justify-between flex-wrap gap-3">
-                      {gym.capacite_terrain != null && (
+                      {gym.nb_terrains != null && (
                         <div className="flex items-center gap-2 bg-linear-to-r from-primary to-primary-accent text-white px-4 py-2 rounded-lg shadow-md">
                           <div className="text-center flex-1 flex flex-row-reverse justify-center items-center gap-2">
                             <p className="text-xs opacity-90">Terrains</p>
-                            <p className="font-primary text-xl md:text-3xl">{gym.capacite_terrain}</p>
+                            <p className="font-primary text-xl md:text-3xl">{gym.nb_terrains}</p>
                           </div>
                         </div>
                       )}
@@ -170,7 +170,7 @@ export function GymnasesPage() {
                             </>
                           )}
                         </button>
-                        {/*
+
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
@@ -181,7 +181,7 @@ export function GymnasesPage() {
                           <ExternalLink size={16} />
                           <span className="text-sm hidden sm:inline">Itinéraire</span>
                         </button>
-                        */}
+
                       </div>
                     </div>
                   </div>
@@ -201,7 +201,6 @@ export function GymnasesPage() {
             )}
           </motion.div>
 
-          {/* Map — à réactiver quand les coordonnées seront renseignées
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -214,17 +213,17 @@ export function GymnasesPage() {
               selectedGym={selectedGym}
               onSelectGym={setSelectedGym}
             />
-            <div className="absolute top-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4 z-[1000] pointer-events-none">
+            <div className="absolute top-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4 z-1000 pointer-events-none">
               {selectedGym ? (
                 <>
                   <h3 className="font-primary text-xl text-primary mb-1">
                     {selectedGym.nom}
                   </h3>
                   <p className="text-sm text-gray-600 mb-2">{selectedGym.adresse}</p>
-                  {selectedGym.capacite_terrain != null && (
+                  {selectedGym.nb_terrains != null && (
                     <p className="text-sm">
-                      <strong>{selectedGym.capacite_terrain}</strong>{' '}
-                      terrain{selectedGym.capacite_terrain > 1 ? 's' : ''}
+                      <strong>{selectedGym.nb_terrains}</strong>{' '}
+                      terrain{selectedGym.nb_terrains > 1 ? 's' : ''}
                     </p>
                   )}
                 </>
@@ -240,7 +239,6 @@ export function GymnasesPage() {
               )}
             </div>
           </motion.div>
-          */}
         </div>
 
         {/* Info Section */}

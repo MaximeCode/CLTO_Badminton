@@ -19,6 +19,9 @@
       "type": "date",
       "required": true
     },
+    "detail_date": {
+      "type": "string"
+    },
     "lieu": {
       "type": "string",
       "required": true

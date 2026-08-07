@@ -108,11 +108,11 @@ export function GymMap({
             <span className="font-semibold">{gym.nom}</span>
             <br />
             <span className="text-sm text-gray-600">{gym.adresse}</span>
-            {gym.capacite_terrain != null && (
+            {gym.nb_terrains != null && (
               <>
                 <br />
                 <span className="text-sm">
-                  {gym.capacite_terrain} terrain{gym.capacite_terrain > 1 ? 's' : ''}
+                  {gym.nb_terrains} terrain{gym.nb_terrains > 1 ? 's' : ''}
                 </span>
               </>
             )}

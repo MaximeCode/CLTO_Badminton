@@ -14,6 +14,7 @@ export type Evenement = {
   documentId: string;
   titre: string;
   date: string;
+  detail_date: string | null;
   lieu: string;
   horaire: string;
   petite_description: string | null;

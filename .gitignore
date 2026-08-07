@@ -11,3 +11,5 @@ screen_txt_a_modifier
 /*.txt
 /*.json
 /*.md
+
+/data

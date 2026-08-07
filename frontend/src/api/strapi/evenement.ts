@@ -25,7 +25,7 @@ function mapMedia(media: EvenementMedia | null | undefined): EvenementMedia {
 }
 
 export async function getEvenements(): Promise<Evenement[]> {
-  const { data } = await fetchAPI("/api/evenements?populate=*");
+  const { data } = await fetchAPI("/api/evenements?populate=*&sort[0]=date:desc");
 
   return data.map(
     (item: {
@@ -33,6 +33,7 @@ export async function getEvenements(): Promise<Evenement[]> {
       documentId: string;
       titre: string;
       date: string;
+      detail_date: string | null;
       lieu: string;
       horaire: string;
       petite_description: string | null;
@@ -44,12 +45,13 @@ export async function getEvenements(): Promise<Evenement[]> {
       documentId: item.documentId,
       titre: item.titre,
       date: item.date,
+      detail_date: item.detail_date ?? null,
       lieu: item.lieu,
       horaire: item.horaire,
       petite_description: item.petite_description ?? null,
       affiche: mapMedia(item.affiche),
       lien_inscription_benevole: item.lien_inscription_benevole,
       lien_inscription_tournoi: item.lien_inscription_tournoi ?? null,
-    }),
+    })
   );
 }

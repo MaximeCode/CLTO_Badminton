@@ -29,7 +29,7 @@ export function EvenementsPage() {
 
   return (
     <>
-      <PageHero title="EVENEMENTS" />
+      <PageHero title="ÉVÉNEMENTS" />
 
       <Section className="py-12 md:py-20 bg-white">
         <motion.div
@@ -40,7 +40,7 @@ export function EvenementsPage() {
           className="text-center mb-12 md:mb-16"
         >
           <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4 text-balance">
-            NOS EVENEMENTS 2026-2027
+            NOS ÉVÉNEMENTS 2026-2027
           </h2>
           <p className="text-gray-600 text-lg max-w-3xl mx-auto">
             Compétitions, tournois internes et bien plus encore ! Les inscriptions ainsi que le
@@ -85,7 +85,7 @@ export function EvenementsPage() {
                     <div className="flex items-start gap-3 text-gray-700">
                       <Calendar size={20} className="mt-0.5 shrink-0 text-secondary" />
                       <span className="font-semibold">
-                        {stringifyDate(evenement.date, 'numeric', 'long', 'numeric')}
+                        {evenement.detail_date ? evenement.detail_date : stringifyDate(evenement.date, 'numeric', 'long', 'numeric')}
                       </span>
                     </div>
                     <div className="flex items-start gap-3 text-gray-700">
