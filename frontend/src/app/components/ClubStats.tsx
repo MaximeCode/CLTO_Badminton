@@ -35,7 +35,7 @@ export function ClubStats() {
       icon: Users,
       value: '+400',
       label: 'Adhérents',
-      description: 'Membres au club',
+      description: 'Pour la saison 2025-2026',
     },
     {
       icon: Trophy,
