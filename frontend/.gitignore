@@ -36,4 +36,7 @@ yarn-error.log*
 next-env.d.ts
 
 # dist
-/distfrontend/public/data/
+/dist
+
+# local static data dumps (not for git)
+/public/data/
