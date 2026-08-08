@@ -25,7 +25,7 @@ const spaces = [
     link: '/adultes-competiteurs',
   },
   {
-    title: 'VIEILLES PLUMES Seniors 60 ans et +',
+    title: 'Vieilles Plumes Seniors 60 ans et +',
     icon: Feather,
     color: 'secondary' as const,
     link: '/vieilles-plumes',

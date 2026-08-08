@@ -32,7 +32,8 @@ export function GymnasesPage() {
       label: "Gymnases",
     },
     {
-      value: totalTerrains,
+      // value: totalTerrains,
+      value: "-",
       label: "Nombre de terrains total",
     },
     {
@@ -117,14 +118,14 @@ export function GymnasesPage() {
           <p className="mb-8 text-center text-red-600">{loadError}</p>
         )}
 
-        <div className="grid lg:grid-cols-2 gap-4 md:gap-8">
+        <div className="grid lg:grid-cols-2 gap-4 md:gap-8 lg:items-start">
           {/* Gymnase List */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="space-y-4 lg:col-span-2 max-w-3xl mx-auto w-full"
+            className="space-y-4 max-w-3xl mx-auto w-full"
           >
             {gyms.map((gym, index) => (
               <motion.div
@@ -208,44 +209,46 @@ export function GymnasesPage() {
             )}
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="h-150 lg:h-full min-h-125 rounded-lg overflow-hidden shadow-xl sticky top-24 bg-gray-100"
-          >
-            <GymMap
-              gyms={gyms}
-              selectedGym={selectedGym}
-              onSelectGym={setSelectedGym}
-            />
-            <div className="absolute top-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4 z-1000 pointer-events-none">
-              {selectedGym ? (
-                <>
-                  <h3 className="font-primary text-xl text-primary mb-1">
-                    {selectedGym.nom}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-2">{selectedGym.adresse}</p>
-                  {/* {selectedGym.nb_terrains != null && (
-                    <p className="text-sm">
-                      <strong>{selectedGym.nb_terrains}</strong>{' '}
-                      terrain{selectedGym.nb_terrains > 1 ? 's' : ''}
+          <div className="h-150 min-h-125 lg:h-[calc(100vh-6rem)] lg:sticky lg:top-24">
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative h-3/4 rounded-lg overflow-hidden shadow-xl bg-gray-100"
+            >
+              <GymMap
+                gyms={gyms}
+                selectedGym={selectedGym}
+                onSelectGym={setSelectedGym}
+              />
+              <div className="absolute top-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4 z-1000 pointer-events-none">
+                {selectedGym ? (
+                  <>
+                    <h3 className="font-primary text-xl text-primary mb-1">
+                      {selectedGym.nom}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-2">{selectedGym.adresse}</p>
+                    {/* {selectedGym.nb_terrains != null && (
+                      <p className="text-sm">
+                        <strong>{selectedGym.nb_terrains}</strong>{' '}
+                        terrain{selectedGym.nb_terrains > 1 ? 's' : ''}
+                      </p>
+                    )} */}
+                  </>
+                ) : (
+                  <>
+                    <h3 className="font-primary text-xl text-primary mb-1">
+                      Tous les gymnases
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Cliquez sur un gymnase ou sur la carte pour voir sa localisation détaillée
                     </p>
-                  )} */}
-                </>
-              ) : (
-                <>
-                  <h3 className="font-primary text-xl text-primary mb-1">
-                    Tous les gymnases
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    Cliquez sur un gymnase ou sur la carte pour voir sa localisation détaillée
-                  </p>
-                </>
-              )}
-            </div>
-          </motion.div>
+                  </>
+                )}
+              </div>
+            </motion.div>
+          </div>
         </div>
 
         {/* Info Section */}

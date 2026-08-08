@@ -90,27 +90,27 @@ export function Footer() {
           >
             <ul className="space-y-2">
               <li>
-                <Link to="/actualites" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                <Link to="/actualites" className="text-gray-400 hover:text-secondary transition-colors text-xs">
                   Nos Actualités
                 </Link>
               </li>
               <li>
-                <Link to="/historique" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                <Link to="/historique" className="text-gray-400 hover:text-secondary transition-colors text-xs">
                   Notre Histoire
                 </Link>
               </li>
               <li>
-                <Link to="/interclub" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                <Link to="/interclub" className="text-gray-400 hover:text-secondary transition-colors text-xs">
                   Nos Équipes d'interclubs
                 </Link>
               </li>
               <li>
-                <Link to="/documents" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                <Link to="/documents" className="text-gray-400 hover:text-secondary transition-colors text-xs">
                   Documents officiels
                 </Link>
               </li>
               <li>
-                <Link to="/galerie" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                <Link to="/galerie" className="text-gray-400 hover:text-secondary transition-colors text-xs">
                   Galerie
                 </Link>
               </li>
@@ -125,27 +125,27 @@ export function Footer() {
           >
             <ul className="space-y-2">
               <li>
-                <Link to="/jeunes" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                <Link to="/jeunes" className="text-gray-400 hover:text-secondary transition-colors text-xs">
                   Jeunes
                 </Link>
               </li>
               <li>
-                <Link to="/adultes-loisirs" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                <Link to="/adultes-loisirs" className="text-gray-400 hover:text-secondary transition-colors text-xs">
                   Adultes Loisirs
                 </Link>
               </li>
               <li>
-                <Link to="/adultes-competiteurs" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                <Link to="/adultes-competiteurs" className="text-gray-400 hover:text-secondary transition-colors text-xs">
                   Adultes compétiteurs
                 </Link>
               </li>
               <li>
-                <Link to="/vieilles-plumes" className="text-gray-400 hover:text-secondary transition-colors text-sm">
-                  VIEILLES PLUMES Seniors 60 ans et +
+                <Link to="/vieilles-plumes" className="text-gray-400 hover:text-secondary transition-colors text-xs">
+                  Vieilles Plumes Seniors 60 ans et +
                 </Link>
               </li>
               <li>
-                <Link to="/entreprise" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                <Link to="/entreprise" className="text-gray-400 hover:text-secondary transition-colors text-xs">
                   Entreprise
                 </Link>
               </li>
@@ -162,25 +162,25 @@ export function Footer() {
               <ul className="space-y-3">
                 <li className="flex items-start gap-2 text-gray-400">
                   <MapPin size={16} className="mt-0.5 shrink-0" />
-                  <span className="text-sm">
+                  <span className="text-xs">
                     {contact?.adresse ?? '—'}
                   </span>
                 </li>
                 <li className="flex items-center gap-2 text-gray-400">
                   <Phone size={16} className="shrink-0" />
-                  <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="text-sm hover:text-secondary transition-colors">
+                  <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="text-xs hover:text-secondary transition-colors">
                     {contact?.telephone ?? '—'}
                   </a>
                 </li>
                 <li className="flex items-center gap-2 text-gray-400">
                   <Mail size={16} className="shrink-0" />
-                  <a href={`mailto:${contact?.email}`} className="text-sm hover:text-secondary transition-colors">
+                  <a href={`mailto:${contact?.email}`} className="text-xs hover:text-secondary transition-colors">
                     {contact?.email ?? '—'}
                   </a>
                 </li>
                 <li className="flex items-start gap-2 text-gray-400">
                   <Clock size={16} className="mt-0.5 shrink-0" />
-                  <span className="text-sm space-y-1">
+                  <span className="text-xs space-y-1">
                     <span className="block">
                       <strong className="text-gray-300">{joinDays(contact.jour_accueils_physique) || '—'}&nbsp;:</strong>{' '}
                       {formatTime(contact.heure_debut_accueils_physique)} à {formatTime(contact.heure_fin_accueils_physique)} — accueil physique
@@ -199,7 +199,7 @@ export function Footer() {
 
           <Link
             to="/contact"
-            className="mt-4 flex w-full items-center justify-center border-2 border-secondary text-secondary px-4 py-2.5 rounded-md hover:bg-secondary hover:text-white transition-all duration-200 text-sm"
+            className="mt-4 flex w-full items-center justify-center border-2 border-secondary text-secondary px-4 py-2.5 rounded-md hover:bg-secondary hover:text-white transition-all duration-200 text-xs"
           >
             Nous contacter
           </Link>
@@ -230,27 +230,27 @@ export function Footer() {
             <h4 className="font-primary text-xl mb-4 tracking-wide">Navigation</h4>
             <ul className="space-y-2 lg:space-y-3">
               <li>
-                <Link to="/actualites" className="sm:text-sm md:text-base text-gray-400 hover:text-secondary transition-colors duration-200">
+                <Link to="/actualites" className="sm:text-xs md:text-sm text-gray-400 hover:text-secondary transition-colors duration-200">
                   Nos Actualités
                 </Link>
               </li>
               <li>
-                <Link to="/historique" className="sm:text-sm md:text-base text-gray-400 hover:text-secondary transition-colors duration-200">
+                <Link to="/historique" className="sm:text-xs md:text-sm text-gray-400 hover:text-secondary transition-colors duration-200">
                   Notre Histoire
                 </Link>
               </li>
               <li>
-                <Link to="/interclub" className="sm:text-sm md:text-base text-gray-400 hover:text-secondary transition-colors duration-200">
+                <Link to="/interclub" className="sm:text-xs md:text-sm text-gray-400 hover:text-secondary transition-colors duration-200">
                   Nos Équipes d'interclubs
                 </Link>
               </li>
               <li>
-                <Link to="/documents" className="sm:text-sm md:text-base text-gray-400 hover:text-secondary transition-colors duration-200">
+                <Link to="/documents" className="sm:text-xs md:text-sm text-gray-400 hover:text-secondary transition-colors duration-200">
                   Documents officiels
                 </Link>
               </li>
               <li>
-                <Link to="/galerie" className="sm:text-sm md:text-base text-gray-400 hover:text-secondary transition-colors duration-200">
+                <Link to="/galerie" className="sm:text-xs md:text-sm text-gray-400 hover:text-secondary transition-colors duration-200">
                   Galerie
                 </Link>
               </li>
@@ -261,27 +261,27 @@ export function Footer() {
             <h4 className="font-primary text-xl mb-4 tracking-wide">Nos Publics</h4>
             <ul className="space-y-2 lg:space-y-3">
               <li>
-                <Link to="/jeunes" className="sm:text-sm md:text-base text-gray-400 hover:text-secondary transition-colors duration-200">
+                <Link to="/jeunes" className="sm:text-xs md:text-sm text-gray-400 hover:text-secondary transition-colors duration-200">
                   Jeunes
                 </Link>
               </li>
               <li>
-                <Link to="/adultes-loisirs" className="sm:text-sm md:text-base text-gray-400 hover:text-secondary transition-colors duration-200">
+                <Link to="/adultes-loisirs" className="sm:text-xs md:text-sm text-gray-400 hover:text-secondary transition-colors duration-200">
                   Adultes Loisirs
                 </Link>
               </li>
               <li>
-                <Link to="/adultes-competiteurs" className="sm:text-sm md:text-base text-gray-400 hover:text-secondary transition-colors duration-200">
+                <Link to="/adultes-competiteurs" className="sm:text-xs md:text-sm text-gray-400 hover:text-secondary transition-colors duration-200">
                   Adultes compétiteurs
                 </Link>
               </li>
               <li>
-                <Link to="/vieilles-plumes" className="sm:text-sm md:text-base text-gray-400 hover:text-secondary transition-colors duration-200">
-                  VIEILLES PLUMES<br />Seniors 60 ans et +
+                <Link to="/vieilles-plumes" className="sm:text-xs md:text-sm text-gray-400 hover:text-secondary transition-colors duration-200">
+                  Vieilles Plumes<br />Seniors 60 ans et +
                 </Link>
               </li>
               <li>
-                <Link to="/entreprise" className="sm:text-sm md:text-base text-gray-400 hover:text-secondary transition-colors duration-200">
+                <Link to="/entreprise" className="sm:text-xs md:text-sm text-gray-400 hover:text-secondary transition-colors duration-200">
                   Entreprise
                 </Link>
               </li>
@@ -294,25 +294,25 @@ export function Footer() {
               <ul className="space-y-2 lg:space-y-3">
                 <li className="flex items-start gap-3 text-gray-400">
                   <MapPin size={18} className="mt-1 shrink-0" />
-                  <span className="sm:text-sm md:text-base text-balance">
+                  <span className="sm:text-xs md:text-sm text-balance">
                     {contact?.adresse ?? '—'}
                   </span>
                 </li>
                 <li className="flex items-center gap-3 text-gray-400">
                   <Phone size={18} className="shrink-0" />
-                  <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="sm:text-sm md:text-base hover:text-secondary transition-colors">
+                  <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="sm:text-xs md:text-sm hover:text-secondary transition-colors">
                     {contact?.telephone ?? '—'}
                   </a>
                 </li>
                 <li className="flex items-center gap-3 text-gray-400">
                   <Mail size={18} className="shrink-0" />
-                  <a href={`mailto:${contact?.email}`} className="sm:text-sm md:text-base hover:text-secondary transition-colors">
+                  <a href={`mailto:${contact?.email}`} className="sm:text-xs md:text-sm hover:text-secondary transition-colors">
                     {contact?.email ?? '—'}
                   </a>
                 </li>
                 <li className="flex items-start gap-3 text-gray-400 lg:hidden">
                   <Clock size={18} className="mt-1 shrink-0" />
-                  <span className="sm:text-sm md:text-base space-y-1">
+                  <span className="sm:text-xs md:text-sm space-y-1">
                     <span className="block">
                       <strong className="text-gray-300">{joinDays(contact.jour_accueils_physique) || '—'}&nbsp;:</strong>{' '}
                       {formatTime(contact.heure_debut_accueils_physique)} à {formatTime(contact.heure_fin_accueils_physique)} — accueil physique
@@ -325,11 +325,11 @@ export function Footer() {
                 </li>
               </ul>
             ) : (
-              <div className="sm:text-sm md:text-base">Chargement des coordonnées...</div>
+              <div className="sm:text-xs md:text-sm">Chargement des coordonnées...</div>
             )}
             <Link
               to="/contact"
-              className="inline-block mt-4 border-2 border-secondary text-secondary px-4 py-2 rounded-md hover:bg-secondary hover:text-white transition-all duration-200 sm:text-sm md:text-base cursor-pointer"
+              className="inline-block mt-4 border-2 border-secondary text-secondary px-4 py-2 rounded-md hover:bg-secondary hover:text-white transition-all duration-200 sm:text-xs md:text-sm cursor-pointer"
             >
               Nous contacter
             </Link>
@@ -341,7 +341,7 @@ export function Footer() {
               <ul className="space-y-2 lg:space-y-3">
                 <li className="flex items-start gap-3 text-gray-400">
                   <Clock size={18} className="mt-1 shrink-0" />
-                  <span className="sm:text-sm md:text-base space-y-1">
+                  <span className="sm:text-xs md:text-sm space-y-1">
                     <span className="block">
                       <strong className="text-gray-300">{joinDays(contact.jour_accueils_physique) || '—'}&nbsp;:</strong>{' '}
                       {formatTime(contact.heure_debut_accueils_physique)} à {formatTime(contact.heure_fin_accueils_physique)} — accueil physique
@@ -354,29 +354,29 @@ export function Footer() {
                 </li>
               </ul>
             ) : (
-              <div className="sm:text-sm md:text-base">Chargement des horaires...</div>
+              <div className="sm:text-xs md:text-sm">Chargement des horaires...</div>
             )}
           </div>
         </div>
 
         <div className="pt-4 sm:pt-6 border-t border-white/10">
-          <p className="mb-4 sm:text-sm md:text-base text-gray-400 text-center text-balance">
+          <p className="mb-4 sm:text-xs md:text-sm text-gray-400 text-center text-balance">
             Notre site vient de se refaire une beauté mais peut contenir des erreurs. Si vous rencontrez un problème, n&apos;hésitez pas à{' '}
-            <Link to="/contact" className="sm:text-sm md:text-base underline hover:text-secondary transition-colors">
+            <Link to="/contact" className="sm:text-xs md:text-sm underline hover:text-secondary transition-colors">
               nous en faire part
             </Link>
             .
           </p>
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 sm:text-sm md:text-base text-gray-400 text-center sm:text-left">
-            <p className="sm:text-sm md:text-base">© {new Date().getFullYear()} CLTO Badminton. Tous droits réservés.</p>
-            <p className="sm:text-sm md:text-base">
-              Site réalisé avec passion pour le badminton, par <a href="https://my-portfolio-maxime-baude.vercel.app/" target="_blank" rel="noopener noreferrer" className="sm:text-sm md:text-base hover:text-secondary transition-colors underline">Maxime BAUDE</a>
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 sm:text-xs md:text-sm text-gray-400 text-center sm:text-left">
+            <p className="sm:text-xs md:text-sm">© {new Date().getFullYear()} CLTO Badminton. Tous droits réservés.</p>
+            <p className="sm:text-xs md:text-sm">
+              Site réalisé avec passion pour le badminton, par <a href="https://my-portfolio-maxime-baude.vercel.app/" target="_blank" rel="noopener noreferrer" className="sm:text-xs md:text-sm hover:text-secondary transition-colors underline">Maxime BAUDE</a>
             </p>
-            <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 underline sm:text-sm md:text-base" aria-label="Informations légales">
-              <Link to="/mentions-legales" className="sm:text-sm md:text-base hover:text-secondary transition-colors">
+            <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 underline sm:text-xs md:text-sm" aria-label="Informations légales">
+              <Link to="/mentions-legales" className="sm:text-xs md:text-sm hover:text-secondary transition-colors">
                 Mentions légales
               </Link>
-              <Link to="/politique-de-confidentialite" className="sm:text-sm md:text-base hover:text-secondary transition-colors">
+              <Link to="/politique-de-confidentialite" className="sm:text-xs md:text-sm hover:text-secondary transition-colors">
                 Politique de confidentialité
               </Link>
             </nav>
