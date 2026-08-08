@@ -1,0 +1,68 @@
+name: "cltobadminton-prod"
+
+services:
+  ## FRONTEND REACT ##
+  frontend:
+    container_name: cltobadminton-frontend-prod
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    restart: unless-stopped
+
+    labels:
+      - "traefik.enable=true"
+
+      # Domaine frontend
+      - "traefik.http.routers.cltobadminton-frontend-prod.rule=Host(`futur.cltobadminton.fr`)"
+      - "traefik.http.routers.cltobadminton-frontend-prod.entrypoints=websecure"
+
+      # HTTPS
+      - "traefik.http.routers.cltobadminton-frontend-prod.tls=true"
+      - "traefik.http.routers.cltobadminton-frontend-prod.tls.certresolver=letsencrypt"
+
+      # Port nginx interne
+      - "traefik.http.services.cltobadminton-frontend-prod.loadbalancer.server.port=80"
+
+    networks:
+      - max_network
+
+  ## STRAPI ##
+  backend:
+    container_name: cltobadminton-strapi-prod
+
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    restart: unless-stopped
+
+    env_file:
+      - ./backend/.env
+
+    labels:
+      - "traefik.enable=true"
+
+      # Domaine API Strapi
+      - "traefik.http.routers.cltobadminton-strapi-prod.rule=Host(`futur.admin.cltobadminton.fr`)"
+      - "traefik.http.routers.cltobadminton-strapi-prod.entrypoints=websecure"
+
+      # HTTPS
+      - "traefik.http.routers.cltobadminton-strapi-prod.tls=true"
+      - "traefik.http.routers.cltobadminton-strapi-prod.tls.certresolver=letsencrypt"
+
+      # Port Strapi interne
+      - "traefik.http.services.cltobadminton-strapi-prod.loadbalancer.server.port=1337"
+
+    networks:
+      - max_network
+
+    volumes:
+      - strapi_uploads-prod:/backend/public/uploads
+
+networks:
+  max_network:
+    external: true
+
+volumes:
+  strapi_uploads-prod:
