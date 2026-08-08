@@ -14,7 +14,7 @@ services:
       - "traefik.enable=true"
 
       # Domaine frontend
-      - "traefik.http.routers.cltobadminton-frontend-prod.rule=Host(`cltobadminton.fr`)"
+      - "traefik.http.routers.cltobadminton-frontend-prod.rule=Host(`cltobadminton.fr`) || Host(`www.cltobadminton.fr`)"
       - "traefik.http.routers.cltobadminton-frontend-prod.entrypoints=websecure"
 
       # HTTPS
