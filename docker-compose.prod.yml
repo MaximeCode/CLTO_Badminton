@@ -44,7 +44,7 @@ services:
       - "traefik.enable=true"
 
       # Domaine API Strapi
-      - "traefik.http.routers.cltobadminton-strapi-prod.rule=Host(`futur.admin.cltobadminton.fr`)"
+      - "traefik.http.routers.cltobadminton-strapi-prod.rule=Host(`admin.futur.cltobadminton.fr`)"
       - "traefik.http.routers.cltobadminton-strapi-prod.entrypoints=websecure"
 
       # HTTPS
