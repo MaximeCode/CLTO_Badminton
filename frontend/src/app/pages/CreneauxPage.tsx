@@ -841,26 +841,37 @@ export function CreneauxPage() {
                                     onMouseLeave={() => setHoveredSlot(null)}
                                   >
                                     <div className="p-2 h-full flex flex-col justify-between text-white relative">
-                                      <div className="absolute top-2 right-2 z-20 inline-flex items-center gap-1">
-                                        {!slot.hasOuvreur && (
-                                          <div
-                                            className="inline-flex items-center justify-center rounded-full bg-red-600 p-1 shadow-md"
-                                            title="Aucun ouvreur !"
-                                          >
-                                            <AlertTriangle size={11} className="text-white" />
-                                          </div>
-                                        )}
-                                        <div className="inline-flex items-center gap-1 rounded-full bg-white/20 px-1.5 py-0.5 text-base font-semibold">
-                                          {slot.sessionKind === "Jeu libre" ? (
-                                            <Gamepad2 size={11} />
-                                          ) : (
-                                            <Dumbbell size={11} />
-                                          )}
-                                        </div>
-                                      </div>
                                       <div>
-                                        <div className="font-bold text-sm mb-1">
-                                          {slot.startTime} - {slot.endTime}
+                                        <div className="flex items-start justify-between gap-1.5 mb-1">
+                                          <div className="font-bold text-sm leading-tight min-w-0">
+                                            <span className="whitespace-nowrap">
+                                              {slot.startTime}
+                                            </span>
+                                            <span className="opacity-80"> – </span>
+                                            <span className="whitespace-nowrap">
+                                              {slot.endTime}
+                                            </span>
+                                          </div>
+                                          <div className="inline-flex items-center gap-0.5 shrink-0 -mt-0.5">
+                                            {!slot.hasOuvreur && (
+                                              <div
+                                                className="inline-flex items-center justify-center rounded-full bg-red-600 p-0.5 shadow-sm ring-1 ring-white/40"
+                                                title="Aucun ouvreur !"
+                                              >
+                                                <AlertTriangle
+                                                  size={10}
+                                                  className="text-white"
+                                                />
+                                              </div>
+                                            )}
+                                            <div className="inline-flex items-center justify-center rounded-full bg-white/20 p-0.5">
+                                              {slot.sessionKind === "Jeu libre" ? (
+                                                <Gamepad2 size={10} />
+                                              ) : (
+                                                <Dumbbell size={10} />
+                                              )}
+                                            </div>
+                                          </div>
                                         </div>
                                         <div className="text-xs font-semibold line-clamp-1">
                                           {slot.nom}
@@ -876,8 +887,28 @@ export function CreneauxPage() {
                                           animate={{ opacity: 1, y: 0 }}
                                           className="absolute inset-0 bg-gray-900/95 p-3 z-10 flex flex-col gap-2 text-xs overflow-auto"
                                         >
-                                          <div className="font-primary text-base text-secondary mb-1 pr-10">
-                                            {slot.nom}
+                                          <div className="font-primary text-base text-secondary mb-1 flex items-start justify-between gap-2">
+                                            <span className="min-w-0">{slot.nom}</span>
+                                            <div className="inline-flex items-center gap-0.5 shrink-0">
+                                              {!slot.hasOuvreur && (
+                                                <div
+                                                  className="inline-flex items-center justify-center rounded-full bg-red-600 p-0.5 ring-1 ring-white/40"
+                                                  title="Aucun ouvreur !"
+                                                >
+                                                  <AlertTriangle
+                                                    size={10}
+                                                    className="text-white"
+                                                  />
+                                                </div>
+                                              )}
+                                              <div className="inline-flex items-center justify-center rounded-full bg-white/20 p-0.5">
+                                                {slot.sessionKind === "Jeu libre" ? (
+                                                  <Gamepad2 size={10} />
+                                                ) : (
+                                                  <Dumbbell size={10} />
+                                                )}
+                                              </div>
+                                            </div>
                                           </div>
                                           <div className="flex items-center gap-2">
                                             <Clock size={14} />
