@@ -5,6 +5,7 @@ import { BANDEAU_PAGES } from "@/constants/bandeauPages";
 import { Section } from "../components/Section";
 import { motion, AnimatePresence } from "motion/react";
 import {
+  AlertTriangle,
   Calendar,
   Clock,
   MapPin,
@@ -31,6 +32,7 @@ import {
   getDayNameFromDate,
   getWeekDistance,
   groupSeancesByWeek,
+  mergeEmptyWeeks,
 } from "@/utils/seancesUtils";
 
 const ALL_GYMS = "Tous";
@@ -45,6 +47,7 @@ type TimeSlot = {
   startTime: string;
   endTime: string;
   leader: string;
+  hasOuvreur: boolean;
   types: string[];
   primaryType: string;
   nom: string;
@@ -65,6 +68,7 @@ function seanceToTimeSlot(seance: Seance): TimeSlot {
     startTime: seance.debut,
     endTime: seance.fin,
     leader: formatLeader(seance.entraineurs),
+    hasOuvreur: seance.entraineurs.length > 0,
     types: seance.types,
     primaryType: seance.primaryType,
     nom: seance.nom,
@@ -77,17 +81,21 @@ function seanceToTimeSlot(seance: Seance): TimeSlot {
 const TYPE_COLORS: Record<string, string> = {
   Élite: "#0153b6",
   Perfectionnement: "#da9619",
-  Initiation: "#0891b2",
+  Débutant: "#0891b2",
   Intermédiaire: "#ea580c",
-  "Jeu libre": "#16a34a",
+  "Matchs pour tous": "#16a34a",
+  "Pratique libre": "#0d9488",
+  "Jeu libre": "#65a30d",
 };
 
 const TYPE_BADGE_CLASSES: Record<string, string> = {
   Élite: "bg-primary",
   Perfectionnement: "bg-secondary",
-  Initiation: "bg-cyan-600",
+  Débutant: "bg-cyan-600",
   Intermédiaire: "bg-orange-600",
-  "Jeu libre": "bg-green-600",
+  "Matchs pour tous": "bg-green-600",
+  "Pratique libre": "bg-teal-600",
+  "Jeu libre": "bg-lime-600",
 };
 
 export function CreneauxPage() {
@@ -106,7 +114,7 @@ export function CreneauxPage() {
     "Entraînement",
     "Jeu libre",
   ]);
-  const [selectedPublics, setSelectedPublics] = useState<string[]>([...CRENEAU_PUBLICS]);
+  const [selectedPublics, setSelectedPublics] = useState<string[]>([]);
   const [selectedGym, setSelectedGym] = useState<string>(ALL_GYMS);
 
   useEffect(() => {
@@ -123,10 +131,14 @@ export function CreneauxPage() {
           ? await getSeances() // DEV
           : await getSeances(saisonId); // PP / PROD
 
-        const seancesAout26 = import.meta.env.VITE_ENV === "dev"
-          ? await getSeancesAout26() // DEV
-          : await getSeancesAout26(16); // PP / PROD
-        const grouped = groupSeancesByWeek([...seances, ...seancesAout26]);
+        const seancesAout26Result =
+          import.meta.env.VITE_ENV === "dev"
+            ? await getSeancesAout26() // DEV
+            : await getSeancesAout26(16); // PP / PROD
+        const grouped = mergeEmptyWeeks(
+          groupSeancesByWeek([...seances, ...seancesAout26Result.seances]),
+          seancesAout26Result.emptyWeekStarts,
+        );
         setWeeks(grouped);
 
         if (grouped.length > 0) {
@@ -191,6 +203,11 @@ export function CreneauxPage() {
   };
 
   const timeSlots = allTimeSlots.filter(matchesFilters);
+  const isWeekEmpty = Boolean(selectedWeek && selectedWeek.seances.length === 0);
+  const nextWeek =
+    selectedWeekIndex >= 0 && selectedWeekIndex < weeks.length - 1
+      ? weeks[selectedWeekIndex + 1]
+      : null;
 
   const toggleType = (type: string) => {
     setSelectedTypes((prev) =>
@@ -213,7 +230,7 @@ export function CreneauxPage() {
   const resetFilters = () => {
     setSelectedTypes([...CRENEAU_TYPES]);
     setSelectedSessionKinds(["Entraînement", "Jeu libre"]);
-    setSelectedPublics([...CRENEAU_PUBLICS]);
+    setSelectedPublics([]);
     setSelectedGym(ALL_GYMS);
   };
 
@@ -537,329 +554,383 @@ export function CreneauxPage() {
               </div>
             </motion.div>
 
-            {/* Mobile View */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.08 }}
-              className="md:hidden space-y-4"
-            >
-              {WEEK_DAYS.map((day, dayIndex) => {
-                const dayDate = addDaysToWeekStart(weekStart, dayIndex);
-                const daySlotsData = timeSlots.filter((slot) => slot.day === day);
-                const isCurrentDay = isToday(dayDate);
-
-                return (
-                  <div
-                    key={day}
-                    className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden"
-                  >
-                    {daySlotsData.length === 0 ? (
-                      <div
-                        className={`px-4 py-3 flex items-center justify-between ${isCurrentDay ? "bg-secondary" : "bg-primary"
-                          }`}
-                      >
-                        <div>
-                          <p className="font-primary text-xl text-white leading-none">
-                            {day}
-                          </p>
-                          <p className="text-sm text-white/70">
-                            {format(dayDate, "dd MMMM yyyy", { locale: fr })}
-                          </p>
-                        </div>
-                        <span className="text-xs font-semibold text-white/80 italic">
-                          Aucun créneau ce jour
-                        </span>
-                      </div>
-                    ) : (
-                      <>
-                        <button
-                          className={`w-full flex items-center justify-between px-4 py-3 ${isCurrentDay ? "bg-secondary" : "bg-primary"
-                            }`}
-                          onClick={() => setOpenDay(openDay === day ? null : day)}
-                        >
-                          <div className="text-left">
-                            <p className="font-primary text-xl text-white leading-none">
-                              {day}
-                            </p>
-                            <p className="text-sm text-blue-100">
-                              {format(dayDate, "dd MMMM yyyy", { locale: fr })}
-                            </p>
-                          </div>
-                          <ChevronDown
-                            size={20}
-                            className={`text-white transition-transform duration-200 ${openDay === day ? "rotate-180" : ""
-                              }`}
-                          />
-                        </button>
-
-                        <AnimatePresence>
-                          {openDay === day && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.2 }}
-                              className="overflow-hidden"
-                            >
-                              <div className="p-3 space-y-3">
-                                {daySlotsData.map((slot) => (
-                                  <div
-                                    key={slot.id}
-                                    className="rounded-lg border border-gray-200 p-3 bg-gray-50"
-                                  >
-                                    <div className="flex items-center justify-between gap-3">
-                                      <p className="font-semibold text-gray-900">
-                                        {slot.startTime} - {slot.endTime}
-                                      </p>
-                                      <span
-                                        className={`inline-block px-2 py-1 rounded-full text-xs font-semibold text-white ${getTypeBadgeClass(
-                                          slot.primaryType,
-                                        )}`}
-                                      >
-                                        {slot.primaryType}
-                                      </span>
-                                    </div>
-                                    <p className="mt-2 text-sm text-gray-800">{slot.nom}</p>
-                                    <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-white px-2 py-1 text-xs font-semibold text-gray-700 border border-gray-200">
-                                      {slot.sessionKind === "Jeu libre" ? (
-                                        <>
-                                          <Gamepad2
-                                            size={13}
-                                            className="text-[#16a34a]"
-                                          />
-                                          Jeu libre
-                                        </>
-                                      ) : (
-                                        <>
-                                          <Dumbbell
-                                            size={13}
-                                            className="text-primary"
-                                          />
-                                          Entraînement
-                                        </>
-                                      )}
-                                    </div>
-                                    <div className="mt-2 text-xs text-gray-600 space-y-1">
-                                      <p>📍 {slot.gymFull}</p>
-                                      <p>👤 {slot.leader}</p>
-                                      {slot.publics.length > 0 && (
-                                        <p>👥 {slot.publics.join(", ")}</p>
-                                      )}
-                                    </div>
-                                    {slot.comment && (
-                                      <p className="mt-2 text-xs text-yellow-800 bg-yellow-50 border-l-4 border-yellow-400 p-2 rounded">
-                                        ⚠️ {slot.comment}
-                                      </p>
-                                    )}
-                                  </div>
-                                ))}
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </>
-                    )}
-                  </div>
-                );
-              })}
-            </motion.div>
-
-            {/* Calendar Grid (desktop/tablette) */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="hidden md:block bg-white rounded-xl shadow-xl overflow-hidden border-2 border-gray-200"
-            >
-              <div className="grid grid-cols-[56px_repeat(7,minmax(0,1fr))] lg:grid-cols-[64px_repeat(7,minmax(0,1fr))] bg-primary border-b-2 border-gray-300">
-                <div className="px-1 py-4 border-r border-blue-400" />
-                {WEEK_DAYS.map((day, index) => {
-                  const dayDate = addDaysToWeekStart(weekStart, index);
-                  const isCurrentDay = isToday(dayDate);
-
-                  return (
-                    <div
-                      key={day}
-                      className={`px-2 py-4 text-center border-r border-blue-400 last:border-r-0 ${isCurrentDay ? "bg-secondary" : ""
-                        }`}
-                    >
-                      <div className="font-primary text-xl lg:text-2xl text-white">
-                        {day}
-                      </div>
-                      <div
-                        className={`text-sm ${isCurrentDay ? "text-white font-bold" : "text-blue-100"
-                          }`}
-                      >
-                        {format(dayDate, "dd MMM", { locale: fr })}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="relative">
-                <div className="grid grid-cols-[56px_repeat(7,minmax(0,1fr))] lg:grid-cols-[64px_repeat(7,minmax(0,1fr))]">
-                  <div className="border-r-2 border-gray-200 bg-gray-50">
-                    {timeGrid.map((time) => (
-                      <div
-                        key={time}
-                        className="h-20 border-b border-gray-200 px-1 py-2 text-right"
-                      >
-                        <span className="text-xs lg:text-sm font-semibold text-gray-600">
-                          {time}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
+            {/* Semaine sans aucune séance (données) */}
+            {isWeekEmpty ? (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.08 }}
+                className="bg-white rounded-xl shadow-xl overflow-hidden border-2 border-gray-200"
+              >
+                <div className="flex flex-col items-center justify-center text-center px-6 py-16 md:py-24 min-h-70 md:min-h-90 bg-linear-to-b from-blue-50/80 to-white">
+                  <Calendar className="text-primary mb-5" size={56} />
+                  <p className="font-primary text-3xl md:text-5xl text-primary leading-tight">
+                    Cette semaine, c&apos;est repos !
+                  </p>
+                </div>
+              </motion.div>
+            ) : (
+              <>
+                {/* Mobile View */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.08 }}
+                  className="md:hidden space-y-4"
+                >
                   {WEEK_DAYS.map((day, dayIndex) => {
                     const dayDate = addDaysToWeekStart(weekStart, dayIndex);
+                    const daySlotsData = timeSlots.filter((slot) => slot.day === day);
                     const isCurrentDay = isToday(dayDate);
-                    const daySlotsData = layoutDaySlots(
-                      timeSlots.filter((slot) => slot.day === day),
-                    );
 
                     return (
                       <div
                         key={day}
-                        className={`relative border-r border-gray-200 last:border-r-0 ${isCurrentDay ? "bg-blue-50" : "bg-white"
-                          }`}
+                        className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden"
                       >
-                        {timeGrid.map((time) => (
+                        {daySlotsData.length === 0 ? (
                           <div
-                            key={time}
-                            className="h-20 border-b border-gray-200"
-                          />
-                        ))}
+                            className={`px-4 py-3 flex items-center justify-between ${isCurrentDay ? "bg-secondary" : "bg-primary"
+                              }`}
+                          >
+                            <div>
+                              <p className="font-primary text-xl text-white leading-none">
+                                {day}
+                              </p>
+                              <p className="text-sm text-white/70">
+                                {format(dayDate, "dd MMMM yyyy", { locale: fr })}
+                              </p>
+                            </div>
+                            <span className="text-xs font-semibold text-white/80 italic">
+                              Aucun créneau ce jour
+                            </span>
+                          </div>
+                        ) : (
+                          <>
+                            <button
+                              className={`w-full flex items-center justify-between px-4 py-3 ${isCurrentDay ? "bg-secondary" : "bg-primary"
+                                }`}
+                              onClick={() => setOpenDay(openDay === day ? null : day)}
+                            >
+                              <div className="text-left">
+                                <p className="font-primary text-xl text-white leading-none">
+                                  {day}
+                                </p>
+                                <p className="text-sm text-blue-100">
+                                  {format(dayDate, "dd MMMM yyyy", { locale: fr })}
+                                </p>
+                              </div>
+                              <ChevronDown
+                                size={20}
+                                className={`text-white transition-transform duration-200 ${openDay === day ? "rotate-180" : ""
+                                  }`}
+                              />
+                            </button>
 
-                        <div className="absolute inset-0 pointer-events-none">
-                          {daySlotsData.map((slot) => {
-                            const top = timeToPosition(slot.startTime);
-                            const height = calculateHeight(
-                              slot.startTime,
-                              slot.endTime,
-                            );
-                            const bgColor = getTypeColor(slot.primaryType);
-                            const slotKey = `${slot.id}-${slot.startTime}-${slot.gym}`;
-                            const isSlotHovered = hoveredSlot === slotKey;
-                            const baseHeight = Math.max(height - 4, 56);
-                            const expandedHeight = Math.max(
-                              baseHeight,
-                              slot.comment ? 230 : 200,
-                            );
-                            const maxHeightWithinColumn = Math.max(
-                              baseHeight,
-                              dayColumnHeight - top - 4,
-                            );
-                            const visibleHeight = isSlotHovered
-                              ? Math.min(expandedHeight, maxHeightWithinColumn)
-                              : baseHeight;
-                            const columnWidth = 100 / slot.columnCount;
-                            const leftStyle = isSlotHovered
-                              ? "4px"
-                              : `calc(${slot.columnIndex * columnWidth}% + 2px)`;
-                            const widthStyle = isSlotHovered
-                              ? "calc(100% - 8px)"
-                              : `calc(${columnWidth}% - 4px)`;
-
-                            return (
-                              <motion.div
-                                key={slotKey}
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.3 }}
-                                className="absolute rounded-lg shadow-md pointer-events-auto overflow-hidden transition-[height,left,width,z-index] duration-200"
-                                style={{
-                                  top: `${top}px`,
-                                  left: leftStyle,
-                                  width: widthStyle,
-                                  height: `${visibleHeight}px`,
-                                  backgroundColor: bgColor,
-                                  zIndex: isSlotHovered ? 40 : 1 + slot.columnIndex,
-                                }}
-                                onMouseEnter={() => setHoveredSlot(slotKey)}
-                                onMouseLeave={() => setHoveredSlot(null)}
-                              >
-                                <div className="p-2 h-full flex flex-col justify-between text-white relative">
-                                  <div className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-white/20 px-1.5 py-0.5 text-base font-semibold">
-                                    {slot.sessionKind === "Jeu libre" ? (
-                                      <Gamepad2 size={11} />
-                                    ) : (
-                                      <Dumbbell size={11} />
-                                    )}
+                            <AnimatePresence>
+                              {openDay === day && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: "auto", opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="overflow-hidden"
+                                >
+                                  <div className="p-3 space-y-3">
+                                    {daySlotsData.map((slot) => (
+                                      <div
+                                        key={slot.id}
+                                        className="rounded-lg border border-gray-200 p-3 bg-gray-50"
+                                      >
+                                        <div className="flex items-center justify-between gap-3">
+                                          <p className="font-semibold text-gray-900">
+                                            {slot.startTime} - {slot.endTime}
+                                          </p>
+                                          <div className="inline-flex items-center gap-1.5">
+                                            {!slot.hasOuvreur && (
+                                              <span
+                                                className="inline-flex items-center justify-center rounded-full bg-red-600 p-1"
+                                                title="Aucun ouvreur !"
+                                              >
+                                                <AlertTriangle size={12} className="text-white" />
+                                              </span>
+                                            )}
+                                            <span
+                                              className={`inline-block px-2 py-1 rounded-full text-xs font-semibold text-white ${getTypeBadgeClass(
+                                                slot.primaryType,
+                                              )}`}
+                                            >
+                                              {slot.primaryType}
+                                            </span>
+                                          </div>
+                                        </div>
+                                        <p className="mt-2 text-sm text-gray-800">{slot.nom}</p>
+                                        <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-white px-2 py-1 text-xs font-semibold text-gray-700 border border-gray-200">
+                                          {slot.sessionKind === "Jeu libre" ? (
+                                            <>
+                                              <Gamepad2
+                                                size={13}
+                                                className="text-[#16a34a]"
+                                              />
+                                              Jeu libre
+                                            </>
+                                          ) : (
+                                            <>
+                                              <Dumbbell
+                                                size={13}
+                                                className="text-primary"
+                                              />
+                                              Entraînement
+                                            </>
+                                          )}
+                                        </div>
+                                        <div className="mt-2 text-xs text-gray-600 space-y-1">
+                                          <p>📍 {slot.gymFull}</p>
+                                          {slot.hasOuvreur ? (
+                                            <p>👤 {slot.leader}</p>
+                                          ) : (
+                                            <p className="flex items-center gap-1.5 font-bold text-red-600">
+                                              <AlertTriangle size={14} className="shrink-0" />
+                                              Aucun ouvreur !
+                                            </p>
+                                          )}
+                                          {slot.publics.length > 0 && (
+                                            <p>👥 {slot.publics.join(", ")}</p>
+                                          )}
+                                        </div>
+                                        {slot.comment && (
+                                          <p className="mt-2 text-xs text-yellow-800 bg-yellow-50 border-l-4 border-yellow-400 p-2 rounded">
+                                            ⚠️ {slot.comment}
+                                          </p>
+                                        )}
+                                      </div>
+                                    ))}
                                   </div>
-                                  <div>
-                                    <div className="font-bold text-sm mb-1">
-                                      {slot.startTime} - {slot.endTime}
-                                    </div>
-                                    <div className="text-xs font-semibold line-clamp-1">
-                                      {slot.nom}
-                                    </div>
-                                    <div className="text-xs opacity-90 mt-1 line-clamp-1">
-                                      {slot.gym}
-                                    </div>
-                                  </div>
-
-                                  {isSlotHovered && (
-                                    <motion.div
-                                      initial={{ opacity: 0, y: 10 }}
-                                      animate={{ opacity: 1, y: 0 }}
-                                      className="absolute inset-0 bg-gray-900/95 p-3 z-10 flex flex-col gap-2 text-xs overflow-auto"
-                                    >
-                                      <div className="font-primary text-base text-secondary mb-1">
-                                        {slot.nom}
-                                      </div>
-                                      <div className="flex items-center gap-2">
-                                        <Clock size={14} />
-                                        <span>
-                                          {slot.startTime} - {slot.endTime}
-                                        </span>
-                                      </div>
-                                      <div className="flex items-center gap-2">
-                                        <MapPin size={14} />
-                                        <span className="line-clamp-2">
-                                          {slot.gymFull}
-                                        </span>
-                                      </div>
-                                      <div className="flex items-center gap-2">
-                                        <User size={16} />
-                                        <span className="line-clamp-2">
-                                          {slot.leader}
-                                        </span>
-                                      </div>
-                                      {slot.types.length > 0 && (
-                                        <div className="flex items-center gap-2">
-                                          <Dumbbell size={16} />
-                                          <span>{slot.types.join(" / ")}</span>
-                                        </div>
-                                      )}
-                                      {slot.publics.length > 0 && (
-                                        <div className="flex items-center gap-2">
-                                          <Users size={16} />
-                                          <span>{slot.publics.join(", ")}</span>
-                                        </div>
-                                      )}
-                                      {slot.comment && (
-                                        <div className="mt-1 pt-2 border-t border-yellow-400 text-yellow-300 text-[10px]">
-                                          ⚠️ {slot.comment}
-                                        </div>
-                                      )}
-                                    </motion.div>
-                                  )}
-                                </div>
-                              </motion.div>
-                            );
-                          })}
-                        </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </>
+                        )}
                       </div>
                     );
                   })}
-                </div>
-              </div>
-            </motion.div>
+                </motion.div>
+
+                {/* Calendar Grid (desktop/tablette) */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                  className="hidden md:block bg-white rounded-xl shadow-xl overflow-hidden border-2 border-gray-200"
+                >
+                  <div className="grid grid-cols-[56px_repeat(7,minmax(0,1fr))] lg:grid-cols-[64px_repeat(7,minmax(0,1fr))] bg-primary border-b-2 border-gray-300">
+                    <div className="px-1 py-4 border-r border-blue-400" />
+                    {WEEK_DAYS.map((day, index) => {
+                      const dayDate = addDaysToWeekStart(weekStart, index);
+                      const isCurrentDay = isToday(dayDate);
+
+                      return (
+                        <div
+                          key={day}
+                          className={`px-2 py-4 text-center border-r border-blue-400 last:border-r-0 ${isCurrentDay ? "bg-secondary" : ""
+                            }`}
+                        >
+                          <div className="font-primary text-xl lg:text-2xl text-white">
+                            {day}
+                          </div>
+                          <div
+                            className={`text-sm ${isCurrentDay ? "text-white font-bold" : "text-blue-100"
+                              }`}
+                          >
+                            {format(dayDate, "dd MMM", { locale: fr })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="relative">
+                    <div className="grid grid-cols-[56px_repeat(7,minmax(0,1fr))] lg:grid-cols-[64px_repeat(7,minmax(0,1fr))]">
+                      <div className="border-r-2 border-gray-200 bg-gray-50">
+                        {timeGrid.map((time) => (
+                          <div
+                            key={time}
+                            className="h-20 border-b border-gray-200 px-1 py-2 text-right"
+                          >
+                            <span className="text-xs lg:text-sm font-semibold text-gray-600">
+                              {time}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {WEEK_DAYS.map((day, dayIndex) => {
+                        const dayDate = addDaysToWeekStart(weekStart, dayIndex);
+                        const isCurrentDay = isToday(dayDate);
+                        const daySlotsData = layoutDaySlots(
+                          timeSlots.filter((slot) => slot.day === day),
+                        );
+
+                        return (
+                          <div
+                            key={day}
+                            className={`relative border-r border-gray-200 last:border-r-0 ${isCurrentDay ? "bg-blue-50" : "bg-white"
+                              }`}
+                          >
+                            {timeGrid.map((time) => (
+                              <div
+                                key={time}
+                                className="h-20 border-b border-gray-200"
+                              />
+                            ))}
+
+                            <div className="absolute inset-0 pointer-events-none">
+                              {daySlotsData.map((slot) => {
+                                const top = timeToPosition(slot.startTime);
+                                const height = calculateHeight(
+                                  slot.startTime,
+                                  slot.endTime,
+                                );
+                                const bgColor = getTypeColor(slot.primaryType);
+                                const slotKey = `${slot.id}-${slot.startTime}-${slot.gym}`;
+                                const isSlotHovered = hoveredSlot === slotKey;
+                                const baseHeight = Math.max(height - 4, 56);
+                                const expandedHeight = Math.max(
+                                  baseHeight,
+                                  slot.comment ? 230 : 200,
+                                );
+                                const maxHeightWithinColumn = Math.max(
+                                  baseHeight,
+                                  dayColumnHeight - top - 4,
+                                );
+                                const visibleHeight = isSlotHovered
+                                  ? Math.min(expandedHeight, maxHeightWithinColumn)
+                                  : baseHeight;
+                                const columnWidth = 100 / slot.columnCount;
+                                const leftStyle = isSlotHovered
+                                  ? "4px"
+                                  : `calc(${slot.columnIndex * columnWidth}% + 2px)`;
+                                const widthStyle = isSlotHovered
+                                  ? "calc(100% - 8px)"
+                                  : `calc(${columnWidth}% - 4px)`;
+
+                                return (
+                                  <motion.div
+                                    key={slotKey}
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="absolute rounded-lg shadow-md pointer-events-auto overflow-hidden transition-[height,left,width,z-index] duration-200"
+                                    style={{
+                                      top: `${top}px`,
+                                      left: leftStyle,
+                                      width: widthStyle,
+                                      height: `${visibleHeight}px`,
+                                      backgroundColor: bgColor,
+                                      zIndex: isSlotHovered ? 40 : 1 + slot.columnIndex,
+                                    }}
+                                    onMouseEnter={() => setHoveredSlot(slotKey)}
+                                    onMouseLeave={() => setHoveredSlot(null)}
+                                  >
+                                    <div className="p-2 h-full flex flex-col justify-between text-white relative">
+                                      <div className="absolute top-2 right-2 z-20 inline-flex items-center gap-1">
+                                        {!slot.hasOuvreur && (
+                                          <div
+                                            className="inline-flex items-center justify-center rounded-full bg-red-600 p-1 shadow-md"
+                                            title="Aucun ouvreur !"
+                                          >
+                                            <AlertTriangle size={11} className="text-white" />
+                                          </div>
+                                        )}
+                                        <div className="inline-flex items-center gap-1 rounded-full bg-white/20 px-1.5 py-0.5 text-base font-semibold">
+                                          {slot.sessionKind === "Jeu libre" ? (
+                                            <Gamepad2 size={11} />
+                                          ) : (
+                                            <Dumbbell size={11} />
+                                          )}
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <div className="font-bold text-sm mb-1">
+                                          {slot.startTime} - {slot.endTime}
+                                        </div>
+                                        <div className="text-xs font-semibold line-clamp-1">
+                                          {slot.nom}
+                                        </div>
+                                        <div className="text-xs opacity-90 mt-1 line-clamp-1">
+                                          {slot.gym}
+                                        </div>
+                                      </div>
+
+                                      {isSlotHovered && (
+                                        <motion.div
+                                          initial={{ opacity: 0, y: 10 }}
+                                          animate={{ opacity: 1, y: 0 }}
+                                          className="absolute inset-0 bg-gray-900/95 p-3 z-10 flex flex-col gap-2 text-xs overflow-auto"
+                                        >
+                                          <div className="font-primary text-base text-secondary mb-1 pr-10">
+                                            {slot.nom}
+                                          </div>
+                                          <div className="flex items-center gap-2">
+                                            <Clock size={14} />
+                                            <span>
+                                              {slot.startTime} - {slot.endTime}
+                                            </span>
+                                          </div>
+                                          <div className="flex items-center gap-2">
+                                            <MapPin size={14} />
+                                            <span className="line-clamp-2">
+                                              {slot.gymFull}
+                                            </span>
+                                          </div>
+                                          {slot.hasOuvreur ? (
+                                            <div className="flex items-center gap-2">
+                                              <User size={16} />
+                                              <span className="line-clamp-2">
+                                                {slot.leader}
+                                              </span>
+                                            </div>
+                                          ) : (
+                                            <div className="flex items-center gap-2 font-bold text-red-500">
+                                              <AlertTriangle size={16} className="shrink-0" />
+                                              <span>Aucun ouvreur !</span>
+                                            </div>
+                                          )}
+                                          {slot.types.length > 0 && (
+                                            <div className="flex items-center gap-2">
+                                              <Dumbbell size={16} />
+                                              <span>{slot.types.join(" / ")}</span>
+                                            </div>
+                                          )}
+                                          {slot.publics.length > 0 && (
+                                            <div className="flex items-center gap-2">
+                                              <Users size={16} />
+                                              <span>{slot.publics.join(", ")}</span>
+                                            </div>
+                                          )}
+                                          {slot.comment && (
+                                            <div className="mt-1 pt-2 border-t border-yellow-400 text-yellow-300 text-[10px]">
+                                              ⚠️ {slot.comment}
+                                            </div>
+                                          )}
+                                        </motion.div>
+                                      )}
+                                    </div>
+                                  </motion.div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </motion.div>
+              </>
+            )}
 
             {/* Legend */}
             <motion.div
@@ -879,11 +950,11 @@ export function CreneauxPage() {
                         ? "Compétition haut niveau"
                         : type === "Perfectionnement"
                           ? "Joueurs confirmés"
-                          : type === "Initiation"
-                            ? "Débutants"
-                            : "Niveau intermédiaire",
+                          : "",
                   })),
-                  { type: "Jeu libre", hint: "Sans encadrement (ENCADREMENT vide)" },
+                  { type: "Matchs pour tous", hint: "Matchs ouverts à tous" },
+                  { type: "Pratique libre", hint: "Sans encadrement" },
+                  { type: "Jeu libre", hint: "Autres séances libres" },
                 ].map(({ type, hint }) => (
                   <div key={type} className="flex items-center gap-3">
                     <div
@@ -898,8 +969,15 @@ export function CreneauxPage() {
                 ))}
               </div>
               <p className="mt-4 text-sm text-gray-600 bg-blue-50 p-3 rounded-lg border-l-4 border-primary">
-                💡 <strong>Astuce:</strong> Survolez un créneau pour voir le gymnase
-                complet, les entraîneurs et le public.
+                💡 <strong>Astuce:</strong> Survolez un créneau pour voir plus de détails.
+              </p>
+              <p className="mt-3 text-sm text-red-700 bg-red-50 p-3 rounded-lg border-l-4 border-red-600 flex items-start gap-2">
+                <AlertTriangle size={18} className="shrink-0 mt-0.5" />
+                <span>
+                  <strong>Aucun ouvreur !</strong> Le badge rouge indique qu’aucun
+                  ouvreur n’est désigné. Le créneau risque d’être annulé si personne ne
+                  se propose.
+                </span>
               </p>
             </motion.div>
           </>

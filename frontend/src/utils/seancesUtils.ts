@@ -18,6 +18,22 @@ export function getDayNameFromDate(date: Date): string {
   return WEEK_DAYS[index];
 }
 
+function buildWeek(weekStart: string, seances: Seance[] = []): CreneauWeek {
+  const start = parseISO(weekStart);
+  const end = endOfWeek(start, { weekStartsOn: 1 });
+  const weekEnd = format(end, "yyyy-MM-dd");
+  const label = `${format(start, "ddMM")} au ${format(end, "ddMM")}`;
+
+  return {
+    id: `${weekStart}_${weekEnd}`,
+    label,
+    period: `Semaine du ${format(start, "dd/MM/yyyy")} au ${format(end, "dd/MM/yyyy")}`,
+    weekStart,
+    weekEnd,
+    seances,
+  };
+}
+
 export function groupSeancesByWeek(seances: Seance[]): CreneauWeek[] {
   const byWeek = new Map<string, Seance[]>();
 
@@ -32,21 +48,31 @@ export function groupSeancesByWeek(seances: Seance[]): CreneauWeek[] {
 
   return [...byWeek.entries()]
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([weekStart, weekSeances]) => {
-      const start = parseISO(weekStart);
-      const end = endOfWeek(start, { weekStartsOn: 1 });
-      const weekEnd = format(end, "yyyy-MM-dd");
-      const label = `${format(start, "ddMM")} au ${format(end, "ddMM")}`;
+    .map(([weekStart, weekSeances]) => buildWeek(weekStart, weekSeances));
+}
 
-      return {
-        id: `${weekStart}_${weekEnd}`,
-        label,
-        period: `Semaine du ${format(start, "dd/MM/yyyy")} au ${format(end, "dd/MM/yyyy")}`,
-        weekStart,
-        weekEnd,
-        seances: weekSeances,
-      };
-    });
+/** Fusionne des semaines vides (ancres JSON) dans la liste des semaines. */
+export function mergeEmptyWeeks(
+  weeks: CreneauWeek[],
+  emptyWeekStarts: string[],
+): CreneauWeek[] {
+  if (emptyWeekStarts.length === 0) return weeks;
+
+  const byStart = new Map(weeks.map((week) => [week.weekStart, week]));
+
+  for (const rawDate of emptyWeekStarts) {
+    const weekStart = format(
+      startOfWeek(parseISO(rawDate), { weekStartsOn: 1 }),
+      "yyyy-MM-dd",
+    );
+    if (!byStart.has(weekStart)) {
+      byStart.set(weekStart, buildWeek(weekStart, []));
+    }
+  }
+
+  return [...byStart.values()].sort((a, b) =>
+    a.weekStart.localeCompare(b.weekStart),
+  );
 }
 
 export function getWeekDistance(date: Date, week: CreneauWeek): number {

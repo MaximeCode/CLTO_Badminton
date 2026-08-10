@@ -37,7 +37,7 @@ export type CreneauWeek = {
   seances: Seance[];
 };
 
-export const CRENEAU_TYPES = ["Élite", "Perfectionnement", "Initiation", "Intermédiaire"] as const;
+export const CRENEAU_TYPES = ["Élite", "Perfectionnement", "Intermédiaire", "Débutant"] as const;
 
 export type CreneauType = (typeof CRENEAU_TYPES)[number];
 

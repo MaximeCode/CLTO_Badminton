@@ -125,7 +125,7 @@ export function ClubStats() {
                 <div className="font-primary text-3xl md:text-4xl text-primary leading-none mb-2">
                   {stat.chiffre}
                 </div>
-                <div className="text-xs sm:text-sm text-secondary leading-snug">
+                <div className="text-xs sm:text-sm md:text-base text-secondary leading-snug">
                   {stat.desc}
                 </div>
               </motion.div>
