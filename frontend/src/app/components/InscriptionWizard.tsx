@@ -283,7 +283,7 @@ export function InscriptionWizard({
                         </div>
 
                         <div className="[&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                            <BlocksRenderer content={selectedCase.contenu} />
+                            <BlocksRenderer content={selectedCase.contenu} headingOffset={3} />
                         </div>
                     </div>
                 ) : (

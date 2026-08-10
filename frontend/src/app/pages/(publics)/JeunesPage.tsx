@@ -151,7 +151,7 @@ export function JeunesPage() {
               >
                 <h3 className="font-primary text-3xl text-primary mb-4">{carteInfo.titre}</h3>
                 <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                  <BlocksRenderer content={carteInfo.contenu} />
+                  <BlocksRenderer content={carteInfo.contenu} headingOffset={3} />
                 </div>
               </motion.article>
             ))}
@@ -185,7 +185,7 @@ export function JeunesPage() {
               >
                 <h3 className="font-primary text-2xl text-primary mb-4">{entrainement.titre}</h3>
                 <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                  <BlocksRenderer content={entrainement.contenu} />
+                  <BlocksRenderer content={entrainement.contenu} headingOffset={3} />
                 </div>
               </motion.div>
             ))}
@@ -222,7 +222,7 @@ export function JeunesPage() {
                   <p className="text-secondary font-semibold mb-4">{item.sous_titre}</p>
                 )}
                 <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                  <BlocksRenderer content={item.contenu} />
+                  <BlocksRenderer content={item.contenu} headingOffset={3} />
                 </div>
               </motion.div>
             ))}

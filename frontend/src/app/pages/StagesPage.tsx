@@ -71,57 +71,59 @@ export function StagesPage() {
           </p>
         </motion.div>
 
-        {stages?.map((stage: Stage) => (
-          <motion.article
-            key={stage.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="overflow-hidden rounded-lg bg-gray-50 shadow-lg"
-          >
-            <div className="bg-linear-to-r from-primary to-primary-accent px-6 py-4 sm:px-8">
-              <h3 className="font-primary text-3xl text-white sm:text-4xl">{stage.titre}</h3>
-            </div>
-
-            <div className="space-y-8 p-6 sm:p-8">
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 text-md">
-                <div className="flex items-start gap-3 text-gray-700">
-                  <Calendar size={20} className="mt-0.5 shrink-0 text-secondary" />
-                  <span className="font-semibold">{formatDateRange(stage.date_debut, stage.date_fin)}</span>
-                </div>
-                <div className="flex items-start gap-3 text-gray-700">
-                  <MapPin size={20} className="mt-0.5 shrink-0 text-secondary" />
-                  <span className="font-semibold">{stage.gymnase}</span>
-                </div>
-                <div className="flex items-start gap-3 text-gray-700">
-                  <Users size={20} className="mt-0.5 shrink-0 text-secondary" />
-                  <span className="font-semibold">{stage.public}</span>
-                </div>
-                <div className="flex items-start gap-3 text-gray-700">
-                  <Euro size={20} className="mt-0.5 shrink-0 text-secondary" />
-                  <span className="font-semibold">
-                    {stage.autre_infos}
-                  </span>
-                </div>
+        <div className="flex flex-col gap-8">
+          {stages?.map((stage: Stage) => (
+            <motion.article
+              key={stage.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="overflow-hidden rounded-lg bg-gray-50 shadow-lg"
+            >
+              <div className="bg-linear-to-r from-primary to-primary-accent px-6 py-4 sm:px-8">
+                <h3 className="font-primary text-3xl text-white sm:text-4xl">{stage.titre}</h3>
               </div>
 
-              <article>
-                <BlocksRenderer content={stage.description ?? []} size="base" />
-              </article>
+              <div className="space-y-8 p-6 sm:p-8">
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 text-md">
+                  <div className="flex items-start gap-3 text-gray-700">
+                    <Calendar size={20} className="mt-0.5 shrink-0 text-secondary" />
+                    <span className="font-semibold">{formatDateRange(stage.date_debut, stage.date_fin)}</span>
+                  </div>
+                  <div className="flex items-start gap-3 text-gray-700">
+                    <MapPin size={20} className="mt-0.5 shrink-0 text-secondary" />
+                    <span className="font-semibold">{stage.gymnase}</span>
+                  </div>
+                  <div className="flex items-start gap-3 text-gray-700">
+                    <Users size={20} className="mt-0.5 shrink-0 text-secondary" />
+                    <span className="font-semibold">{stage.public}</span>
+                  </div>
+                  <div className="flex items-start gap-3 text-gray-700">
+                    <Euro size={20} className="mt-0.5 shrink-0 text-secondary" />
+                    <span className="font-semibold">
+                      {stage.autre_infos}
+                    </span>
+                  </div>
+                </div>
 
-              <a
-                href={stage.lien}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-md bg-secondary px-6 py-3 text-white transition-colors duration-200 hover:bg-secondary-accent"
-              >
-                S&apos;inscrire sur HelloAsso
-                <ArrowRight size={18} />
-              </a>
-            </div>
-          </motion.article>
-        ))}
+                <article>
+                  <BlocksRenderer content={stage.description ?? []} size="base" headingOffset={3} />
+                </article>
+
+                <a
+                  href={stage.lien}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-md bg-secondary px-6 py-3 text-white transition-colors duration-200 hover:bg-secondary-accent"
+                >
+                  S&apos;inscrire sur HelloAsso
+                  <ArrowRight size={18} />
+                </a>
+              </div>
+            </motion.article>
+          ))}
+        </div>
       </Section>
     </>
   );

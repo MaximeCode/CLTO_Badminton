@@ -52,7 +52,7 @@ export function FormationsPage() {
           className="max-w-3xl mx-auto bg-white rounded-lg p-6 md:p-10 shadow-lg [&_a]:text-secondary [&_li]:text-primary-accent [&_p]:mb-3 [&_p]:text-primary-accent"
         >
           {data?.contenu ? (
-            <BlocksRenderer content={data.contenu} />
+            <BlocksRenderer content={data.contenu} headingOffset={1} />
           ) : (
             <p className="text-gray-600 text-center">
               Le contenu de cette page sera bientôt disponible.

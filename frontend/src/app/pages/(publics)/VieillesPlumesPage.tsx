@@ -112,20 +112,18 @@ export function VieillesPlumesPage() {
       </Section>
 
       {formatSimple.length > 0 && (
-        <Section className="bg-white">
+        <Section className="bg-gray-50">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-gray-50 rounded-lg p-12 text-center shadow-lg"
+            className="max-w-4xl mx-auto rounded-lg p-8 shadow-lg"
           >
-            <h2 className="font-primary text-4xl text-primary mb-4">
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4 text-center">
               UN FORMAT SIMPLE
             </h2>
-            <div className="text-gray-600 text-lg max-w-2xl mx-auto [&_p]:mb-2">
-              <BlocksRenderer content={formatSimple} />
-            </div>
+            <BlocksRenderer content={formatSimple} size='sm' sizeDesktop='base' headingOffset={1} />
           </motion.div>
         </Section>
       )}
@@ -156,7 +154,7 @@ export function VieillesPlumesPage() {
               >
                 <h3 className="font-primary text-2xl text-primary mb-4">{item.titre}</h3>
                 <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                  <BlocksRenderer content={item.contenu} />
+                  <BlocksRenderer content={item.contenu} headingOffset={3} />
                 </div>
               </motion.div>
             ))}

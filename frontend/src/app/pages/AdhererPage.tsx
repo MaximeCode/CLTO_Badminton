@@ -144,8 +144,8 @@ export function AdhererPage() {
                                         {introBloc.sous_titre}
                                     </p>
                                 )}
-                                <div className="[&_p]:mb-0 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_p]:text-base">
-                                    <BlocksRenderer content={introBloc.contenu} headingOffset={1} />
+                                <div className="[&_p]:mb-0 [&_p]:text-primary-accent">
+                                    <BlocksRenderer content={introBloc.contenu} size="sm" sizeDesktop="base" headingOffset={1} />
                                 </div>
                             </>
                         ) : loadError ? (
@@ -189,7 +189,7 @@ export function AdhererPage() {
                                     onToggle={togglePanel}
                                 >
                                     <div className="[&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_p]:text-base [&_li]:text-sm sm:[&_li]:text-base [&_li]:text-primary-accent [&_a]:text-secondary">
-                                        <BlocksRenderer content={bloc.contenu} headingOffset={1} />
+                                        <BlocksRenderer content={bloc.contenu} size="sm" sizeDesktop="lg" headingOffset={2} />
                                     </div>
                                 </CollapsiblePanel>
                             ))

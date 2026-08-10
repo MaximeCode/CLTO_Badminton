@@ -183,7 +183,7 @@ export function ActualitesPage() {
 
             {/* DESKTOP */}
             <div className="hidden lg:block w-full">
-              <h3 className="font-primary text-2xl text-primary mb-4">Catégories</h3>
+              <h2 className="font-primary text-2xl text-primary mb-4">Catégories</h2>
               <ul className="w-full space-y-2">{categoryFilters}</ul>
               <p className="mt-4 text-xs text-gray-500">
                 {filteredArticles.length} article

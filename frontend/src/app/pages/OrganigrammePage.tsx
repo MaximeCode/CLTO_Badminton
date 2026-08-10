@@ -91,7 +91,17 @@ const commissionSections: OrgSection[] = [
   },
 ];
 
-function MemberCard({ member, isExecutive = false }: { member: OrgMember; isExecutive?: boolean }) {
+function MemberCard({
+  member,
+  isExecutive = false,
+  headingLevel = 3,
+}: {
+  member: OrgMember;
+  isExecutive?: boolean;
+  headingLevel?: 3 | 4;
+}) {
+  const HeadingTag = headingLevel === 4 ? 'h4' : 'h3';
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 18 }}
@@ -115,7 +125,7 @@ function MemberCard({ member, isExecutive = false }: { member: OrgMember; isExec
           />
         </div>
         <div>
-          <h3 className="font-primary text-2xl md:text-3xl leading-none tracking-wide text-primary">{member.name}</h3>
+          <HeadingTag className="font-primary text-2xl md:text-3xl leading-none tracking-wide text-primary">{member.name}</HeadingTag>
           <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-secondary">{member.role}</p>
           {member.detail && <p className="mt-1 text-sm text-primary-accent">{member.detail}</p>}
         </div>
@@ -268,7 +278,7 @@ export function OrganigrammePage() {
                 </div>
                 <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
                   {section.members.map((member) => (
-                    <MemberCard key={`${section.title}-${member.name}-${member.role}`} member={member} />
+                    <MemberCard key={`${section.title}-${member.name}-${member.role}`} member={member} headingLevel={4} />
                   ))}
                 </div>
               </motion.section>

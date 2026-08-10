@@ -85,7 +85,7 @@ const TYPE_COLORS: Record<string, string> = {
   Débutant: "#0891b2",
   Intermédiaire: "#ea580c",
   "Matchs pour tous": "#16a34a",
-  "Pratique libre": "#0d9488",
+  "Pratique libre": "#16a34a",
   "Jeu libre": "#65a30d",
 };
 
@@ -382,9 +382,9 @@ export function CreneauxPage() {
                   <div className="flex items-center gap-4">
                     <Calendar className="text-primary" size={40} />
                     <div>
-                      <h3 className="font-primary text-3xl text-primary">
+                      <h2 className="font-primary text-3xl text-primary">
                         {formatMonthYear(selectedWeek.weekStart)}
-                      </h3>
+                      </h2>
                       <p className="text-gray-600 text-lg">{selectedWeek.period}</p>
                     </div>
                   </div>
@@ -428,7 +428,7 @@ export function CreneauxPage() {
               <div className="bg-white rounded-xl p-6 shadow-lg border-2 border-gray-200">
                 <div className="flex items-center gap-3 mb-4">
                   <Filter className="text-primary" size={24} />
-                  <h3 className="font-primary text-2xl text-primary">FILTRES</h3>
+                  <h2 className="font-primary text-2xl text-primary">FILTRES</h2>
                   <button
                     onClick={resetFilters}
                     className="ml-auto flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200 text-sm"
@@ -945,7 +945,7 @@ export function CreneauxPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-8 bg-white rounded-xl p-6 shadow-lg border-2 border-gray-200"
             >
-              <h3 className="font-primary text-2xl text-primary mb-4">LÉGENDE</h3>
+              <h2 className="font-primary text-2xl text-primary mb-4">LÉGENDE</h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[
                   ...CRENEAU_TYPES.map((type) => ({

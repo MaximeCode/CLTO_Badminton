@@ -95,9 +95,9 @@ export function PresidentQuote() {
             transition={{ duration: 0.6 }}
             className="order-2 md:order-1"
           >
-            <h3 className="text-white text-2xl md:text-3xl font-primary italic leading-snug sm:leading-relaxed">
+            <h2 className="text-white text-2xl md:text-3xl font-primary italic leading-snug sm:leading-relaxed">
               Bienvenue au CLTO Badminton !
-            </h3>
+            </h2>
 
             {/* Citation : guillemets décoratifs hors flux, texte intact */}
             <div className="relative mt-5 sm:mt-6">
@@ -112,6 +112,8 @@ export function PresidentQuote() {
                 <BlocksRenderer
                   content={motPresident.discours ?? []}
                   variant="onPrimary"
+                  size="sm"
+                  headingOffset={2}
                 />
               </div>
 

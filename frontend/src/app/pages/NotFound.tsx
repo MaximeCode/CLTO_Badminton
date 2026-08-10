@@ -23,12 +23,13 @@ export function NotFound() {
           transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
           className="mb-8"
         >
-          <h1
+          <p
             className="text-[150px] md:text-[200px] text-white/20 leading-none"
             style={{ fontFamily: 'var(--font-heading)' }}
+            aria-hidden
           >
             404
-          </h1>
+          </p>
         </motion.div>
 
         <motion.div
@@ -38,12 +39,12 @@ export function NotFound() {
         >
           <div className="flex items-center justify-center gap-3 mb-6">
             <Search className="text-secondary" size={40} />
-            <h2
+            <h1
               className="text-4xl md:text-5xl text-white tracking-wider"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
               Page Non Trouvée
-            </h2>
+            </h1>
           </div>
 
           <p className="text-white/80 text-lg mb-8 max-w-md mx-auto">

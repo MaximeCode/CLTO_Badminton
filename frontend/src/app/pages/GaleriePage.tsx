@@ -197,9 +197,9 @@ export function GaleriePage() {
             >
               <div className="flex items-center justify-between gap-3 border-b border-primary/10 px-4 py-3 sm:px-5">
                 <div className="min-w-0">
-                  <h2 className="font-primary text-xl sm:text-2xl text-primary truncate">
+                  <h3 className="font-primary text-xl sm:text-2xl text-primary truncate">
                     {selectedAlbum.titre}
-                  </h2>
+                  </h3>
                   <time
                     dateTime={selectedAlbum.date}
                     className="mt-0.5 block text-sm text-secondary"

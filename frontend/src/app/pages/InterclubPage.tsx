@@ -75,7 +75,7 @@ export function InterclubPage() {
               <div className="bg-primary text-white w-14 h-14 rounded-full flex items-center justify-center">
                 <Users className="h-7 w-7" />
               </div>
-              <h3 className="font-primary text-xl text-primary">{teams.length} équipes engagées</h3>
+              <p className="font-primary text-xl text-primary">{teams.length} équipes engagées</p>
               <p className="text-gray-600 text-sm">
                 De la {getDivisionLabel(teams[0].divisions_interclub)} à la {getDivisionLabel(teams[teams.length - 1].divisions_interclub)}, le CLTO aligne {teams.length} équipes dans les championnats par équipes cette saison.
               </p>
@@ -86,7 +86,7 @@ export function InterclubPage() {
                   <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
                 </svg>
               </div>
-              <h3 className="font-primary text-xl text-primary">Esprit d'équipe</h3>
+              <p className="font-primary text-xl text-primary">Esprit d'équipe</p>
               <p className="text-gray-600 text-sm">
                 Les interclubs sont avant tout une aventure collective. Chaque rencontre est l'occasion de représenter le club avec fierté et solidarité.
               </p>
@@ -97,7 +97,7 @@ export function InterclubPage() {
                   <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
               </div>
-              <h3 className="font-primary text-xl text-primary">Septembre - Juin</h3>
+              <p className="font-primary text-xl text-primary">Septembre - Juin</p>
               <p className="text-gray-600 text-sm">
                 La saison interclubs s'étend de septembre à juin.
               </p>

@@ -81,9 +81,9 @@ export function HistoriquePage() {
                     <div className="font-primary text-xl lg:text-2xl text-secondary mb-2 capitalize">
                       {stringifyDate(event.date, 'numeric', 'short', 'numeric')}
                     </div>
-                    <div className="font-primary text-2xl lg:text-3xl text-primary mb-3">
+                    <h3 className="font-primary text-2xl lg:text-3xl text-primary mb-3">
                       {event.titre}
-                    </div>
+                    </h3>
                     <p className="text-gray-600 text-md lg:text-base">{event.description}</p>
                   </div>
                 </article>

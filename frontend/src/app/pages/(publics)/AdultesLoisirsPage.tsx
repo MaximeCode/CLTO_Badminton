@@ -167,7 +167,7 @@ export function AdultesLoisirsPage() {
               {data.envie_de_progresser.titre}
             </h2>
             <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-              <BlocksRenderer content={data.envie_de_progresser.contenu} />
+              <BlocksRenderer content={data.envie_de_progresser.contenu} size="lg" headingOffset={1} />
             </div>
           </motion.div>
         </Section>
@@ -199,7 +199,7 @@ export function AdultesLoisirsPage() {
               >
                 <h3 className="font-primary text-2xl text-primary mb-4">{carte.titre}</h3>
                 <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                  <BlocksRenderer content={carte.contenu} />
+                  <BlocksRenderer content={carte.contenu} headingOffset={3} />
                 </div>
               </motion.article>
             ))}

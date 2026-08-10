@@ -264,9 +264,9 @@ export function GymnasesPage() {
           transition={{ duration: 0.6 }}
           className="mt-12 md:mt-16 bg-linear-to-r from-primary to-primary-accent text-white rounded-lg p-6 sm:p-8 shadow-xl"
         >
-          <h3 className="font-primary text-2xl sm:text-3xl mb-5 md:mb-6 text-center md:text-left">
+          <h2 className="font-primary text-2xl sm:text-3xl mb-5 md:mb-6 text-center md:text-left">
             Total des équipements
-          </h3>
+          </h2>
           <div className="flex flex-col divide-y divide-white/20 sm:grid sm:grid-cols-3 sm:divide-y-0 sm:gap-6">
             {equipmentStats.map((stat) => (
               <div

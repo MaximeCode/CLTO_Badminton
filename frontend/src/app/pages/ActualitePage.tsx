@@ -60,9 +60,6 @@ export function ActualitePage() {
   const articleDescription = article
     ? (extractTextFromBlocks(article.contenu).slice(0, 160).trim() || `Actualité du CLTO Badminton Orléans : ${article.titre}`)
     : 'Actualité du CLTO Badminton Orléans.';
-  const authorName =
-    article?.createdBy?.username
-    ?? ([article?.createdBy?.firstname, article?.createdBy?.lastname].filter(Boolean).join(' ') || 'CLTO Badminton Orléans');
 
   return (
     <>
@@ -71,16 +68,16 @@ export function ActualitePage() {
         description={articleDescription}
         image={article?.vignette?.url}
       />
-      {/* Article hero banner */}
-      <div className="relative h-65 sm:h-80 md:h-100 max-h-65 sm:max-h-80 md:max-h-100 overflow-hidden border-t-2 border-secondary bg-linear-to-br from-primary-accent via-primary to-primary/80">
+      {/* Article hero banner — hauteur auto sur mobile (stack), fixe dès sm */}
+      <div className="relative h-auto sm:h-80 md:h-100 sm:max-h-80 md:max-h-100 overflow-hidden border-t-2 border-secondary bg-linear-to-br from-primary-accent via-primary to-primary/80">
         {/* Subtle warm glow on the right, where the image sits */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_75%_50%,rgba(218,150,25,0.10),transparent_60%)]" />
 
-        <div className="relative h-full mx-auto max-w-7xl px-6 py-10 md:py-14">
-          <div className="h-full flex flex-col-reverse items-center gap-8 md:flex-row md:gap-12">
+        <div className="relative h-full mx-auto max-w-7xl min-w-0 px-4 sm:px-6 py-6 sm:py-10 md:py-14">
+          <div className="h-full flex flex-col-reverse items-center gap-4 sm:gap-8 md:flex-row md:gap-12 min-w-0">
 
             {loading && (
-              <div className="min-h-[50vh] w-full shrink-0 flex items-center justify-center">
+              <div className="min-h-40 sm:min-h-[50vh] w-full min-w-0 flex items-center justify-center">
                 <Loader2 className="w-10 h-10 animate-spin text-secondary" />
                 <p className="text-white text-xl ml-3">Chargement…</p>
               </div>
@@ -91,29 +88,29 @@ export function ActualitePage() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
-              className="flex-1 min-w-0"
+              className="w-full flex-1 min-w-0"
             >
               <div className="flex items-stretch gap-3">
                 <div className="w-1.5 shrink-0 rounded-full bg-secondary" />
-                <h1 className="font-primary text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
+                <h1 className="font-primary text-3xl sm:text-4xl lg:text-5xl text-white leading-tight wrap-break-word">
                   {article?.titre ?? ''}
                 </h1>
               </div>
             </motion.div>
 
-            {/* Right - vignette, ~30% */}
+            {/* Right - vignette, ~30% (contrainte taille sur mobile pour éviter overflow) */}
             {article?.vignette.url && (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="w-full shrink-0 md:w-[30%]"
+                className="w-full max-w-xs sm:max-w-sm min-w-0 md:max-w-none md:w-[30%] md:shrink-0"
               >
                 <div className="overflow-hidden rounded-xl border-2 border-secondary/50 shadow-2xl ring-2 ring-white/10">
                   <img
                     src={article.vignette.url}
                     alt={article.titre ?? ''}
-                    className="h-auto w-full object-contain"
+                    className="h-auto w-full max-w-full object-contain"
                   />
                 </div>
               </motion.div>
@@ -124,7 +121,7 @@ export function ActualitePage() {
       </div>
 
       <Section className="bg-white">
-        <div className="mb-6">
+        <div className="mb-6 min-w-0">
           <Link
             to="/actualites"
             className="inline-flex items-center gap-2 rounded-md border border-primary/30 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/10 transition-colors"
@@ -141,7 +138,7 @@ export function ActualitePage() {
         )}
 
         {loading ? (
-          <div role="status" className="bg-white rounded-lg shadow-lg p-8 md:p-10 space-y-8 animate-pulse">
+          <div role="status" className="bg-white rounded-lg shadow-lg p-4 sm:p-8 md:p-10 space-y-6 sm:space-y-8 animate-pulse min-w-0 max-w-full">
             {/* Header */}
             <div className="flex flex-wrap items-center gap-3 border-b border-gray-200 pb-6">
               <div className="h-6 w-20 rounded-full bg-gray-200" />
@@ -165,9 +162,9 @@ export function ActualitePage() {
             <span className="sr-only">Chargement de l'article…</span>
           </div>
         ) : (
-          <section className="bg-white rounded-lg shadow-lg p-8 md:p-10 space-y-8 text-gray-700 leading-relaxed">
+          <section className="bg-white rounded-lg shadow-lg p-4 sm:p-8 md:p-10 space-y-6 sm:space-y-8 text-gray-700 leading-relaxed min-w-0 max-w-full overflow-x-hidden">
             <header className="border-b border-gray-200 pb-6">
-              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm text-gray-500">
                 {article?.categories.map((categorie) => (
                   <span
                     key={categorie.id}
@@ -186,8 +183,8 @@ export function ActualitePage() {
               </div>
             </header>
 
-            <article>
-              <BlocksRenderer content={article?.contenu ?? []} headingOffset={1} />
+            <article className="min-w-0 wrap-break-word">
+              <BlocksRenderer content={article?.contenu ?? []} size="sm" sizeDesktop="lg" headingOffset={1} />
             </article>
           </section>
         )}

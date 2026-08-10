@@ -152,7 +152,7 @@ export function AdultesCompetiteursPage() {
                   <p className="text-secondary font-semibold mb-4">{item.sous_titre}</p>
                 )}
                 <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                  <BlocksRenderer content={item.contenu} />
+                  <BlocksRenderer content={item.contenu} headingOffset={3} />
                 </div>
               </motion.div>
             ))}
@@ -241,7 +241,7 @@ export function AdultesCompetiteursPage() {
           transition={{ duration: 0.6 }}
           className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-12 text-center shadow-lg text-white"
         >
-          <h3 className="font-primary text-4xl mb-4">PRÊT À COMMENCER ?</h3>
+          <h2 className="font-primary text-4xl mb-4">PRÊT À COMMENCER ?</h2>
           <p className="text-white/90 text-md mb-8 max-w-2xl mx-auto">
             Contactez-nous pour trouver le créneau adultes qui vous correspond.
           </p>
