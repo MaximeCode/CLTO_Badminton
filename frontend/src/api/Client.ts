@@ -29,14 +29,14 @@ function asGestionPayload(payload: unknown): { data: unknown[] } {
   throw new Error("Réponse API gestion invalide (tableau attendu).");
 }
 
-// PP / PROD — nécessite CORS autorisé pour l'origine du front
+// PP / PROD - nécessite CORS autorisé pour l'origine du front
 export async function fetchAPIGestion(endpoint: string) {
   const response = await fetch(`${API_GESTION_URL}${endpoint}`);
   const contentType = response.headers.get("content-type") ?? "";
 
   if (!contentType.includes("application/json")) {
     throw new Error(
-      `API gestion a renvoyé du non-JSON (${response.status}). Vérifiez l'URL ou le CORS.`,
+      `API gestion a renvoyé du non-JSON (${response.status}). Vérifiez l'URL ou le CORS.`
     );
   }
 
@@ -48,7 +48,7 @@ export async function fetchAPIGestion(endpoint: string) {
   return asGestionPayload(payload);
 }
 
-// DEV — fichiers dans frontend/public/data/<endpoint>.json
+// DEV - fichiers dans frontend/public/data/<endpoint>.json
 /// 1. tester la route dans le navigateur
 /// 2. créer frontend/public/data/<endpoint>.json et y coller les données
 export async function fetchFakeAPIGestion(endpoint: string) {
@@ -56,14 +56,14 @@ export async function fetchFakeAPIGestion(endpoint: string) {
 
   if (!response.ok) {
     throw new Error(
-      `Fichier mock introuvable : /data/${endpoint}.json (placez-le dans frontend/public/data/)`,
+      `Fichier mock introuvable : /data/${endpoint}.json (placez-le dans frontend/public/data/)`
     );
   }
 
   const contentType = response.headers.get("content-type") ?? "";
   if (!contentType.includes("application/json") && !contentType.includes("text/json")) {
     throw new Error(
-      `Mock /data/${endpoint}.json inaccessible (HTML reçu). Vérifiez que le fichier est dans frontend/public/data/.`,
+      `Mock /data/${endpoint}.json inaccessible (HTML reçu). Vérifiez que le fichier est dans frontend/public/data/.`
     );
   }
 

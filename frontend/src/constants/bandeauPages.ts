@@ -1,7 +1,7 @@
 /**
  * Valeurs exactes du champ `page` du Content-Type Bandeau.
  * Doivent correspondre au titre principal figé de chaque PageHero.
- * (Accueil et Interclub exclus — gérés autrement.)
+ * (Accueil et Interclub exclus - gérés autrement.)
  * Ordre alphabétique des valeurs (accents ignorés pour le tri).
  */
 export const BANDEAU_PAGES = {

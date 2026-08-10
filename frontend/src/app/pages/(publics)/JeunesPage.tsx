@@ -361,7 +361,7 @@ export function JeunesPage() {
                   {prixVolants.map((item) => (
                     <div key={item.id} className="bg-secondary/10 rounded-lg p-4 mb-4">
                       <p className="text-secondary font-bold text-xl text-center">
-                        {item.volants} —{' '}
+                        {item.volants} -{' '}
                         <span className="text-2xl">
                           {Number(item.prix).toLocaleString('fr-FR', {
                             minimumFractionDigits: 2,

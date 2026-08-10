@@ -73,7 +73,7 @@ export function ActualitePage() {
               </div>
             )}
 
-            {/* Left — title, ~70% */}
+            {/* Left - title, ~70% */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -88,7 +88,7 @@ export function ActualitePage() {
               </div>
             </motion.div>
 
-            {/* Right — vignette, ~30% */}
+            {/* Right - vignette, ~30% */}
             {article?.vignette.url && (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}

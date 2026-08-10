@@ -76,7 +76,7 @@ function CollapsiblePanel({
 }
 
 export function AdhererPage() {
-  const bandeauImage = useBandeauImage(BANDEAU_PAGES.ADHERER);
+    const bandeauImage = useBandeauImage(BANDEAU_PAGES.ADHERER);
 
     const [openPanel, setOpenPanel] = useState<string | null>(null);
 
@@ -234,7 +234,7 @@ export function AdhererPage() {
                             </div>
                         </CollapsiblePanel>
 
-                        {/* Contact panel — hardcoded, uses ContactContext (dernier bloc) */}
+                        {/* Contact panel - hardcoded, uses ContactContext (dernier bloc) */}
                         <CollapsiblePanel
                             id="contact"
                             title="Nous contacter"
@@ -255,12 +255,12 @@ export function AdhererPage() {
                                     {contact?.email}
                                 </p>
                                 <p>
-                                    <strong>{contact ? joinDays(contact.jour_accueils_physique) : '—'}&nbsp;:</strong>{' '}
-                                    {contact ? `${formatTime(contact.heure_debut_accueils_physique)} à ${formatTime(contact.heure_fin_accueils_physique)}` : '—'} — accueil physique
+                                    <strong>{contact ? joinDays(contact.jour_accueils_physique) : '-'}&nbsp;:</strong>{' '}
+                                    {contact ? `${formatTime(contact.heure_debut_accueils_physique)} à ${formatTime(contact.heure_fin_accueils_physique)}` : '-'} - accueil physique
                                 </p>
                                 <p>
-                                    <strong>{contact ? joinDays(contact.jour_accueils_a_distance) : '—'}&nbsp;:</strong>{' '}
-                                    {contact ? `${formatTime(contact.heure_debut_accueils_a_distance)} à ${formatTime(contact.heure_fin_accueils_a_distance)}` : '—'} — uniquement par téléphone, SMS, WhatsApp ou par mail
+                                    <strong>{contact ? joinDays(contact.jour_accueils_a_distance) : '-'}&nbsp;:</strong>{' '}
+                                    {contact ? `${formatTime(contact.heure_debut_accueils_a_distance)} à ${formatTime(contact.heure_fin_accueils_a_distance)}` : '-'} - uniquement par téléphone, SMS, WhatsApp ou par mail
                                 </p>
                                 <p className="text-sm">
                                     Des bénévoles du club sont présents régulièrement sur les créneaux. N&apos;hésitez pas à faire appel

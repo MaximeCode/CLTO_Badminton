@@ -163,31 +163,31 @@ export function Footer() {
                 <li className="flex items-start gap-2 text-gray-400">
                   <MapPin size={16} className="mt-0.5 shrink-0" />
                   <span className="text-xs">
-                    {contact?.adresse ?? '—'}
+                    {contact?.adresse ?? '-'}
                   </span>
                 </li>
                 <li className="flex items-center gap-2 text-gray-400">
                   <Phone size={16} className="shrink-0" />
                   <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="text-xs hover:text-secondary transition-colors">
-                    {contact?.telephone ?? '—'}
+                    {contact?.telephone ?? '-'}
                   </a>
                 </li>
                 <li className="flex items-center gap-2 text-gray-400">
                   <Mail size={16} className="shrink-0" />
                   <a href={`mailto:${contact?.email}`} className="text-xs hover:text-secondary transition-colors">
-                    {contact?.email ?? '—'}
+                    {contact?.email ?? '-'}
                   </a>
                 </li>
                 <li className="flex items-start gap-2 text-gray-400">
                   <Clock size={16} className="mt-0.5 shrink-0" />
                   <span className="text-xs space-y-1">
                     <span className="block">
-                      <strong className="text-gray-300">{joinDays(contact.jour_accueils_physique) || '—'}&nbsp;:</strong>{' '}
-                      {formatTime(contact.heure_debut_accueils_physique)} à {formatTime(contact.heure_fin_accueils_physique)} — accueil physique
+                      <strong className="text-gray-300">{joinDays(contact.jour_accueils_physique) || '-'}&nbsp;:</strong>{' '}
+                      {formatTime(contact.heure_debut_accueils_physique)} à {formatTime(contact.heure_fin_accueils_physique)} - accueil physique
                     </span>
                     <span className="block">
-                      <strong className="text-gray-300">{joinDays(contact.jour_accueils_a_distance) || '—'}&nbsp;:</strong>{' '}
-                      {formatTime(contact.heure_debut_accueils_a_distance)} à {formatTime(contact.heure_fin_accueils_a_distance)} — à distance
+                      <strong className="text-gray-300">{joinDays(contact.jour_accueils_a_distance) || '-'}&nbsp;:</strong>{' '}
+                      {formatTime(contact.heure_debut_accueils_a_distance)} à {formatTime(contact.heure_fin_accueils_a_distance)} - à distance
                     </span>
                   </span>
                 </li>
@@ -295,31 +295,31 @@ export function Footer() {
                 <li className="flex items-start gap-3 text-gray-400">
                   <MapPin size={18} className="mt-1 shrink-0" />
                   <span className="sm:text-xs md:text-sm text-balance">
-                    {contact?.adresse ?? '—'}
+                    {contact?.adresse ?? '-'}
                   </span>
                 </li>
                 <li className="flex items-center gap-3 text-gray-400">
                   <Phone size={18} className="shrink-0" />
                   <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="sm:text-xs md:text-sm hover:text-secondary transition-colors">
-                    {contact?.telephone ?? '—'}
+                    {contact?.telephone ?? '-'}
                   </a>
                 </li>
                 <li className="flex items-center gap-3 text-gray-400">
                   <Mail size={18} className="shrink-0" />
                   <a href={`mailto:${contact?.email}`} className="sm:text-xs md:text-sm hover:text-secondary transition-colors">
-                    {contact?.email ?? '—'}
+                    {contact?.email ?? '-'}
                   </a>
                 </li>
                 <li className="flex items-start gap-3 text-gray-400 lg:hidden">
                   <Clock size={18} className="mt-1 shrink-0" />
                   <span className="sm:text-xs md:text-sm space-y-1">
                     <span className="block">
-                      <strong className="text-gray-300">{joinDays(contact.jour_accueils_physique) || '—'}&nbsp;:</strong>{' '}
-                      {formatTime(contact.heure_debut_accueils_physique)} à {formatTime(contact.heure_fin_accueils_physique)} — accueil physique
+                      <strong className="text-gray-300">{joinDays(contact.jour_accueils_physique) || '-'}&nbsp;:</strong>{' '}
+                      {formatTime(contact.heure_debut_accueils_physique)} à {formatTime(contact.heure_fin_accueils_physique)} - accueil physique
                     </span>
                     <span className="block">
-                      <strong className="text-gray-300">{joinDays(contact.jour_accueils_a_distance) || '—'}&nbsp;:</strong>{' '}
-                      {formatTime(contact.heure_debut_accueils_a_distance)} à {formatTime(contact.heure_fin_accueils_a_distance)} — à distance
+                      <strong className="text-gray-300">{joinDays(contact.jour_accueils_a_distance) || '-'}&nbsp;:</strong>{' '}
+                      {formatTime(contact.heure_debut_accueils_a_distance)} à {formatTime(contact.heure_fin_accueils_a_distance)} - à distance
                     </span>
                   </span>
                 </li>
@@ -343,12 +343,12 @@ export function Footer() {
                   <Clock size={18} className="mt-1 shrink-0" />
                   <span className="sm:text-xs md:text-sm space-y-1">
                     <span className="block">
-                      <strong className="text-gray-300">{joinDays(contact.jour_accueils_physique) || '—'}&nbsp;:</strong>{' '}
-                      {formatTime(contact.heure_debut_accueils_physique)} à {formatTime(contact.heure_fin_accueils_physique)} — accueil physique
+                      <strong className="text-gray-300">{joinDays(contact.jour_accueils_physique) || '-'}&nbsp;:</strong>{' '}
+                      {formatTime(contact.heure_debut_accueils_physique)} à {formatTime(contact.heure_fin_accueils_physique)} - accueil physique
                     </span>
                     <span className="block">
-                      <strong className="text-gray-300">{joinDays(contact.jour_accueils_a_distance) || '—'}&nbsp;:</strong>{' '}
-                      {formatTime(contact.heure_debut_accueils_a_distance)} à {formatTime(contact.heure_fin_accueils_a_distance)} — à distance
+                      <strong className="text-gray-300">{joinDays(contact.jour_accueils_a_distance) || '-'}&nbsp;:</strong>{' '}
+                      {formatTime(contact.heure_debut_accueils_a_distance)} à {formatTime(contact.heure_fin_accueils_a_distance)} - à distance
                     </span>
                   </span>
                 </li>

@@ -25,7 +25,7 @@
   display: none;
 }
 
-/* Horizontal Scrollbar styled (native — desktop browsers that show it) */
+/* Horizontal Scrollbar styled (native - desktop browsers that show it) */
 .scrollbar-styled {
   overflow-x: scroll;
   scrollbar-width: thin;

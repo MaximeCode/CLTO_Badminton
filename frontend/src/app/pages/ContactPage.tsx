@@ -120,7 +120,7 @@ export function ContactPage() {
                     <div>
                       <h3 className="text-primary text-2xl mb-1">Siège social</h3>
                       <p className="text-gray-600">
-                        {contact?.adresse ?? '—'}
+                        {contact?.adresse ?? '-'}
                       </p>
                     </div>
                   </div>
@@ -132,7 +132,7 @@ export function ContactPage() {
                     <div>
                       <h3 className="text-primary text-2xl mb-1">Email</h3>
                       <a href={`mailto:${contact?.email}`} className="text-primary hover:text-secondary transition-colors">
-                        {contact?.email ?? '—'}
+                        {contact?.email ?? '-'}
                       </a>
                     </div>
                   </div>
@@ -144,7 +144,7 @@ export function ContactPage() {
                     <div>
                       <h3 className="text-primary text-2xl mb-1">Téléphone</h3>
                       <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="text-primary hover:text-secondary transition-colors">
-                        {contact?.telephone ?? '—'}
+                        {contact?.telephone ?? '-'}
                       </a>
                     </div>
                   </div>
@@ -156,14 +156,14 @@ export function ContactPage() {
                   </h2>
                   <div className="space-y-2 text-gray-600">
                     <p>
-                      <strong>{contact ? joinDays(contact.jour_accueils_physique) : '—'}&nbsp;:</strong>{' '}
-                      {contact ? `${formatTime(contact.heure_debut_accueils_physique)} à ${formatTime(contact.heure_fin_accueils_physique)}` : '—'} — accueil physique au siège social
+                      <strong>{contact ? joinDays(contact.jour_accueils_physique) : '-'}&nbsp;:</strong>{' '}
+                      {contact ? `${formatTime(contact.heure_debut_accueils_physique)} à ${formatTime(contact.heure_fin_accueils_physique)}` : '-'} - accueil physique au siège social
                     </p>
                     <p>
-                      <strong>{contact ? joinDays(contact.jour_accueils_a_distance) : '—'}&nbsp;:</strong>{' '}
-                      {contact ? `${formatTime(contact.heure_debut_accueils_a_distance)} à ${formatTime(contact.heure_fin_accueils_a_distance)}` : '—'} — uniquement par téléphone, SMS, WhatsApp au{' '}
+                      <strong>{contact ? joinDays(contact.jour_accueils_a_distance) : '-'}&nbsp;:</strong>{' '}
+                      {contact ? `${formatTime(contact.heure_debut_accueils_a_distance)} à ${formatTime(contact.heure_fin_accueils_a_distance)}` : '-'} - uniquement par téléphone, SMS, WhatsApp au{' '}
                       <a href={`tel:${contact?.telephone?.replace(/\s/g, '')}`} className="text-primary hover:text-secondary transition-colors">
-                        {contact?.telephone ?? '—'}
+                        {contact?.telephone ?? '-'}
                       </a>{' '}ou par mail
                     </p>
                   </div>

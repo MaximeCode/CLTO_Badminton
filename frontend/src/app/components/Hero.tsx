@@ -85,7 +85,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
         {/* Loader2 icon */}
         <Loader2 className="w-10 h-10 animate-spin text-secondary" />
         <p className="text-primary">Chargement des slides...</p>
-        {/* Diagonal edge — outside AnimatePresence to avoid gap on slide change */}
+        {/* Diagonal edge - outside AnimatePresence to avoid gap on slide change */}
         <div
           className="absolute -bottom-px left-0 right-0 h-10 md:h-24 bg-white z-10 pointer-events-none"
           style={{ clipPath: 'polygon(-1% 100%, 101% 0, 101% 100%)' }}
@@ -225,7 +225,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
         </motion.div>
       </AnimatePresence>
 
-      {/* Diagonal edge — outside AnimatePresence to avoid gap on slide change */}
+      {/* Diagonal edge - outside AnimatePresence to avoid gap on slide change */}
       <div
         className={`absolute -bottom-px left-0 right-0 h-10 md:h-24 bg-${isInterclub ? 'gray-100' : 'white'} z-10 pointer-events-none`}
         style={{ clipPath: 'polygon(-1% 100%, 101% 0, 101% 100%)' }}

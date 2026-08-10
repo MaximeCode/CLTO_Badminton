@@ -55,7 +55,7 @@ export function MentionsLegalesPage() {
                 <strong>SIRET (siège) :</strong> 482 737 038 00034
               </li>
               <li>
-                <strong>Code APE / NAF :</strong> 93.12Z — Activités de clubs de sports
+                <strong>Code APE / NAF :</strong> 93.12Z - Activités de clubs de sports
               </li>
               <li>
                 <strong>Immatriculation INSEE :</strong> depuis le 1er janvier 2005

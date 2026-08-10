@@ -20,7 +20,7 @@ export function PolitiqueConfidentialitePage() {
     <>
       <PageHero
         title="POLITIQUE DE CONFIDENTIALITÉ"
-        subtitle="Protection des données personnelles — CLTO Badminton"
+        subtitle="Protection des données personnelles - CLTO Badminton"
         image={bandeauImage}
       />
 
@@ -41,7 +41,7 @@ export function PolitiqueConfidentialitePage() {
                 association déclarée
               </li>
               <li>1 boulevard de Québec, 45000 Orléans</li>
-              <li>RNA : W452000403 — SIRET : 482 737 038 00034</li>
+              <li>RNA : W452000403 - SIRET : 482 737 038 00034</li>
               <li>
                 Email :{' '}
                 <a href="mailto:contact@cltobadminton.fr" className="text-secondary hover:underline">
@@ -70,7 +70,7 @@ export function PolitiqueConfidentialitePage() {
               </li>
               <li>
                 <strong>Données de navigation techniques :</strong> adresse IP, type de navigateur,
-                pages consultées, horodatage — dans la mesure où elles sont générées
+                pages consultées, horodatage - dans la mesure où elles sont générées
                 automatiquement par l&apos;hébergement du site.
               </li>
               <li>
@@ -121,39 +121,39 @@ export function PolitiqueConfidentialitePage() {
             <p>Elles peuvent être traitées pour notre compte par les prestataires suivants&nbsp;:</p>
             <ul className="list-disc pl-5 space-y-2">
               <li>
-                <strong>OVH SAS</strong> — hébergement du site et de l&apos;infrastructure
+                <strong>OVH SAS</strong> - hébergement du site et de l&apos;infrastructure
                 technique (2 rue Kellermann, 59100 Roubaix).
               </li>
               <li>
-                <strong>Strapi</strong> — système de gestion de contenus (CMS) utilisé pour
+                <strong>Strapi</strong> - système de gestion de contenus (CMS) utilisé pour
                 administrer les contenus du site.
               </li>
               <li>
-                <strong>Flickr</strong> — hébergement et diffusion de la galerie photos du club
+                <strong>Flickr</strong> - hébergement et diffusion de la galerie photos du club
                 (albums intégrés sur le site). Lorsque vous consultez la galerie, des données de
                 connexion techniques peuvent être traitées par Flickr selon sa propre politique
                 de confidentialité.
               </li>
               <li>
-                <strong>Google Drive</strong> — hébergement et consultation de certains documents
+                <strong>Google Drive</strong> - hébergement et consultation de certains documents
                 mis à disposition sur le site (par exemple la charte interclubs). L&apos;accès à
                 ces documents peut entraîner un traitement de données par Google selon ses
                 conditions propres.
               </li>
               <li>
-                <strong>OpenStreetMap</strong> — fond de carte utilisé pour localiser les
+                <strong>OpenStreetMap</strong> - fond de carte utilisé pour localiser les
                 gymnases. La consultation de la carte peut générer des requêtes techniques
                 (adresse IP, etc.) auprès des serveurs de tuiles OpenStreetMap, soumis à leurs
                 conditions d&apos;utilisation.
               </li>
               <li>
-                <strong>HelloAsso</strong> — plateforme tierce d&apos;inscription et de paiement
+                <strong>HelloAsso</strong> - plateforme tierce d&apos;inscription et de paiement
                 pour certains événements (ex. stages). Lorsque vous utilisez HelloAsso, vos données
                 sont également traitées par HelloAsso selon sa propre politique de
                 confidentialité.
               </li>
               <li>
-                <strong>IcBad</strong> — plateforme de résultats d&apos;interclubs ; des données
+                <strong>IcBad</strong> - plateforme de résultats d&apos;interclubs ; des données
                 sportives publiques (classements, compositions d&apos;équipes) peuvent être
                 affichées sur le site.
               </li>
