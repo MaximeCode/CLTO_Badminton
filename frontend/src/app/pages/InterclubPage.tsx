@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ExternalLink, Users } from "lucide-react";
 import { motion } from "motion/react";
 import { Hero, type HeroSlide } from "../components/Hero";
+import { Seo } from '../components/Seo';
 import { getInterclubTeams } from "@/api/icbad_local/interclub";
 import { getParametresGlobaux } from "@/api/strapi/parametre-globaux";
 import type { InterclubTeamSummary } from "@/types/interclubType";
@@ -50,6 +51,11 @@ export function InterclubPage() {
 
   return (
     <>
+      <Seo
+        title="Interclubs"
+        description="Interclubs du CLTO Badminton Orléans : équipes, résultats et charte du club de badminton à Orléans."
+      />
+      <h1 className="sr-only">Interclubs du CLTO Badminton Orléans</h1>
       <Hero
         slides={heroSlides}
         variant="interclub"

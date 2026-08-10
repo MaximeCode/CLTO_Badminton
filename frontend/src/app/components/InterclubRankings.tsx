@@ -369,7 +369,7 @@ function RankingCard({
                             {team.position === 1 && <Trophy style={{ color: accentColor }} size={20} />}
                             {team.position === 2 && <Medal style={{ color: '#9ca3af' }} size={20} />}
                             {team.position === 3 && <Medal style={{ color: '#d97706' }} size={20} />}
-                            <h4 className="text-lg md:text-xl xl:text-2xl text-gray-900 truncate">{team.teamName}</h4>
+                            <h3 className="text-lg md:text-xl xl:text-2xl text-gray-900 truncate">{team.teamName}</h3>
                         </div>
 
                         <div className="flex justify-between items-center gap-4">

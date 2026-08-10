@@ -3,15 +3,22 @@ import { PageHero } from "../components/PageHero"
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from "../components/Section"
+import { Seo } from "../components/Seo"
 
 export function ProjetClub() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.PROJET_CLUB);
 
   return (
     <>
+      <Seo
+        title="Projet club"
+        description="Projet club F.J.P.C.R 2024-2028 du CLTO Badminton Orléans : orientations et ambitions du club orléanais."
+      />
       <PageHero
-        title={BANDEAU_PAGES.PROJET_CLUB}
+        title={BANDEAU_PAGES.PROJET_CLUB || "PROJET CLUB"}
         image={bandeauImage}
+        subtitle="Le projet F.J.P.C.R 2024-2028 du CLTO Badminton à Orléans"
+        imageAlt="Projet club CLTO Badminton Orléans"
       />
 
       <Section className="bg-white">

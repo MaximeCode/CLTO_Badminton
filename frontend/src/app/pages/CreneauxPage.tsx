@@ -3,6 +3,7 @@ import { PageHero } from "../components/PageHero";
 import { useBandeauImage } from "@/hooks/useBandeauImage";
 import { BANDEAU_PAGES } from "@/constants/bandeauPages";
 import { Section } from "../components/Section";
+import { Seo } from '../components/Seo';
 import { motion, AnimatePresence } from "motion/react";
 import {
   AlertTriangle,
@@ -341,9 +342,13 @@ export function CreneauxPage() {
 
   return (
     <>
+      <Seo
+        title="Créneaux"
+        description="Créneaux et planning d'entraînement du CLTO Badminton Orléans : horaires du club de badminton à Orléans."
+      />
       <PageHero
         title="CRÉNEAUX"
-        subtitle="Planning hebdomadaire des entraînements"
+        subtitle="Planning hebdomadaire des entraînements du CLTO Badminton"
         image={bandeauImage}
       />
 

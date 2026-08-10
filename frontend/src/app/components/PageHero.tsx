@@ -4,24 +4,37 @@ interface PageHeroProps {
   title?: string;
   subtitle?: string;
   image?: string;
+  /** Texte alternatif de l'image de bannière (SEO / accessibilité). */
+  imageAlt?: string;
 }
 
-export function PageHero({ title = '', subtitle = '', image }: PageHeroProps) {
+export function PageHero({ title = '', subtitle = '', image, imageAlt }: PageHeroProps) {
   const hasImage = Boolean(image);
+  const resolvedAlt =
+    imageAlt ||
+    (title
+      ? `${title} — CLTO Badminton Orléans`
+      : 'CLTO Badminton Orléans, club de badminton à Orléans');
 
   return (
     <div className="relative h-40 sm:h-60 md:h-80 overflow-hidden">
-      <div
-        className={`absolute inset-0 ${hasImage ? 'bg-cover bg-center' : ''}`}
-        style={
-          hasImage
-            ? { backgroundImage: `url(${image})` }
-            : {
+      <div className="absolute inset-0">
+        {hasImage ? (
+          <img
+            src={image}
+            alt={resolvedAlt}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        ) : (
+          <div
+            className="absolute inset-0"
+            style={{
               backgroundImage:
                 'linear-gradient(to bottom right, var(--primary) 0%, var(--primary-accent) 45%, var(--secondary) 90%, var(--secondary) 100%)',
-            }
-        }
-      >
+            }}
+            aria-hidden
+          />
+        )}
         {hasImage && title && (
           <div className="absolute inset-0 bg-linear-to-b from-black/80 via-black/60 to-black/45 md:bg-linear-to-r md:from-black/70 md:via-black/50 md:to-black/30" />
         )}
@@ -30,15 +43,17 @@ export function PageHero({ title = '', subtitle = '', image }: PageHeroProps) {
         <div>
           <div className="flex items-stretch gap-3 sm:gap-4 mb-2 sm:mb-3 md:mb-4">
             <div className="w-1.5 shrink-0 rounded-full bg-secondary" />
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-white text-4xl md:text-6xl lg:text-7xl tracking-wide md:tracking-wider leading-[1.15]"
-              style={{ fontFamily: 'var(--font-heading)' }}
-            >
-              {title}
-            </motion.h1>
+            {title ? (
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-white text-4xl md:text-6xl lg:text-7xl tracking-wide md:tracking-wider leading-[1.15]"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                {title}
+              </motion.h1>
+            ) : null}
           </div>
           {subtitle && (
             <motion.p

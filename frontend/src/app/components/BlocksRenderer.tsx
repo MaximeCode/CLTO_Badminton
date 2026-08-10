@@ -27,18 +27,25 @@ type VariantStyles = {
 };
 
 /** Text size for paragraphs / lists. Default `lg` preserves existing look. */
-const SIZE_CLASSES: Record<BlocksVariant, Record<BlocksSize, string>> = {
-  default: {
-    sm: "text-sm",
-    base: "text-base",
-    lg: "text-lg",
-  },
-  onPrimary: {
-    sm: "text-sm",
-    base: "text-base",
-    lg: "text-base sm:text-lg",
-  },
+const SIZE_TEXT: Record<BlocksSize, string> = {
+  sm: "text-sm",
+  base: "text-base",
+  lg: "text-lg",
 };
+
+const SIZE_TEXT_MD: Record<BlocksSize, string> = {
+  sm: "md:text-sm",
+  base: "md:text-base",
+  lg: "md:text-lg",
+};
+
+/** Mobile = `size` ; dès `md` = `sizeDesktop` si fourni. */
+function resolveSizeClass(size: BlocksSize, sizeDesktop?: BlocksSize): string {
+  if (!sizeDesktop || sizeDesktop === size) {
+    return SIZE_TEXT[size];
+  }
+  return `${SIZE_TEXT[size]} ${SIZE_TEXT_MD[sizeDesktop]}`;
+}
 
 const VARIANT_STYLES: Record<BlocksVariant, Omit<VariantStyles, "paragraph" | "quote" | "list">> = {
   default: {
@@ -59,9 +66,13 @@ const VARIANT_STYLES: Record<BlocksVariant, Omit<VariantStyles, "paragraph" | "q
   },
 };
 
-function resolveStyles(variant: BlocksVariant, size: BlocksSize): VariantStyles {
+function resolveStyles(
+  variant: BlocksVariant,
+  size: BlocksSize,
+  sizeDesktop?: BlocksSize,
+): VariantStyles {
   const base = VARIANT_STYLES[variant];
-  const sizeClass = SIZE_CLASSES[variant][size];
+  const sizeClass = resolveSizeClass(size, sizeDesktop);
   const paragraphSpacing = variant === "onPrimary" ? "mb-3 sm:mb-4" : "mb-4";
   const quoteBorder =
     variant === "onPrimary"
@@ -135,7 +146,7 @@ function renderList(
         }
         const item = child as ListItemInlineNode;
         return (
-          <li key={`${key}-item-${index}`} className="leading-relaxed">
+          <li key={`${key}-item-${index}`} className={`${styles.list} leading-relaxed`}>
             {renderInline(item.children, `${key}-item-${index}`, styles)}
           </li>
         );
@@ -148,58 +159,41 @@ function renderBlock(
   block: BlocksRootNode,
   index: number,
   styles: VariantStyles,
+  resolvedLevel?: number,
 ): React.ReactNode {
   const key = `block-${index}`;
 
   switch (block.type) {
     case "heading": {
       const heading = block as HeadingBlockNode;
+      const level = (resolvedLevel ??
+        Math.min(6, Math.max(1, heading.level))) as 1 | 2 | 3 | 4 | 5 | 6;
       const className =
-        heading.level <= 2
+        level <= 2
           ? `mb-4 mt-10 first:mt-0 ${styles.heading}`
           : `mb-3 mt-8 ${styles.heading}`;
       const style =
-        heading.level <= 2 ? { fontFamily: "var(--font-heading)" } : undefined;
+        level <= 2 ? { fontFamily: "var(--font-heading)" } : undefined;
       const children = renderInline(heading.children, key, styles);
+      const sizeClass =
+        level === 1
+          ? "text-4xl md:text-5xl"
+          : level === 2
+            ? "text-3xl md:text-4xl"
+            : level === 3
+              ? "text-2xl"
+              : level === 4
+                ? "text-xl"
+                : level === 5
+                  ? "text-lg"
+                  : "text-base";
+      const Tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
-      switch (heading.level) {
-        case 1:
-          return (
-            <h1 key={key} className={`text-4xl md:text-5xl ${className}`} style={style}>
-              {children}
-            </h1>
-          );
-        case 2:
-          return (
-            <h2 key={key} className={`text-3xl md:text-4xl ${className}`} style={style}>
-              {children}
-            </h2>
-          );
-        case 3:
-          return (
-            <h3 key={key} className={`text-2xl ${className}`} style={style}>
-              {children}
-            </h3>
-          );
-        case 4:
-          return (
-            <h4 key={key} className={`text-xl ${className}`} style={style}>
-              {children}
-            </h4>
-          );
-        case 5:
-          return (
-            <h5 key={key} className={`text-lg ${className}`} style={style}>
-              {children}
-            </h5>
-          );
-        case 6:
-          return (
-            <h6 key={key} className={`text-base ${className}`} style={style}>
-              {children}
-            </h6>
-          );
-      }
+      return (
+        <Tag key={key} className={`${sizeClass} ${className}`} style={style}>
+          {children}
+        </Tag>
+      );
     }
     case "paragraph":
       return (
@@ -254,20 +248,67 @@ type BlocksRendererProps = {
   content: BlocksContent;
   /** `onPrimary` = texte clair pour fond coloré (ex. Mot du Président) */
   variant?: BlocksVariant;
-  /** Taille du texte des paragraphes / listes. Défaut `lg` = comportement historique. */
+  /** Taille mobile des paragraphes / listes. Défaut `lg` = comportement historique. */
   size?: BlocksSize;
+  /** Taille dès `md`. Si omis, `size` s’applique à toutes les largeurs. */
+  sizeDesktop?: BlocksSize;
+  /**
+   * Niveau de départ des titres du bloc (ex. 1 → le titre le plus haut du CMS
+   * devient un h2). Les niveaux relatifs CMS sont conservés sans trous.
+   */
+  headingOffset?: number;
 };
+
+/**
+ * Remappe les titres CMS en outline SEO correct :
+ * - le niveau le plus haut du contenu → `1 + headingOffset`
+ * - les niveaux suivants restent relatifs, sans saut (h3+h5 → h2+h3 si offset=1)
+ */
+function buildNormalizedHeadingLevels(
+  content: BlocksContent,
+  headingOffset: number,
+): Map<number, number> {
+  const headingEntries: { index: number; level: number }[] = [];
+
+  content.forEach((block, index) => {
+    if (block.type === "heading") {
+      headingEntries.push({ index, level: block.level });
+    }
+  });
+
+  const uniqueSorted = [...new Set(headingEntries.map((h) => h.level))].sort(
+    (a, b) => a - b,
+  );
+  const rankByLevel = new Map(uniqueSorted.map((level, rank) => [level, rank]));
+  const baseLevel = Math.min(6, Math.max(1, 1 + headingOffset));
+
+  const normalized = new Map<number, number>();
+  for (const { index, level } of headingEntries) {
+    const rank = rankByLevel.get(level) ?? 0;
+    normalized.set(index, Math.min(6, baseLevel + rank));
+  }
+  return normalized;
+}
 
 export function BlocksRenderer({
   content,
   variant = "default",
   size = "lg",
+  sizeDesktop,
+  headingOffset = 0,
 }: BlocksRendererProps) {
   if (!content.length) {
     return null;
   }
 
-  const styles = resolveStyles(variant, size);
+  const styles = resolveStyles(variant, size, sizeDesktop);
+  const headingLevels = buildNormalizedHeadingLevels(content, headingOffset);
 
-  return <div className="blocks-content">{content.map((block, i) => renderBlock(block, i, styles))}</div>;
+  return (
+    <div className="blocks-content">
+      {content.map((block, i) =>
+        renderBlock(block, i, styles, headingLevels.get(i)),
+      )}
+    </div>
+  );
 }

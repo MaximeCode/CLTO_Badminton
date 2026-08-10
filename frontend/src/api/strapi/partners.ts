@@ -10,6 +10,8 @@ export async function getPartners(): Promise<Partner[]> {
       documentId: string;
       logos: {
         url: string;
+        alternativeText?: string | null;
+        name?: string | null;
       }[];
       type: string;
     }) => ({
@@ -17,6 +19,8 @@ export async function getPartners(): Promise<Partner[]> {
       documentId: item.documentId,
       logos: (item.logos ?? []).map((logo) => ({
         url: `${API_URL}${logo.url ?? ""}`,
+        alternativeText: logo.alternativeText ?? null,
+        name: logo.name ?? null,
       })),
       type: item.type,
     })

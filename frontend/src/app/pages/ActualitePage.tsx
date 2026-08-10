@@ -7,6 +7,7 @@ import { getOneArticle } from '@/api/strapi/articles';
 import { extractTextFromBlocks } from '@/utils/blocksText';
 import { stringifyDate } from '@/utils/formatDate';
 import { BlocksRenderer } from '../components/BlocksRenderer';
+import { Seo } from '../components/Seo';
 import { motion } from 'motion/react';
 
 const userAvatar = new URL('../../imports/user.png', import.meta.url).href;
@@ -56,8 +57,20 @@ export function ActualitePage() {
     loadData();
   }, [documentId]);
 
+  const articleDescription = article
+    ? (extractTextFromBlocks(article.contenu).slice(0, 160).trim() || `Actualité du CLTO Badminton Orléans : ${article.titre}`)
+    : 'Actualité du CLTO Badminton Orléans.';
+  const authorName =
+    article?.createdBy?.username
+    ?? ([article?.createdBy?.firstname, article?.createdBy?.lastname].filter(Boolean).join(' ') || 'CLTO Badminton Orléans');
+
   return (
     <>
+      <Seo
+        title={article?.titre ?? 'Actualité'}
+        description={articleDescription}
+        image={article?.vignette?.url}
+      />
       {/* Article hero banner */}
       <div className="relative h-65 sm:h-80 md:h-100 max-h-65 sm:max-h-80 md:max-h-100 overflow-hidden border-t-2 border-secondary bg-linear-to-br from-primary-accent via-primary to-primary/80">
         {/* Subtle warm glow on the right, where the image sits */}
@@ -174,7 +187,7 @@ export function ActualitePage() {
             </header>
 
             <article>
-              <BlocksRenderer content={article?.contenu ?? []} />
+              <BlocksRenderer content={article?.contenu ?? []} headingOffset={1} />
             </article>
           </section>
         )}

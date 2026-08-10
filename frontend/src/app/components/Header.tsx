@@ -137,9 +137,9 @@ export function Header() {
           <Link
             to="/"
             className="flex items-center"
-            aria-label="Accueil du CLTO Badminton"
+            aria-label="Accueil du CLTO Badminton Orléans"
           >
-            <img src={logo} alt="CLTO Badminton" className="h-16 w-auto" />
+            <img src={logo} alt="CLTO Badminton Orléans" className="h-16 w-auto" />
           </Link>
 
           {/* MD Devices (780px) */}

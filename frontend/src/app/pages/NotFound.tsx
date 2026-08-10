@@ -1,10 +1,16 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router';
 import { Home, Search } from 'lucide-react';
+import { Seo } from '../components/Seo';
 
 export function NotFound() {
   return (
     <div className="min-h-[80vh] flex items-center justify-center bg-linear-to-br from-primary to-footer px-6">
+      <Seo
+        title="Page introuvable"
+        description="La page demandée est introuvable sur le site du CLTO Badminton Orléans."
+        noindex
+      />
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

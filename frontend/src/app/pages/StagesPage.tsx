@@ -1,6 +1,5 @@
 import { motion } from 'motion/react';
-import { Calendar, Euro, Users, MapPin, Clock, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router';
+import { Calendar, Euro, Users, MapPin, ArrowRight } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
@@ -11,6 +10,7 @@ import { getParametresGlobaux } from '@/api/strapi/parametre-globaux';
 import { Stage } from '@/types/stageType';
 import { BlocksRenderer } from '../components/BlocksRenderer';
 import { formatDateRange } from '@/utils/formatDate';
+import { Seo } from '../components/Seo';
 
 const HELLOASSO_URL_FALLBACK = import.meta.env.VITE_HELLOASSO_URL as string;
 
@@ -45,9 +45,13 @@ export function StagesPage() {
   }, []);
   return (
     <>
+      <Seo
+        title="Stages"
+        description="Stages de badminton du CLTO Badminton Orléans pendant les vacances scolaires, pour tous les niveaux."
+      />
       <PageHero
         title="STAGES"
-        subtitle="Des stages encadrés pour progresser et préparer la saison"
+        subtitle="Des stages encadrés pour progresser et préparer la saison au CLTO Badminton"
         image={bandeauImage}
       />
 
@@ -118,37 +122,6 @@ export function StagesPage() {
             </div>
           </motion.article>
         ))}
-
-        {/* <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="rounded-lg bg-linear-to-br from-primary to-primary-accent p-12 text-center text-white shadow-lg mt-24"
-        >
-          <h2 className="mb-4 font-primary text-4xl">INSCRIVEZ-VOUS</h2>
-          <p className="mx-auto mb-8 max-w-2xl text-lg text-white/90">
-            Les places sont limitées et partent vite ! Accédez à la page d&apos;inscription via le bouton
-            ci-dessous, ou contactez-nous pour toute question sur nos stages.
-          </p>
-          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a
-              href={helloassoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-md bg-secondary px-8 py-3 text-white transition-colors duration-200 hover:bg-secondary-accent"
-            >
-              Voir notre page HelloAsso
-              <ArrowRight size={18} />
-            </a>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 rounded-md border border-white/40 bg-white/10 px-8 py-3 text-white transition-colors duration-200 hover:bg-white/20"
-            >
-              Nous contacter
-            </Link>
-          </div>
-        </motion.div> */}
       </Section>
     </>
   );

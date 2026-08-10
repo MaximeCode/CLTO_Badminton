@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { PageHero } from '../components/PageHero';
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
+import { Seo } from '../components/Seo';
 import { Section } from '../components/Section';
 import { motion } from 'motion/react';
 import type { Historique } from '../../types/historiquesType';
@@ -32,9 +33,13 @@ export function HistoriquePage() {
   }, []);
   return (
     <>
+      <Seo
+        title="Historique"
+        description="Histoire du CLTO Badminton Orléans : plus de 40 ans de passion badminton au sein du club orléanais."
+      />
       <PageHero
         title="HISTORIQUE"
-        subtitle="Plus de 40 ans de passion badminton"
+        subtitle="Plus de 40 ans de passion badminton à Orléans"
         image={bandeauImage}
       />
 

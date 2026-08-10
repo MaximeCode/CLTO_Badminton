@@ -111,14 +111,23 @@ export function Hero<T extends HeroSlide = HeroSlide>({
           transition={{ duration: 0.5 }}
           className="absolute inset-0"
         >
-          <div
-            className={
-              isInterclub
-                ? 'absolute inset-0 bg-cover bg-position-[center_25%] md:bg-center'
-                : 'absolute inset-0 bg-cover bg-center'
-            }
-            style={{ backgroundImage: `url(${slide.image})` }}
-          />
+          {slide.image ? (
+            <img
+              src={slide.image}
+              alt={
+                slide.title
+                  ? `${slide.title} — CLTO Badminton Orléans`
+                  : 'CLTO Badminton Orléans, club de badminton à Orléans'
+              }
+              className={
+                isInterclub
+                  ? 'absolute inset-0 h-full w-full object-cover object-[center_25%] md:object-center'
+                  : 'absolute inset-0 h-full w-full object-cover object-center'
+              }
+            />
+          ) : (
+            <div className="absolute inset-0 bg-primary" aria-hidden />
+          )}
 
           <div
             className={
@@ -156,18 +165,25 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                   {slide.label}
                 </motion.div>
 
-                <motion.h1
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  className={
-                    isInterclub
-                      ? 'font-primary text-4xl lg:text-5xl xl:text-7xl text-white leading-[1.15] mb-2 md:mb-4'
-                      : 'font-primary text-4xl lg:text-5xl xl:text-7xl text-white leading-[1.15] mb-3 md:mb-4'
-                  }
-                >
-                  {slide.title}
-                </motion.h1>
+                {isInterclub ? (
+                  <motion.h2
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                    className="font-primary text-4xl lg:text-5xl xl:text-7xl text-white leading-[1.15] mb-2 md:mb-4"
+                  >
+                    {slide.title}
+                  </motion.h2>
+                ) : (
+                  <motion.h1
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                    className="font-primary text-4xl lg:text-5xl xl:text-7xl text-white leading-[1.15] mb-3 md:mb-4"
+                  >
+                    {slide.title}
+                  </motion.h1>
+                )}
 
                 <motion.p
                   initial={{ y: 20, opacity: 0 }}

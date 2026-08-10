@@ -1,6 +1,7 @@
 {
-  "name": "",
-  "short_name": "",
+  "name": "CLTO Badminton Orléans",
+  "short_name": "CLTO",
+  "description": "Club de badminton à Orléans — CLTO Badminton",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -13,7 +14,9 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ffffff",
+  "theme_color": "#0153b6",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "lang": "fr",
+  "start_url": "/"
 }

@@ -140,9 +140,9 @@ export function FeaturedNews() {
                   />
                 </div>
                 <div className="flex-1 flex flex-col justify-center">
-                  <h4 className="font-primary text-xl text-gray-900 mb-2 group-hover:text-secondary transition-colors duration-200">
+                  <h3 className="font-primary text-xl text-gray-900 mb-2 group-hover:text-secondary transition-colors duration-200">
                     {article.titre}
-                  </h4>
+                  </h3>
                   <span className="text-sm text-gray-500">{stringifyDate(article.createdAt, 'numeric', 'long', 'numeric')}</span>
                 </div>
               </Link>

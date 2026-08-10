@@ -60,8 +60,10 @@ function resolveFreePlayPrimaryType(nom: string): string {
 function mapSeance(item: SeanceApiItem): Seance {
   const encadrement = item.ENCADREMENT ?? [];
   const hasEncadrement = encadrement.length > 0;
+  const entraineurs = item.ENTRAINEUR ?? [];
+  const hasEntraineur = entraineurs.length > 0;
   const types = encadrement.map((tag) => tag.libelle);
-  const sessionKind = hasEncadrement ? "Entraînement" : "Jeu libre";
+  const sessionKind = hasEncadrement || hasEntraineur ? "Entraînement" : "Jeu libre";
 
   return {
     id: String(item.id),
@@ -76,8 +78,8 @@ function mapSeance(item: SeanceApiItem): Seance {
     fin: formatTime(item.fin_creneau),
     sessionKind,
     types,
-    primaryType: hasEncadrement ? types[0] : resolveFreePlayPrimaryType(item.nom),
-    entraineurs: (item.ENTRAINEUR ?? []).map((tag) => tag.libelle),
+    primaryType: hasEncadrement || hasEntraineur ? types[0] : resolveFreePlayPrimaryType(item.nom),
+    entraineurs: entraineurs.map((tag) => tag.libelle),
     publics: (item.PUBLIC ?? []).map((tag) => tag.libelle),
     commentaire: item.commentaire,
     actif: item.actif === "1",

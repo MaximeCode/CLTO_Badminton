@@ -4,6 +4,7 @@ import { ChevronDown, HelpCircle } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
+import { Seo } from '../components/Seo';
 import type { Faq } from '../../types/faqsType';
 import { getFaqs } from '@/api/strapi/faqs';
 import { Section } from '../components/Section';
@@ -40,9 +41,13 @@ export function FAQPage() {
 
   return (
     <>
+      <Seo
+        title="FAQ"
+        description="FAQ du CLTO Badminton Orléans : adhésion, créneaux, compétitions et pratique du badminton à Orléans."
+      />
       <PageHero
         title="FAQ"
-        subtitle="Toutes les réponses à vos questions sur le club et la pratique du badminton"
+        subtitle="Toutes les réponses à vos questions sur le club et la pratique du badminton au CLTO"
         image={bandeauImage}
       />
 
