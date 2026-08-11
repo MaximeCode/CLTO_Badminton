@@ -361,11 +361,7 @@ export function Footer() {
 
         <div className="pt-4 sm:pt-6 border-t border-white/10">
           <p className="mb-4 text-xs text-gray-400 text-center">
-            Notre site vient de se refaire une beauté mais peut contenir des erreurs. Si vous rencontrez un problème, n&apos;hésitez pas à{' '}
-            <Link to="/contact" className="text-xs underline hover:text-secondary transition-colors">
-              nous en faire part
-            </Link>
-            .
+            Notre site vient de se refaire une beauté mais peut contenir des erreurs. Si vous rencontrez un problème, n&apos;hésitez pas à nous en faire part.
           </p>
           <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 text-gray-400 text-center sm:text-left">
             <p className="text-xs ">© {new Date().getFullYear()} CLTO Badminton. Tous droits réservés.</p>

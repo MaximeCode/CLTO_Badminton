@@ -1,23 +1,8 @@
-import { format, parseISO, startOfWeek } from "date-fns";
 import type { Seance, SeanceTag } from "@/types/seancesType";
 import {
   fetchAPIGestion, // PP / PROD - décommenter l'appel ci-dessous
   fetchFakeAPIGestion,
 } from "../Client";
-
-/** Entrée JSON sans créneau, uniquement pour faire apparaître une semaine vide. */
-const WEEK_ANCHOR_ORIGINE = "week_anchor";
-
-/**
- * Semaines volontairement vides (miroir des ancres `origine: week_anchor` du JSON mock).
- * Nécessaire en PP/PROD où l’API ne renvoie pas ces ancres.
- */
-const EMPTY_WEEK_STARTS_FALLBACK = ["2026-08-10"];
-
-export type SeancesAout26Result = {
-  seances: Seance[];
-  emptyWeekStarts: string[];
-};
 
 type SeanceApiItem = {
   id: string;
@@ -111,45 +96,4 @@ export async function getSeances(saisonId: number = 17): Promise<Seance[]> {
       if (byDate !== 0) return byDate;
       return a.debut.localeCompare(b.debut);
     });
-}
-
-/**
- * Récupère les séances août (saison 16) + les ancres de semaines vides (`origine: week_anchor`).
- * Filtre séances : actif=1, visible=1, et saison_id correspondant.
- */
-export async function getSeancesAout26(saisonId: number = 16): Promise<SeancesAout26Result> {
-  const { data } =
-    import.meta.env.VITE_ENV === "dev"
-      ? await fetchFakeAPIGestion("allSeancesAout26") // DEV
-      : await fetchAPIGestion(`/api/seances/${saisonId}`); // PP / PROD
-
-  const items = data as SeanceApiItem[];
-
-  const emptyWeekStarts = [
-    ...new Set([
-      ...items
-        .filter((item) => item.origine === WEEK_ANCHOR_ORIGINE)
-        .map((item) =>
-          format(startOfWeek(parseISO(item.date_seance), { weekStartsOn: 1 }), "yyyy-MM-dd")
-        ),
-      ...EMPTY_WEEK_STARTS_FALLBACK,
-    ]),
-  ];
-
-  const seances = items
-    .filter(
-      (item) =>
-        item.origine !== WEEK_ANCHOR_ORIGINE &&
-        item.actif === "1" &&
-        item.visible === "1" &&
-        (item.saison_id == null || Number(item.saison_id) === saisonId)
-    )
-    .map(mapSeance)
-    .sort((a, b) => {
-      const byDate = a.dateSeance.localeCompare(b.dateSeance);
-      if (byDate !== 0) return byDate;
-      return a.debut.localeCompare(b.debut);
-    });
-
-  return { seances, emptyWeekStarts };
 }

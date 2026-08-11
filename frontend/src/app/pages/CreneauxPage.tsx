@@ -9,6 +9,7 @@ import {
   AlertTriangle,
   Calendar,
   Clock,
+  ExternalLink,
   MapPin,
   User,
   Dumbbell,
@@ -22,7 +23,7 @@ import {
 } from "lucide-react";
 import { format, isToday, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import { getSeances, getSeancesAout26 } from "@/api/gestion/seances";
+import { getSeances } from "@/api/gestion/seances";
 import { getParametresGlobaux } from "@/api/strapi/parametre-globaux";
 import { CRENEAU_PUBLICS, CRENEAU_TYPES, type CreneauWeek, type Seance } from "@/types/seancesType";
 import {
@@ -37,6 +38,13 @@ import {
 } from "@/utils/seancesUtils";
 
 const ALL_GYMS = "Tous";
+
+/** Planning Excel de transition (à jour) — août 2026. */
+const EXCEL_PLANNING_URL =
+  "https://docs.google.com/spreadsheets/d/1D4_LffNAUOL1-_NB9iWQAtwKcj2VJ7fxmc8iOq1oDl8/edit";
+
+/** Semaines couvertes par le Google Sheet (pas d’affichage API). */
+const EXCEL_PLANNING_WEEK_STARTS = ["2026-08-10", "2026-08-17", "2026-08-24"] as const;
 
 type TimeSlot = {
   id: string;
@@ -128,18 +136,20 @@ export function CreneauxPage() {
         if (saisonId == null) {
           throw new Error("L'identifiant de saison n'est pas configuré.");
         }
-        const seances = import.meta.env.VITE_ENV === "dev"
-          ? await getSeances() // DEV
-          : await getSeances(saisonId); // PP / PROD
-
-        const seancesAout26Result =
+        const seances =
           import.meta.env.VITE_ENV === "dev"
-            ? await getSeancesAout26() // DEV
-            : await getSeancesAout26(16); // PP / PROD
-        const grouped = mergeEmptyWeeks(
-          groupSeancesByWeek([...seances, ...seancesAout26Result.seances]),
-          seancesAout26Result.emptyWeekStarts,
+            ? await getSeances() // DEV
+            : await getSeances(saisonId); // PP / PROD
+
+        // Semaines Excel : pas de créneaux API — on injecte des semaines vides navigables
+        const groupedFromApi = groupSeancesByWeek(seances).map((week) =>
+          (EXCEL_PLANNING_WEEK_STARTS as readonly string[]).includes(week.weekStart)
+            ? { ...week, seances: [] }
+            : week,
         );
+        const grouped = mergeEmptyWeeks(groupedFromApi, [
+          ...EXCEL_PLANNING_WEEK_STARTS,
+        ]);
         setWeeks(grouped);
 
         if (grouped.length > 0) {
@@ -204,11 +214,12 @@ export function CreneauxPage() {
   };
 
   const timeSlots = allTimeSlots.filter(matchesFilters);
-  const isWeekEmpty = Boolean(selectedWeek && selectedWeek.seances.length === 0);
-  const nextWeek =
-    selectedWeekIndex >= 0 && selectedWeekIndex < weeks.length - 1
-      ? weeks[selectedWeekIndex + 1]
-      : null;
+  const isExcelPlanningWeek = Boolean(
+    selectedWeek &&
+    (EXCEL_PLANNING_WEEK_STARTS as readonly string[]).includes(
+      selectedWeek.weekStart,
+    ),
+  );
 
   const toggleType = (type: string) => {
     setSelectedTypes((prev) =>
@@ -353,6 +364,32 @@ export function CreneauxPage() {
       />
 
       <Section className="bg-gray-50" width_subdiv={2000}>
+        <div className="mb-8 rounded-xl border-l-4 border-secondary bg-amber-50 p-5 md:p-6 shadow-sm">
+          <p className="font-semibold text-gray-900 text-base md:text-lg">
+            ⚠️ Cette page est en cours de mise à jour.
+          </p>
+          <p className="mt-2 text-gray-700 text-sm md:text-base">
+            En attendant, consultez notre planning actualisé pour connaître les
+            créneaux disponibles du 17 au 30 août 2026.
+          </p>
+          <p className="mt-2 text-gray-700 text-sm md:text-base">
+            ❌ Attention : aucun créneau n’est disponible du 10 au 16 août, en
+            raison de la fermeture annuelle des gymnases.
+          </p>
+          <p className="mt-3 text-sm md:text-base">
+            <span className="text-gray-700">Consulter le planning à jour : </span>
+            <a
+              href={EXCEL_PLANNING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 font-semibold text-primary underline underline-offset-2 hover:text-secondary"
+            >
+              Disponibilité_Créneaux_CLTO
+              <ExternalLink size={16} className="shrink-0" />
+            </a>
+          </p>
+        </div>
+
         {loadError && (
           <p className="mb-8 text-center text-red-600">{loadError}</p>
         )}
@@ -369,6 +406,10 @@ export function CreneauxPage() {
 
         {selectedWeek && (
           <>
+            <p className="mb-3 text-center text-sm md:text-base font-semibold tracking-wide text-gray-600">
+              Planning indicatif – Saison 2026-2027
+            </p>
+
             {/* Calendar Header */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -418,149 +459,151 @@ export function CreneauxPage() {
             </motion.div>
 
             {/* Filters */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.05 }}
-              className="mb-8"
-            >
-              <div className="bg-white rounded-xl p-6 shadow-lg border-2 border-gray-200">
-                <div className="flex items-center gap-3 mb-4">
-                  <Filter className="text-primary" size={24} />
-                  <h2 className="font-primary text-2xl text-primary">FILTRES</h2>
-                  <button
-                    onClick={resetFilters}
-                    className="ml-auto flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200 text-sm"
-                  >
-                    <X size={16} />
-                    Réinitialiser
-                  </button>
-                </div>
-
-                <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Type d'entraînement
-                    </label>
-                    <div className="flex flex-wrap gap-3">
-                      {CRENEAU_TYPES.map((type) => {
-                        const active = selectedTypes.includes(type);
-                        const color = getTypeColor(type);
-                        return (
-                          <button
-                            key={type}
-                            onClick={() => toggleType(type)}
-                            className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${active
-                              ? "text-white shadow-md scale-105"
-                              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                              }`}
-                            style={active ? { backgroundColor: color } : undefined}
-                          >
-                            <div className="flex items-center gap-2">
-                              <div
-                                className="w-3 h-3 rounded-full"
-                                style={{
-                                  backgroundColor: active ? "#fff" : color,
-                                }}
-                              />
-                              {type}
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Type de séance
-                    </label>
-                    <div className="flex flex-wrap gap-3">
-                      <button
-                        onClick={() => toggleSessionKind("Entraînement")}
-                        className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${selectedSessionKinds.includes("Entraînement")
-                          ? "ring-2 ring-primary text-primary shadow-md scale-105"
-                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                          }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <Dumbbell size={16} />
-                          Entraînement
-                        </div>
-                      </button>
-                      <button
-                        onClick={() => toggleSessionKind("Jeu libre")}
-                        className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${selectedSessionKinds.includes("Jeu libre")
-                          ? "ring-2 ring-green-600 text-green-600 shadow-md scale-105"
-                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                          }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <Gamepad2 size={16} />
-                          Jeu libre
-                        </div>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Public
-                    </label>
-                    <div className="flex flex-wrap gap-3">
-                      {CRENEAU_PUBLICS.map((pub) => {
-                        const active = selectedPublics.includes(pub);
-                        return (
-                          <button
-                            key={pub}
-                            onClick={() => togglePublic(pub)}
-                            className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${active
-                              ? "bg-primary text-white shadow-md scale-105"
-                              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                              }`}
-                          >
-                            <div className="flex items-center gap-2">
-                              <Users size={16} />
-                              {pub}
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Gymnase
-                    </label>
-                    <select
-                      value={selectedGym}
-                      onChange={(e) => setSelectedGym(e.target.value)}
-                      className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-gray-700 bg-white"
+            {!isExcelPlanningWeek && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.05 }}
+                className="mb-8"
+              >
+                <div className="bg-white rounded-xl p-6 shadow-lg border-2 border-gray-200">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Filter className="text-primary" size={24} />
+                    <h2 className="font-primary text-2xl text-primary">FILTRES</h2>
+                    <button
+                      onClick={resetFilters}
+                      className="ml-auto flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200 text-sm"
                     >
-                      <option value={ALL_GYMS}>{ALL_GYMS}</option>
-                      {availableGyms.map((gym) => (
-                        <option key={gym} value={gym}>
-                          {gym}
-                        </option>
-                      ))}
-                    </select>
+                      <X size={16} />
+                      Réinitialiser
+                    </button>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-3">
+                        Type d'entraînement
+                      </label>
+                      <div className="flex flex-wrap gap-3">
+                        {CRENEAU_TYPES.map((type) => {
+                          const active = selectedTypes.includes(type);
+                          const color = getTypeColor(type);
+                          return (
+                            <button
+                              key={type}
+                              onClick={() => toggleType(type)}
+                              className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${active
+                                ? "text-white shadow-md scale-105"
+                                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                                }`}
+                              style={active ? { backgroundColor: color } : undefined}
+                            >
+                              <div className="flex items-center gap-2">
+                                <div
+                                  className="w-3 h-3 rounded-full"
+                                  style={{
+                                    backgroundColor: active ? "#fff" : color,
+                                  }}
+                                />
+                                {type}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-3">
+                        Type de séance
+                      </label>
+                      <div className="flex flex-wrap gap-3">
+                        <button
+                          onClick={() => toggleSessionKind("Entraînement")}
+                          className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${selectedSessionKinds.includes("Entraînement")
+                            ? "ring-2 ring-primary text-primary shadow-md scale-105"
+                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                            }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <Dumbbell size={16} />
+                            Entraînement
+                          </div>
+                        </button>
+                        <button
+                          onClick={() => toggleSessionKind("Jeu libre")}
+                          className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${selectedSessionKinds.includes("Jeu libre")
+                            ? "ring-2 ring-green-600 text-green-600 shadow-md scale-105"
+                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                            }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <Gamepad2 size={16} />
+                            Jeu libre
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-3">
+                        Public
+                      </label>
+                      <div className="flex flex-wrap gap-3">
+                        {CRENEAU_PUBLICS.map((pub) => {
+                          const active = selectedPublics.includes(pub);
+                          return (
+                            <button
+                              key={pub}
+                              onClick={() => togglePublic(pub)}
+                              className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${active
+                                ? "bg-primary text-white shadow-md scale-105"
+                                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                                }`}
+                            >
+                              <div className="flex items-center gap-2">
+                                <Users size={16} />
+                                {pub}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-3">
+                        Gymnase
+                      </label>
+                      <select
+                        value={selectedGym}
+                        onChange={(e) => setSelectedGym(e.target.value)}
+                        className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-gray-700 bg-white"
+                      >
+                        <option value={ALL_GYMS}>{ALL_GYMS}</option>
+                        {availableGyms.map((gym) => (
+                          <option key={gym} value={gym}>
+                            {gym}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                    <p className="text-sm text-gray-600">
+                      {timeSlots.length} créneau
+                      {timeSlots.length > 1 ? "x" : ""} affiché
+                      {timeSlots.length > 1 ? "s" : ""}
+                    </p>
                   </div>
                 </div>
+              </motion.div>
+            )}
 
-                <div className="mt-4 pt-4 border-t border-gray-200">
-                  <p className="text-sm text-gray-600">
-                    {timeSlots.length} créneau
-                    {timeSlots.length > 1 ? "x" : ""} affiché
-                    {timeSlots.length > 1 ? "s" : ""}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Semaine sans aucune séance (données) */}
-            {isWeekEmpty ? (
+            {/* Semaines Excel (10–30 août) : CTA vers le planning à jour */}
+            {isExcelPlanningWeek ? (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -571,8 +614,21 @@ export function CreneauxPage() {
                 <div className="flex flex-col items-center justify-center text-center px-6 py-16 md:py-24 min-h-70 md:min-h-90 bg-linear-to-b from-blue-50/80 to-white">
                   <Calendar className="text-primary mb-5" size={56} />
                   <p className="font-primary text-3xl md:text-5xl text-primary leading-tight">
-                    Cette semaine, c&apos;est repos !
+                    Le planning d'août 2026 est à consulter sur Excel
                   </p>
+                  <p className="mt-4 text-base md:text-lg text-gray-600 max-w-lg">
+                    Les créneaux de cette semaine sont disponibles et actualisés
+                    dans le fichier Excel du club.
+                  </p>
+                  <a
+                    href={EXCEL_PLANNING_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-8 inline-flex items-center gap-2 rounded-lg bg-secondary px-6 py-3 text-base md:text-lg font-semibold text-white shadow-md transition-colors hover:bg-secondary-accent"
+                  >
+                    Consulter le planning d'août 2026 à jour
+                    <ExternalLink size={20} className="shrink-0" />
+                  </a>
                 </div>
               </motion.div>
             ) : (
