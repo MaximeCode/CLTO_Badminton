@@ -359,7 +359,7 @@ export function CreneauxPage() {
       />
       <PageHero
         title="CRÉNEAUX"
-        subtitle="Planning hebdomadaire des entraînements du CLTO Badminton"
+        subtitle="Tous les créneaux du CLTO Badminton en un coup d'œil"
         image={bandeauImage}
       />
 
