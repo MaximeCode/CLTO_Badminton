@@ -54,8 +54,6 @@ export const router = createBrowserRouter([
       { path: 'projet-club', Component: ProjetClub },
       { path: 'documents', Component: DocumentsPage },
       { path: 'jeunes', Component: JeunesPage },
-      { path: 'jeunes-loisirs', element: <Navigate to="/jeunes" replace /> },
-      { path: 'jeunes-competiteurs', element: <Navigate to="/jeunes" replace /> },
       { path: 'adultes-loisirs', Component: AdultesLoisirsPage },
       { path: 'adultes-competiteurs', Component: AdultesCompetiteursPage },
       { path: 'vieilles-plumes', Component: VieillesPlumesPage },

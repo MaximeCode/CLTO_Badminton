@@ -379,6 +379,7 @@ export function Footer() {
               <Link to="/politique-de-confidentialite" className="sm:text-xs md:text-sm hover:text-secondary transition-colors">
                 Politique de confidentialité
               </Link>
+              <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer" className="text-xs hover:text-secondary transition-colors">Sitemap</a>
             </nav>
           </div>
         </div>
