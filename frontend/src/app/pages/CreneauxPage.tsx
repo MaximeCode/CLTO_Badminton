@@ -25,7 +25,7 @@ import { format, isToday, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import { getSeances } from "@/api/gestion/seances";
 import { getParametresGlobaux } from "@/api/strapi/parametre-globaux";
-import { CRENEAU_PUBLICS, CRENEAU_TYPES, type CreneauWeek, type Seance } from "@/types/seancesType";
+import { CRENEAU_PUBLICS, CRENEAU_TYPES, CRENEAU_HINT, CRENEAU_JEU_LIBRE_ITEMS, type CreneauWeek, type Seance } from "@/types/seancesType";
 import {
   WEEK_DAYS,
   addDaysToWeekStart,
@@ -91,7 +91,7 @@ const TYPE_COLORS: Record<string, string> = {
   Élite: "#0153b6",
   Perfectionnement: "#da9619",
   Débutant: "#0891b2",
-  Intermédiaire: "#ea580c",
+  Intermédiaire: "#db2777",
   "Matchs pour tous": "#16a34a",
   "Pratique libre": "#16a34a",
   "Jeu libre": "#65a30d",
@@ -101,7 +101,7 @@ const TYPE_BADGE_CLASSES: Record<string, string> = {
   Élite: "bg-primary",
   Perfectionnement: "bg-secondary",
   Débutant: "bg-cyan-600",
-  Intermédiaire: "bg-orange-600",
+  Intermédiaire: "bg-pink-600",
   "Matchs pour tous": "bg-green-600",
   "Pratique libre": "bg-teal-600",
   "Jeu libre": "bg-lime-600",
@@ -1032,35 +1032,52 @@ export function CreneauxPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-8 bg-white rounded-xl p-6 shadow-lg border-2 border-gray-200"
             >
-              <h2 className="font-primary text-2xl text-primary mb-4">LÉGENDE</h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[
-                  ...CRENEAU_TYPES.map((type) => ({
-                    type,
-                    hint:
-                      type === "Élite"
-                        ? "Compétition haut niveau"
-                        : type === "Perfectionnement"
-                          ? "Joueurs confirmés"
-                          : "",
-                  })),
-                  { type: "Matchs pour tous", hint: "Matchs ouverts à tous" },
-                  { type: "Pratique libre", hint: "Sans encadrement" },
-                  { type: "Jeu libre", hint: "Autres séances libres" },
-                ].map(({ type, hint }) => (
-                  <div key={type} className="flex items-center gap-3">
-                    <div
-                      className="w-6 h-6 rounded"
-                      style={{ backgroundColor: getTypeColor(type) }}
-                    />
-                    <div>
-                      <div className="font-semibold text-gray-900">{type}</div>
-                      <div className="text-sm text-gray-600">{hint}</div>
-                    </div>
+              <h2 className="font-primary text-2xl text-primary mb-6">LÉGENDE</h2>
+
+              <div className="space-y-8">
+                <div>
+                  <h3 className="font-primary text-xl text-primary mb-4">
+                    ENTRAÎNEMENTS
+                  </h3>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {CRENEAU_TYPES.map((type, index) => (
+                      <div key={type} className="flex items-center gap-3">
+                        <div
+                          className="w-6 h-6 rounded shrink-0"
+                          style={{ backgroundColor: getTypeColor(type) }}
+                        />
+                        <div>
+                          <div className="font-semibold text-gray-900">{type}</div>
+                          <div className="text-sm text-gray-600">
+                            {CRENEAU_HINT[index]}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                <div>
+                  <h3 className="font-primary text-xl text-primary mb-4 flex items-center gap-3">
+                    <span
+                      className="inline-block w-6 h-6 rounded shrink-0"
+                      style={{ backgroundColor: getTypeColor("Jeu libre") }}
+                      aria-hidden
+                    />
+                    JEU LIBRE
+                  </h3>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {CRENEAU_JEU_LIBRE_ITEMS.map(({ type, hint }) => (
+                      <div key={type}>
+                        <div className="font-semibold text-gray-900">{type}</div>
+                        <div className="text-sm text-gray-600">{hint}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <p className="mt-4 text-sm text-gray-600 bg-blue-50 p-3 rounded-lg border-l-4 border-primary">
+
+              <p className="mt-6 text-sm text-gray-600 bg-blue-50 p-3 rounded-lg border-l-4 border-primary">
                 💡 <strong>Astuce:</strong> Survolez un créneau pour voir plus de détails.
               </p>
               <p className="mt-3 text-sm text-red-700 bg-red-50 p-3 rounded-lg border-l-4 border-red-600 flex items-start gap-2">

@@ -38,6 +38,19 @@ export type CreneauWeek = {
 };
 
 export const CRENEAU_TYPES = ["Élite", "Perfectionnement", "Intermédiaire", "Débutant"] as const;
+export const CRENEAU_HINT = [
+  "Niveau R et +",
+  "Niveau D8 et +",
+  "Niveau intermédiaire",
+  "Découverte et apprentissage",
+] as const;
+
+export const CRENEAU_JEU_LIBRE_ITEMS = [
+  { type: "Matchs pour tous", hint: "Matchs ouverts à tous les publics" },
+  { type: "Pratique libre", hint: "Pratiques et publics variés" },
+  { type: "Matchs Loisirs", hint: "Matchs destinés aux joueurs Loisirs" },
+  { type: "Matchs Compétiteurs", hint: "Matchs destinés aux joueurs Compétiteurs" },
+] as const;
 
 export type CreneauType = (typeof CRENEAU_TYPES)[number];
 
