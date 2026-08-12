@@ -64,7 +64,7 @@ export function ClubStats() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="mb-12"
+        className="mb-6 md:mb-12"
       >
         <HomePageSectionTitle
           title="LE CLUB EN CHIFFRES"
@@ -90,7 +90,7 @@ export function ClubStats() {
               </div>
             </div>
 
-            <div className="font-primary text-5xl xl:text-6xl text-primary mb-2 text-center">
+            <div className="font-['Bebas_Neue'] text-5xl xl:text-6xl text-primary mb-2 text-center">
               {stat.value}
             </div>
 
@@ -112,7 +112,7 @@ export function ClubStats() {
           <h3 className="font-primary text-3xl text-primary text-center mb-6">
             Mais aussi...
           </h3>
-          <div className="flex flex-wrap gap-3 md:gap-4 justify-center">
+          <div className="flex flex-wrap justify-center gap-3 md:gap-4">
             {extraStats.map((stat, index) => (
               <motion.div
                 key={`${stat.id}-${stat.desc}`}
@@ -120,12 +120,12 @@ export function ClubStats() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="sm:w-sm rounded-xl border border-primary/10 bg-white/80 px-4 py-5 text-center shadow-sm hover:border-secondary/40 hover:shadow-md transition-all duration-200"
+                className={`w-[calc(50%-0.375rem)] md:w-[calc(33.333%-0.6875rem)] ${extraStats.length > 5 ? 'lg:w-[calc(25%-0.75rem)]' : ''} flex flex-col justify-center items-center rounded-xl border border-primary/10 bg-white/80 px-2 py-3 md:px-4 md:py-5 text-center shadow-sm hover:border-secondary/40 hover:shadow-md transition-all duration-200`}
               >
-                <div className="font-primary text-3xl md:text-4xl text-primary leading-none mb-2">
+                <div className="font-['Bebas_Neue'] text-3xl md:text-4xl text-primary leading-none mb-2">
                   {stat.chiffre}
                 </div>
-                <div className="text-xs sm:text-sm md:text-base text-secondary leading-snug">
+                <div className="text-sm md:text-base text-secondary leading-snug">
                   {stat.desc}
                 </div>
               </motion.div>

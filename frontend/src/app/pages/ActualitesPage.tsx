@@ -193,7 +193,7 @@ export function ActualitesPage() {
             </div>
           </aside>
 
-          <div className="w-5/6 sm:w-full mx-auto grid sm:grid-cols-2 md:grid-cols-3 [2000px]:grid-cols-4 gap-8">
+          <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 [2000px]:grid-cols-4 gap-8">
             {loading
               ? Array.from({ length: 6 }).map((_, i) => (
                 <ArticleCardSkeleton key={i} />
