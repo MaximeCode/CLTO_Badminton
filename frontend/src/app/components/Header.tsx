@@ -139,7 +139,15 @@ export function Header() {
             className="flex items-center"
             aria-label="Accueil du CLTO Badminton Orléans"
           >
-            <img src={logo} alt="CLTO Badminton Orléans" className="h-16 w-auto" />
+            <img
+              src={logo}
+              alt="CLTO Badminton Orléans"
+              className="h-16 w-auto"
+              width={64}
+              height={64}
+              decoding="async"
+              fetchpriority="high"
+            />
           </Link>
 
           {/* MD Devices (780px) */}

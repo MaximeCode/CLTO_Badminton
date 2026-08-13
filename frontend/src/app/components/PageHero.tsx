@@ -24,6 +24,9 @@ export function PageHero({ title = '', subtitle = '', image, imageAlt }: PageHer
             src={image}
             alt={resolvedAlt}
             className="absolute inset-0 h-full w-full object-cover"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
           />
         ) : (
           <div

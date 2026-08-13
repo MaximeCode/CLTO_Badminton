@@ -1,24 +1,31 @@
 import { API_URL, fetchAPI } from "@/api/Client";
 import type { InterclubTeamSummary } from "@/types/interclubType";
 import { sortTeamsByDivision } from "@/utils/interclubUtils";
+import { cachedFetch } from "@/utils/cachedFetch";
+import { mapMedia } from "@/utils/media";
 
-export async function getInterclubTeams() {
-  const data = await fetchAPI("/api/icbad-scraper/teams");
-  const teams = (data.data as InterclubTeamSummary[]).map((team: InterclubTeamSummary) => ({
+function mapTeam(team: InterclubTeamSummary): InterclubTeamSummary {
+  const rawUrl = team.image?.url ?? "";
+  const absolute = rawUrl.startsWith("http") ? rawUrl : `${API_URL}${rawUrl}`;
+  const mapped = mapMedia(team.image as never);
+  return {
     ...team,
     image: {
-      url: `${API_URL}${team.image?.url ?? ""}`,
+      ...mapped,
+      url: mapped.url || absolute,
     },
-  }));
-  return sortTeamsByDivision(teams);
+  };
+}
+
+export async function getInterclubTeams() {
+  return cachedFetch("icbad-teams", async () => {
+    const data = await fetchAPI("/api/icbad-scraper/teams");
+    const teams = (data.data as InterclubTeamSummary[]).map(mapTeam);
+    return sortTeamsByDivision(teams);
+  }, 60_000);
 }
 
 export async function getInterclubTeam(slug: string) {
   const data = await fetchAPI(`/api/icbad-scraper/teams/${slug}`);
-  return {
-    ...data.data,
-    image: {
-      url: `${API_URL}${data.data?.image?.url ?? ""}`,
-    },
-  } as InterclubTeamSummary;
+  return mapTeam(data.data as InterclubTeamSummary);
 }

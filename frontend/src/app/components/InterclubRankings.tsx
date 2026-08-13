@@ -37,14 +37,23 @@ const peekOpacity = (distance: number) => Math.max(0.15, 1 - distance * 0.2);
 
 // ─── Composant principal ──────────────────────────────────────────────────────
 
-export function InterclubRankings() {
-    const [teams, setTeams] = useState<InterclubTeamSummary[]>([]);
+export function InterclubRankings({
+    initialTeams,
+}: {
+    initialTeams?: InterclubTeamSummary[];
+} = {}) {
+    const [teams, setTeams] = useState<InterclubTeamSummary[]>(initialTeams ?? []);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [expanded, setExpanded] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(!initialTeams);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        if (initialTeams) {
+            setTeams(sortTeamsByDivision(initialTeams));
+            setLoading(false);
+            return;
+        }
         async function fetchData() {
             try {
                 setLoading(true);
@@ -58,7 +67,7 @@ export function InterclubRankings() {
             }
         }
         fetchData();
-    }, []);
+    }, [initialTeams]);
 
     // Replier la pile quand on change d'équipe CLTO
     useEffect(() => {

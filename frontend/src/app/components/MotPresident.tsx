@@ -7,12 +7,23 @@ import { Section } from './Section';
 import { Loader2 } from 'lucide-react';
 import { BlocksRenderer } from './BlocksRenderer';
 
-export function PresidentQuote() {
-  const [motPresident, setMotPresident] = useState<MotPresident | null>(null);
+export function PresidentQuote({
+  initialMotPresident,
+}: {
+  initialMotPresident?: MotPresident | null;
+} = {}) {
+  const [motPresident, setMotPresident] = useState<MotPresident | null>(
+    initialMotPresident ?? null,
+  );
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(initialMotPresident === undefined);
 
   useEffect(() => {
+    if (initialMotPresident !== undefined) {
+      setMotPresident(initialMotPresident);
+      setLoading(false);
+      return;
+    }
     async function loadData() {
       try {
         setLoadError(null);
@@ -29,7 +40,7 @@ export function PresidentQuote() {
     }
 
     loadData();
-  }, []);
+  }, [initialMotPresident]);
 
   if (loading) {
     return (
@@ -144,6 +155,9 @@ export function PresidentQuote() {
                 src={motPresident.portrait.url ?? ""}
                 alt="Steve Bandou-Naitoll, Président du CLTO Badminton Orléans"
                 className="relative rounded-lg object-cover aspect-3/4"
+                width={motPresident.portrait.width ?? 400}
+                height={motPresident.portrait.height ?? 533}
+                loading="lazy"
               />
             </div>
           </motion.div>

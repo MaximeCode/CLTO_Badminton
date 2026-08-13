@@ -211,7 +211,10 @@ export function ActualitesPage() {
                       <ImageWithFallback
                         src={article.vignette.url}
                         alt={article.titre}
+                        width={article.vignette.width ?? 640}
+                        height={article.vignette.height ?? 360}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        loading="lazy"
                       />
                       <div className="absolute top-4 left-4 flex flex-wrap gap-2 max-w-[70%]">
                         {article.categories.map((categorie) => (

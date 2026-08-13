@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { PageHero } from '../components/PageHero';
+import { PageHero } from '../components/PageHero'
+import { Seo } from '../components/Seo';
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
@@ -32,6 +33,10 @@ export function PalmaresPage() {
 
   return (
     <>
+      <Seo
+        title="Palmarès"
+        description="Palmarès du CLTO Badminton Orléans : performances et distinctions du club."
+      />
       <PageHero
         title="PALMARÈS"
         subtitle="Les performances et distinctions du CLTO Badminton"

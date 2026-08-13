@@ -1,4 +1,5 @@
-import { PageHero } from "../components/PageHero";
+import { PageHero } from "../components/PageHero"
+import { Seo } from "../components/Seo";
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from "../components/Section";
@@ -11,6 +12,10 @@ export function AgendaPage() {
 
   return (
     <>
+      <Seo
+        title="Agenda"
+        description="Agenda du CLTO Badminton Orléans : événements et calendrier du club de badminton à Orléans."
+      />
       <PageHero
         title="AGENDA"
         subtitle="Les événements du CLTO Badminton"

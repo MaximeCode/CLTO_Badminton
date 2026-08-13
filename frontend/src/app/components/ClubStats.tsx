@@ -3,22 +3,37 @@ import { useEffect, useState } from 'react';
 import { Users, Trophy, Clock, Target } from 'lucide-react';
 import { getInterclubTeams } from '@/api/icbad_local/interclub';
 import { getAccueil } from '@/api/strapi/accueil';
-import type { LabelNomEtLogo, StatsClub } from '@/types/accueilType';
+import type { Accueil, LabelNomEtLogo, StatsClub } from '@/types/accueilType';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
 import { Section } from './Section';
 
-export function ClubStats() {
-  const [teamsCount, setTeamsCount] = useState<string>('…');
-  const [extraStats, setExtraStats] = useState<StatsClub[]>([]);
-  const [labels, setLabels] = useState<LabelNomEtLogo[]>([]);
+export function ClubStats({
+  initialTeamsCount,
+  initialAccueil,
+}: {
+  initialTeamsCount?: string;
+  initialAccueil?: Accueil | null;
+} = {}) {
+  const [teamsCount, setTeamsCount] = useState<string>(initialTeamsCount ?? '…');
+  const [extraStats, setExtraStats] = useState<StatsClub[]>(initialAccueil?.stats_club ?? []);
+  const [labels, setLabels] = useState<LabelNomEtLogo[]>(initialAccueil?.labels ?? []);
 
   useEffect(() => {
+    if (initialTeamsCount != null) {
+      setTeamsCount(initialTeamsCount);
+      return;
+    }
     getInterclubTeams()
       .then((teams) => setTeamsCount(String(teams.length)))
       .catch(() => setTeamsCount('-'));
-  }, []);
+  }, [initialTeamsCount]);
 
   useEffect(() => {
+    if (initialAccueil !== undefined) {
+      setExtraStats(initialAccueil?.stats_club ?? []);
+      setLabels(initialAccueil?.labels ?? []);
+      return;
+    }
     getAccueil()
       .then((accueil) => {
         setExtraStats(accueil?.stats_club ?? []);
@@ -28,7 +43,7 @@ export function ClubStats() {
         setExtraStats([]);
         setLabels([]);
       });
-  }, []);
+  }, [initialAccueil]);
 
   const stats = [
     {
@@ -161,8 +176,11 @@ export function ClubStats() {
                   <img
                     src={item.logo.url}
                     alt={item.label}
+                    width={item.logo.width ?? 160}
+                    height={item.logo.height ?? 80}
                     className="max-h-16 md:max-h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
 

@@ -1,5 +1,6 @@
 import type { MotPresident } from "@/types/motPresident";
-import { API_URL, fetchAPI } from "../Client";
+import { fetchAPI } from "../Client";
+import { mapMedia } from "@/utils/media";
 
 export async function getMotPresident(): Promise<MotPresident | null> {
   try {
@@ -13,12 +14,9 @@ export async function getMotPresident(): Promise<MotPresident | null> {
       id: data.id,
       documentId: data.documentId,
       discours: data.discours,
-      portrait: {
-        url: `${API_URL}${data.portrait?.url ?? ""}`,
-      },
+      portrait: mapMedia(data.portrait),
     };
   } catch (error) {
-    // Strapi renvoie 404 tant que le single type n'a pas été créé / publié
     if (error instanceof Error && error.message === "Not Found") {
       return null;
     }
