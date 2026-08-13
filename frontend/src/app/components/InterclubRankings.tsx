@@ -120,12 +120,13 @@ export function InterclubRankings() {
                                 onClick={() => setSelectedIndex(index)}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className={`relative px-4 md:px-6 py-2 md:py-3 rounded-xl font-primary text-xl transition-all duration-300 ${isActive
+                                className={`relative px-4 md:px-6 py-2 md:py-3 rounded-xl font-['Bebas_Neue'] text-xl transition-all duration-300 ${isActive
                                     ? 'text-white shadow-xl scale-105'
-                                    : 'bg-white text-gray-700 shadow-md hover:shadow-lg'
+                                    : 'bg-white shadow-md hover:shadow-lg'
                                     }`}
                                 style={{
                                     backgroundColor: isActive ? color : undefined,
+                                    color: isActive ? 'white' : color ?? 'gray-700',
                                 }}
                             >
                                 <span className="relative z-10">{shortLabel}</span>
@@ -183,7 +184,7 @@ export function InterclubRankings() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -12 }}
                     transition={{ duration: 0.28 }}
-                    className={`max-w-${expanded ? '6xl' : '3xl'} mx-auto`}
+                    className={`max-w-${expanded ? '6xl' : '3xl'} mx-auto font-['Bebas_Neue']`}
                 >
                     {ranking.length > 0 ? (
                         expanded ? (
