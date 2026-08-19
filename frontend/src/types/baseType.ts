@@ -15,3 +15,9 @@ export type Media = {
   width?: number | null;
   height?: number | null;
 };
+
+/** Bloc Avantages Strapi normalisé */
+export type Avantage = {
+  id: number;
+  contenu: string;
+};

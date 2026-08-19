@@ -1,5 +1,4 @@
 import { motion } from 'motion/react';
-import { Calendar, Clock, MapPin } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
@@ -7,7 +6,7 @@ import { Section } from '../components/Section';
 import { useEffect, useState } from 'react';
 import { getEvenements } from '@/api/strapi/evenement';
 import type { Evenement } from '@/types/evenementType';
-import { stringifyDate } from '@/utils/formatDate';
+import { EvenementCard } from '../components/EvenementCard';
 
 export function EvenementsPage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.EVENEMENTS);
@@ -60,78 +59,41 @@ export function EvenementsPage() {
         )}
 
         <div className="space-y-10">
-          {evenements?.map((evenement: Evenement) => (
-            <motion.article
-              key={evenement.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="overflow-hidden rounded-lg bg-gray-50 shadow-lg"
-            >
-              <div className="bg-linear-to-r from-primary to-primary-accent px-6 py-4 sm:px-8">
-                <h3 className="font-primary text-3xl text-white sm:text-4xl">
-                  {evenement.titre}
-                </h3>
-              </div>
+          {evenements?.map((evenement: Evenement) => {
+            const links = [
+              {
+                href: evenement.lien_inscription_benevole,
+                label: 'Inscription bénévole',
+              },
+              ...(evenement.lien_inscription_tournoi?.trim()
+                ? [
+                    {
+                      href: evenement.lien_inscription_tournoi,
+                      label: 'Inscription tournoi',
+                    },
+                  ]
+                : []),
+            ];
 
-              <div className="flex flex-col md:flex-row">
-                <div className="md:w-1/3 shrink-0">
-                  <img
-                    src={evenement.affiche.url}
-                    alt={evenement.affiche.alternativeText || evenement.titre}
-                    className="h-full w-full object-cover min-h-48 md:min-h-full"
-                  />
-                </div>
-
-                <div className="flex-1 space-y-6 p-6 sm:p-8">
-                  <div className="grid gap-4 sm:grid-cols-3 text-md">
-                    <div className="flex items-start gap-3 text-gray-700">
-                      <Calendar size={20} className="mt-0.5 shrink-0 text-secondary" />
-                      <span className="font-semibold">
-                        {evenement.detail_date ? evenement.detail_date : stringifyDate(evenement.date, 'numeric', 'long', 'numeric')}
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-3 text-gray-700">
-                      <MapPin size={20} className="mt-0.5 shrink-0 text-secondary" />
-                      <span className="font-semibold">{evenement.lieu}</span>
-                    </div>
-                    <div className="flex items-start gap-3 text-gray-700">
-                      <Clock size={20} className="mt-0.5 shrink-0 text-secondary" />
-                      <span className="font-semibold">{evenement.horaire}</span>
-                    </div>
-                  </div>
-
-                  {evenement.petite_description && (
-                    <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                      {evenement.petite_description}
-                    </p>
-                  )}
-
-                  <div className="flex flex-col gap-2 sm:flex-row sm:gap-6">
-                    <a
-                      href={evenement.lien_inscription_benevole}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-secondary font-semibold underline underline-offset-2 hover:text-secondary-accent transition-colors"
-                    >
-                      Inscription bénévole
-                    </a>
-                    {evenement.lien_inscription_tournoi?.trim() && (
-                      <a
-                        href={evenement.lien_inscription_tournoi}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-secondary font-semibold underline underline-offset-2 hover:text-secondary-accent transition-colors"
-                      >
-                        Inscription tournoi
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </motion.article>
-          ))}
+            return (
+              <EvenementCard
+                key={evenement.id}
+                titre={evenement.titre}
+                date={evenement.date}
+                detail_date={evenement.detail_date}
+                lieu={evenement.lieu}
+                horaire={evenement.horaire}
+                affiche={evenement.affiche}
+                links={links}
+              >
+                {evenement.petite_description ? (
+                  <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                    {evenement.petite_description}
+                  </p>
+                ) : null}
+              </EvenementCard>
+            );
+          })}
         </div>
       </Section>
     </>

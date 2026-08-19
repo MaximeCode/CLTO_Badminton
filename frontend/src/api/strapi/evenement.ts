@@ -31,19 +31,7 @@ export async function getEvenements(): Promise<Evenement[]> {
   );
 
   return data.map(
-    (item: {
-      id: number;
-      documentId: string;
-      titre: string;
-      date: string;
-      detail_date: string | null;
-      lieu: string;
-      horaire: string;
-      petite_description: string | null;
-      affiche: EvenementMedia | null;
-      lien_inscription_benevole: string;
-      lien_inscription_tournoi: string | null;
-    }) => ({
+    (item: Evenement & { affiche: EvenementMedia | null }) => ({
       id: item.id,
       documentId: item.documentId,
       titre: item.titre,
