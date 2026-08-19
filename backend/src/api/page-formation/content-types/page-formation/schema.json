@@ -13,6 +13,16 @@
   "attributes": {
     "contenu": {
       "type": "blocks"
+    },
+    "compo_evenements": {
+      "type": "component",
+      "component": "evenements.evenements",
+      "repeatable": true
+    },
+    "les_avantages": {
+      "type": "component",
+      "component": "contenu-page.liste-txt",
+      "repeatable": true
     }
   }
 }

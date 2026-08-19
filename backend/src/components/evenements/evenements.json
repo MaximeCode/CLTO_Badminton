@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_evenements_evenements",
+  "info": {
+    "displayName": "evenements",
+    "icon": "archive"
+  },
+  "options": {},
+  "attributes": {
+    "titre": {
+      "type": "string",
+      "required": true
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "detail_date": {
+      "type": "string"
+    },
+    "lieu": {
+      "type": "string",
+      "required": true
+    },
+    "horaire": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "blocks"
+    },
+    "lien_inscription": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "config": {}
+}

@@ -7,10 +7,9 @@ import type {
   PublicVieillesPlumes,
   InformationsPublic,
   ContenuPublic,
-  AvantagePublic,
   PrixVolant,
 } from "@/types/publicsType";
-import type { Media } from "@/types/baseType";
+import type { Avantage, Media } from "@/types/baseType";
 
 function mapInformations(items: InformationsPublic[] | null | undefined): InformationsPublic[] {
   return (items ?? []).map((item) => ({
@@ -29,7 +28,7 @@ function mapContenus(items: ContenuPublic[] | null | undefined): ContenuPublic[]
   }));
 }
 
-function mapAvantages(items: AvantagePublic[] | null | undefined): AvantagePublic[] {
+function mapAvantages(items: Avantage[] | null | undefined): Avantage[] {
   return (items ?? []).map((item) => ({
     id: item.id,
     contenu: item.contenu,
@@ -67,10 +66,7 @@ function mapMedia(media: Media | null | undefined): Media {
   };
 }
 
-function mapBannerFields(data: {
-  titre?: string | null;
-  description?: string | null;
-}) {
+function mapBannerFields(data: { titre?: string | null; description?: string | null }) {
   return {
     titre: data.titre ?? null,
     description: data.description ?? null,

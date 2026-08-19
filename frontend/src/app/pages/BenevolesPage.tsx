@@ -5,7 +5,7 @@ import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
 import { BlocksRenderer } from '../components/BlocksRenderer';
-import { getPageBenevoles } from '@/api/strapi/pageBlockContent';
+import { getPageBenevoles } from '@/api/strapi/benevole';
 import type { PageBlockContent } from '@/types/pageBlockContentType';
 
 export function BenevolesPage() {
