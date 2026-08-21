@@ -12,6 +12,24 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
   <title>CLTO Badminton Orléans</title>
+  <script>
+    (function () {
+      var host = location.hostname.toLowerCase();
+      var prefix = "";
+      if (
+        host === "localhost" ||
+        host === "127.0.0.1" ||
+        host === "[::1]" ||
+        host.slice(-6) === ".local" ||
+        /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.)/.test(host)
+      ) {
+        prefix = "DEV";
+      } else if (host.indexOf("preprod") !== -1) {
+        prefix = "PREPROD";
+      }
+      if (prefix) document.title = prefix + " " + document.title;
+    })();
+  </script>
   <meta
     name="description"
     content="CLTO Badminton Orléans : club de badminton à Orléans. Créneaux, inscriptions, interclubs, stages et vie du club."

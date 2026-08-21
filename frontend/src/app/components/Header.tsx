@@ -130,7 +130,7 @@ export function Header() {
   return (
     <header
       ref={headerRef}
-      className="sticky top-0 z-50 border-t-2 border-secondary bg-white shadow-sm"
+      className="bg-white shadow-sm"
     >
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex h-20 items-center justify-between">

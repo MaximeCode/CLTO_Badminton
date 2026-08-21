@@ -1,12 +1,14 @@
 import { Outlet } from 'react-router';
 import { Header } from './Header';
+import { EnvBanner } from './EnvBanner';
 import { Footer } from './Footer';
 import { ScrollToTop } from './ScrollToTop';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 
 import { getContact } from '@/api/strapi/contact';
 import type { Contact } from '@/types/contactType';
 import { ContactContext } from '@/app/contexts/ContactContext';
+import { Loader2 } from 'lucide-react';
 
 export function Layout() {
   const [contact, setContact] = useState<Contact | null>(null);
@@ -35,8 +37,15 @@ export function Layout() {
     <div className="min-h-screen bg-white">
       <ContactContext.Provider value={contact}>
         <ScrollToTop />
-        <Header />
-        <Outlet />
+        <div className="sticky top-0 z-50">
+          <EnvBanner />
+          <Header />
+        </div>
+        <main id="main-content">
+          <Suspense fallback={<Loader2 className="animate-spin text-primary mx-auto my-10" size={36} />}>
+            <Outlet />
+          </Suspense>
+        </main>
         <Footer />
         {loadError && (
           <div className="p-4 mb-4 text-sm text-red-500 bg-red-100" role="alert">

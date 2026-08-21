@@ -1,3 +1,5 @@
+import { mountEnvBanner } from './EnvBanner';
+
 export default {
   config: {
     locales: [
@@ -206,5 +208,7 @@ export default {
       },
     },
   },
-  bootstrap() { },
+  bootstrap() {
+    mountEnvBanner();
+  },
 };

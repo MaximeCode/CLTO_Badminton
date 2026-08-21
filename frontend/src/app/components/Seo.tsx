@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { DEFAULT_DESCRIPTION, buildTitle } from '@/utils/seo';
+import { withEnvTitlePrefix } from './EnvBanner';
 
 type SeoProps = {
   title: string;
@@ -47,7 +48,7 @@ export function Seo({
 }: SeoProps) {
   useEffect(() => {
     const fullTitle = absoluteTitle ? title : buildTitle(title);
-    document.title = fullTitle;
+    document.title = withEnvTitlePrefix(fullTitle);
 
     upsertMeta('name', 'description', description);
     upsertMeta('name', 'robots', noindex ? 'noindex, nofollow' : 'index, follow');
