@@ -69,7 +69,9 @@ export function FeaturedNews({ initialArticles }: { initialArticles?: Article[] 
     return null;
   }
 
-  const excerpt = extractTextFromBlocks(featuredArticle.contenu, 160);
+  const excerpt =
+    featuredArticle.excerpt?.trim() ||
+    extractTextFromBlocks(featuredArticle.contenu, 160);
 
   return (
     <Section className='bg-white'>

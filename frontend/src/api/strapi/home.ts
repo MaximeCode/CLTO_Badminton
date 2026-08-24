@@ -5,20 +5,18 @@ import type { Article } from '@/types/articlesType';
 import type { Accueil, LabelNomEtLogo, StatsClub } from '@/types/accueilType';
 import type { Partner } from '@/types/partnersType';
 import type { MotPresident } from '@/types/motPresident';
-import type { InterclubTeamSummary } from '@/types/interclubType';
-import { sortTeamsByDivision } from '@/utils/interclubUtils';
 import { cachedFetch } from '@/utils/cachedFetch';
-import type { BlocksContent } from '@/types/blocks';
 import type { Categorie } from '@/types/categoriesType';
-import { API_URL } from '../Client';
 
-export type HomePayload = {
-  heros: Hero[];
+export type HomeSectionsPayload = {
   featuredArticles: Article[];
   accueil: Accueil | null;
   partenaires: Partner[];
   motPresident: MotPresident | null;
-  teams: InterclubTeamSummary[];
+};
+
+export type HomePayload = HomeSectionsPayload & {
+  heros: Hero[];
 };
 
 function mapHero(item: any): Hero {
@@ -42,7 +40,8 @@ function mapArticle(item: any): Article {
     titre: item.titre,
     vignette: mapMedia(item.vignette),
     a_la_une: item.a_la_une,
-    contenu: (item.contenu ?? []) as BlocksContent,
+    contenu: [],
+    excerpt: item.excerpt ?? '',
     categories: (item.categories ?? []) as Categorie[],
     createdAt: item.createdAt,
   };
@@ -85,26 +84,50 @@ function mapMotPresident(data: any): MotPresident | null {
   };
 }
 
-function mapTeam(team: any): InterclubTeamSummary {
+function mapSections(data: any): HomeSectionsPayload {
   return {
-    ...team,
-    image: {
-      url: team.image?.url ? (team.image.url.startsWith('http') ? team.image.url : `${API_URL}${team.image.url}`) : '',
-      ...(team.image ? mapMedia(team.image) : {}),
-    },
-  } as InterclubTeamSummary;
+    featuredArticles: (data?.featuredArticles ?? []).map(mapArticle),
+    accueil: mapAccueil(data?.accueil),
+    partenaires: (data?.partenaires ?? []).map(mapPartner),
+    motPresident: mapMotPresident(data?.motPresident),
+  };
 }
 
+/** Hero carousel — chemin critique LCP, cache client 2 min */
+export async function getHomeHeros(): Promise<Hero[]> {
+  return cachedFetch(
+    'home:heros',
+    async () => {
+      const { data } = await fetchAPI('/api/home/heros');
+      return (data?.heros ?? []).map(mapHero);
+    },
+    120_000,
+  );
+}
+
+/** Sections below-the-fold — cache client 1 min */
+export async function getHomeSections(): Promise<HomeSectionsPayload> {
+  return cachedFetch(
+    'home:sections',
+    async () => {
+      const { data } = await fetchAPI('/api/home/sections');
+      return mapSections(data);
+    },
+    60_000,
+  );
+}
+
+/** Agrégat complet (legacy / fallback) */
 export async function getHome(): Promise<HomePayload> {
-  return cachedFetch('home', async () => {
-    const { data } = await fetchAPI('/api/home');
-    return {
-      heros: (data?.heros ?? []).map(mapHero),
-      featuredArticles: (data?.featuredArticles ?? []).map(mapArticle),
-      accueil: mapAccueil(data?.accueil),
-      partenaires: (data?.partenaires ?? []).map(mapPartner),
-      motPresident: mapMotPresident(data?.motPresident),
-      teams: sortTeamsByDivision((data?.teams ?? []).map(mapTeam)),
-    };
-  }, 60_000);
+  return cachedFetch(
+    'home',
+    async () => {
+      const { data } = await fetchAPI('/api/home');
+      return {
+        heros: (data?.heros ?? []).map(mapHero),
+        ...mapSections(data),
+      };
+    },
+    60_000,
+  );
 }

@@ -1,100 +1,28 @@
 'use strict';
 
-/**
- * Aggregated homepage payload — reduces waterfall of client requests.
- */
+const { getCached } = require('../../../utils/apiCache');
+const { fetchFullHome, fetchHeros, fetchHomeSections } = require('../../../utils/homeQueries');
+
+const TTL_HEROS_MS = 120_000;
+const TTL_SECTIONS_MS = 60_000;
+const TTL_FULL_MS = 60_000;
 
 module.exports = {
+  /** GET /api/home — agrégat complet (rétrocompatibilité) */
   async index(ctx) {
-    const mediaFields = ['url', 'width', 'height', 'alternativeText', 'name', 'mime', 'formats'];
+    const data = await getCached('home:full', TTL_FULL_MS, fetchFullHome);
+    ctx.body = { data };
+  },
 
-    const [heros, featuredArticles, accueil, partenaires, motPresident, teams] =
-      await Promise.all([
-        strapi.documents('api::hero.hero').findMany({
-          populate: {
-            image: { fields: mediaFields },
-          },
-          sort: ['createdAt:asc'],
-        }),
-        strapi.documents('api::article.article').findMany({
-          filters: { a_la_une: { $eq: true } },
-          populate: {
-            vignette: { fields: mediaFields },
-            categories: true,
-          },
-          sort: ['createdAt:desc'],
-          limit: 6,
-        }),
-        strapi.documents('api::accueil.accueil').findFirst({
-          populate: {
-            stats_club: true,
-            labels: {
-              populate: {
-                logo: { fields: mediaFields },
-              },
-            },
-          },
-        }),
-        strapi.documents('api::partenaire.partenaire').findMany({
-          populate: {
-            logos: { fields: mediaFields },
-          },
-        }),
-        strapi.documents('api::mot-du-president.mot-du-president').findFirst({
-          populate: {
-            portrait: { fields: mediaFields },
-          },
-        }).catch(() => null),
-        strapi.documents('plugin::icbad-scraper.interclub-team').findMany({
-          fields: [
-            'teamSlug',
-            'teamLabel',
-            'competitionName',
-            'season',
-            'cltoPosition',
-            'cltoPoints',
-            'cltoPlayed',
-            'cltoWon',
-            'cltoDraw',
-            'cltoLost',
-            'cltoBonusPlus',
-            'cltoBonusMinus',
-            'cltoMatchDiff',
-            'cltoSetDiff',
-            'cltoPtsDiff',
-            'lastScrapedAt',
-            'scrapeError',
-            'ranking',
-            'icbadUrl',
-            'desc',
-            'objectif',
-          ],
-          populate: {
-            image: {
-              fields: ['url', 'alternativeText', 'width', 'height', 'formats'],
-            },
-            divisions_interclub: {
-              fields: ['Nom_court', 'Nom_complet', 'Ordre'],
-            },
-          },
-        }),
-      ]);
+  /** GET /api/home/heros — chemin critique LCP (léger, cache long) */
+  async heros(ctx) {
+    const heros = await getCached('home:heros', TTL_HEROS_MS, fetchHeros);
+    ctx.body = { data: { heros: heros ?? [] } };
+  },
 
-    const teamsSorted = [...(teams ?? [])].sort((a, b) => {
-      const orderA = a.divisions_interclub?.Ordre ?? 999;
-      const orderB = b.divisions_interclub?.Ordre ?? 999;
-      return orderA - orderB;
-    });
-
-    ctx.body = {
-      data: {
-        heros: heros ?? [],
-        featuredArticles: featuredArticles ?? [],
-        accueil: accueil ?? null,
-        partenaires: partenaires ?? [],
-        motPresident: motPresident ?? null,
-        teams: teamsSorted,
-      },
-    };
+  /** GET /api/home/sections — below-the-fold sans classements interclubs */
+  async sections(ctx) {
+    const sections = await getCached('home:sections', TTL_SECTIONS_MS, fetchHomeSections);
+    ctx.body = { data: sections };
   },
 };

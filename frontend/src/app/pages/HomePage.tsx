@@ -2,7 +2,8 @@ import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { Hero, type HeroSlide } from '../components/Hero';
 import { Seo } from '../components/Seo';
 import { DEFAULT_DESCRIPTION, SITE_NAME } from '@/utils/seo';
-import { getHome, type HomePayload } from '@/api/strapi/home';
+import { getHomeHeros, getHomeSections, type HomeSectionsPayload } from '@/api/strapi/home';
+import type { Hero as HeroType } from '@/types/herosType';
 import { pickMediaUrl } from '@/utils/media';
 
 const FeaturedNews = lazy(() =>
@@ -29,7 +30,8 @@ function BelowFoldFallback() {
 }
 
 export function HomePage() {
-  const [home, setHome] = useState<HomePayload | null>(null);
+  const [heros, setHeros] = useState<HeroType[]>([]);
+  const [sections, setSections] = useState<HomeSectionsPayload | null>(null);
 
   const homeJsonLd = useMemo(
     () => ({
@@ -54,23 +56,39 @@ export function HomePage() {
     [],
   );
 
+  // Chemin critique : heros en premier (endpoint léger + cache serveur)
   useEffect(() => {
     let cancelled = false;
-    getHome()
+    getHomeHeros()
       .then((data) => {
-        if (!cancelled) setHome(data);
+        if (!cancelled) setHeros(data);
       })
       .catch((error) => {
-        console.error('[HomePage] getHome failed:', error);
+        console.error('[HomePage] getHomeHeros failed:', error);
       });
     return () => {
       cancelled = true;
     };
   }, []);
 
-  // Preload LCP image as soon as hero data is known
+  // Sections below-the-fold en parallèle (sans classements interclubs)
   useEffect(() => {
-    const first = home?.heros?.[0];
+    let cancelled = false;
+    getHomeSections()
+      .then((data) => {
+        if (!cancelled) setSections(data);
+      })
+      .catch((error) => {
+        console.error('[HomePage] getHomeSections failed:', error);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Preload LCP image dès que le hero est connu
+  useEffect(() => {
+    const first = heros[0];
     if (!first?.image) return;
     const href = pickMediaUrl(first.image, 1280) || first.image.url;
     if (!href) return;
@@ -83,9 +101,9 @@ export function HomePage() {
     return () => {
       link.remove();
     };
-  }, [home?.heros]);
+  }, [heros]);
 
-  const heroSlides: HeroSlide[] = (home?.heros ?? []).map((h) => ({
+  const heroSlides: HeroSlide[] = heros.map((h) => ({
     id: h.id,
     image: pickMediaUrl(h.image, 1600) || h.image.url,
     media: h.image,
@@ -105,17 +123,17 @@ export function HomePage() {
         jsonLd={homeJsonLd}
       />
       <Hero slides={heroSlides} />
-      {home ? (
+      {sections ? (
         <Suspense fallback={<BelowFoldFallback />}>
-          <FeaturedNews initialArticles={home.featuredArticles} />
+          <FeaturedNews initialArticles={sections.featuredArticles} />
           <ClubStats
-            initialTeamsCount={String(home.teams.length)}
-            initialAccueil={home.accueil}
+            initialTeamsCount={undefined}
+            initialAccueil={sections.accueil}
           />
-          <InterclubRankings initialTeams={home.teams} />
+          <InterclubRankings />
           <SpaceCards />
-          <PresidentQuote initialMotPresident={home.motPresident} />
-          <Partners initialPartners={home.partenaires} />
+          <PresidentQuote initialMotPresident={sections.motPresident} />
+          <Partners initialPartners={sections.partenaires} />
         </Suspense>
       ) : (
         <BelowFoldFallback />

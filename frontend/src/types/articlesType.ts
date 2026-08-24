@@ -7,6 +7,8 @@ export type Article = Base & {
   vignette: Media;
   a_la_une: boolean;
   contenu: BlocksContent;
+  /** Excerpt pré-calculé côté API homepage (évite d'envoyer les blocks) */
+  excerpt?: string;
   categories: Categorie[];
   createdAt: Date;
 };
