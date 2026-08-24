@@ -9,5 +9,5 @@ export type Gymnase = {
   capacite_cours: number | null;
   latitude: number | null;
   longitude: number | null;
-  // nb_terrains: number | null;
+  nb_terrains: number | null;
 };

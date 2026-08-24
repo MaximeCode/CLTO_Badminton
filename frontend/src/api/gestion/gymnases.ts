@@ -23,6 +23,7 @@ type GymnaseApiItem = {
   capacite_cours: string | null;
   latitude: string | null;
   longitude: string | null;
+  nb_terrains: string | null;
 };
 
 function mapGymnase(item: GymnaseApiItem): Gymnase {
@@ -37,6 +38,7 @@ function mapGymnase(item: GymnaseApiItem): Gymnase {
     capacite_cours: parseNullableNumber(item.capacite_cours),
     latitude: parseNullableNumber(item.latitude),
     longitude: parseNullableNumber(item.longitude),
+    nb_terrains: parseNullableNumber(item.nb_terrains),
   };
 }
 
