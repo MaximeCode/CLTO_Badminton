@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
-import { PageHero } from "../components/PageHero";
+import { PageHero } from "../components/PageHero"
+import { Seo } from "../components/Seo";
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from "../components/Section";
@@ -66,6 +67,10 @@ export function GaleriePage() {
 
   return (
     <>
+      <Seo
+        title="Galerie"
+        description="Galerie photos du CLTO Badminton Orléans : albums des événements du club."
+      />
       <PageHero
         title="GALERIE"
         subtitle="Les albums photos des événements du CLTO Badminton"

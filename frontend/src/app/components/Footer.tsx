@@ -63,7 +63,7 @@ export function Footer() {
         {/* Mobile */}
         <div className="sm:hidden">
           <div className="flex items-center gap-4 mb-5">
-            <img src={logo} alt="CLTO Badminton Orléans" className="h-14 w-auto shrink-0" />
+            <img src={logo} alt="CLTO Badminton Orléans" className="h-14 w-auto shrink-0" width={56} height={56} decoding="async" />
             <div className="min-w-0 flex-1">
               <div className="flex gap-2">
                 {socialLinks.map(({ href, icon: Icon, label }) => (
@@ -209,7 +209,7 @@ export function Footer() {
         <div className="hidden sm:grid gap-4 lg:gap-10 mb-6 sm:grid-cols-[auto_repeat(6,1fr)] md:grid-cols-9">
 
           <div className="flex flex-row sm:flex-col items-start sm:items-center gap-3">
-            <img src={logo} alt="CLTO Badminton Orléans" className="h-14 w-auto shrink-0" />
+            <img src={logo} alt="CLTO Badminton Orléans" className="h-14 w-auto shrink-0" width={56} height={56} decoding="async" />
             <div className="flex flex-col gap-2">
               {socialLinks.map(({ href, icon: Icon, label }) => (
                 <a

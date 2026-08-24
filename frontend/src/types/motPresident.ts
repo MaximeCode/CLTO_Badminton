@@ -1,9 +1,7 @@
 import type { BlocksContent } from "./blocks";
-import type { Base } from "@/types/baseType";
+import type { Base, Media } from "@/types/baseType";
 
 export type MotPresident = Base & {
   discours: BlocksContent;
-  portrait: {
-    url: string;
-  };
+  portrait: Media;
 };

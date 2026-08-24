@@ -1,38 +1,97 @@
-// Imports sorted alphabetically for clarity and maintainability
-import { createBrowserRouter, Navigate } from 'react-router';
+import { lazy } from 'react';
+import { createBrowserRouter } from 'react-router';
 import { Layout } from './components/Layout';
-
-// Pages brut
-import { ActualitePage } from './pages/ActualitePage';
-import { ActualitesPage } from './pages/ActualitesPage';
-import { AgendaPage } from './pages/AgendaPage';
-import { ContactPage } from './pages/ContactPage';
-import { CreneauxPage } from './pages/CreneauxPage';
-import { GymnasesPage } from './pages/GymnasesPage';
-import { HistoriquePage } from './pages/HistoriquePage';
 import { HomePage } from './pages/HomePage';
-import { InterclubPage } from './pages/InterclubPage';
-import { AdhererPage } from './pages/AdhererPage';
-import { FAQPage } from './pages/FAQPage';
-import { StagesPage } from './pages/StagesPage';
-import { ProjetClub } from './pages/ProjetClub';
-import { DocumentsPage } from './pages/DocumentsPage';
-import { EvenementsPage } from './pages/EvenementsPage';
-import { GaleriePage } from './pages/GaleriePage';
-import { MentionsLegalesPage } from './pages/MentionsLegalesPage';
-import { OrganigrammePage } from './pages/OrganigrammePage';
-import { PalmaresPage } from './pages/PalmaresPage';
-import { PolitiqueConfidentialitePage } from './pages/PolitiqueConfidentialitePage';
-import { FormationsPage } from './pages/FormationsPage';
-import { BenevolesPage } from './pages/BenevolesPage';
 
-// Publics
-import { AdultesCompetiteursPage } from './pages/(publics)/AdultesCompetiteursPage';
-import { AdultesLoisirsPage } from './pages/(publics)/AdultesLoisirsPage';
-import { EntreprisePage } from './pages/(publics)/EntreprisePage';
-import { JeunesPage } from './pages/(publics)/JeunesPage';
-import { VieillesPlumesPage } from './pages/(publics)/VieillesPlumesPage';
-import { NotFound } from './pages/NotFound';
+const ActualitePage = lazy(() =>
+  import('./pages/ActualitePage').then((m) => ({ default: m.ActualitePage })),
+);
+const ActualitesPage = lazy(() =>
+  import('./pages/ActualitesPage').then((m) => ({ default: m.ActualitesPage })),
+);
+const AgendaPage = lazy(() =>
+  import('./pages/AgendaPage').then((m) => ({ default: m.AgendaPage })),
+);
+const ContactPage = lazy(() =>
+  import('./pages/ContactPage').then((m) => ({ default: m.ContactPage })),
+);
+const CreneauxPage = lazy(() =>
+  import('./pages/CreneauxPage').then((m) => ({ default: m.CreneauxPage })),
+);
+const GymnasesPage = lazy(() =>
+  import('./pages/GymnasesPage').then((m) => ({ default: m.GymnasesPage })),
+);
+const HistoriquePage = lazy(() =>
+  import('./pages/HistoriquePage').then((m) => ({ default: m.HistoriquePage })),
+);
+const InterclubPage = lazy(() =>
+  import('./pages/InterclubPage').then((m) => ({ default: m.InterclubPage })),
+);
+const AdhererPage = lazy(() =>
+  import('./pages/AdhererPage').then((m) => ({ default: m.AdhererPage })),
+);
+const FAQPage = lazy(() =>
+  import('./pages/FAQPage').then((m) => ({ default: m.FAQPage })),
+);
+const StagesPage = lazy(() =>
+  import('./pages/StagesPage').then((m) => ({ default: m.StagesPage })),
+);
+const ProjetClub = lazy(() =>
+  import('./pages/ProjetClub').then((m) => ({ default: m.ProjetClub })),
+);
+const DocumentsPage = lazy(() =>
+  import('./pages/DocumentsPage').then((m) => ({ default: m.DocumentsPage })),
+);
+const EvenementsPage = lazy(() =>
+  import('./pages/EvenementsPage').then((m) => ({ default: m.EvenementsPage })),
+);
+const GaleriePage = lazy(() =>
+  import('./pages/GaleriePage').then((m) => ({ default: m.GaleriePage })),
+);
+const MentionsLegalesPage = lazy(() =>
+  import('./pages/MentionsLegalesPage').then((m) => ({ default: m.MentionsLegalesPage })),
+);
+const OrganigrammePage = lazy(() =>
+  import('./pages/OrganigrammePage').then((m) => ({ default: m.OrganigrammePage })),
+);
+const PalmaresPage = lazy(() =>
+  import('./pages/PalmaresPage').then((m) => ({ default: m.PalmaresPage })),
+);
+const PolitiqueConfidentialitePage = lazy(() =>
+  import('./pages/PolitiqueConfidentialitePage').then((m) => ({
+    default: m.PolitiqueConfidentialitePage,
+  })),
+);
+const FormationsPage = lazy(() =>
+  import('./pages/FormationsPage').then((m) => ({ default: m.FormationsPage })),
+);
+const BenevolesPage = lazy(() =>
+  import('./pages/BenevolesPage').then((m) => ({ default: m.BenevolesPage })),
+);
+const AdultesCompetiteursPage = lazy(() =>
+  import('./pages/(publics)/AdultesCompetiteursPage').then((m) => ({
+    default: m.AdultesCompetiteursPage,
+  })),
+);
+const AdultesLoisirsPage = lazy(() =>
+  import('./pages/(publics)/AdultesLoisirsPage').then((m) => ({
+    default: m.AdultesLoisirsPage,
+  })),
+);
+const EntreprisePage = lazy(() =>
+  import('./pages/(publics)/EntreprisePage').then((m) => ({ default: m.EntreprisePage })),
+);
+const JeunesPage = lazy(() =>
+  import('./pages/(publics)/JeunesPage').then((m) => ({ default: m.JeunesPage })),
+);
+const VieillesPlumesPage = lazy(() =>
+  import('./pages/(publics)/VieillesPlumesPage').then((m) => ({
+    default: m.VieillesPlumesPage,
+  })),
+);
+const NotFound = lazy(() =>
+  import('./pages/NotFound').then((m) => ({ default: m.NotFound })),
+);
 
 export const router = createBrowserRouter([
   {

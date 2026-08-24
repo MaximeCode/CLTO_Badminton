@@ -1,8 +1,10 @@
-import { API_URL, fetchAPI } from "../Client";
+import { fetchAPI } from "../Client";
 import type { Hero } from "@/types/herosType";
+import { mapMedia } from "@/utils/media";
 
 export async function getHeros(): Promise<Hero[]> {
-  let url = "/api/heros?populate[image][fields][0]=url";
+  const url =
+    "/api/heros?populate[image][fields][0]=url&populate[image][fields][1]=width&populate[image][fields][2]=height&populate[image][fields][3]=alternativeText&populate[image][fields][4]=name&populate[image][fields][5]=mime&populate[image][fields][6]=formats";
 
   const { data } = await fetchAPI(url);
 
@@ -14,9 +16,7 @@ export async function getHeros(): Promise<Hero[]> {
       titre: string;
       description?: string;
       libelle_btn: string;
-      image: {
-        url: string;
-      };
+      image: unknown;
       lien: string;
     }) => ({
       id: item.id,
@@ -25,9 +25,7 @@ export async function getHeros(): Promise<Hero[]> {
       titre: item.titre,
       description: item.description ?? "",
       libelle_btn: item.libelle_btn ?? "En savoir plus",
-      image: {
-        url: `${API_URL}${item.image?.url ?? ""}`,
-      },
+      image: mapMedia(item.image as never),
       lien: item.lien ?? "",
     })
   );

@@ -7,13 +7,18 @@ import { getPartners } from '@/api/strapi/partners';
 import { Loader2 } from 'lucide-react';
 import { Partner } from '@/types/partnersType';
 
-export function Partners() {
+export function Partners({ initialPartners }: { initialPartners?: Partner[] } = {}) {
 
-  const [partners, setPartners] = useState<Partner[]>([]);
+  const [partners, setPartners] = useState<Partner[]>(initialPartners ?? []);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!initialPartners);
 
   useEffect(() => {
+    if (initialPartners) {
+      setPartners(initialPartners);
+      setLoading(false);
+      return;
+    }
     async function loadData() {
       try {
         setLoadError(null);
@@ -30,7 +35,7 @@ export function Partners() {
       }
     }
     loadData();
-  }, []);
+  }, [initialPartners]);
 
   if (loading) {
     return (
@@ -95,9 +100,11 @@ export function Partners() {
                         logo.name ||
                         `Logo partenaire — ${partner.type}`
                       }
-
+                      width={logo.width ?? 180}
+                      height={logo.height ?? 90}
                       className="max-h-16 md:max-h-22.5 w-auto object-contain grayscale-12 group-hover:grayscale-0 transition-all duration-200"
                       loading="lazy"
+                      decoding="async"
                     />
                   </motion.div>
                 ))}

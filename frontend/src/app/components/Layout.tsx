@@ -3,25 +3,31 @@ import { Header } from './Header';
 import { EnvBanner } from './EnvBanner';
 import { Footer } from './Footer';
 import { ScrollToTop } from './ScrollToTop';
-import { useState, useEffect, Suspense } from 'react';
+import { Suspense, useState, useEffect } from 'react';
+import { Loader2 } from 'lucide-react';
 
 import { getContact } from '@/api/strapi/contact';
 import type { Contact } from '@/types/contactType';
 import { ContactContext } from '@/app/contexts/ContactContext';
-import { Loader2 } from 'lucide-react';
+
+function RouteFallback() {
+  return (
+    <div className="flex min-h-[40vh] items-center justify-center gap-3 text-primary" role="status">
+      <Loader2 className="h-8 w-8 animate-spin text-secondary" aria-hidden />
+      <span>Chargement…</span>
+    </div>
+  );
+}
 
 export function Layout() {
   const [contact, setContact] = useState<Contact | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
-  // Fetch contact data
   useEffect(() => {
     async function loadData() {
       try {
         setLoadError(null);
-        // console.log('Loading contact data...');
         const data = await getContact();
-        // console.log('Contact data loaded:', data);
         setContact(data);
       } catch (error) {
         console.error('Error loading contact data:', error);
@@ -35,6 +41,9 @@ export function Layout() {
 
   return (
     <div className="min-h-screen bg-white">
+      <a href="#main-content" className="skip-link">
+        Aller au contenu principal
+      </a>
       <ContactContext.Provider value={contact}>
         <ScrollToTop />
         <div className="sticky top-0 z-50">
@@ -42,7 +51,7 @@ export function Layout() {
           <Header />
         </div>
         <main id="main-content">
-          <Suspense fallback={<Loader2 className="animate-spin text-primary mx-auto my-10" size={36} />}>
+          <Suspense fallback={<RouteFallback />}>
             <Outlet />
           </Suspense>
         </main>

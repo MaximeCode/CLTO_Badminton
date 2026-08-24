@@ -4,6 +4,21 @@ export type Base = {
   documentId: string;
 };
 
+export type MediaFormat = {
+  url: string;
+  width?: number | null;
+  height?: number | null;
+  size?: number | null;
+  mime?: string | null;
+};
+
+export type MediaFormats = {
+  thumbnail?: MediaFormat;
+  small?: MediaFormat;
+  medium?: MediaFormat;
+  large?: MediaFormat;
+};
+
 /** Média Strapi normalisé (URL absolue côté front). */
 export type Media = {
   id: number;
@@ -14,6 +29,13 @@ export type Media = {
   mime?: string;
   width?: number | null;
   height?: number | null;
+  formats?: MediaFormats;
+};
+
+/** Bloc Avantages Strapi normalisé */
+export type Avantage = {
+  id: number;
+  contenu: string;
 };
 
 /** Bloc Avantages Strapi normalisé */

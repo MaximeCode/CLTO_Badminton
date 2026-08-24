@@ -3,6 +3,18 @@ module.exports = ({ env }) => ({
         enabled: true,
         resolve: './src/plugins/icbad-scraper',
     },
+    upload: {
+        config: {
+            // Garantit la génération des variantes Sharp (srcSet côté front)
+            breakpoints: {
+                xlarge: 1920,
+                large: 1000,
+                medium: 750,
+                small: 500,
+                thumbnail: 245,
+            },
+        },
+    },
     email: {
         config: {
             provider: 'nodemailer',

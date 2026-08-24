@@ -1,5 +1,6 @@
 import { Partner } from "@/types/partnersType";
-import { API_URL, fetchAPI } from "../Client";
+import { fetchAPI } from "../Client";
+import { mapMedia } from "@/utils/media";
 
 export async function getPartners(): Promise<Partner[]> {
   const { data } = await fetchAPI("/api/partenaires?populate=*");
@@ -8,20 +9,12 @@ export async function getPartners(): Promise<Partner[]> {
     (item: {
       id: number;
       documentId: string;
-      logos: {
-        url: string;
-        alternativeText?: string | null;
-        name?: string | null;
-      }[];
+      logos: unknown[];
       type: string;
     }) => ({
       id: item.id,
       documentId: item.documentId,
-      logos: (item.logos ?? []).map((logo) => ({
-        url: `${API_URL}${logo.url ?? ""}`,
-        alternativeText: logo.alternativeText ?? null,
-        name: logo.name ?? null,
-      })),
+      logos: (item.logos ?? []).map((logo) => mapMedia(logo as never)),
       type: item.type,
     })
   );

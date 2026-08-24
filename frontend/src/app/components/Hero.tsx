@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { isInternalAppLink } from '../../utils/resolveAppLink';
+import type { Media } from '@/types/baseType';
+import { ResponsiveImage } from './ResponsiveImage';
 
 const ctaClassName =
   'inline-block cursor-pointer bg-secondary text-white text-sm sm:text-base px-5 py-2.5 sm:px-8 sm:py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200';
@@ -16,6 +18,8 @@ const ctaMotionProps = {
 export type HeroSlide = {
   id: number;
   image: string;
+  /** Média Strapi complet pour srcSet / dimensions (optionnel). */
+  media?: Media | null;
   label: string;
   title: string;
   description: string;
@@ -34,12 +38,22 @@ export function Hero<T extends HeroSlide = HeroSlide>({
 }: HeroProps<T>) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [reduceMotion, setReduceMotion] = useState(false);
 
   const isInterclub = variant === 'interclub';
-
   const loaded = slides.length > 0;
 
   useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReduceMotion(mq.matches);
+    const onChange = () => setReduceMotion(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  useEffect(() => {
+    if (!loaded || reduceMotion || slides.length <= 1) return;
+
     const timer = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -51,7 +65,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
     }, 50);
 
     return () => clearInterval(timer);
-  }, [slides.length]);
+  }, [loaded, reduceMotion, slides.length]);
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
@@ -71,7 +85,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
   const slide = slides[currentSlide];
 
   const navButtonClass =
-    'w-7 h-7 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors duration-200 flex items-center justify-center cursor-pointer';
+    'min-w-11 min-h-11 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors duration-200 flex items-center justify-center cursor-pointer';
 
   if (!loaded) {
     return (
@@ -81,18 +95,21 @@ export function Hero<T extends HeroSlide = HeroSlide>({
             ? 'relative h-[52vh] min-h-85 lg:h-[70vh] lg:min-h-0 overflow-hidden bg-gray-200 flex flex-row items-center justify-center gap-4'
             : 'relative h-[50vh] min-h-80 lg:h-[65vh] lg:min-h-0 overflow-hidden bg-gray-200 flex flex-row items-center justify-center gap-4'
         }
+        aria-busy="true"
+        aria-label="Chargement du carrousel"
       >
-        {/* Loader2 icon */}
-        <Loader2 className="w-10 h-10 animate-spin text-secondary" />
+        <Loader2 className="w-10 h-10 animate-spin text-secondary" aria-hidden />
         <p className="text-primary">Chargement des slides...</p>
-        {/* Diagonal edge - outside AnimatePresence to avoid gap on slide change */}
         <div
           className="absolute -bottom-px left-0 right-0 h-10 md:h-24 bg-white z-10 pointer-events-none"
           style={{ clipPath: 'polygon(-1% 100%, 101% 0, 101% 100%)' }}
+          aria-hidden
         />
       </section>
     );
   }
+
+  const isLcpSlide = currentSlide === 0;
 
   return (
     <section
@@ -101,29 +118,39 @@ export function Hero<T extends HeroSlide = HeroSlide>({
           ? 'relative h-[52vh] min-h-85 lg:h-[70vh] lg:min-h-0 overflow-hidden'
           : 'relative h-[50vh] min-h-80 lg:h-[65vh] lg:min-h-0 overflow-hidden'
       }
+      aria-roledescription="carousel"
+      aria-label={isInterclub ? 'Carrousel interclubs' : 'Carrousel principal'}
     >
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
-          initial={{ opacity: 0 }}
+          initial={reduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
+          exit={reduceMotion ? undefined : { opacity: 0 }}
+          transition={{ duration: reduceMotion ? 0 : 0.5 }}
           className="absolute inset-0"
+          role="group"
+          aria-roledescription="slide"
+          aria-label={`Diapositive ${currentSlide + 1} sur ${slides.length}`}
         >
-          {slide.image ? (
-            <img
-              src={slide.image}
+          {slide.image || slide.media?.url ? (
+            <ResponsiveImage
+              media={slide.media}
+              src={slide.image || slide.media?.url}
               alt={
                 slide.title
                   ? `${slide.title} — CLTO Badminton Orléans`
                   : 'CLTO Badminton Orléans, club de badminton à Orléans'
               }
+              sizes="100vw"
               className={
                 isInterclub
                   ? 'absolute inset-0 h-full w-full object-cover object-[center_25%] md:object-center'
                   : 'absolute inset-0 h-full w-full object-cover object-center'
               }
+              loading={isLcpSlide ? 'eager' : 'lazy'}
+              fetchpriority={isLcpSlide ? 'high' : 'low'}
+              decoding={isLcpSlide ? 'sync' : 'async'}
             />
           ) : (
             <div className="absolute inset-0 bg-primary" aria-hidden />
@@ -135,6 +162,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                 ? 'absolute inset-0 bg-linear-to-b from-black/45 via-black/20 to-black/75 md:bg-linear-to-r md:from-black/80 md:via-black/50 md:to-transparent'
                 : 'absolute inset-0 bg-linear-to-b from-black/85 via-black/60 to-black/30 md:bg-linear-to-r md:from-black/80 md:via-black/50 md:to-transparent'
             }
+            aria-hidden
           />
 
           <div
@@ -153,9 +181,9 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                 }
               >
                 <motion.div
-                  initial={{ y: 20, opacity: 0 }}
+                  initial={reduceMotion ? false : { y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 }}
+                  transition={{ delay: reduceMotion ? 0 : 0.2 }}
                   className={
                     isInterclub
                       ? 'text-secondary uppercase tracking-[0.16em] text-[11px] sm:text-sm mb-2 md:mb-4'
@@ -167,18 +195,18 @@ export function Hero<T extends HeroSlide = HeroSlide>({
 
                 {isInterclub ? (
                   <motion.h2
-                    initial={{ y: 20, opacity: 0 }}
+                    initial={reduceMotion ? false : { y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.3 }}
+                    transition={{ delay: reduceMotion ? 0 : 0.3 }}
                     className="font-primary text-4xl lg:text-5xl xl:text-7xl text-white leading-[1.15] mb-2 md:mb-4"
                   >
                     {slide.title}
                   </motion.h2>
                 ) : (
                   <motion.h1
-                    initial={{ y: 20, opacity: 0 }}
+                    initial={reduceMotion ? false : { y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.3 }}
+                    transition={{ delay: reduceMotion ? 0 : 0.3 }}
                     className="font-primary text-4xl lg:text-5xl xl:text-7xl text-white leading-[1.15] mb-3 md:mb-4"
                   >
                     {slide.title}
@@ -186,9 +214,9 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                 )}
 
                 <motion.p
-                  initial={{ y: 20, opacity: 0 }}
+                  initial={reduceMotion ? false : { y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.4 }}
+                  transition={{ delay: reduceMotion ? 0 : 0.4 }}
                   className={
                     isInterclub
                       ? 'text-white/90 text-xs sm:text-base md:text-lg max-w-xl'
@@ -219,55 +247,65 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                 )}
               </div>
 
-              <div className="mt-10 z-10 flex gap-1.5 sm:gap-2">
-                {slides.map((_, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    onClick={() => goToSlide(index)}
-                    className="relative w-9 sm:w-12 h-1 bg-white/30 overflow-hidden"
-                  >
-                    {index === currentSlide && (
-                      <div
-                        className="absolute inset-0 bg-secondary"
-                        style={{ width: `${progress}%` }}
-                      />
-                    )}
-                  </button>
-                ))}
-              </div>
+              {slides.length > 1 && (
+                <div className="mt-10 z-10 flex gap-1.5 sm:gap-2" role="tablist" aria-label="Indicateurs du carrousel">
+                  {slides.map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      role="tab"
+                      aria-label={`Afficher la diapositive ${index + 1}`}
+                      aria-selected={index === currentSlide}
+                      aria-current={index === currentSlide ? 'true' : undefined}
+                      onClick={() => goToSlide(index)}
+                      className="relative min-w-11 min-h-11 inline-flex items-center justify-center"
+                    >
+                      <span className="relative block w-9 sm:w-12 h-1 bg-white/30 overflow-hidden" aria-hidden>
+                        {index === currentSlide && (
+                          <span
+                            className="absolute inset-0 bg-secondary"
+                            style={{ width: `${progress}%` }}
+                          />
+                        )}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </motion.div>
       </AnimatePresence>
 
-      {/* Diagonal edge - outside AnimatePresence to avoid gap on slide change */}
       <div
         className={`absolute -bottom-px left-0 right-0 h-10 md:h-24 bg-${isInterclub ? 'gray-100' : 'white'} z-10 pointer-events-none`}
         style={{ clipPath: 'polygon(-1% 100%, 101% 0, 101% 100%)' }}
+        aria-hidden
       />
 
-      {isInterclub && (
+      {isInterclub && slides.length > 1 && (
         <div className="absolute bottom-12 sm:bottom-16 md:bottom-32 left-4 sm:left-6 md:left-12 z-10 flex flex-col gap-3">
           <div className="flex sm:hidden gap-3">
-            <button type="button" onClick={prevSlide} className={navButtonClass}>
-              <ChevronLeft size={20} />
+            <button type="button" onClick={prevSlide} className={navButtonClass} aria-label="Diapositive précédente">
+              <ChevronLeft size={20} aria-hidden />
             </button>
-            <button type="button" onClick={nextSlide} className={navButtonClass}>
-              <ChevronRight size={20} />
+            <button type="button" onClick={nextSlide} className={navButtonClass} aria-label="Diapositive suivante">
+              <ChevronRight size={20} aria-hidden />
             </button>
           </div>
         </div>
       )}
 
-      <div className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-10 hidden sm:flex flex-col gap-3 sm:gap-4">
-        <button type="button" onClick={prevSlide} className={navButtonClass}>
-          <ChevronLeft size={20} className="sm:w-6 sm:h-6" />
-        </button>
-        <button type="button" onClick={nextSlide} className={navButtonClass}>
-          <ChevronRight size={20} className="sm:w-6 sm:h-6" />
-        </button>
-      </div>
+      {slides.length > 1 && (
+        <div className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-10 hidden sm:flex flex-col gap-3 sm:gap-4">
+          <button type="button" onClick={prevSlide} className={navButtonClass} aria-label="Diapositive précédente">
+            <ChevronLeft size={20} className="sm:w-6 sm:h-6" aria-hidden />
+          </button>
+          <button type="button" onClick={nextSlide} className={navButtonClass} aria-label="Diapositive suivante">
+            <ChevronRight size={20} className="sm:w-6 sm:h-6" aria-hidden />
+          </button>
+        </div>
+      )}
     </section>
   );
 }

@@ -1,9 +1,10 @@
-import { API_URL, fetchAPI } from "../Client";
+import { fetchAPI } from "../Client";
 import type { Accueil, LabelNomEtLogo, StatsClub } from "@/types/accueilType";
+import { mapMedia } from "@/utils/media";
 
 export async function getAccueil(): Promise<Accueil | null> {
   const { data } = await fetchAPI(
-    "/api/accueil?populate[stats_club]=true&populate[labels][populate][logo][fields][0]=url"
+    "/api/accueil?populate[stats_club]=true&populate[labels][populate][logo][fields][0]=url&populate[labels][populate][logo][fields][1]=width&populate[labels][populate][logo][fields][2]=height&populate[labels][populate][logo][fields][3]=alternativeText&populate[labels][populate][logo][fields][4]=name&populate[labels][populate][logo][fields][5]=mime&populate[labels][populate][logo][fields][6]=formats"
   );
 
   if (!data) return null;
@@ -17,13 +18,11 @@ export async function getAccueil(): Promise<Accueil | null> {
       (item: {
         id: number;
         label: string;
-        logo: { url: string };
+        logo: unknown;
       }) => ({
         id: item.id,
         label: item.label,
-        logo: {
-          url: `${API_URL}${item.logo.url}`,
-        },
+        logo: mapMedia(item.logo as never),
       })
     );
 

@@ -1,4 +1,4 @@
-import type { Base } from "@/types/baseType";
+import type { Base, Media } from "@/types/baseType";
 
 export type StatsClub = {
   id: number;
@@ -9,9 +9,7 @@ export type StatsClub = {
 export type LabelNomEtLogo = {
   id: number;
   label: string;
-  logo: {
-    url: string;
-  };
+  logo: Media;
 };
 
 export type Accueil = Base & {

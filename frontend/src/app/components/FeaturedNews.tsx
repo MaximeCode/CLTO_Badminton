@@ -10,13 +10,19 @@ import { getFeaturedArticles } from '@/api/strapi/articles';
 import { extractTextFromBlocks } from '@/utils/blocksText';
 import { stringifyDate } from '@/utils/formatDate';
 import { Button } from './Button';
+import { ResponsiveImage } from './ResponsiveImage';
 
-export function FeaturedNews() {
-  const [articles, setArticles] = useState<Article[]>([]);
+export function FeaturedNews({ initialArticles }: { initialArticles?: Article[] } = {}) {
+  const [articles, setArticles] = useState<Article[]>(initialArticles ?? []);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!initialArticles);
 
   useEffect(() => {
+    if (initialArticles) {
+      setArticles(initialArticles);
+      setLoading(false);
+      return;
+    }
     async function loadData() {
       try {
         setLoadError(null);
@@ -33,7 +39,7 @@ export function FeaturedNews() {
       }
     }
     loadData();
-  }, []);
+  }, [initialArticles]);
 
   if (loading) {
     return (
@@ -80,10 +86,12 @@ export function FeaturedNews() {
         >
           <Link to={`/actualite/${featuredArticle.documentId}`} className="group cursor-pointer">
             <div className="relative overflow-hidden rounded-lg mb-4 aspect-16/10">
-              <img
-                src={featuredArticle.vignette.url}
+              <ResponsiveImage
+                media={featuredArticle.vignette}
                 alt={featuredArticle.titre}
+                sizes="(max-width: 1024px) 100vw, 640px"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
               />
               <div className="absolute top-4 left-4 flex flex-wrap gap-2 max-w-[70%]">
                 {featuredArticle.categories.map((categorie) => (
@@ -133,10 +141,14 @@ export function FeaturedNews() {
             >
               <Link to={`/actualite/${article.documentId}`} className="cursor-pointer flex gap-4">
                 <div className="w-32 h-32 shrink-0 rounded-lg overflow-hidden">
-                  <img
-                    src={article.vignette.url}
+                  <ResponsiveImage
+                    media={article.vignette}
                     alt={article.titre}
+                    sizes="128px"
+                    width={128}
+                    height={128}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    loading="lazy"
                   />
                 </div>
                 <div className="flex-1 flex flex-col justify-center">

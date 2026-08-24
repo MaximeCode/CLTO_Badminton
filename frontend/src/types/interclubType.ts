@@ -41,7 +41,7 @@ export type InterclubTeamSummary = {
   scrapeError: string | null;
   ranking: InterclubTeamRanking[] | null;
   icbadUrl: string;
-  image: { url: string } | null;
+  image: { url: string; width?: number | null; height?: number | null; formats?: unknown } | null;
   desc: string | null;
   objectif: string | null;
 };
