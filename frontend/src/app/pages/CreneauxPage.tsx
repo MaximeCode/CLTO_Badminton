@@ -39,6 +39,101 @@ import {
 
 const ALL_GYMS = "Tous";
 
+const FILTERS_STORAGE_KEY = "clto.creneaux.filters";
+
+const SESSION_KINDS = ["Entraînement", "Jeu libre"] as const;
+
+const DEFAULT_FILTERS = {
+  types: [...CRENEAU_TYPES] as string[],
+  sessionKinds: [...SESSION_KINDS] as string[],
+  publics: [] as string[],
+  gym: ALL_GYMS,
+};
+
+type StoredFilters = {
+  types: string[];
+  sessionKinds: string[];
+  publics: string[];
+  gym: string;
+};
+
+function sanitizeStringList(
+  value: unknown,
+  allowed: readonly string[],
+  fallback: string[],
+): string[] {
+  if (!Array.isArray(value)) return [...fallback];
+  const filtered = value.filter(
+    (item): item is string =>
+      typeof item === "string" && allowed.includes(item),
+  );
+  // Liste inconnue / entièrement invalide → défaut ; [] est valide pour les publics
+  if (filtered.length === 0 && value.length > 0) return [...fallback];
+  return filtered;
+}
+
+function loadStoredFilters(): StoredFilters {
+  try {
+    const raw = localStorage.getItem(FILTERS_STORAGE_KEY);
+    if (!raw) {
+      return {
+        types: [...DEFAULT_FILTERS.types],
+        sessionKinds: [...DEFAULT_FILTERS.sessionKinds],
+        publics: [...DEFAULT_FILTERS.publics],
+        gym: DEFAULT_FILTERS.gym,
+      };
+    }
+    const parsed = JSON.parse(raw) as Partial<StoredFilters>;
+    const gym =
+      typeof parsed.gym === "string" && parsed.gym.trim() !== ""
+        ? parsed.gym
+        : DEFAULT_FILTERS.gym;
+
+    return {
+      types: sanitizeStringList(
+        parsed.types,
+        CRENEAU_TYPES,
+        DEFAULT_FILTERS.types,
+      ),
+      sessionKinds: sanitizeStringList(
+        parsed.sessionKinds,
+        SESSION_KINDS,
+        DEFAULT_FILTERS.sessionKinds,
+      ),
+      publics: sanitizeStringList(
+        parsed.publics,
+        CRENEAU_PUBLICS,
+        DEFAULT_FILTERS.publics,
+      ),
+      gym,
+    };
+  } catch {
+    return {
+      types: [...DEFAULT_FILTERS.types],
+      sessionKinds: [...DEFAULT_FILTERS.sessionKinds],
+      publics: [...DEFAULT_FILTERS.publics],
+      gym: DEFAULT_FILTERS.gym,
+    };
+  }
+}
+
+/** Une seule lecture au premier montage React (4 useState). */
+let initialFiltersCache: StoredFilters | null = null;
+function getInitialFilters(): StoredFilters {
+  if (!initialFiltersCache) {
+    initialFiltersCache = loadStoredFilters();
+  }
+  return initialFiltersCache;
+}
+
+function saveStoredFilters(filters: StoredFilters) {
+  try {
+    localStorage.setItem(FILTERS_STORAGE_KEY, JSON.stringify(filters));
+  } catch {
+    // Quota / mode privé : on ignore silencieusement
+  }
+}
+
 /** Planning Excel de transition (à jour) — août 2026. */
 const EXCEL_PLANNING_URL =
   "https://docs.google.com/spreadsheets/d/1D4_LffNAUOL1-_NB9iWQAtwKcj2VJ7fxmc8iOq1oDl8/edit";
@@ -118,13 +213,27 @@ export function CreneauxPage() {
   const [hoveredSlot, setHoveredSlot] = useState<string | null>(null);
   const [openDay, setOpenDay] = useState<string | null>(null);
 
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([...CRENEAU_TYPES]);
-  const [selectedSessionKinds, setSelectedSessionKinds] = useState<string[]>([
-    "Entraînement",
-    "Jeu libre",
-  ]);
-  const [selectedPublics, setSelectedPublics] = useState<string[]>([]);
-  const [selectedGym, setSelectedGym] = useState<string>(ALL_GYMS);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>(
+    () => getInitialFilters().types,
+  );
+  const [selectedSessionKinds, setSelectedSessionKinds] = useState<string[]>(
+    () => getInitialFilters().sessionKinds,
+  );
+  const [selectedPublics, setSelectedPublics] = useState<string[]>(
+    () => getInitialFilters().publics,
+  );
+  const [selectedGym, setSelectedGym] = useState<string>(
+    () => getInitialFilters().gym,
+  );
+
+  useEffect(() => {
+    saveStoredFilters({
+      types: selectedTypes,
+      sessionKinds: selectedSessionKinds,
+      publics: selectedPublics,
+      gym: selectedGym,
+    });
+  }, [selectedTypes, selectedSessionKinds, selectedPublics, selectedGym]);
 
   useEffect(() => {
     async function loadData() {
@@ -170,6 +279,19 @@ export function CreneauxPage() {
     }
     loadData();
   }, []);
+
+  // Gymnase disparu des données → défaut "Tous"
+  useEffect(() => {
+    if (weeks.length === 0 || selectedGym === ALL_GYMS) return;
+    const knownGyms = new Set(
+      weeks.flatMap((week) =>
+        week.seances.map((seance) => seance.gymnaseNomCourt).filter(Boolean),
+      ),
+    );
+    if (!knownGyms.has(selectedGym)) {
+      setSelectedGym(ALL_GYMS);
+    }
+  }, [weeks, selectedGym]);
 
   const selectedWeek = useMemo(() => {
     if (weeks.length === 0) return null;
@@ -240,10 +362,10 @@ export function CreneauxPage() {
   };
 
   const resetFilters = () => {
-    setSelectedTypes([...CRENEAU_TYPES]);
-    setSelectedSessionKinds(["Entraînement", "Jeu libre"]);
-    setSelectedPublics([]);
-    setSelectedGym(ALL_GYMS);
+    setSelectedTypes([...DEFAULT_FILTERS.types]);
+    setSelectedSessionKinds([...DEFAULT_FILTERS.sessionKinds]);
+    setSelectedPublics([...DEFAULT_FILTERS.publics]);
+    setSelectedGym(DEFAULT_FILTERS.gym);
   };
 
   const toMinutes = (time: string) => {
