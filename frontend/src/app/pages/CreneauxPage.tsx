@@ -94,7 +94,7 @@ const TYPE_COLORS: Record<string, string> = {
   Intermédiaire: "#db2777",
   "Matchs pour tous": "#16a34a",
   "Pratique libre": "#16a34a",
-  "Jeu libre": "#65a30d",
+  "Jeu libre": "#16a34a",
 };
 
 const TYPE_BADGE_CLASSES: Record<string, string> = {
