@@ -23,6 +23,7 @@ type SeanceApiItem = {
   gymnase_nom_court: string;
   ENCADREMENT?: SeanceTag[] | null;
   ENTRAINEUR?: SeanceTag[] | null;
+  OUVREUR?: SeanceTag[] | null;
   PUBLIC?: SeanceTag[] | null;
 };
 
@@ -39,6 +40,12 @@ function resolveFreePlayPrimaryType(nom: string): string {
   if (normalized.includes("matchs pour tous") || normalized.includes("match pour tous")) {
     return "Matchs pour tous";
   }
+  if (normalized.includes("matchs compétiteur") || normalized.includes("match compétiteur")) {
+    return "Matchs Compétiteurs";
+  }
+  if (normalized.includes("matchs loisir") || normalized.includes("match loisir")) {
+    return "Matchs Loisirs";
+  }
   return "Jeu libre";
 }
 
@@ -47,6 +54,7 @@ function mapSeance(item: SeanceApiItem): Seance {
   const hasEncadrement = encadrement.length > 0;
   const entraineurs = item.ENTRAINEUR ?? [];
   const hasEntraineur = entraineurs.length > 0;
+  const ouvreurs = item.OUVREUR ?? [];
   const types = encadrement.map((tag) => tag.libelle);
   const sessionKind = hasEncadrement || hasEntraineur ? "Entraînement" : "Jeu libre";
 
@@ -65,6 +73,7 @@ function mapSeance(item: SeanceApiItem): Seance {
     types,
     primaryType: hasEncadrement || hasEntraineur ? types[0] : resolveFreePlayPrimaryType(item.nom),
     entraineurs: entraineurs.map((tag) => tag.libelle),
+    ouvreurs: ouvreurs.map((tag) => tag.libelle),
     publics: (item.PUBLIC ?? []).map((tag) => tag.libelle),
     commentaire: item.commentaire,
     actif: item.actif === "1",
@@ -80,7 +89,7 @@ function mapSeance(item: SeanceApiItem): Seance {
 export async function getSeances(saisonId: number = 17): Promise<Seance[]> {
   const { data } =
     import.meta.env.VITE_ENV === "dev"
-      ? await fetchFakeAPIGestion("allSeances") // DEV
+      ? await fetchFakeAPIGestion("allSeances_25-08") // DEV
       : await fetchAPIGestion(`/api/seances/${saisonId}`); // PP / PROD
 
   return (data as SeanceApiItem[])

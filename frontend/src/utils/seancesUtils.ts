@@ -85,9 +85,15 @@ export function getWeekDistance(date: Date, week: CreneauWeek): number {
   return 0;
 }
 
+/** Affiche une liste de personnes (entraîneurs, ouvreurs, …). */
+export function formatPeople(names: string[], emptyLabel = "Non renseigné"): string {
+  if (names.length === 0) return emptyLabel;
+  return names.join(" / ");
+}
+
+/** @deprecated Préférer formatPeople */
 export function formatLeader(entraineurs: string[]): string {
-  if (entraineurs.length === 0) return "Non renseigné";
-  return entraineurs.join(" / ");
+  return formatPeople(entraineurs);
 }
 
 export function addDaysToWeekStart(weekStart: string, dayIndex: number): Date {

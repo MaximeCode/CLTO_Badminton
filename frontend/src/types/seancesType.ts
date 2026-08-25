@@ -21,6 +21,8 @@ export type Seance = {
   /** Type principal pour pastille / couleur */
   primaryType: string;
   entraineurs: string[];
+  /** Libellés OUVREUR (ouverture du gymnase) */
+  ouvreurs: string[];
   publics: string[];
   commentaire: string | null;
   actif: boolean;
@@ -37,12 +39,19 @@ export type CreneauWeek = {
   seances: Seance[];
 };
 
-export const CRENEAU_TYPES = ["Élite", "Perfectionnement", "Intermédiaire", "Débutant"] as const;
+export const CRENEAU_TYPES = [
+  "Élite",
+  "Perfectionnement",
+  "Intermédiaire",
+  "Débutant",
+  "Stage",
+] as const;
 export const CRENEAU_HINT = [
   "Niveau R et +",
   "Niveau D8 et +",
   "Niveau intermédiaire",
   "Découverte et apprentissage",
+  "Stage / journée dédiée",
 ] as const;
 
 export const CRENEAU_JEU_LIBRE_ITEMS = [

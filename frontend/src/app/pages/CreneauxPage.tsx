@@ -29,7 +29,7 @@ import { CRENEAU_PUBLICS, CRENEAU_TYPES, CRENEAU_HINT, CRENEAU_JEU_LIBRE_ITEMS, 
 import {
   WEEK_DAYS,
   addDaysToWeekStart,
-  formatLeader,
+  formatPeople,
   formatMonthYear,
   getDayNameFromDate,
   getWeekDistance,
@@ -150,7 +150,8 @@ type TimeSlot = {
   date: Date;
   startTime: string;
   endTime: string;
-  leader: string;
+  entraineurs: string[];
+  ouvreurs: string[];
   hasOuvreur: boolean;
   types: string[];
   primaryType: string;
@@ -171,8 +172,10 @@ function seanceToTimeSlot(seance: Seance): TimeSlot {
     date,
     startTime: seance.debut,
     endTime: seance.fin,
-    leader: formatLeader(seance.entraineurs),
-    hasOuvreur: seance.entraineurs.length > 0,
+    entraineurs: seance.entraineurs,
+    ouvreurs: seance.ouvreurs,
+    // Ouvreur dédié ou entraîneur présent (peut ouvrir le gymnase)
+    hasOuvreur: seance.ouvreurs.length > 0 || seance.entraineurs.length > 0,
     types: seance.types,
     primaryType: seance.primaryType,
     nom: seance.nom,
@@ -187,7 +190,10 @@ const TYPE_COLORS: Record<string, string> = {
   Perfectionnement: "#da9619",
   Débutant: "#0891b2",
   Intermédiaire: "#db2777",
+  Stage: "#7c3aed",
   "Matchs pour tous": "#16a34a",
+  "Matchs Loisirs": "#16a34a",
+  "Matchs Compétiteurs": "#16a34a",
   "Pratique libre": "#16a34a",
   "Jeu libre": "#16a34a",
 };
@@ -197,7 +203,10 @@ const TYPE_BADGE_CLASSES: Record<string, string> = {
   Perfectionnement: "bg-secondary",
   Débutant: "bg-cyan-600",
   Intermédiaire: "bg-pink-600",
+  Stage: "bg-violet-600",
   "Matchs pour tous": "bg-green-600",
+  "Matchs Loisirs": "bg-emerald-600",
+  "Matchs Compétiteurs": "bg-green-700",
   "Pratique libre": "bg-teal-600",
   "Jeu libre": "bg-lime-600",
 };
@@ -871,9 +880,13 @@ export function CreneauxPage() {
                                         </div>
                                         <div className="mt-2 text-xs text-gray-600 space-y-1">
                                           <p>📍 {slot.gymFull}</p>
-                                          {slot.hasOuvreur ? (
-                                            <p>👤 {slot.leader}</p>
-                                          ) : (
+                                          {slot.entraineurs.length > 0 && (
+                                            <p>🏸 {formatPeople(slot.entraineurs)}</p>
+                                          )}
+                                          {slot.ouvreurs.length > 0 && (
+                                            <p>👤 {formatPeople(slot.ouvreurs)}</p>
+                                          )}
+                                          {!slot.hasOuvreur && (
                                             <p className="flex items-center gap-1.5 font-bold text-red-600">
                                               <AlertTriangle size={14} className="shrink-0" />
                                               Aucun ouvreur !
@@ -1100,14 +1113,23 @@ export function CreneauxPage() {
                                               {slot.gymFull}
                                             </span>
                                           </div>
-                                          {slot.hasOuvreur ? (
+                                          {slot.entraineurs.length > 0 && (
+                                            <div className="flex items-center gap-2">
+                                              <Dumbbell size={16} />
+                                              <span className="line-clamp-2">
+                                                {formatPeople(slot.entraineurs)}
+                                              </span>
+                                            </div>
+                                          )}
+                                          {slot.ouvreurs.length > 0 && (
                                             <div className="flex items-center gap-2">
                                               <User size={16} />
                                               <span className="line-clamp-2">
-                                                {slot.leader}
+                                                {formatPeople(slot.ouvreurs)}
                                               </span>
                                             </div>
-                                          ) : (
+                                          )}
+                                          {!slot.hasOuvreur && (
                                             <div className="flex items-center gap-2 font-bold text-red-500">
                                               <AlertTriangle size={16} className="shrink-0" />
                                               <span>Aucun ouvreur !</span>
@@ -1161,7 +1183,7 @@ export function CreneauxPage() {
                   <h3 className="font-primary text-xl text-primary mb-4">
                     ENTRAÎNEMENTS
                   </h3>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
                     {CRENEAU_TYPES.map((type, index) => (
                       <div key={type} className="flex items-center gap-3">
                         <div
@@ -1206,8 +1228,8 @@ export function CreneauxPage() {
                 <AlertTriangle size={18} className="shrink-0 mt-0.5" />
                 <span>
                   <strong>Aucun ouvreur !</strong> Le badge rouge indique qu’aucun
-                  ouvreur n’est désigné. Le créneau risque d’être annulé si personne ne
-                  se propose.
+                  ouvreur ni entraîneur n’est désigné. Le créneau risque d’être
+                  annulé si personne ne se propose.
                 </span>
               </p>
             </motion.div>
