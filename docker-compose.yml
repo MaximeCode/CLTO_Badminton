@@ -62,6 +62,9 @@ services:
       # Pas de Basic Auth ici : conflit avec les 401 de Strapi (boucle navigateur)
       # - "traefik.http.routers.cltobadminton-strapi.middlewares=preprod-auth@file"
 
+      # Cache
+      - "traefik.http.middlewares.strapi-uploads-cache.headers.customresponseheaders.Cache-Control=public, max-age=31536000, immutable"
+
     networks:
       - max_network
     # ports:

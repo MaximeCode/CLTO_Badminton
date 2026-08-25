@@ -3,10 +3,12 @@ module.exports = [
   'strapi::errors',
   'strapi::security',
   'strapi::cors',
+  'global::compress',
   'strapi::poweredBy',
   'strapi::query',
   'strapi::body',
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
+  'global::public-cache',
 ];
