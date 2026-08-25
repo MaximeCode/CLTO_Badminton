@@ -70,7 +70,7 @@ export function EvenementCard({
           </div>
 
           {children ? (
-            <div className="mt-6 min-h-0 flex-1 overflow-y-auto">{children}</div>
+            <div className="mt-6 min-h-0 flex-1 overflow-y-auto border-2 border-gray-200 p-2 rounded-md">{children}</div>
           ) : null}
 
           {visibleLinks.length > 0 && (
