@@ -57,8 +57,9 @@ export type CreneauType = (typeof CRENEAU_TYPES)[number];
 export const CRENEAU_PUBLICS = [
   "Compétiteurs",
   "Famille",
-  "Jeunes",
   "Loisirs",
+  "Jeunes",
+  "Adultes",
   "Vétérans",
 ] as const;
 

@@ -4,7 +4,6 @@ import { createRoot } from 'react-dom/client';
 const COLORS = {
   LOCAL: '#2563eb',
   PREPROD: '#f97316',
-  PROD: '#dc2626',
 };
 
 function isPrivateIpv4(host) {
@@ -31,7 +30,7 @@ function getStrapiEnv() {
     return 'LOCAL';
   }
   if (host.includes('preprod')) return 'PREPROD';
-  return 'PROD';
+  return null;
 }
 
 function getEnvTitlePrefix() {
@@ -66,6 +65,7 @@ function prefixDocumentTitle() {
 
 export function EnvBanner() {
   const env = getStrapiEnv();
+  if (!env) return null;
 
   return (
     <div
@@ -92,6 +92,9 @@ export function EnvBanner() {
 
 export function mountEnvBanner() {
   if (document.getElementById('clto-strapi-env-banner')) return;
+
+  const env = getStrapiEnv();
+  if (!env) return;
 
   prefixDocumentTitle();
 
