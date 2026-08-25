@@ -30,19 +30,17 @@ export async function getEvenements(): Promise<Evenement[]> {
     `/api/evenements?populate=*&sort[0]=date:asc&filters[date][$gte]=${today}`
   );
 
-  return data.map(
-    (item: Evenement & { affiche: EvenementMedia | null }) => ({
-      id: item.id,
-      documentId: item.documentId,
-      titre: item.titre,
-      date: item.date,
-      detail_date: item.detail_date ?? null,
-      lieu: item.lieu,
-      horaire: item.horaire,
-      petite_description: item.petite_description ?? null,
-      affiche: mapMedia(item.affiche),
-      lien_inscription_benevole: item.lien_inscription_benevole,
-      lien_inscription_tournoi: item.lien_inscription_tournoi ?? null,
-    })
-  );
+  return data.map((item: Evenement & { affiche: EvenementMedia | null }) => ({
+    id: item.id,
+    documentId: item.documentId,
+    titre: item.titre,
+    date: item.date,
+    detail_date: item.detail_date ?? null,
+    lieu: item.lieu,
+    horaire: item.horaire,
+    petite_description: item.petite_description ?? null,
+    affiche: mapMedia(item.affiche),
+    lien_inscription_benevole: item.lien_inscription_benevole,
+    lien_inscription_tournoi: item.lien_inscription_tournoi ?? null,
+  }));
 }

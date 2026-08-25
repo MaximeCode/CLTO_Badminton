@@ -42,19 +42,19 @@ export function EvenementCard({
         <h3 className="font-primary text-3xl text-white sm:text-4xl">{titre}</h3>
       </div>
 
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row md:max-h-162.5">
         {affiche?.url ? (
           <div className="md:w-1/3 shrink-0">
             <img
               src={affiche.url}
               alt={affiche.alternativeText || titre}
-              className="h-full w-full object-cover min-h-48 md:min-h-full"
+              className="h-48 w-full object-cover object-center md:h-162.5 md:max-h-162.5"
             />
           </div>
         ) : null}
 
-        <div className="flex-1 space-y-6 p-6 sm:p-8">
-          <div className="grid gap-4 sm:grid-cols-3 text-md">
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden md:max-h-162.5 p-6 sm:p-8">
+          <div className="grid shrink-0 gap-4 sm:grid-cols-3 text-md">
             <div className="flex items-start gap-3 text-gray-700">
               <Calendar size={20} className="mt-0.5 shrink-0 text-secondary" />
               <span className="font-semibold">{dateLabel}</span>
@@ -69,10 +69,12 @@ export function EvenementCard({
             </div>
           </div>
 
-          {children}
+          {children ? (
+            <div className="mt-6 min-h-0 flex-1 overflow-y-auto">{children}</div>
+          ) : null}
 
           {visibleLinks.length > 0 && (
-            <div className="flex flex-col gap-2 sm:flex-row sm:gap-6">
+            <div className="mt-6 flex shrink-0 flex-col gap-2 sm:flex-row sm:gap-6">
               {visibleLinks.map((link) => (
                 <a
                   key={`${link.label}-${link.href}`}
