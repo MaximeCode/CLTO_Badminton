@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { CheckCircle, Gift } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
@@ -9,18 +9,24 @@ import { BlocksRenderer } from '../components/BlocksRenderer';
 import { EvenementCard } from '../components/EvenementCard';
 import { getPageFormations } from '@/api/strapi/formation';
 import type { PageFormation } from '@/types/formationType';
+import { formatPaginationRange, ListPagination } from '../components/ListPagination';
+
+const FORMATIONS_PER_PAGE = 5;
 
 export function FormationsPage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.FORMATIONS);
+  const listRef = useRef<HTMLDivElement>(null);
 
   const [data, setData] = useState<PageFormation | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     async function loadData() {
       try {
         setLoadError(null);
         setData(await getPageFormations());
+        setCurrentPage(1);
       } catch (error) {
         console.error('Error loading formations:', error);
         setLoadError(
@@ -33,6 +39,17 @@ export function FormationsPage() {
 
   const avantages = data?.les_avantages ?? [];
   const evenements = data?.evenements ?? [];
+  const totalPages = Math.ceil(evenements.length / FORMATIONS_PER_PAGE);
+
+  const paginatedEvenements = useMemo(() => {
+    const start = (currentPage - 1) * FORMATIONS_PER_PAGE;
+    return evenements.slice(start, start + FORMATIONS_PER_PAGE);
+  }, [evenements, currentPage]);
+
+  function goToPage(page: number) {
+    setCurrentPage(page);
+    listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   return (
     <>
@@ -120,10 +137,13 @@ export function FormationsPage() {
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4 text-balance">
               NOS FORMATIONS
             </h2>
+            <p className="mt-4 text-sm text-gray-500">
+              {formatPaginationRange(currentPage, FORMATIONS_PER_PAGE, evenements.length)}
+            </p>
           </motion.div>
 
-          <div className="space-y-10">
-            {evenements.map((evenement) => (
+          <div ref={listRef} className="space-y-10 scroll-mt-24">
+            {paginatedEvenements.map((evenement) => (
               <EvenementCard
                 key={evenement.id}
                 titre={evenement.titre}
@@ -146,6 +166,12 @@ export function FormationsPage() {
               </EvenementCard>
             ))}
           </div>
+
+          <ListPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={goToPage}
+          />
         </Section>
       )}
     </>

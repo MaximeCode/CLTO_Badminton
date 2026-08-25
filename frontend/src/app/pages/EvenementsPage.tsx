@@ -3,28 +3,24 @@ import { PageHero } from '../components/PageHero';
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { getEvenements } from '@/api/strapi/evenement';
 import type { Evenement } from '@/types/evenementType';
 import { EvenementCard } from '../components/EvenementCard';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-} from '../components/ui/pagination';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { formatPaginationRange, ListPagination } from '../components/ListPagination';
 
 const EVENTS_PER_PAGE = 5;
 
 export function EvenementsPage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.EVENEMENTS);
+  const listRef = useRef<HTMLDivElement>(null);
 
   const [evenements, setEvenements] = useState<Evenement[] | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = evenements ? Math.ceil(evenements.length / EVENTS_PER_PAGE) : 0;
+  const totalItems = evenements?.length ?? 0;
+  const totalPages = Math.ceil(totalItems / EVENTS_PER_PAGE);
 
   const paginatedEvenements = useMemo(() => {
     if (!evenements) return [];
@@ -34,7 +30,7 @@ export function EvenementsPage() {
 
   function goToPage(page: number) {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   useEffect(() => {
@@ -74,6 +70,11 @@ export function EvenementsPage() {
             bénévolat se font directement via le lien. Pour toute question, n&apos;hésitez pas à
             vous rapprocher d&apos;un membre du bureau ou de l&apos;équipe organisatrice.
           </p>
+          {totalItems > 0 && (
+            <p className="mt-4 text-sm text-gray-500">
+              {formatPaginationRange(currentPage, EVENTS_PER_PAGE, totalItems)}
+            </p>
+          )}
         </motion.div>
 
         {loadError && (
@@ -82,7 +83,7 @@ export function EvenementsPage() {
           </p>
         )}
 
-        <div className="space-y-10">
+        <div ref={listRef} className="space-y-10 scroll-mt-24">
           {paginatedEvenements.map((evenement: Evenement) => {
             const links = [
               {
@@ -120,65 +121,11 @@ export function EvenementsPage() {
           })}
         </div>
 
-        {totalPages > 1 && (
-          <Pagination className="mt-12 text-primary">
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationLink
-                  href="#"
-                  size="default"
-                  aria-label="Page précédente"
-                  aria-disabled={currentPage <= 1}
-                  className={`gap-1 px-2.5 sm:pl-2.5 ${currentPage <= 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'
-                    }`}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    if (currentPage > 1) goToPage(currentPage - 1);
-                  }}
-                >
-                  <ChevronLeft className="size-4" />
-                  <span className="hidden sm:block">Précédent</span>
-                </PaginationLink>
-              </PaginationItem>
-
-              {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
-                <PaginationItem key={page}>
-                  <PaginationLink
-                    href="#"
-                    isActive={page === currentPage}
-                    className="cursor-pointer"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      goToPage(page);
-                    }}
-                  >
-                    {page}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
-
-              <PaginationItem>
-                <PaginationLink
-                  href="#"
-                  size="default"
-                  aria-label="Page suivante"
-                  aria-disabled={currentPage >= totalPages}
-                  className={`gap-1 px-2.5 sm:pr-2.5 ${currentPage >= totalPages
-                    ? 'pointer-events-none opacity-50'
-                    : 'cursor-pointer'
-                    }`}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    if (currentPage < totalPages) goToPage(currentPage + 1);
-                  }}
-                >
-                  <span className="hidden sm:block">Suivant</span>
-                  <ChevronRight className="size-4" />
-                </PaginationLink>
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        )}
+        <ListPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={goToPage}
+        />
       </Section>
     </>
   );

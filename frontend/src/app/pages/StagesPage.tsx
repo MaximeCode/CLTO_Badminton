@@ -4,24 +4,27 @@ import { PageHero } from '../components/PageHero';
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { getStages } from '@/api/strapi/stage';
 import { getParametresGlobaux } from '@/api/strapi/parametre-globaux';
 import { Stage } from '@/types/stageType';
 import { BlocksRenderer } from '../components/BlocksRenderer';
 import { formatDateRange } from '@/utils/formatDate';
 import { Seo } from '../components/Seo';
+import { formatPaginationRange, ListPagination } from '../components/ListPagination';
 
 const HELLOASSO_URL_FALLBACK = import.meta.env.VITE_HELLOASSO_URL as string;
+const STAGES_PER_PAGE = 5;
 
 export function StagesPage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.STAGES);
+  const listRef = useRef<HTMLDivElement>(null);
 
   const [stages, setStages] = useState<Stage[] | null>(null);
   const [helloassoUrl, setHelloassoUrl] = useState(HELLOASSO_URL_FALLBACK);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // Fetch datas
   useEffect(() => {
     async function loadData() {
       try {
@@ -34,6 +37,7 @@ export function StagesPage() {
         setHelloassoUrl(
           parametres?.lien_accueil_helloasso?.trim() || HELLOASSO_URL_FALLBACK,
         );
+        setCurrentPage(1);
       } catch (error) {
         console.error('Error loading data:', error);
         setLoadError(
@@ -43,6 +47,21 @@ export function StagesPage() {
     }
     loadData();
   }, []);
+
+  const totalItems = stages?.length ?? 0;
+  const totalPages = Math.ceil(totalItems / STAGES_PER_PAGE);
+
+  const paginatedStages = useMemo(() => {
+    if (!stages) return [];
+    const start = (currentPage - 1) * STAGES_PER_PAGE;
+    return stages.slice(start, start + STAGES_PER_PAGE);
+  }, [stages, currentPage]);
+
+  function goToPage(page: number) {
+    setCurrentPage(page);
+    listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   return (
     <>
       <Seo
@@ -69,10 +88,21 @@ export function StagesPage() {
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Stages encadrés par les entraîneurs du club, ouverts aux licenciés CLTO.
           </p>
+          {totalItems > 0 && (
+            <p className="mt-4 text-sm text-gray-500">
+              {formatPaginationRange(currentPage, STAGES_PER_PAGE, totalItems)}
+            </p>
+          )}
         </motion.div>
 
-        <div className="flex flex-col gap-8">
-          {stages?.map((stage: Stage) => (
+        {loadError && (
+          <p className="text-center text-red-600 mb-8" role="alert">
+            {loadError}
+          </p>
+        )}
+
+        <div ref={listRef} className="flex flex-col gap-8 scroll-mt-24">
+          {paginatedStages.map((stage: Stage) => (
             <motion.article
               key={stage.id}
               initial={{ opacity: 0, y: 30 }}
@@ -89,7 +119,9 @@ export function StagesPage() {
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 text-md">
                   <div className="flex items-start gap-3 text-gray-700">
                     <Calendar size={20} className="mt-0.5 shrink-0 text-secondary" />
-                    <span className="font-semibold">{formatDateRange(stage.date_debut, stage.date_fin)}</span>
+                    <span className="font-semibold">
+                      {formatDateRange(stage.date_debut, stage.date_fin)}
+                    </span>
                   </div>
                   <div className="flex items-start gap-3 text-gray-700">
                     <MapPin size={20} className="mt-0.5 shrink-0 text-secondary" />
@@ -101,9 +133,7 @@ export function StagesPage() {
                   </div>
                   <div className="flex items-start gap-3 text-gray-700">
                     <Euro size={20} className="mt-0.5 shrink-0 text-secondary" />
-                    <span className="font-semibold">
-                      {stage.autre_infos}
-                    </span>
+                    <span className="font-semibold">{stage.autre_infos}</span>
                   </div>
                 </div>
 
@@ -124,6 +154,12 @@ export function StagesPage() {
             </motion.article>
           ))}
         </div>
+
+        <ListPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={goToPage}
+        />
       </Section>
     </>
   );
