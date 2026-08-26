@@ -1,12 +1,12 @@
-import { fetchAPI } from '../Client';
-import { mapMedia } from '@/utils/media';
-import type { Hero } from '@/types/herosType';
-import type { Article } from '@/types/articlesType';
-import type { Accueil, LabelNomEtLogo, StatsClub } from '@/types/accueilType';
-import type { Partner } from '@/types/partnersType';
-import type { MotPresident } from '@/types/motPresident';
-import { cachedFetch } from '@/utils/cachedFetch';
-import type { Categorie } from '@/types/categoriesType';
+import { fetchAPI } from "../Client";
+import { mapMedia } from "@/utils/media";
+import type { Hero } from "@/types/herosType";
+import type { Article } from "@/types/articlesType";
+import type { Accueil, LabelNomEtLogo, StatsClub } from "@/types/accueilType";
+import type { Partner } from "@/types/partnersType";
+import type { MotPresident } from "@/types/motPresident";
+import { cachedFetch } from "@/utils/cachedFetch";
+import type { Categorie } from "@/types/categoriesType";
 
 export type HomeSectionsPayload = {
   featuredArticles: Article[];
@@ -26,10 +26,10 @@ function mapHero(item: any): Hero {
     documentId: item.documentId,
     categorie: item.categorie,
     titre: item.titre,
-    description: item.description ?? '',
-    libelle_btn: item.libelle_btn ?? 'En savoir plus',
+    description: item.description ?? "",
+    libelle_btn: item.libelle_btn ?? "En savoir plus",
     image,
-    lien: item.lien ?? '',
+    lien: item.lien ?? "",
   };
 }
 
@@ -41,7 +41,7 @@ function mapArticle(item: any): Article {
     vignette: mapMedia(item.vignette),
     a_la_une: item.a_la_une,
     contenu: [],
-    excerpt: item.excerpt ?? '',
+    excerpt: item.excerpt ?? "",
     categories: (item.categories ?? []) as Categorie[],
     createdAt: item.createdAt,
   };
@@ -96,38 +96,38 @@ function mapSections(data: any): HomeSectionsPayload {
 /** Hero carousel — chemin critique LCP, cache client 2 min */
 export async function getHomeHeros(): Promise<Hero[]> {
   return cachedFetch(
-    'home:heros',
+    "home:heros",
     async () => {
-      const { data } = await fetchAPI('/api/home/heros');
+      const { data } = await fetchAPI("/api/home/heros");
       return (data?.heros ?? []).map(mapHero);
     },
-    120_000,
+    120_000
   );
 }
 
 /** Sections below-the-fold — cache client 1 min */
 export async function getHomeSections(): Promise<HomeSectionsPayload> {
   return cachedFetch(
-    'home:sections',
+    "home:sections",
     async () => {
-      const { data } = await fetchAPI('/api/home/sections');
+      const { data } = await fetchAPI("/api/home/sections");
       return mapSections(data);
     },
-    60_000,
+    60_000
   );
 }
 
 /** Agrégat complet (legacy / fallback) */
 export async function getHome(): Promise<HomePayload> {
   return cachedFetch(
-    'home',
+    "home",
     async () => {
-      const { data } = await fetchAPI('/api/home');
+      const { data } = await fetchAPI("/api/home");
       return {
         heros: (data?.heros ?? []).map(mapHero),
         ...mapSections(data),
       };
     },
-    60_000,
+    60_000
   );
 }

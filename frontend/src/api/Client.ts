@@ -13,20 +13,32 @@ export async function fetchAPI(endpoint: string) {
 }
 
 /**
- * Normalise la réponse gestion (tableau brut) en `{ data: [...] }`.
+ * Normalise la réponse gestion (tableau ou nombre brut) en `{ data: ... }`.
  */
-function asGestionPayload(payload: unknown): { data: unknown[] } {
-  if (Array.isArray(payload)) {
+function asGestionPayload(payload: unknown): { data: unknown } {
+  if (typeof payload === "number" && Number.isFinite(payload)) {
     return { data: payload };
   }
   if (
-    payload &&
-    typeof payload === "object" &&
-    Array.isArray((payload as { data?: unknown }).data)
+    typeof payload === "string" &&
+    payload !== "" &&
+    Number.isFinite(Number(payload))
   ) {
-    return { data: (payload as { data: unknown[] }).data };
+    return { data: Number(payload) };
   }
-  throw new Error("Réponse API gestion invalide (tableau attendu).");
+  if (Array.isArray(payload)) {
+    return { data: payload };
+  }
+  if (payload && typeof payload === "object" && "data" in payload) {
+    const inner = (payload as { data: unknown }).data;
+    if (typeof inner === "number" && Number.isFinite(inner)) {
+      return { data: inner };
+    }
+    if (Array.isArray(inner)) {
+      return { data: inner };
+    }
+  }
+  throw new Error("Réponse API gestion invalide (tableau ou nombre attendu).");
 }
 
 // PP / PROD - nécessite CORS autorisé pour l'origine du front

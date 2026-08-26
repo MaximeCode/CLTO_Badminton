@@ -2,6 +2,8 @@ import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { Users, Trophy, Clock, Target } from 'lucide-react';
 import { getInterclubTeams } from '@/api/icbad_local/interclub';
+import { getAdherentsCount } from '@/api/gestion/adherents';
+import { getParametresGlobaux } from '@/api/strapi/parametre-globaux';
 import { getAccueil } from '@/api/strapi/accueil';
 import type { Accueil, LabelNomEtLogo, StatsClub } from '@/types/accueilType';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
@@ -9,12 +11,17 @@ import { Section } from './Section';
 
 export function ClubStats({
   initialTeamsCount,
+  initialAdherentsCount,
   initialAccueil,
 }: {
   initialTeamsCount?: string;
+  initialAdherentsCount?: string;
   initialAccueil?: Accueil | null;
 } = {}) {
   const [teamsCount, setTeamsCount] = useState<string>(initialTeamsCount ?? '…');
+  const [adherentsCount, setAdherentsCount] = useState<string>(
+    initialAdherentsCount ?? '…',
+  );
   const [extraStats, setExtraStats] = useState<StatsClub[]>(initialAccueil?.stats_club ?? []);
   const [labels, setLabels] = useState<LabelNomEtLogo[]>(initialAccueil?.labels ?? []);
 
@@ -27,6 +34,33 @@ export function ClubStats({
       .then((teams) => setTeamsCount(String(teams.length)))
       .catch(() => setTeamsCount('-'));
   }, [initialTeamsCount]);
+
+  useEffect(() => {
+    if (initialAdherentsCount != null) {
+      setAdherentsCount(initialAdherentsCount);
+      return;
+    }
+
+    let cancelled = false;
+    async function loadAdherentsCount() {
+      try {
+        const parametres = await getParametresGlobaux();
+        const saisonId = parametres?.saison_id;
+        if (saisonId == null) {
+          throw new Error("L'identifiant de saison n'est pas configuré.");
+        }
+        const count = await getAdherentsCount(saisonId);
+        if (!cancelled) setAdherentsCount(String(count));
+      } catch {
+        if (!cancelled) setAdherentsCount('-');
+      }
+    }
+
+    loadAdherentsCount();
+    return () => {
+      cancelled = true;
+    };
+  }, [initialAdherentsCount]);
 
   useEffect(() => {
     if (initialAccueil !== undefined) {
@@ -48,9 +82,9 @@ export function ClubStats({
   const stats = [
     {
       icon: Users,
-      value: '+400',
+      value: adherentsCount,
       label: 'Adhérents',
-      description: 'Pour la saison 2025-2026',
+      description: 'Pour la saison 2026-2027',
     },
     {
       icon: Trophy,

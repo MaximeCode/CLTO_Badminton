@@ -3,6 +3,8 @@ import { Hero, type HeroSlide } from '../components/Hero';
 import { Seo } from '../components/Seo';
 import { DEFAULT_DESCRIPTION, SITE_NAME } from '@/utils/seo';
 import { getHomeHeros, getHomeSections, type HomeSectionsPayload } from '@/api/strapi/home';
+import { getAdherentsCount } from '@/api/gestion/adherents';
+import { getParametresGlobaux } from '@/api/strapi/parametre-globaux';
 import type { Hero as HeroType } from '@/types/herosType';
 import { pickMediaUrl } from '@/utils/media';
 
@@ -32,6 +34,7 @@ function BelowFoldFallback() {
 export function HomePage() {
   const [heros, setHeros] = useState<HeroType[]>([]);
   const [sections, setSections] = useState<HomeSectionsPayload | null>(null);
+  const [adherentsCount, setAdherentsCount] = useState<string>('…');
 
   const homeJsonLd = useMemo(
     () => ({
@@ -86,6 +89,29 @@ export function HomePage() {
     };
   }, []);
 
+  // Nombre d'adhérents (API gestion, saison_id Strapi)
+  useEffect(() => {
+    let cancelled = false;
+    async function loadAdherentsCount() {
+      try {
+        const parametres = await getParametresGlobaux();
+        const saisonId = parametres?.saison_id;
+        if (saisonId == null) {
+          throw new Error("L'identifiant de saison n'est pas configuré.");
+        }
+        const count = await getAdherentsCount(saisonId);
+        if (!cancelled) setAdherentsCount(String(count));
+      } catch (error) {
+        console.error('[HomePage] getAdherentsCount failed:', error);
+        if (!cancelled) setAdherentsCount('-');
+      }
+    }
+    loadAdherentsCount();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   // Preload LCP image dès que le hero est connu
   useEffect(() => {
     const first = heros[0];
@@ -128,6 +154,7 @@ export function HomePage() {
           <FeaturedNews initialArticles={sections.featuredArticles} />
           <ClubStats
             initialTeamsCount={undefined}
+            initialAdherentsCount={adherentsCount}
             initialAccueil={sections.accueil}
           />
           <InterclubRankings />
