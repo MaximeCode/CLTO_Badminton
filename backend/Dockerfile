@@ -2,7 +2,8 @@ FROM node:22-alpine
 
 WORKDIR /backend
 
-COPY package*.json ./
+# .npmrc avant npm install : legacy-peer-deps (webp-convertor vs multi-select)
+COPY package*.json .npmrc ./
 
 RUN npm install
 
