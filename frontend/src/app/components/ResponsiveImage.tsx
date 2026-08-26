@@ -11,6 +11,7 @@ type ResponsiveImageProps = {
   width?: number;
   height?: number;
   loading?: 'eager' | 'lazy';
+  /** HTML attribute (React 18 n’accepte pas fetchPriority camelCase). */
   fetchpriority?: 'high' | 'low' | 'auto';
   decoding?: 'async' | 'auto' | 'sync';
 };
