@@ -26,7 +26,7 @@ const NAV_ITEMS: NavItem[] = [
   {
     title: "Pratiquer",
     items: [
-      { label: "Adhérer", path: "/adherer" },
+      { label: "S'inscrire", path: "/adherer" },
       { label: "Créneaux", path: "/creneaux" },
       { label: "Gymnases", path: "/gymnases" },
       { label: "Agenda", path: "/agenda" },
@@ -41,7 +41,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Adultes Loisirs", path: "/adultes-loisirs" },
       { label: "Adultes Compétiteurs", path: "/adultes-competiteurs" },
       { label: "Vieilles Plumes Seniors 60 ans et +", path: "/vieilles-plumes" },
-      { label: "Entreprise", path: "/entreprise" },
+      { label: "Entreprises", path: "/entreprises" },
     ],
   },
   {
@@ -247,12 +247,12 @@ export function Header() {
           <div className="flex gap-1 text-sm lg:gap-2 lg:text-base">
             <Link
               to="/adherer"
-              title="Nous rejoindre"
+              title="S'inscrire"
               className={JOIN_CLUB_BUTTON_CLASS}
             >
               <JoinClubIcon className="h-7 w-7 lg:h-5 lg:w-5 xl:h-7 xl:w-7" />
-              <span className="sr-only">Nous rejoindre</span>
-              <span className="hidden lg:block">Nous rejoindre</span>
+              <span className="sr-only">S'inscrire</span>
+              <span className="hidden lg:block">S'inscrire</span>
             </Link>
 
             {/* No <Link> because it's an external link */}
@@ -361,7 +361,7 @@ export function Header() {
                 onClick={closeMobileMenu}
               >
                 <JoinClubIcon />
-                Nous rejoindre
+                S'inscrire
               </Link>
 
               <a

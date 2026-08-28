@@ -843,10 +843,10 @@ export function CreneauxPage() {
                                           <div className="inline-flex items-center gap-1.5">
                                             {!slot.hasOuvreur && (
                                               <span
-                                                className="inline-flex items-center justify-center rounded-full bg-red-600 p-1"
-                                                title="Aucun ouvreur !"
+                                                className="inline-flex items-center justify-center rounded-full bg-red-600 p-1.5"
+                                                title="Aucun ouvreur = créneau annulé"
                                               >
-                                                <AlertTriangle size={12} className="text-white" />
+                                                <AlertTriangle size={16} className="text-white" />
                                               </span>
                                             )}
                                             <span
@@ -889,7 +889,7 @@ export function CreneauxPage() {
                                           {!slot.hasOuvreur && (
                                             <p className="flex items-center gap-1.5 font-bold text-red-600">
                                               <AlertTriangle size={14} className="shrink-0" />
-                                              Aucun ouvreur !
+                                              Aucun ouvreur = créneau annulé
                                             </p>
                                           )}
                                           {slot.publics.length > 0 && (
@@ -1046,11 +1046,11 @@ export function CreneauxPage() {
                                           <div className="inline-flex items-center gap-0.5 shrink-0 -mt-0.5">
                                             {!slot.hasOuvreur && (
                                               <div
-                                                className="inline-flex items-center justify-center rounded-full bg-red-600 p-0.5 shadow-sm ring-1 ring-white/40"
-                                                title="Aucun ouvreur !"
+                                                className="inline-flex items-center justify-center rounded-full bg-red-600 p-1 shadow-sm ring-1 ring-white/40"
+                                                title="Aucun ouvreur = créneau annulé"
                                               >
                                                 <AlertTriangle
-                                                  size={10}
+                                                  size={14}
                                                   className="text-white"
                                                 />
                                               </div>
@@ -1083,11 +1083,11 @@ export function CreneauxPage() {
                                             <div className="inline-flex items-center gap-0.5 shrink-0">
                                               {!slot.hasOuvreur && (
                                                 <div
-                                                  className="inline-flex items-center justify-center rounded-full bg-red-600 p-0.5 ring-1 ring-white/40"
-                                                  title="Aucun ouvreur !"
+                                                  className="inline-flex items-center justify-center rounded-full bg-red-600 p-1 ring-1 ring-white/40"
+                                                  title="Aucun ouvreur = créneau annulé"
                                                 >
                                                   <AlertTriangle
-                                                    size={10}
+                                                    size={14}
                                                     className="text-white"
                                                   />
                                                 </div>
@@ -1132,7 +1132,7 @@ export function CreneauxPage() {
                                           {!slot.hasOuvreur && (
                                             <div className="flex items-center gap-2 font-bold text-red-500">
                                               <AlertTriangle size={16} className="shrink-0" />
-                                              <span>Aucun ouvreur !</span>
+                                              <span>Aucun ouvreur = créneau annulé</span>
                                             </div>
                                           )}
                                           {slot.types.length > 0 && (
@@ -1209,6 +1209,9 @@ export function CreneauxPage() {
                       aria-hidden
                     />
                     JEU LIBRE
+                    <span className="ml-2 text-sm font-normal text-gray-600">
+                      (pratique libre sans encadrement)
+                    </span>
                   </h3>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {CRENEAU_JEU_LIBRE_ITEMS.map(({ type, hint }) => (
@@ -1227,9 +1230,8 @@ export function CreneauxPage() {
               <p className="mt-3 text-sm text-red-700 bg-red-50 p-3 rounded-lg border-l-4 border-red-600 flex items-start gap-2">
                 <AlertTriangle size={18} className="shrink-0 mt-0.5" />
                 <span>
-                  <strong>Aucun ouvreur !</strong> Le badge rouge indique qu’aucun
-                  ouvreur ni entraîneur n’est désigné. Le créneau risque d’être
-                  annulé si personne ne se propose.
+                  <strong>Aucun ouvreur = créneau annulé.</strong> Le badge rouge indique
+                  qu’aucun ouvreur ni entraîneur n’est désigné.
                 </span>
               </p>
             </motion.div>

@@ -18,6 +18,12 @@
     "reponse": {
       "type": "text",
       "required": true
+    },
+    "faq_categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::faq-categorie.faq-categorie",
+      "mappedBy": "faqs"
     }
   }
 }

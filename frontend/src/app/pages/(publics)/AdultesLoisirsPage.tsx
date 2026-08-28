@@ -42,7 +42,7 @@ const espritLoisirs = [
   {
     icon: Sparkles,
     title: 'Plaisir de jouer',
-    description: 'Le loisir avant tout : on vient pour le jeu, le mouvement et le fun.',
+    description: 'Le plaisir avant tout : pratiquer, bouger et partager un bon moment autour du badminton.',
   },
 ];
 
@@ -81,7 +81,7 @@ export function AdultesLoisirsPage() {
     <>
       <PageHero
         title={data?.titre || BANDEAU_PAGES.ADULTES_LOISIRS}
-        subtitle={data?.description || "Le badminton pour le plaisir et la convivialité"}
+        subtitle={data?.description || 'Le badminton en toute convivialité'}
         image={bandeauImage}
       />
 
@@ -123,39 +123,8 @@ export function AdultesLoisirsPage() {
         </div>
       </Section>
 
-      {data?.prix_licence != null && (
-        <Section className="bg-white">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="p-12 text-center"
-          >
-            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-              TARIF ATTRACTIF
-            </h2>
-            <p className="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
-              L'adhésion au club vous donne accès à tous les créneaux loisir de la semaine
-            </p>
-            <div className="bg-white rounded-lg p-8 max-w-md mx-auto shadow-md">
-              <div className="text-secondary text-5xl font-bold mb-2">
-                {Number(data.prix_licence).toLocaleString('fr-FR')}€
-              </div>
-              <div className="text-gray-600 mb-6">par an (licence FFBaD incluse)</div>
-              <Link
-                to="/adherer"
-                className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
-              >
-                S'inscrire
-              </Link>
-            </div>
-          </motion.div>
-        </Section>
-      )}
-
       {data?.envie_de_progresser && (
-        <Section className="bg-gray-50">
+        <Section className="bg-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -174,7 +143,7 @@ export function AdultesLoisirsPage() {
       )}
 
       {vieDuClub.length > 0 && (
-        <Section className="bg-white">
+        <Section className="bg-gray-50">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -183,7 +152,7 @@ export function AdultesLoisirsPage() {
             className="text-center mb-12"
           >
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-              VIE DU CLUB
+              Pourquoi choisir le CLTO ?
             </h2>
           </motion.div>
 
@@ -195,7 +164,7 @@ export function AdultesLoisirsPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-gray-50 rounded-lg p-8 shadow-lg"
+                className="bg-white rounded-lg p-8 shadow-lg"
               >
                 <h3 className="font-primary text-2xl text-primary mb-4">{carte.titre}</h3>
                 <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
@@ -208,7 +177,7 @@ export function AdultesLoisirsPage() {
       )}
 
       {avantages.length > 0 && (
-        <Section className="bg-gray-50">
+        <Section className="bg-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -226,7 +195,7 @@ export function AdultesLoisirsPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-white rounded-lg p-8 shadow-lg max-w-3xl mx-auto"
+            className="bg-gray-50 rounded-lg p-8 shadow-lg max-w-3xl mx-auto"
           >
             <h3 className="font-primary text-2xl text-primary mb-5 flex items-center gap-2">
               <Gift size={24} className="text-secondary" />
@@ -243,6 +212,59 @@ export function AdultesLoisirsPage() {
           </motion.div>
         </Section>
       )}
+
+      {data?.prix_licence != null && (
+        <Section className="bg-gray-50">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="p-12 text-center"
+          >
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">TARIFS</h2>
+            <p className="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
+              L&apos;adhésion au club vous donne accès à tous les créneaux loisir de la semaine.
+              Les licenciés présents au club la saison dernière peuvent bénéficier de 20&nbsp;€ de
+              réduction.
+            </p>
+            <div className="bg-white rounded-lg p-8 max-w-md mx-auto shadow-md">
+              <div className="text-secondary text-5xl font-bold mb-2">
+                {Number(data.prix_licence).toLocaleString('fr-FR')}€
+              </div>
+              <div className="text-gray-600 mb-6">par an (licence FFBaD incluse)</div>
+              <Link
+                to="/adherer"
+                className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+              >
+                S&apos;inscrire
+              </Link>
+            </div>
+          </motion.div>
+        </Section>
+      )}
+
+      <Section className="bg-white">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-12 text-center shadow-lg text-white"
+        >
+          <h2 className="font-primary text-4xl mb-4">Pourquoi nous rejoindre ?</h2>
+          <p className="text-white/90 text-md mb-8 max-w-2xl mx-auto">
+            Rejoignez les créneaux Adultes Loisirs pour jouer à votre rythme, dans une ambiance
+            conviviale.
+          </p>
+          <Link
+            to="/adherer"
+            className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+          >
+            Adhérer
+          </Link>
+        </motion.div>
+      </Section>
 
       {loadError && (
         <p className="sr-only" role="alert">

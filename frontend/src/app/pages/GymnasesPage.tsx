@@ -97,7 +97,7 @@ export function GymnasesPage() {
       />
       <PageHero
         title="LES GYMNASES"
-        subtitle={`Découvrez nos ${gymsCount} gymnases répartis à Orléans`}
+        subtitle="Retrouvez les différents gymnases où pratiquer le badminton avec le CLTO Badminton"
         image={bandeauImage}
       />
 
@@ -113,8 +113,9 @@ export function GymnasesPage() {
             {gymsCount} GYMNASES
           </h2>
           <p className="text-gray-600 text-md md:text-lg max-w-2xl mx-auto">
-            Le CLTO Badminton dispose de {gymsCount} lieux dans Orléans pour pratiquer le badminton et vous offrir de nombreux créneaux
-            d'entraînement
+            Le CLTO Badminton vous accueille dans {gymsCount} gymnases à Orléans, permettant de
+            proposer de nombreux créneaux de jeu libre et d&apos;entraînement tout au long de la
+            semaine.
           </p>
         </motion.div>
 

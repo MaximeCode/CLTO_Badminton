@@ -68,8 +68,11 @@ export function VieillesPlumesPage() {
   return (
     <>
       <PageHero
-        title={data?.titre || BANDEAU_PAGES.VIEILLES_PLUMES}
-        subtitle={data?.description || "Des créneaux dédiés en jeu libre, sans entraînements"}
+        title={data?.titre || 'Le badminton pour les 60 ans et plus'}
+        subtitle={
+          data?.description ||
+          'Des créneaux dédiés pour pratiquer le badminton en jeu libre, à son rythme et dans une ambiance conviviale.'
+        }
         image={bandeauImage}
       />
 

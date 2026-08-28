@@ -1,17 +1,11 @@
-import { useContext, useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { motion } from 'motion/react';
-import { ExternalLink, Mail, Phone, ChevronDown, MapPin, Download } from 'lucide-react';
+import { ExternalLink, ChevronDown, Download } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Seo } from '../components/Seo';
 import { InscriptionWizard } from '../components/InscriptionWizard';
-
-import { ContactContext } from '../contexts/ContactContext';
-import type { Contact } from '@/types/contactType';
-
-import { formatTime, joinDays } from '@/utils/showHoraires';
-import { Link } from 'react-router';
 import { PageAdherer, Document } from '@/types/pageAdhererType';
 import { getPageAdherer } from '@/api/strapi/pageAdherer';
 import { BlocksRenderer } from '../components/BlocksRenderer';
@@ -85,8 +79,6 @@ export function AdhererPage() {
         setOpenPanel((current) => (current === id ? null : id));
     };
 
-    const contact = useContext<Contact | null>(ContactContext);
-
     const [pageAdhererDatas, setPageAdhererDatas] = useState<PageAdherer | null>(null);
     const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -114,11 +106,11 @@ export function AdhererPage() {
     return (
         <>
             <Seo
-                title="Adhérer"
+                title="S'inscrire"
                 description="Adhérer au CLTO Badminton Orléans : inscriptions, tarifs et démarches pour rejoindre le club de badminton à Orléans."
             />
             <PageHero
-                title="ADHERER AU CLUB"
+                title="S'INSCRIRE AU CLUB"
                 subtitle="Retrouvez toutes les informations pour rejoindre le CLTO Badminton Orléans pour la saison 2026-2027"
                 image={bandeauImage}
             />
@@ -204,7 +196,7 @@ export function AdhererPage() {
                         >
                             <div className="space-y-4 text-sm text-primary-accent sm:text-base">
                                 <p className="italic text-primary-accent/80">
-                                    Trouver ici tous les documents nécessaires pour votre inscription au CLTO Badminton Orléans
+                                    Retrouvez ici les documents utiles pour préparer votre inscription au CLTO Badminton.
                                 </p>
 
                                 <ul className="flex flex-col gap-3 pt-1">
@@ -236,50 +228,6 @@ export function AdhererPage() {
                                         </li>
                                     ))}
                                 </ul>
-                            </div>
-                        </CollapsiblePanel>
-
-                        {/* Contact panel - hardcoded, uses ContactContext (dernier bloc) */}
-                        <CollapsiblePanel
-                            id="contact"
-                            title="Nous contacter"
-                            openPanel={openPanel}
-                            onToggle={togglePanel}
-                        >
-                            <div className="space-y-4 text-sm text-primary-accent sm:text-base">
-                                <p className="flex items-center gap-2">
-                                    <MapPin size={16} className="shrink-0" />
-                                    {contact?.adresse}
-                                </p>
-                                <p className="flex items-center gap-2">
-                                    <Phone size={16} className="shrink-0" />
-                                    {contact?.telephone}
-                                </p>
-                                <p className="flex items-center gap-2">
-                                    <Mail size={16} className="shrink-0" />
-                                    {contact?.email}
-                                </p>
-                                <p>
-                                    <strong>{contact ? joinDays(contact.jour_accueils_physique) : '-'}&nbsp;:</strong>{' '}
-                                    {contact ? `${formatTime(contact.heure_debut_accueils_physique)} à ${formatTime(contact.heure_fin_accueils_physique)}` : '-'} - accueil physique
-                                </p>
-                                <p>
-                                    <strong>{contact ? joinDays(contact.jour_accueils_a_distance) : '-'}&nbsp;:</strong>{' '}
-                                    {contact ? `${formatTime(contact.heure_debut_accueils_a_distance)} à ${formatTime(contact.heure_fin_accueils_a_distance)}` : '-'} - uniquement par téléphone, SMS, WhatsApp ou par mail
-                                </p>
-                                <p className="text-sm">
-                                    Des bénévoles du club sont présents régulièrement sur les créneaux. N&apos;hésitez pas à faire appel
-                                    à eux en cas de difficulté.
-                                </p>
-                                <div className="pt-2">
-                                    <Link
-                                        to="/faq"
-                                        className="inline-flex items-center gap-2 rounded-md bg-secondary px-5 py-2 text-white font-medium hover:bg-secondary/80 transition-colors"
-                                    >
-                                        Voir la FAQ
-                                        <ExternalLink size={16} className="shrink-0" />
-                                    </Link>
-                                </div>
                             </div>
                         </CollapsiblePanel>
                     </div>

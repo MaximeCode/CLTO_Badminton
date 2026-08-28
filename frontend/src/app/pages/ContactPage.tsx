@@ -20,7 +20,6 @@ const mailSubjects = {
   veteran: "Vétéran",
   competition: "Compétition",
   loisir: "Loisir",
-  autre: "Autre",
 };
 
 const mailSubjectGroups = [
@@ -257,8 +256,6 @@ export function ContactPage() {
                       ))}
                     </optgroup>
                   ))}
-                  <option value="autre">{mailSubjects.autre}</option>
-
                 </select>
               </div>
 

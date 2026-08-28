@@ -5,7 +5,6 @@ import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
 import { Calendar, Clock, Users, Target, Heart, Trophy, Gift, CheckCircle } from 'lucide-react';
-import { Link } from 'react-router';
 import { getPublicAdultesCompetiteurs } from '@/api/strapi/publics';
 import type { PublicAdultesCompetiteurs } from '@/types/publicsType';
 import { BlocksRenderer } from '@/app/components/BlocksRenderer';
@@ -210,7 +209,7 @@ export function AdultesCompetiteursPage() {
           </h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
+        <div className="grid md:grid-cols-3 gap-8">
           {strengths.map((item, index) => {
             const Icon = item.icon;
             return (
@@ -233,25 +232,6 @@ export function AdultesCompetiteursPage() {
             );
           })}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-12 text-center shadow-lg text-white"
-        >
-          <h2 className="font-primary text-4xl mb-4">PRÊT À COMMENCER ?</h2>
-          <p className="text-white/90 text-md mb-8 max-w-2xl mx-auto">
-            Contactez-nous pour trouver le créneau adultes qui vous correspond.
-          </p>
-          <Link
-            to="/contact"
-            className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
-          >
-            Nous contacter
-          </Link>
-        </motion.div>
       </Section>
 
       {loadError && (

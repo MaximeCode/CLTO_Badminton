@@ -116,11 +116,10 @@ export function ActualitesPage() {
         <button
           type="button"
           onClick={() => selectCategory('Toutes')}
-          className={`w-full text-left rounded-md px-3 py-2 transition-colors ${
-            selectedCategory === 'Toutes'
-              ? 'bg-primary text-white'
-              : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
-          }`}
+          className={`w-full text-left rounded-md px-3 py-2 transition-colors ${selectedCategory === 'Toutes'
+            ? 'bg-primary text-white'
+            : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
+            }`}
         >
           Toutes
         </button>
@@ -129,11 +128,10 @@ export function ActualitesPage() {
         <button
           type="button"
           onClick={() => selectCategory('À la une')}
-          className={`w-full text-left rounded-md px-3 py-2 transition-colors ${
-            selectedCategory === 'À la une'
-              ? 'bg-primary text-white'
-              : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
-          }`}
+          className={`w-full text-left rounded-md px-3 py-2 transition-colors ${selectedCategory === 'À la une'
+            ? 'bg-primary text-white'
+            : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
+            }`}
         >
           À la une
         </button>
@@ -143,11 +141,10 @@ export function ActualitesPage() {
           <button
             type="button"
             onClick={() => selectCategory(category.libelle)}
-            className={`w-full text-left rounded-md px-3 py-2 transition-colors ${
-              selectedCategory === category.libelle
-                ? 'bg-primary text-white'
-                : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
-            }`}
+            className={`w-full text-left rounded-md px-3 py-2 transition-colors ${selectedCategory === category.libelle
+              ? 'bg-primary text-white'
+              : 'text-gray-700 hover:bg-primary/10 hover:text-primary'
+              }`}
           >
             {category.libelle}
           </button>
@@ -176,7 +173,7 @@ export function ActualitesPage() {
         )}
 
         <div className="grid lg:grid-cols-[260px_1fr] gap-8 items-start">
-          <aside className="lg:sticky lg:top-24 flex flex-col w-full max-w-87.5 bg-gray-50 border border-gray-200 rounded-lg p-3 md:p-5 shadow-sm">
+          <aside className="lg:sticky lg:top-36 flex flex-col w-full max-w-87.5 bg-gray-50 border border-gray-200 rounded-lg p-3 md:p-5 shadow-sm">
             <div className="lg:hidden w-full">
               <div className="flex items-start justify-between gap-3">
                 <button
@@ -219,70 +216,70 @@ export function ActualitesPage() {
               {loading
                 ? Array.from({ length: 6 }).map((_, i) => <ArticleCardSkeleton key={i} />)
                 : paginatedArticles.map((article, index) => (
-                    <Link key={article.id} to={`/actualite/${article.documentId}`}>
-                      <motion.article
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: index * 0.1 }}
-                        className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
-                      >
-                        <div className="relative h-56 overflow-hidden">
-                          <ImageWithFallback
-                            src={article.vignette.url}
-                            alt={article.titre}
-                            width={article.vignette.width ?? 640}
-                            height={article.vignette.height ?? 360}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                            loading="lazy"
-                          />
-                          <div className="absolute top-4 left-4 flex flex-wrap gap-2 max-w-[70%]">
-                            {article.categories.map((categorie) => (
-                              <span
-                                key={categorie.id}
-                                className="bg-secondary text-white px-4 py-1 rounded-full text-sm"
-                              >
-                                {categorie.libelle}
-                              </span>
-                            ))}
-                          </div>
-                          {article.a_la_une && (
-                            <div
-                              className="pointer-events-none absolute top-3 -right-10 w-36 rotate-45 bg-primary py-1 text-center text-xs font-semibold tracking-wide text-white shadow-sm"
-                              aria-hidden
+                  <Link key={article.id} to={`/actualite/${article.documentId}`}>
+                    <motion.article
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                    >
+                      <div className="relative h-56 overflow-hidden">
+                        <ImageWithFallback
+                          src={article.vignette.url}
+                          alt={article.titre}
+                          width={article.vignette.width ?? 640}
+                          height={article.vignette.height ?? 360}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                        <div className="absolute top-4 left-4 flex flex-wrap gap-2 max-w-[70%]">
+                          {article.categories.map((categorie) => (
+                            <span
+                              key={categorie.id}
+                              className="bg-secondary text-white px-4 py-1 rounded-full text-sm"
                             >
-                              <span className="pl-2">À la une</span>
-                            </div>
-                          )}
-                        </div>
-                        <div className="p-6">
-                          <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
-                            <Calendar size={16} />
-                            <span>
-                              {stringifyDate(article.createdAt, 'numeric', 'long', 'numeric')}
+                              {categorie.libelle}
                             </span>
-                          </div>
-                          <h3 className="font-primary text-2xl text-primary mb-3 group-hover:text-secondary transition-colors">
-                            {article.titre}
-                          </h3>
-                          <div className="mb-4 flex flex-wrap gap-2">
-                            {article.categories.map((categorie) => (
-                              <span
-                                key={categorie.id}
-                                className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600"
-                              >
-                                {categorie.libelle}
-                              </span>
-                            ))}
-                          </div>
-                          <button className="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
-                            Lire la suite
-                            <ArrowRight size={16} />
-                          </button>
+                          ))}
                         </div>
-                      </motion.article>
-                    </Link>
-                  ))}
+                        {article.a_la_une && (
+                          <div
+                            className="pointer-events-none absolute top-3 -right-10 w-36 rotate-45 bg-primary py-1 text-center text-xs font-semibold tracking-wide text-white shadow-sm"
+                            aria-hidden
+                          >
+                            <span className="pl-2">À la une</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-6">
+                        <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
+                          <Calendar size={16} />
+                          <span>
+                            {stringifyDate(article.createdAt, 'numeric', 'long', 'numeric')}
+                          </span>
+                        </div>
+                        <h3 className="font-primary text-2xl text-primary mb-3 group-hover:text-secondary transition-colors">
+                          {article.titre}
+                        </h3>
+                        <div className="mb-4 flex flex-wrap gap-2">
+                          {article.categories.map((categorie) => (
+                            <span
+                              key={categorie.id}
+                              className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600"
+                            >
+                              {categorie.libelle}
+                            </span>
+                          ))}
+                        </div>
+                        <button className="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
+                          Lire la suite
+                          <ArrowRight size={16} />
+                        </button>
+                      </div>
+                    </motion.article>
+                  </Link>
+                ))}
             </div>
 
             <ListPagination

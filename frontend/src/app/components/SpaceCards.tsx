@@ -31,10 +31,10 @@ const spaces = [
     link: '/vieilles-plumes',
   },
   {
-    title: 'ENTREPRISE',
+    title: 'ENTREPRISES',
     icon: Building2,
     color: 'primary' as const,
-    link: '/entreprise',
+    link: '/entreprises',
   },
 ];
 

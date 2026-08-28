@@ -16,7 +16,7 @@ export function DocumentsPage() {
             />
             <PageHero
                 title={BANDEAU_PAGES.DOCUMENTS}
-                subtitle="Dans cette rubrique, retrouvez tous les documents que vous cherchez, documents d'inscriptions, fiche de frais, fondamentaux financiers..."
+                subtitle="Dans cette rubrique, retrouvez tous les documents utiles pour préparer votre inscription au CLTO Badminton, documents d'inscriptions, note de frais, fondamentaux financiers..."
                 image={bandeauImage}
             />
 

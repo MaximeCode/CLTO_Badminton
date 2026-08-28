@@ -15,7 +15,7 @@
       "type": "enumeration",
       "enum": [
         "ACTUALITÉS",
-        "ADHERER AU CLUB",
+        "S'INSCRIRE AU CLUB",
         "AGENDA",
         "BÉNÉVOLES",
         "CONTACT",
@@ -34,7 +34,7 @@
         "PROJET CLUB",
         "ADULTES COMPÉTITEURS",
         "ADULTES LOISIRS",
-        "ENTREPRISE",
+        "ENTREPRISES",
         "JEUNES",
         "VIEILLES PLUMES Seniors 60 ans et +",
         "STAGES"

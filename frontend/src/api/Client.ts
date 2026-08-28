@@ -19,11 +19,7 @@ function asGestionPayload(payload: unknown): { data: unknown } {
   if (typeof payload === "number" && Number.isFinite(payload)) {
     return { data: payload };
   }
-  if (
-    typeof payload === "string" &&
-    payload !== "" &&
-    Number.isFinite(Number(payload))
-  ) {
+  if (typeof payload === "string" && payload !== "" && Number.isFinite(Number(payload))) {
     return { data: Number(payload) };
   }
   if (Array.isArray(payload)) {

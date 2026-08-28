@@ -294,12 +294,16 @@ export function JeunesPage() {
           className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-10 text-white shadow-lg w-full text-center"
         >
           <Trophy className="mx-auto mb-5" size={52} />
-          <h3 className="font-primary text-3xl mb-4">Championnats offerts par le club</h3>
+          <h3 className="font-primary text-3xl mb-4">Championnats pris en charge par le club</h3>
           <p className="text-white/90 leading-relaxed mb-4">
-            Le championnat départemental individuel et le championnat régional individuel sont <strong>intégralement pris en charge</strong> par le CLTO Badminton pour tous les compétiteurs inscrits.
+            Les frais d&apos;inscription au championnat départemental individuel et au championnat
+            régional individuel sont intégralement pris en charge par le CLTO Badminton pour les
+            joueurs concernés. Les volants sont également fournis par le club lors de ces
+            compétitions.
           </p>
           <p className="text-white/90 leading-relaxed">
-            Les volants sont fournis par le club pour ces compétitions. Aucune dépense supplémentaire n'est à prévoir de votre côté.
+            Les éventuels frais de déplacement, de restauration ou d&apos;hébergement ne sont pas
+            inclus dans cette prise en charge et restent soumis aux modalités définies par le club.
           </p>
         </motion.div>
       </Section>
@@ -405,10 +409,10 @@ export function JeunesPage() {
             Les inscriptions sont ouvertes toute l'année. Deux séances d'essai gratuites !
           </p>
           <Link
-            to="/contact"
+            to="/adherer"
             className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
           >
-            Nous contacter
+            Adhérer
           </Link>
         </motion.div>
       </Section>

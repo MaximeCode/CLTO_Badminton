@@ -55,7 +55,7 @@ export function FormationsPage() {
     <>
       <PageHero
         title="FORMATIONS"
-        subtitle="GEO, arbitre et autres formations proposées par le club"
+        subtitle="Formez-vous et participez autrement à la vie du badminton"
         image={bandeauImage}
       />
 

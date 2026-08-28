@@ -85,8 +85,17 @@ export function StagesPage() {
           <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4 text-balance">
             NOS STAGES 2026-2027
           </h2>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Stages encadrés par les entraîneurs du club, ouverts aux licenciés CLTO.
+          <p className="text-gray-600 text-lg max-w-3xl mx-auto space-y-3">
+            <span className="block">
+              Le CLTO Badminton propose tout au long de la saison des stages encadrés par les
+              entraîneurs du club, pour progresser, se perfectionner ou préparer les compétitions.
+            </span>
+            <span className="block">
+              Les stages sont principalement destinés aux licenciés du CLTO Badminton, mais certains
+              peuvent également être ouverts aux joueurs extérieurs, selon les places disponibles et
+              les conditions propres à chaque stage. Les conditions de participation sont précisées
+              dans la présentation de chaque stage.
+            </span>
           </p>
           {totalItems > 0 && (
             <p className="mt-4 text-sm text-gray-500">

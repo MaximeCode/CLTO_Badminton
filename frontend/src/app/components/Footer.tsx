@@ -145,8 +145,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/entreprise" className="text-gray-400 hover:text-secondary transition-colors text-sm">
-                  Entreprise
+                <Link to="/entreprises" className="text-gray-400 hover:text-secondary transition-colors text-sm">
+                  Entreprises
                 </Link>
               </li>
             </ul>
@@ -281,8 +281,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/entreprise" className="text-md text-gray-400 hover:text-secondary transition-colors duration-200">
-                  Entreprise
+                <Link to="/entreprises" className="text-md text-gray-400 hover:text-secondary transition-colors duration-200">
+                  Entreprises
                 </Link>
               </li>
             </ul>

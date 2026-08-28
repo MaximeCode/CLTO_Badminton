@@ -63,7 +63,7 @@ export function PageHero({ title = '', subtitle = '', image, imageAlt }: PageHer
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-white/90 text-sm sm:text-base md:text-xl leading-relaxed max-w-2xl"
+              className="text-white/90 text-sm sm:text-base md:text-xl leading-relaxed max-w-4xl"
             >
               {subtitle}
             </motion.p>

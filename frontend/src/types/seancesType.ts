@@ -47,10 +47,10 @@ export const CRENEAU_TYPES = [
   "Stage",
 ] as const;
 export const CRENEAU_HINT = [
-  "Niveau R et +",
-  "Niveau D8 et +",
-  "Niveau intermédiaire",
-  "Découverte et apprentissage",
+  "Compétiteurs classés R minimum",
+  "Compétiteurs classés D8 minimum",
+  "Joueurs ayant plus de 3 ans de pratique",
+  "Joueurs ayant moins de 3 ans de pratique",
   "Stage / journée dédiée",
 ] as const;
 

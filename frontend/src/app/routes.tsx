@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, redirect } from 'react-router';
 import { Layout } from './components/Layout';
 import { HomePage } from './pages/HomePage';
 
@@ -116,7 +116,8 @@ export const router = createBrowserRouter([
       { path: 'adultes-loisirs', Component: AdultesLoisirsPage },
       { path: 'adultes-competiteurs', Component: AdultesCompetiteursPage },
       { path: 'vieilles-plumes', Component: VieillesPlumesPage },
-      { path: 'entreprise', Component: EntreprisePage },
+      { path: 'entreprises', Component: EntreprisePage },
+      { path: 'entreprise', loader: () => redirect('/entreprises') },
       { path: 'contact', Component: ContactPage },
       { path: 'faq', Component: FAQPage },
       { path: 'stages', Component: StagesPage },

@@ -1,136 +1,163 @@
+import { useEffect, useMemo, useState } from 'react';
 import { PageHero } from '../components/PageHero';
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Seo } from '../components/Seo';
 import { motion } from 'motion/react';
-import { Construction, Home } from 'lucide-react';
+import { Construction, Home, Mail } from 'lucide-react';
 import { Link } from 'react-router';
 import maintenanceImage from '../../imports/organigramme-maintenance.jpg';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { Section } from '../components/Section';
+import { getOrgContacts } from '@/api/gestion/contacts';
+import type { OrgContact } from '@/types/orgContactsType';
 
 const isInMaintenance = import.meta.env.VITE_ORGANIGRAMME_IN_MAINTENANCE === 'true';
 const placeholderPhoto = new URL('../../imports/user.png', import.meta.url).href;
 
-type OrgMember = {
-  name: string;
-  role: string;
-  detail?: string;
-  image?: string;
+/** Partie 1 : CA + commissions (dont ouvreurs / bénévoles). Partie 2 : salariés. */
+const PART1_GROUP_ORDER = [
+  "Conseil d'administration",
+  'Bénévoles',
+  'gymnase',
+] as const;
+
+const PART2_GROUP_ORDER = ['Salariés', 'Service civique'] as const;
+
+const GROUP_TITLES: Record<string, string> = {
+  "Conseil d'administration": "Conseil d'administration",
+  Bénévoles: 'Entraîneurs bénévoles',
+  gymnase: 'Commission ouvreurs',
+  Salariés: 'Salariés',
+  'Service civique': 'Service civique',
 };
 
-type OrgSection = {
-  title: string;
-  members: OrgMember[];
-};
-
-const executiveBoard: OrgMember[] = [
-  { name: 'Steve Bandou-Naitoll', role: 'Président', image: placeholderPhoto },
-  { name: 'Mathieu Alves', role: 'Vice-président', detail: 'Vie sportive', image: placeholderPhoto },
-  { name: 'XX', role: 'Vice-président', detail: 'Vie administrative', image: placeholderPhoto },
-  { name: 'Philippe Maire', role: 'Trésorier', image: placeholderPhoto },
-  { name: 'Elodie Ricaud', role: 'Secrétaire', image: placeholderPhoto },
-  { name: 'XX', role: 'Responsable', detail: 'Subvention', image: placeholderPhoto },
-];
-
-const staffMembers: OrgMember[] = [
-  { name: 'Véronique Marchet', role: 'Agente administrative et financière', image: placeholderPhoto },
-  { name: 'Thomas Huboud-Perron', role: 'Coordinateur Technique', image: placeholderPhoto },
-  { name: 'Yohan Hénault', role: 'Entraîneur', detail: 'En formation BPJEPS APT', image: placeholderPhoto },
-  { name: 'Lucie Chantepie', role: 'Service civique', image: placeholderPhoto },
-  { name: 'Valentin Weiskopf', role: 'Service civique', image: placeholderPhoto },
-  { name: 'Louen Verrey', role: 'Service civique', image: placeholderPhoto },
-];
-
-const commissionSections: OrgSection[] = [
-  {
-    title: 'Partenariat & Entreprises',
-    members: [
-      { name: 'Benoit Soulard', role: 'Responsable Partenariat', image: placeholderPhoto },
-      { name: 'Benjamin Gouit', role: 'Responsable Soirée Entreprise', image: placeholderPhoto },
-    ],
-  },
-  {
-    title: 'Compétitions',
-    members: [
-      { name: 'Martin Lamy', role: 'Responsable', image: placeholderPhoto },
-      { name: 'Bastien Chailloux', role: 'Gestion IC N', image: placeholderPhoto },
-      { name: 'Benoit Soulard', role: 'Membre', image: placeholderPhoto },
-    ],
-  },
-  { title: 'Loisirs', members: [{ name: 'Valentin Martel', role: 'Responsable', image: placeholderPhoto }] },
-  { title: 'Jeunes', members: [{ name: 'Mathilde Brochard', role: 'Responsable', image: placeholderPhoto }] },
-  {
-    title: 'Événements',
-    members: [
-      {
-        name: 'Mathilde Brochard',
-        role: 'Responsable',
-        detail: 'Compétitions officielles',
-        image: placeholderPhoto,
-      },
-      { name: 'Benjamin Gouit', role: 'Responsable', detail: 'Tournois internes', image: placeholderPhoto },
-      { name: 'Elodie Ricaud', role: 'Membre', image: placeholderPhoto },
-    ],
-  },
-  {
-    title: 'Communication',
-    members: [
-      { name: 'Elodie Ricaud', role: 'Responsable', image: placeholderPhoto },
-      { name: 'Mathilde Brochard', role: 'Membre', image: placeholderPhoto },
-    ],
-  },
-  { title: 'Formations & OI', members: [{ name: 'Laurent Thorin', role: 'Responsable', image: placeholderPhoto }] },
-  {
-    title: 'Annexes',
-    members: [
-      { name: 'Elodie Ricaud', role: 'Responsable', detail: 'Ecoresponsabilité', image: placeholderPhoto },
-      { name: 'Steve Bandou-Naitoll', role: 'Responsable', detail: 'Informatique', image: placeholderPhoto },
-      { name: 'Maxime Baude', role: 'Informatique', image: placeholderPhoto },
-    ],
-  },
-];
+function displayName(contact: OrgContact): string {
+  const prenom = contact.prenom.trim();
+  const nom = contact.nom.trim();
+  const nomFormatted =
+    nom.charAt(0).toUpperCase() + nom.slice(1).toLowerCase();
+  return `${prenom} ${nomFormatted}`.trim();
+}
 
 function MemberCard({
-  member,
+  contact,
   isExecutive = false,
   headingLevel = 3,
 }: {
-  member: OrgMember;
+  contact: OrgContact;
   isExecutive?: boolean;
   headingLevel?: 3 | 4;
 }) {
   const HeadingTag = headingLevel === 4 ? 'h4' : 'h3';
+  const name = displayName(contact);
+  const [hovered, setHovered] = useState(false);
 
   return (
     <motion.article
+      layout
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.45 }}
+      transition={{
+        duration: 0.45,
+        layout: { duration: 0.28, ease: 'easeInOut' },
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setHovered(true)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setHovered(false);
+        }
+      }}
+      tabIndex={contact.email ? 0 : undefined}
       className={[
-        'group relative overflow-hidden bg-white rounded-2xl px-2 pb-4 pt-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2',
+        'group relative overflow-hidden bg-white rounded-2xl px-2 pb-4 pt-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 outline-hidden focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-2',
         isExecutive ? 'border-primary/50' : 'border-primary/15',
       ].join(' ')}
     >
-      {/* Decorative gradient bar */}
       <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-primary to-secondary" />
 
       <div className="flex flex-col items-center gap-4 text-center">
         <div className="relative">
           <ImageWithFallback
-            src={member.image ?? placeholderPhoto}
-            alt={member.name}
+            src={contact.photoUrl || placeholderPhoto}
+            alt={name}
             className="h-20 w-20 rounded-full border-4 border-secondary object-cover shadow-md md:w-24 md:h-24"
           />
         </div>
         <div>
-          <HeadingTag className="font-primary text-2xl md:text-3xl leading-none tracking-wide text-primary">{member.name}</HeadingTag>
-          <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-secondary">{member.role}</p>
-          {member.detail && <p className="mt-1 text-sm text-primary-accent">{member.detail}</p>}
+          <HeadingTag className="font-primary text-2xl md:text-3xl leading-none tracking-wide text-primary">
+            {name}
+          </HeadingTag>
+          <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-secondary">
+            {contact.fonction}
+          </p>
+          {contact.email ? (
+            <div
+              className={`grid w-full overflow-hidden transition-[grid-template-rows] duration-300 ease-in-out ${hovered ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                }`}
+              aria-hidden={!hovered}
+            >
+              <div className="min-h-0 overflow-hidden">
+                <motion.a
+                  href={`mailto:${contact.email}`}
+                  initial={false}
+                  animate={{
+                    opacity: hovered ? 1 : 0,
+                    y: hovered ? 0 : 6,
+                  }}
+                  transition={{ duration: 0.28, ease: 'easeInOut' }}
+                  tabIndex={hovered ? 0 : -1}
+                  className={`mt-3 inline-flex w-full items-center justify-center gap-1.5 text-sm text-primary-accent hover:text-secondary transition-colors duration-200 break-all ${hovered ? 'pointer-events-auto' : 'pointer-events-none'
+                    }`}
+                >
+                  <Mail size={14} className="shrink-0" />
+                  {contact.email}
+                </motion.a>
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
     </motion.article>
+  );
+}
+
+function GroupBlock({
+  title,
+  contacts,
+  isExecutive = false,
+}: {
+  title: string;
+  contacts: OrgContact[];
+  isExecutive?: boolean;
+}) {
+  if (contacts.length === 0) return null;
+
+  return (
+    <div className="mb-20">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mb-12 text-center"
+      >
+        <h3 className="mb-4 font-primary text-4xl text-primary md:text-5xl">{title}</h3>
+      </motion.div>
+
+      <div className="mx-auto grid max-w-6xl gap-4 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {contacts.map((contact) => (
+          <MemberCard
+            key={`${contact.id}-${contact.typeCode}`}
+            contact={contact}
+            isExecutive={isExecutive}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -157,7 +184,8 @@ function MaintenanceBlock() {
             </h2>
 
             <p className="mt-4 text-base text-primary-accent md:text-lg">
-              Les membres du CLTO seront bientôt prêts à vous accueillir ! Nous vous attendons nombreux sur les terrains ;)
+              Les membres du CLTO seront bientôt prêts à vous accueillir ! Nous vous attendons
+              nombreux sur les terrains ;)
             </p>
 
             <Link
@@ -189,6 +217,42 @@ function MaintenanceBlock() {
 
 export function OrganigrammePage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.ORGANIGRAMME);
+  const [contacts, setContacts] = useState<OrgContact[]>([]);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isInMaintenance) return;
+    let cancelled = false;
+    async function loadData() {
+      try {
+        setLoadError(null);
+        const data = await getOrgContacts();
+        if (!cancelled) setContacts(data);
+      } catch (error) {
+        console.error('Error loading organigramme contacts:', error);
+        if (!cancelled) {
+          setLoadError(
+            error instanceof Error ? error.message : 'Impossible de charger les données.',
+          );
+        }
+      }
+    }
+    loadData();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const byGroup = useMemo(() => {
+    const map = new Map<string, OrgContact[]>();
+    for (const contact of contacts) {
+      const key = contact.typeGroupe || 'Autres';
+      const list = map.get(key) ?? [];
+      list.push(contact);
+      map.set(key, list);
+    }
+    return map;
+  }, [contacts]);
 
   return (
     <>
@@ -206,7 +270,12 @@ export function OrganigrammePage() {
         <MaintenanceBlock />
       ) : (
         <Section className="bg-white">
-          {/* CA */}
+          {loadError && (
+            <p className="mb-8 text-center text-red-600" role="alert">
+              {loadError}
+            </p>
+          )}
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -214,76 +283,44 @@ export function OrganigrammePage() {
             transition={{ duration: 0.6 }}
             className="mb-14 text-center"
           >
-            <h2 className="mb-4 font-primary text-5xl text-primary md:text-6xl">Le Conseil d'Administration</h2>
+            <h2 className="mb-4 font-primary text-5xl text-primary md:text-6xl">
+              CA et commissions
+            </h2>
             <p className="mx-auto max-w-3xl text-lg text-primary-accent">
-              Une lecture simple de l'organisation du club : les fonctions cles du bureau puis les responsables de
-              chaque commission.
+              Le conseil d&apos;administration, les commissions et les ouvreurs qui font vivre le
+              club au quotidien.
             </p>
           </motion.div>
 
-          <div className="mx-auto mb-20 grid max-w-6xl gap-4 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {executiveBoard.map((member) => (
-              <MemberCard key={`${member.name}-${member.role}`} member={member} isExecutive />
-            ))}
-          </div>
+          {PART1_GROUP_ORDER.map((groupKey) => (
+            <GroupBlock
+              key={groupKey}
+              title={GROUP_TITLES[groupKey] ?? groupKey}
+              contacts={byGroup.get(groupKey) ?? []}
+              isExecutive={groupKey === "Conseil d'administration"}
+            />
+          ))}
 
-          {/* Salariés */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="mb-12 text-center"
+            className="mb-14 text-center"
           >
-            <h2 className="mb-4 font-primary text-5xl text-primary md:text-6xl">Les Salariés</h2>
+            <h2 className="mb-4 font-primary text-5xl text-primary md:text-6xl">Les salariés</h2>
             <p className="mx-auto max-w-3xl text-lg text-primary-accent">
-              L'équipe salariée du club, au service des adhérents au quotidien.
+              L&apos;équipe salariée du club, au service des adhérents au quotidien.
             </p>
           </motion.div>
 
-          <div className="mx-auto mb-20 grid max-w-6xl gap-4 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {staffMembers.map((member) => (
-              <MemberCard key={`${member.name}-${member.role}`} member={member} />
-            ))}
-          </div>
-
-          {/* Commissions */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mb-12 text-center"
-          >
-            <h2 className="mb-4 font-primary text-5xl text-primary md:text-6xl">Les Commissions</h2>
-            <p className="mx-auto max-w-3xl text-lg text-primary-accent">
-              Chaque commission a ses responsables referents, pour une organisation claire et accessible a tous les
-              adherents.
-            </p>
-          </motion.div>
-
-          <div className="grid gap-8 lg:grid-cols-2">
-            {commissionSections.map((section, sectionIndex) => (
-              <motion.section
-                key={section.title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-80px' }}
-                transition={{ duration: 0.5, delay: sectionIndex * 0.05 }}
-                className="rounded-2xl border border-primary/20 bg-white/90 px-3 py-5 shadow-sm backdrop-blur-sm"
-              >
-                <div className="mb-5 flex items-center gap-4">
-                  <span className="h-10 w-1.5 rounded-full bg-secondary" />
-                  <h3 className="font-primary text-4xl leading-none text-primary">{section.title}</h3>
-                </div>
-                <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
-                  {section.members.map((member) => (
-                    <MemberCard key={`${section.title}-${member.name}-${member.role}`} member={member} headingLevel={4} />
-                  ))}
-                </div>
-              </motion.section>
-            ))}
-          </div>
+          {PART2_GROUP_ORDER.map((groupKey) => (
+            <GroupBlock
+              key={groupKey}
+              title={GROUP_TITLES[groupKey] ?? groupKey}
+              contacts={byGroup.get(groupKey) ?? []}
+            />
+          ))}
         </Section>
       )}
     </>
