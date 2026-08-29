@@ -46,7 +46,7 @@ const SESSION_KINDS = ["Entraînement", "Jeu libre"] as const;
 const DEFAULT_FILTERS = {
   types: [...CRENEAU_TYPES] as string[],
   sessionKinds: [...SESSION_KINDS] as string[],
-  publics: [] as string[],
+  publics: [...CRENEAU_PUBLICS] as string[],
   gym: ALL_GYMS,
 };
 
