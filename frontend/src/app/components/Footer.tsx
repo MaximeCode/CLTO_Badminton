@@ -1,7 +1,7 @@
 import { useContext, useState, type ReactNode } from 'react';
 import { Facebook, Instagram, Youtube, MapPin, Phone, Mail, Linkedin, ChevronDown, Clock } from 'lucide-react';
 import { Link } from 'react-router';
-import logo from '../../imports/logo_clto_main.png';
+import logo from '../../imports/logo_clto_main.webp';
 import { ContactContext } from '../contexts/ContactContext';
 import type { Contact } from '@/types/contactType';
 import { formatTime, joinDays } from '@/utils/showHoraires';

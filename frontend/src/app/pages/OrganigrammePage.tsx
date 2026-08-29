@@ -6,14 +6,14 @@ import { Seo } from '../components/Seo';
 import { motion } from 'motion/react';
 import { Construction, Home, Mail } from 'lucide-react';
 import { Link } from 'react-router';
-import maintenanceImage from '../../imports/organigramme-maintenance.jpg';
+import maintenanceImage from '../../imports/organigramme-maintenance.webp';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { Section } from '../components/Section';
 import { getOrgContacts } from '@/api/gestion/contacts';
 import type { OrgContact } from '@/types/orgContactsType';
 
 const isInMaintenance = import.meta.env.VITE_ORGANIGRAMME_IN_MAINTENANCE === 'true';
-const placeholderPhoto = new URL('../../imports/user.png', import.meta.url).href;
+const placeholderPhoto = new URL('../../imports/user.webp', import.meta.url).href;
 
 /** Partie 1 : CA + commissions (dont ouvreurs / bénévoles). Partie 2 : salariés. */
 const PART1_GROUP_ORDER = [

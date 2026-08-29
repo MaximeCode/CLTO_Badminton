@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { ChevronDown, Menu, X } from "lucide-react";
-import logo from "../../imports/logo_clto_main.png";
+import logo from "../../imports/logo_clto_main.webp";
 import { NavItem } from "@/types/headerType";
 import { JoinClubIcon } from "./icons/JoinClubIcon";
 import { ShopIcon } from "./icons/ShopIcon";

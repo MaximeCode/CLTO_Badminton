@@ -10,7 +10,7 @@ import { BlocksRenderer } from '../components/BlocksRenderer';
 import { Seo } from '../components/Seo';
 import { motion } from 'motion/react';
 
-const userAvatar = new URL('../../imports/user.png', import.meta.url).href;
+const userAvatar = new URL('../../imports/user.webp', import.meta.url).href;
 
 const calculateReadTime = (article: Article | null) => {
   if (!article) return 0;
