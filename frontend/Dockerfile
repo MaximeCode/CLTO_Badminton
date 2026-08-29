@@ -8,6 +8,10 @@ RUN npm install
 
 COPY . .
 
+# Nécessaire pour injecter le hero LCP dans index.html au build
+ARG VITE_STRAPI_URL
+ENV VITE_STRAPI_URL=$VITE_STRAPI_URL
+
 RUN npm run build
 
 FROM nginx:alpine

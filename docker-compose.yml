@@ -7,6 +7,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        VITE_STRAPI_URL: https://admin.preprod.cltobadminton.fr
 
     restart: unless-stopped
 

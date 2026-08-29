@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router';
+import { Outlet, useLocation } from 'react-router';
 import { Header } from './Header';
 import { EnvBanner } from './EnvBanner';
 import { Footer } from './Footer';
@@ -9,6 +9,7 @@ import { Loader2 } from 'lucide-react';
 import { getContact } from '@/api/strapi/contact';
 import type { Contact } from '@/types/contactType';
 import { ContactContext } from '@/app/contexts/ContactContext';
+import { hideLcpPrerender } from '@/utils/hideLcpPrerender';
 
 function RouteFallback() {
   return (
@@ -20,8 +21,15 @@ function RouteFallback() {
 }
 
 export function Layout() {
+  const location = useLocation();
   const [contact, setContact] = useState<Contact | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      hideLcpPrerender();
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     async function loadData() {

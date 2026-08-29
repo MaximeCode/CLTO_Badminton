@@ -7,24 +7,12 @@
   <meta name="theme-color" content="#0153b6" />
   <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.webp" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.webp" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.webp" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link
-    rel="preload"
-    href="/fonts/dm-sans-400-latin.woff2"
-    as="font"
-    type="font/woff2"
-    crossorigin
-  />
-  <link
-    rel="preload"
-    href="/fonts/bebas-neue-400-latin.woff2"
-    as="font"
-    type="font/woff2"
-    crossorigin
-  />
+  <link rel="preload" href="/fonts/dm-sans-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/bebas-neue-400-latin.woff2" as="font" type="font/woff2" crossorigin />
   <title>CLTO Badminton Orléans</title>
   <script>
     (function () {
@@ -44,34 +32,50 @@
       if (prefix) document.title = prefix + " " + document.title;
     })();
   </script>
-  <meta
-    name="description"
-    content="CLTO Badminton Orléans : club de badminton à Orléans. Créneaux, inscriptions, interclubs, stages et vie du club."
-  />
+  <meta name="description"
+    content="CLTO Badminton Orléans : club de badminton à Orléans. Créneaux, inscriptions, interclubs, stages et vie du club." />
   <meta property="og:site_name" content="CLTO Badminton Orléans" />
   <meta property="og:title" content="CLTO Badminton Orléans" />
-  <meta
-    property="og:description"
-    content="CLTO Badminton Orléans : club de badminton à Orléans. Créneaux, inscriptions, interclubs, stages et vie du club."
-  />
+  <meta property="og:description"
+    content="CLTO Badminton Orléans : club de badminton à Orléans. Créneaux, inscriptions, interclubs, stages et vie du club." />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="fr_FR" />
   <meta name="twitter:card" content="summary" />
   <meta name="robots" content="index, follow" />
+  <!-- @lcp-hero -->
   <style>
+    /* Critical CSS — first paint avant le bundle Tailwind */
     html,
     body {
       height: 100%;
       margin: 0;
+      background: #ffffff;
+      color: #030213;
+      font-family: "DM Sans", system-ui, sans-serif;
     }
 
     #root {
-      height: 100%;
+      min-height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Shell hero (aligné sur Hero.tsx état chargement) */
+    #lcp-hero-prerender {
+      display: block;
+    }
+
+    @media (min-width: 1024px) {
+      #lcp-hero-prerender {
+        height: 65vh !important;
+        min-height: 0 !important;
+      }
     }
   </style>
 </head>
 
 <body>
+  <!-- @lcp-hero-body -->
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { isInternalAppLink } from '../../utils/resolveAppLink';
 import type { Media } from '@/types/baseType';
 import { ResponsiveImage } from './ResponsiveImage';
+import { hideLcpPrerender } from '@/utils/hideLcpPrerender';
 
 const ctaClassName =
   'inline-block cursor-pointer bg-secondary text-white text-sm sm:text-base px-5 py-2.5 sm:px-8 sm:py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200';
@@ -42,6 +43,11 @@ export function Hero<T extends HeroSlide = HeroSlide>({
 
   const isInterclub = variant === 'interclub';
   const loaded = slides.length > 0;
+  const hasPrerender = typeof document !== 'undefined' && !!document.getElementById('lcp-hero-prerender');
+
+  useEffect(() => {
+    if (loaded) hideLcpPrerender();
+  }, [loaded]);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -88,13 +94,27 @@ export function Hero<T extends HeroSlide = HeroSlide>({
     'min-w-11 min-h-11 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors duration-200 flex items-center justify-center cursor-pointer';
 
   if (!loaded) {
+    const loadingShellClass = hasPrerender
+      ? 'relative h-[50vh] min-h-80 lg:h-[65vh] lg:min-h-0 overflow-hidden bg-transparent'
+      : isInterclub
+        ? 'relative h-[52vh] min-h-85 lg:h-[70vh] lg:min-h-0 overflow-hidden bg-gray-200 flex flex-row items-center justify-center gap-4'
+        : 'relative h-[50vh] min-h-80 lg:h-[65vh] lg:min-h-0 overflow-hidden bg-gray-200 flex flex-row items-center justify-center gap-4';
+
+    if (hasPrerender) {
+      return (
+        <section className={loadingShellClass} aria-busy="true" aria-label="Chargement du carrousel">
+          <div
+            className="absolute -bottom-px left-0 right-0 h-10 md:h-24 bg-white z-10 pointer-events-none"
+            style={{ clipPath: 'polygon(-1% 100%, 101% 0, 101% 100%)' }}
+            aria-hidden
+          />
+        </section>
+      );
+    }
+
     return (
       <section
-        className={
-          isInterclub
-            ? 'relative h-[52vh] min-h-85 lg:h-[70vh] lg:min-h-0 overflow-hidden bg-gray-200 flex flex-row items-center justify-center gap-4'
-            : 'relative h-[50vh] min-h-80 lg:h-[65vh] lg:min-h-0 overflow-hidden bg-gray-200 flex flex-row items-center justify-center gap-4'
-        }
+        className={loadingShellClass}
         aria-busy="true"
         aria-label="Chargement du carrousel"
       >

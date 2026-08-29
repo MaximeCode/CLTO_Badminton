@@ -112,23 +112,6 @@ export function HomePage() {
     };
   }, []);
 
-  // Preload LCP image dès que le hero est connu
-  useEffect(() => {
-    const first = heros[0];
-    if (!first?.image) return;
-    const href = pickMediaUrl(first.image, 1280) || first.image.url;
-    if (!href) return;
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'image';
-    link.href = href;
-    link.setAttribute('fetchpriority', 'high');
-    document.head.appendChild(link);
-    return () => {
-      link.remove();
-    };
-  }, [heros]);
-
   const heroSlides: HeroSlide[] = heros.map((h) => ({
     id: h.id,
     image: pickMediaUrl(h.image, 1600) || h.image.url,

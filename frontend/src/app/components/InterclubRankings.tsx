@@ -371,7 +371,7 @@ function RankingCard({
                         <span className="font-primary text-2xl md:text-3xl leading-none">
                             {team.position}
                         </span>
-                        <span className="text-[10px] opacity-80 uppercase">place</span>
+                        <span className="text-sm opacity-80 uppercase">place</span>
                     </div>
 
                     <div className="flex-1 min-w-0 flex flex-col gap-1">
