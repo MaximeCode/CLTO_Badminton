@@ -412,7 +412,7 @@ export function JeunesPage() {
             to="/adherer"
             className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
           >
-            Adhérer
+            S'inscrire
           </Link>
         </motion.div>
       </Section>

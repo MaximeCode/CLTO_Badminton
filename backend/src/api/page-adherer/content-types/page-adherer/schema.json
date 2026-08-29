@@ -4,7 +4,7 @@
   "info": {
     "singularName": "page-adherer",
     "pluralName": "page-adherers",
-    "displayName": "Page Adhérer"
+    "displayName": "Page d'inscription"
   },
   "options": {
     "draftAndPublish": true
