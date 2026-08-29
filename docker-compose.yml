@@ -29,25 +29,7 @@ services:
       # Basic Auth
       - "traefik.http.routers.cltobadminton-frontend.middlewares=preprod-auth@file"
 
-      # Cache long /assets/ (fingerprintés)
-      - "traefik.http.middlewares.clto-frontend-assets-cache.headers.customresponseheaders.Cache-Control=public, max-age=31536000, immutable"
-      - "traefik.http.routers.cltobadminton-frontend-assets.rule=Host(`preprod.cltobadminton.fr`) && PathPrefix(`/assets`)"
-      - "traefik.http.routers.cltobadminton-frontend-assets.entrypoints=websecure"
-      - "traefik.http.routers.cltobadminton-frontend-assets.tls=true"
-      - "traefik.http.routers.cltobadminton-frontend-assets.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.cltobadminton-frontend-assets.priority=100"
-      - "traefik.http.routers.cltobadminton-frontend-assets.middlewares=clto-frontend-assets-cache,preprod-auth@file"
-      - "traefik.http.routers.cltobadminton-frontend-assets.service=cltobadminton-frontend"
-
-      # Cache long /fonts/
-      - "traefik.http.middlewares.clto-frontend-fonts-cache.headers.customresponseheaders.Cache-Control=public, max-age=31536000, immutable"
-      - "traefik.http.routers.cltobadminton-frontend-fonts.rule=Host(`preprod.cltobadminton.fr`) && PathPrefix(`/fonts`)"
-      - "traefik.http.routers.cltobadminton-frontend-fonts.entrypoints=websecure"
-      - "traefik.http.routers.cltobadminton-frontend-fonts.tls=true"
-      - "traefik.http.routers.cltobadminton-frontend-fonts.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.cltobadminton-frontend-fonts.priority=100"
-      - "traefik.http.routers.cltobadminton-frontend-fonts.middlewares=clto-frontend-fonts-cache,preprod-auth@file"
-      - "traefik.http.routers.cltobadminton-frontend-fonts.service=cltobadminton-frontend"
+      # Cache /assets/ et /fonts/ : géré par nginx (évite routers Traefik dupliqués → 502)
 
     networks:
       - max_network

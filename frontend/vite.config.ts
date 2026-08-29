@@ -3,7 +3,6 @@ import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { lcpHeroInject } from './vite-plugins/lcpHeroInject'
-import { inlineCriticalCss } from './vite-plugins/inlineCriticalCss'
 
 
 function figmaAssetResolver() {
@@ -49,7 +48,6 @@ export default defineConfig(({ mode }) => ({
     lcpHeroInject(),
     react(),
     tailwindcss(),
-    inlineCriticalCss(),
   ],
   resolve: {
     alias: {
