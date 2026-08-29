@@ -10,6 +10,7 @@ import { getContact } from '@/api/strapi/contact';
 import type { Contact } from '@/types/contactType';
 import { ContactContext } from '@/app/contexts/ContactContext';
 import { hideLcpPrerender } from '@/utils/hideLcpPrerender';
+import { readBootstrapJson } from '@/utils/buildBootstrap';
 
 function RouteFallback() {
   return (
@@ -22,7 +23,9 @@ function RouteFallback() {
 
 export function Layout() {
   const location = useLocation();
-  const [contact, setContact] = useState<Contact | null>(null);
+  const [contact, setContact] = useState<Contact | null>(
+    () => readBootstrapJson<Contact>('contact-bootstrap'),
+  );
   const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -32,19 +35,42 @@ export function Layout() {
   }, [location.pathname]);
 
   useEffect(() => {
+    let cancelled = false;
+    const hasBootstrap = !!readBootstrapJson<Contact>('contact-bootstrap');
+
     async function loadData() {
       try {
-        setLoadError(null);
+        if (!cancelled) setLoadError(null);
         const data = await getContact();
-        setContact(data);
+        if (!cancelled) setContact(data);
       } catch (error) {
+        if (cancelled || hasBootstrap) return;
         console.error('Error loading contact data:', error);
         setLoadError(
           error instanceof Error ? error.message : 'Impossible de charger les coordonnées.',
         );
       }
     }
+
+    if (hasBootstrap) {
+      if ('requestIdleCallback' in window) {
+        const id = window.requestIdleCallback(() => loadData(), { timeout: 5000 });
+        return () => {
+          cancelled = true;
+          window.cancelIdleCallback(id);
+        };
+      }
+      const timer = globalThis.setTimeout(loadData, 3000);
+      return () => {
+        cancelled = true;
+        globalThis.clearTimeout(timer);
+      };
+    }
+
     loadData();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (

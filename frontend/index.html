@@ -12,7 +12,11 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.webp" />
   <link rel="manifest" href="/site.webmanifest" />
   <link rel="preload" href="/fonts/dm-sans-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/dm-sans-500-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/dm-sans-600-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/dm-sans-700-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/bebas-neue-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="alternate" type="text/markdown" href="/llms.txt" title="LLMs index" />
   <title>CLTO Badminton Orléans</title>
   <script>
     (function () {
@@ -43,6 +47,7 @@
   <meta name="twitter:card" content="summary" />
   <meta name="robots" content="index, follow" />
   <!-- @lcp-hero -->
+  <!-- @bootstrap-data -->
   <style>
     /* Critical CSS — first paint avant le bundle Tailwind */
     html,
@@ -61,15 +66,26 @@
     }
 
     /* Shell hero (aligné sur Hero.tsx état chargement) */
-    #lcp-hero-prerender {
+    #lcp-hero-slot {
       display: block;
     }
 
     @media (min-width: 1024px) {
-      #lcp-hero-prerender {
+      #lcp-hero-slot {
         height: 65vh !important;
         min-height: 0 !important;
       }
+    }
+
+    /* Footer — réserve l'espace et la couleur avant Tailwind */
+    footer.bg-footer,
+    .bg-footer {
+      background-color: #0a1f3d;
+      color: #fff;
+    }
+
+    footer .font-primary {
+      font-family: "Bebas Neue", system-ui, sans-serif;
     }
   </style>
 </head>

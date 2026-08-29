@@ -1,0 +1,35 @@
+# CLTO Badminton Orléans
+
+> Club de badminton à Orléans : créneaux d'entraînement, inscriptions, interclubs, stages et vie du club.
+
+## Pages principales
+
+- [Accueil](https://cltobadminton.fr/): Page d'accueil du club CLTO Badminton Orléans.
+- [Actualités](https://cltobadminton.fr/actualites): Dernières nouvelles et communiqués du club.
+- [Notre histoire](https://cltobadminton.fr/historique): Historique et présentation du club.
+- [Interclubs](https://cltobadminton.fr/interclub): Équipes et résultats interclubs.
+- [Galerie](https://cltobadminton.fr/galerie): Photos et moments forts du club.
+
+## Nos publics
+
+- [Jeunes](https://cltobadminton.fr/jeunes): Badminton pour les jeunes et école de badminton.
+- [Adultes loisirs](https://cltobadminton.fr/adultes-loisirs): Créneaux loisirs pour adultes.
+- [Adultes compétiteurs](https://cltobadminton.fr/adultes-competiteurs): Parcours compétition et équipes.
+- [Vieilles Plumes](https://cltobadminton.fr/vieilles-plumes): Section seniors 60 ans et plus.
+- [Entreprises](https://cltobadminton.fr/entreprises): Offres et activités pour les entreprises.
+
+## Informations pratiques
+
+- [Créneaux](https://cltobadminton.fr/creneaux): Horaires et créneaux d'entraînement.
+- [Gymnases](https://cltobadminton.fr/gymnases): Lieux et adresses des gymnases.
+- [Adhérer](https://cltobadminton.fr/adherer): Modalités d'inscription et adhésion.
+- [Stages](https://cltobadminton.fr/stages): Stages et formations proposés par le club.
+- [Contact](https://cltobadminton.fr/contact): Coordonnées et formulaire de contact.
+- [FAQ](https://cltobadminton.fr/faq): Questions fréquentes.
+
+## Optional
+
+- [Documents officiels](https://cltobadminton.fr/documents): Statuts, règlements et documents du club.
+- [Mentions légales](https://cltobadminton.fr/mentions-legales): Informations légales du site.
+- [Politique de confidentialité](https://cltobadminton.fr/politique-de-confidentialite): Traitement des données personnelles.
+- [Sitemap](https://cltobadminton.fr/sitemap.xml): Plan du site.

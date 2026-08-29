@@ -2,3 +2,6 @@ User-agent: *
 Allow: /
 
 Sitemap: https://cltobadminton.fr/sitemap.xml
+
+# Index pour agents IA / LLM
+# https://cltobadminton.fr/llms.txt

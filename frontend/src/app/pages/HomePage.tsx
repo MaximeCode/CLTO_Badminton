@@ -5,6 +5,7 @@ import { DEFAULT_DESCRIPTION, SITE_NAME } from '@/utils/seo';
 import { getHomeHeros, getHomeSections, type HomeSectionsPayload } from '@/api/strapi/home';
 import { getAdherentsCount } from '@/api/gestion/adherents';
 import { getParametresGlobaux } from '@/api/strapi/parametre-globaux';
+import { readBootstrapJson } from '@/utils/buildBootstrap';
 import type { Hero as HeroType } from '@/types/herosType';
 import { pickMediaUrl } from '@/utils/media';
 
@@ -32,7 +33,9 @@ function BelowFoldFallback() {
 }
 
 export function HomePage() {
-  const [heros, setHeros] = useState<HeroType[]>([]);
+  const [heros, setHeros] = useState<HeroType[]>(
+    () => readBootstrapJson<HeroType[]>('home-heros-bootstrap') ?? [],
+  );
   const [sections, setSections] = useState<HomeSectionsPayload | null>(null);
   const [adherentsCount, setAdherentsCount] = useState<string>('…');
 
@@ -59,16 +62,37 @@ export function HomePage() {
     [],
   );
 
-  // Chemin critique : heros en premier (endpoint léger + cache serveur)
+  // Bootstrap build → affichage immédiat ; refresh différé pour ne pas bloquer PSI
   useEffect(() => {
     let cancelled = false;
-    getHomeHeros()
-      .then((data) => {
-        if (!cancelled) setHeros(data);
-      })
-      .catch((error) => {
-        console.error('[HomePage] getHomeHeros failed:', error);
-      });
+    const hasBootstrap = (readBootstrapJson<HeroType[]>('home-heros-bootstrap') ?? []).length > 0;
+
+    const loadHeros = () => {
+      getHomeHeros()
+        .then((data) => {
+          if (!cancelled && data.length > 0) setHeros(data);
+        })
+        .catch((error) => {
+          if (!hasBootstrap) console.error('[HomePage] getHomeHeros failed:', error);
+        });
+    };
+
+    if (hasBootstrap) {
+      if ('requestIdleCallback' in window) {
+        const id = window.requestIdleCallback(loadHeros, { timeout: 5000 });
+        return () => {
+          cancelled = true;
+          window.cancelIdleCallback(id);
+        };
+      }
+      const timer = globalThis.setTimeout(loadHeros, 3000);
+      return () => {
+        cancelled = true;
+        globalThis.clearTimeout(timer);
+      };
+    }
+
+    loadHeros();
     return () => {
       cancelled = true;
     };

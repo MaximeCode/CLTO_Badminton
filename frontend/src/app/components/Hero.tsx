@@ -43,7 +43,9 @@ export function Hero<T extends HeroSlide = HeroSlide>({
 
   const isInterclub = variant === 'interclub';
   const loaded = slides.length > 0;
-  const hasPrerender = typeof document !== 'undefined' && !!document.getElementById('lcp-hero-prerender');
+  const hasPrerender =
+    typeof document !== 'undefined' &&
+    (!!document.getElementById('lcp-hero-prerender') || !!document.getElementById('lcp-hero-slot'));
 
   useEffect(() => {
     if (loaded) hideLcpPrerender();

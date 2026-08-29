@@ -48,6 +48,16 @@ const socialLinks = [
   { href: 'https://www.linkedin.com/company/clto-badminton/', icon: Linkedin, label: 'LinkedIn' },
 ] as const;
 
+function ContactBlockSkeleton({ lines = 4 }: { lines?: number }) {
+  return (
+    <ul className="space-y-2 lg:space-y-3 min-h-34" aria-hidden="true">
+      {Array.from({ length: lines }, (_, index) => (
+        <li key={index} className="h-5 rounded bg-white/10" />
+      ))}
+    </ul>
+  );
+}
+
 export function Footer() {
   const contact = useContext<Contact | null>(ContactContext);
   // console.log('contact', contact);
@@ -193,7 +203,7 @@ export function Footer() {
                 </li>
               </ul>
             ) : (
-              <div>Chargement des coordonnées...</div>
+              <ContactBlockSkeleton lines={5} />
             )}
           </FooterMobileSection>
 
@@ -325,7 +335,7 @@ export function Footer() {
                 </li>
               </ul>
             ) : (
-              <div className="text-md ">Chargement des coordonnées...</div>
+              <ContactBlockSkeleton lines={4} />
             )}
             <Link
               to="/contact"
@@ -354,7 +364,7 @@ export function Footer() {
                 </li>
               </ul>
             ) : (
-              <div className="text-md ">Chargement des horaires...</div>
+              <ContactBlockSkeleton lines={3} />
             )}
           </div>
         </div>
