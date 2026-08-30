@@ -40,7 +40,6 @@ export function ActualitePage() {
       try {
         setLoadError(null);
         const data = await getOneArticle(id);
-        console.log("data: ", data);
         setArticle(data);
       } catch (error) {
         setArticle(null);

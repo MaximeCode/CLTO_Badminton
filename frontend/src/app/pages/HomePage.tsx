@@ -158,16 +158,15 @@ export function HomePage() {
       <Hero slides={heroSlides} />
       {sections ? (
         <Suspense fallback={<BelowFoldFallback />}>
-          <FeaturedNews initialArticles={sections.featuredArticles} />
+          <FeaturedNews articles={sections.featuredArticles} />
           <ClubStats
-            initialTeamsCount={undefined}
             initialAdherentsCount={adherentsCount}
-            initialAccueil={sections.accueil}
+            accueil={sections.accueil}
           />
           <InterclubRankings />
           <SpaceCards />
-          <PresidentQuote initialMotPresident={sections.motPresident} />
-          <Partners initialPartners={sections.partenaires} />
+          <PresidentQuote motPresident={sections.motPresident} />
+          <Partners partners={sections.partenaires} />
         </Suspense>
       ) : (
         <BelowFoldFallback />

@@ -15,10 +15,6 @@ export type HomeSectionsPayload = {
   motPresident: MotPresident | null;
 };
 
-export type HomePayload = HomeSectionsPayload & {
-  heros: Hero[];
-};
-
 function mapHero(item: any): Hero {
   const image = mapMedia(item.image);
   return {
@@ -71,6 +67,7 @@ function mapPartner(item: any): Partner {
     documentId: item.documentId,
     logos: (item.logos ?? []).map((logo: any) => mapMedia(logo)),
     type: item.type,
+    ordre: item.ordre,
   };
 }
 
@@ -112,21 +109,6 @@ export async function getHomeSections(): Promise<HomeSectionsPayload> {
     async () => {
       const { data } = await fetchAPI("/api/home/sections");
       return mapSections(data);
-    },
-    60_000
-  );
-}
-
-/** Agrégat complet (legacy / fallback) */
-export async function getHome(): Promise<HomePayload> {
-  return cachedFetch(
-    "home",
-    async () => {
-      const { data } = await fetchAPI("/api/home");
-      return {
-        heros: (data?.heros ?? []).map(mapHero),
-        ...mapSections(data),
-      };
     },
     60_000
   );

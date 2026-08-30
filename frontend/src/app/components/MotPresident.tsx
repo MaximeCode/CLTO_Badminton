@@ -1,68 +1,9 @@
 import { motion } from 'motion/react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import { MotPresident } from '@/types/motPresident';
-import { useEffect, useState } from 'react';
-import { getMotPresident } from '@/api/strapi/motPresident';
-import { Section } from './Section';
-import { Loader2 } from 'lucide-react';
+import type { MotPresident } from '@/types/motPresident';
 import { BlocksRenderer } from './BlocksRenderer';
 
-export function PresidentQuote({
-  initialMotPresident,
-}: {
-  initialMotPresident?: MotPresident | null;
-} = {}) {
-  const [motPresident, setMotPresident] = useState<MotPresident | null>(
-    initialMotPresident ?? null,
-  );
-  const [loadError, setLoadError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(initialMotPresident === undefined);
-
-  useEffect(() => {
-    if (initialMotPresident !== undefined) {
-      setMotPresident(initialMotPresident);
-      setLoading(false);
-      return;
-    }
-    async function loadData() {
-      try {
-        setLoadError(null);
-        setLoading(true);
-        setMotPresident(await getMotPresident());
-      } catch (error) {
-        console.error('Error loading data:', error);
-        setLoadError(
-          error instanceof Error ? error.message : 'Impossible de charger les données.',
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadData();
-  }, [initialMotPresident]);
-
-  if (loading) {
-    return (
-      <Section className="bg-white">
-        <div className="flex flex-col items-center justify-center min-h-64">
-          <Loader2 size={40} className="text-primary animate-spin mb-4" />
-          <p className="text-gray-500 font-medium">Chargement des mots du président…</p>
-        </div>
-      </Section>
-    );
-  }
-
-  if (loadError) {
-    return (
-      <Section className="bg-white">
-        <div className="flex flex-col items-center justify-center min-h-64">
-          <p className="text-gray-500 font-medium">{loadError}</p>
-        </div>
-      </Section>
-    );
-  }
-
+export function PresidentQuote({ motPresident }: { motPresident: MotPresident | null }) {
   if (!motPresident) {
     return (
       <section className="relative py-12 md:py-16 lg:py-20 bg-primary overflow-hidden">
@@ -110,7 +51,6 @@ export function PresidentQuote({
               Bienvenue au CLTO Badminton !
             </h2>
 
-            {/* Citation : guillemets décoratifs hors flux, texte intact */}
             <div className="relative mt-5 sm:mt-6">
               <span
                 className={`${quotesClasses} -top-3 left-0`}

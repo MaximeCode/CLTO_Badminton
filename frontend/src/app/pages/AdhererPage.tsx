@@ -88,7 +88,6 @@ export function AdhererPage() {
                 setLoadError(null);
                 const data = await getPageAdherer();
                 setPageAdhererDatas(data);
-                console.log('pageAdhererDatas:', data);
             } catch (error) {
                 console.error('Error loading data:', error);
                 setLoadError(

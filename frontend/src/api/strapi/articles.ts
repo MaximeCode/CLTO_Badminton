@@ -39,14 +39,6 @@ export async function getArticles(): Promise<Article[]> {
   return data.map(mapArticle);
 }
 
-export async function getFeaturedArticles(): Promise<Article[]> {
-  const { data } = await fetchAPI(
-    `/api/articles?populate[categories]=true&${VIGNETTE_POPULATE}&sort[0]=createdAt:desc&filters[a_la_une][$eq]=true`
-  );
-
-  return data.map(mapArticle);
-}
-
 export async function getOneArticle(documentId: string): Promise<Article | null> {
   const { data } = await fetchAPI(
     `/api/articles/${documentId}?populate[categories]=true&${VIGNETTE_POPULATE}`

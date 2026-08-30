@@ -2,62 +2,9 @@ import { motion } from 'motion/react';
 import { Link } from 'react-router';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
 import { Section } from './Section';
-import { useEffect, useState } from 'react';
-import { getPartners } from '@/api/strapi/partners';
-import { Loader2 } from 'lucide-react';
-import { Partner } from '@/types/partnersType';
+import type { Partner } from '@/types/partnersType';
 
-export function Partners({ initialPartners }: { initialPartners?: Partner[] } = {}) {
-
-  const [partners, setPartners] = useState<Partner[]>(initialPartners ?? []);
-  const [loadError, setLoadError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(!initialPartners);
-
-  useEffect(() => {
-    if (initialPartners) {
-      setPartners(initialPartners);
-      setLoading(false);
-      return;
-    }
-    async function loadData() {
-      try {
-        setLoadError(null);
-        setLoading(true);
-        const data = await getPartners();
-        setPartners(data);
-      } catch (error) {
-        console.error('Error loading data:', error);
-        setLoadError(
-          error instanceof Error ? error.message : 'Impossible de charger les données.',
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadData();
-  }, [initialPartners]);
-
-  if (loading) {
-    return (
-      <Section className="bg-white">
-        <div className="flex flex-col items-center justify-center min-h-64">
-          <Loader2 size={40} className="text-primary animate-spin mb-4" />
-          <p className="text-gray-500 font-medium">Chargement des partenaires…</p>
-        </div>
-      </Section>
-    );
-  }
-
-  if (loadError) {
-    return (
-      <Section className="bg-white">
-        <div className="flex flex-col items-center justify-center min-h-64">
-          <p className="text-gray-500 font-medium">{loadError}</p>
-        </div>
-      </Section>
-    );
-  }
-
+export function Partners({ partners }: { partners: Partner[] }) {
   return (
     <Section className="bg-[linear-gradient(180deg,#f7fbff_0%,#ffffff_40%)]">
       <HomePageSectionTitle
@@ -66,7 +13,7 @@ export function Partners({ initialPartners }: { initialPartners?: Partner[] } = 
       />
 
       <div className="space-y-10">
-        {partners.length > 0 ?
+        {partners.length > 0 ? (
           partners.map((partner, partnerIndex) => (
             <motion.div
               key={partner.id}
@@ -110,11 +57,12 @@ export function Partners({ initialPartners }: { initialPartners?: Partner[] } = 
                 ))}
               </div>
             </motion.div>
-          )) : (
-            <div className="flex flex-col items-center justify-center min-h-64">
-              <p className="text-gray-500 font-medium">Aucun partenaire trouvé</p>
-            </div>
-          )}
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center min-h-64">
+            <p className="text-gray-500 font-medium">Aucun partenaire trouvé</p>
+          </div>
+        )}
       </div>
 
       <div className="text-center mt-12">

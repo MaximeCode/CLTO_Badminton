@@ -57,6 +57,7 @@ async function fetchPartenaires() {
     populate: {
       logos: { fields: MEDIA_FIELDS },
     },
+    sort: ['ordre:asc'],
   });
 }
 

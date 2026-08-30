@@ -1,67 +1,16 @@
-import { useEffect, useState } from 'react';
-import { ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
 import { Section } from './Section';
 
 import type { Article } from '@/types/articlesType';
-import { getFeaturedArticles } from '@/api/strapi/articles';
 import { extractTextFromBlocks } from '@/utils/blocksText';
 import { stringifyDate } from '@/utils/formatDate';
 import { Button } from './Button';
 import { ResponsiveImage } from './ResponsiveImage';
 
-export function FeaturedNews({ initialArticles }: { initialArticles?: Article[] } = {}) {
-  const [articles, setArticles] = useState<Article[]>(initialArticles ?? []);
-  const [loadError, setLoadError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(!initialArticles);
-
-  useEffect(() => {
-    if (initialArticles) {
-      setArticles(initialArticles);
-      setLoading(false);
-      return;
-    }
-    async function loadData() {
-      try {
-        setLoadError(null);
-        setLoading(true);
-        const data = await getFeaturedArticles();
-        setArticles(data);
-      } catch (error) {
-        console.error('Error loading data:', error);
-        setLoadError(
-          error instanceof Error ? error.message : 'Impossible de charger les données.',
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadData();
-  }, [initialArticles]);
-
-  if (loading) {
-    return (
-      <Section className="bg-white">
-        <div className="flex flex-col items-center justify-center min-h-64">
-          <Loader2 size={40} className="text-primary animate-spin mb-4" />
-          <p className="text-gray-500 font-medium">Chargement des actualités à la Une…</p>
-        </div>
-      </Section>
-    );
-  }
-
-  if (loadError) {
-    return (
-      <Section className="bg-white">
-        <div className="flex flex-col items-center justify-center min-h-64">
-          <p className="text-gray-500 font-medium">{loadError}</p>
-        </div>
-      </Section>
-    );
-  }
-
+export function FeaturedNews({ articles }: { articles: Article[] }) {
   const featuredArticle = articles[0];
   const sideArticles = articles.slice(1, 3);
 
@@ -78,7 +27,6 @@ export function FeaturedNews({ initialArticles }: { initialArticles?: Article[] 
       <HomePageSectionTitle title="À LA UNE" />
 
       <div className="grid lg:grid-cols-2 gap-8 md:w-5/6 mx-auto lg:w-full">
-        {/* Featured Article */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -130,7 +78,6 @@ export function FeaturedNews({ initialArticles }: { initialArticles?: Article[] 
 
         <hr className="block lg:hidden border-gray-200 w-50 mx-auto" />
 
-        {/* Side Articles */}
         <div className="space-y-6">
           {sideArticles.map((article, index) => (
             <motion.div
