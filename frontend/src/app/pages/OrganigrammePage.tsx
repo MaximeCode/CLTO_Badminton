@@ -184,7 +184,7 @@ function MaintenanceBlock() {
             </h2>
 
             <p className="mt-4 text-base text-primary-accent md:text-lg">
-              Les membres du CLTO sont prêts à vous accueillir sur les <a href="/creneaux" className="text-primary underline">créneaux disponibles</a> ! Nous vous attendons
+              Les membres du CLTO seront bientôt prêts à vous accueillir ! Nous vous attendons
               nombreux sur les terrains ;)
             </p>
 
