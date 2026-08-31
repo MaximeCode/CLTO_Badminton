@@ -501,11 +501,7 @@ export function CreneauxPage() {
           </p>
           <p className="mt-2 text-gray-700 text-sm md:text-base">
             En attendant, consultez notre planning actualisé pour connaître les
-            créneaux disponibles du 17 au 30 août 2026.
-          </p>
-          <p className="mt-2 text-gray-700 text-sm md:text-base">
-            ❌ Attention : aucun créneau n’est disponible du 10 au 16 août, en
-            raison de la fermeture annuelle des gymnases.
+            créneaux disponibles du 31 août au 13 septembre 2026.
           </p>
           <p className="mt-3 text-sm md:text-base">
             <span className="text-gray-700">Consulter le planning à jour : </span>
