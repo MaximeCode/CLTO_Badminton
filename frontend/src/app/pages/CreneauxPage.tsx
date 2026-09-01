@@ -151,6 +151,7 @@ type TimeSlot = {
   startTime: string;
   endTime: string;
   entraineurs: string[];
+  serviceCivique: string[];
   ouvreurs: string[];
   hasOuvreur: boolean;
   types: string[];
@@ -173,6 +174,7 @@ function seanceToTimeSlot(seance: Seance): TimeSlot {
     startTime: seance.debut,
     endTime: seance.fin,
     entraineurs: seance.entraineurs,
+    serviceCivique: seance.serviceCivique,
     ouvreurs: seance.ouvreurs,
     // Ouvreur dédié ou entraîneur présent (peut ouvrir le gymnase)
     hasOuvreur: seance.ouvreurs.length > 0 || seance.entraineurs.length > 0,
@@ -876,9 +878,16 @@ export function CreneauxPage() {
                                         </div>
                                         <div className="mt-2 text-xs text-gray-600 space-y-1">
                                           <p>📍 {slot.gymFull}</p>
-                                          {slot.entraineurs.length > 0 && (
-                                            <p>🏸 {formatPeople(slot.entraineurs)}</p>
-                                          )}
+                                          {(slot.entraineurs.length > 0 ||
+                                            slot.serviceCivique.length > 0) && (
+                                              <p>
+                                                🏸{" "}
+                                                {formatPeople([
+                                                  ...slot.entraineurs,
+                                                  ...slot.serviceCivique,
+                                                ])}
+                                              </p>
+                                            )}
                                           {slot.ouvreurs.length > 0 && (
                                             <p>👤 {formatPeople(slot.ouvreurs)}</p>
                                           )}
@@ -1109,14 +1118,18 @@ export function CreneauxPage() {
                                               {slot.gymFull}
                                             </span>
                                           </div>
-                                          {slot.entraineurs.length > 0 && (
-                                            <div className="flex items-center gap-2">
-                                              <Dumbbell size={16} />
-                                              <span className="line-clamp-2">
-                                                {formatPeople(slot.entraineurs)}
-                                              </span>
-                                            </div>
-                                          )}
+                                          {(slot.entraineurs.length > 0 ||
+                                            slot.serviceCivique.length > 0) && (
+                                              <div className="flex items-center gap-2">
+                                                <Dumbbell size={16} />
+                                                <span className="line-clamp-2">
+                                                  {formatPeople([
+                                                    ...slot.entraineurs,
+                                                    ...slot.serviceCivique,
+                                                  ])}
+                                                </span>
+                                              </div>
+                                            )}
                                           {slot.ouvreurs.length > 0 && (
                                             <div className="flex items-center gap-2">
                                               <User size={16} />

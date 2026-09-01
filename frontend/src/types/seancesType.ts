@@ -21,7 +21,9 @@ export type Seance = {
   /** Type principal pour pastille / couleur */
   primaryType: string;
   entraineurs: string[];
-  /** Libellés OUVREUR (ouverture du gymnase) */
+  /** Libellés SC (Service Civique) */
+  serviceCivique: string[];
+  /** Jeu libre : ENTRAINEUR, SC et OUVREUR fusionnés. Entraînement : OUVREUR uniquement. */
   ouvreurs: string[];
   publics: string[];
   commentaire: string | null;

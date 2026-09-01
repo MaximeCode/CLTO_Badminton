@@ -23,6 +23,7 @@ type SeanceApiItem = {
   gymnase_nom_court: string;
   ENCADREMENT?: SeanceTag[] | null;
   ENTRAINEUR?: SeanceTag[] | null;
+  SC?: SeanceTag[] | null;
   OUVREUR?: SeanceTag[] | null;
   PUBLIC?: SeanceTag[] | null;
 };
@@ -49,14 +50,36 @@ function resolveFreePlayPrimaryType(nom: string): string {
   return "Jeu libre";
 }
 
+function mapTags(tags?: SeanceTag[] | null): string[] {
+  return (tags ?? []).map((tag) => tag.libelle);
+}
+
+/** Fusionne plusieurs listes de responsables sans doublon (ordre conservé). */
+function mergeResponsables(...lists: (SeanceTag[] | null | undefined)[]): string[] {
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const list of lists) {
+    for (const tag of list ?? []) {
+      if (!seen.has(tag.libelle)) {
+        seen.add(tag.libelle);
+        result.push(tag.libelle);
+      }
+    }
+  }
+  return result;
+}
+
 function mapSeance(item: SeanceApiItem): Seance {
   const encadrement = item.ENCADREMENT ?? [];
   const hasEncadrement = encadrement.length > 0;
-  const entraineurs = item.ENTRAINEUR ?? [];
-  const hasEntraineur = entraineurs.length > 0;
-  const ouvreurs = item.OUVREUR ?? [];
   const types = encadrement.map((tag) => tag.libelle);
-  const sessionKind = hasEncadrement || hasEntraineur ? "Entraînement" : "Jeu libre";
+  const sessionKind = hasEncadrement ? "Entraînement" : "Jeu libre";
+
+  const entraineurs = hasEncadrement ? mapTags(item.ENTRAINEUR) : [];
+  const serviceCivique = hasEncadrement ? mapTags(item.SC) : [];
+  const ouvreurs = hasEncadrement
+    ? mapTags(item.OUVREUR)
+    : mergeResponsables(item.ENTRAINEUR, item.SC, item.OUVREUR);
 
   return {
     id: String(item.id),
@@ -71,10 +94,11 @@ function mapSeance(item: SeanceApiItem): Seance {
     fin: formatTime(item.fin_creneau),
     sessionKind,
     types,
-    primaryType: hasEncadrement || hasEntraineur ? types[0] : resolveFreePlayPrimaryType(item.nom),
-    entraineurs: entraineurs.map((tag) => tag.libelle),
-    ouvreurs: ouvreurs.map((tag) => tag.libelle),
-    publics: (item.PUBLIC ?? []).map((tag) => tag.libelle),
+    primaryType: hasEncadrement ? types[0] : resolveFreePlayPrimaryType(item.nom),
+    entraineurs,
+    serviceCivique,
+    ouvreurs,
+    publics: mapTags(item.PUBLIC),
     commentaire: item.commentaire,
     actif: item.actif === "1",
     visible: item.visible === "1",
@@ -89,7 +113,7 @@ function mapSeance(item: SeanceApiItem): Seance {
 export async function getSeances(saisonId: number = 17): Promise<Seance[]> {
   const { data } =
     import.meta.env.VITE_ENV === "dev"
-      ? await fetchFakeAPIGestion("allSeances_25-08") // DEV
+      ? await fetchFakeAPIGestion("allSeances_01-09") // DEV
       : await fetchAPIGestion(`/api/seances/${saisonId}`); // PP / PROD
 
   return (data as SeanceApiItem[])
