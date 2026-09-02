@@ -497,28 +497,6 @@ export function CreneauxPage() {
       />
 
       <Section className="bg-gray-50" width_subdiv={2000}>
-        <div className="mb-8 rounded-xl border-l-4 border-secondary bg-amber-50 p-5 md:p-6 shadow-sm">
-          <p className="font-semibold text-gray-900 text-base md:text-lg">
-            ⚠️ Cette page est en cours de mise à jour.
-          </p>
-          <p className="mt-2 text-gray-700 text-sm md:text-base">
-            En attendant, consultez notre planning actualisé pour connaître les
-            créneaux disponibles du 31 août au 13 septembre 2026.
-          </p>
-          <p className="mt-3 text-sm md:text-base">
-            <span className="text-gray-700">Consulter le planning à jour : </span>
-            <a
-              href={EXCEL_PLANNING_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-semibold text-primary underline underline-offset-2 hover:text-secondary"
-            >
-              Disponibilité_Créneaux_CLTO
-              <ExternalLink size={16} className="shrink-0" />
-            </a>
-          </p>
-        </div>
-
         {loadError && (
           <p className="mb-8 text-center text-red-600">{loadError}</p>
         )}
