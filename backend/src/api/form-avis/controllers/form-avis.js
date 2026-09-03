@@ -25,6 +25,7 @@ module.exports = {
     const mailOptions = {
       to: recipient,
       from: process.env.SMTP_FROM || 'no-reply@cltobadminton.fr',
+      cc: process.env.AVIS_CC || 'no-reply@cltobadminton.fr',
       subject: `Nouvel avis visiteur — ${visitorName}`,
       text,
       html,
