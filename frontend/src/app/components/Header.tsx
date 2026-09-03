@@ -57,6 +57,7 @@ const NAV_ITEMS: NavItem[] = [
     items: [
       { label: "Contact", path: "/contact" },
       { label: "FAQ", path: "/faq" },
+      { label: "Votre avis nous intéresse", path: "/avis" },
     ],
   },
 ];

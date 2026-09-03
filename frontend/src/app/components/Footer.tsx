@@ -31,7 +31,7 @@ function FooterMobileSection({
         aria-expanded={open}
         className="flex w-full items-center justify-between py-3 text-left"
       >
-        <p className="font-primary md:text-lg tracking-wide">{title}</p>
+        <p className="font-primary text-lg tracking-wide">{title}</p>
         <ChevronDown
           size={18}
           className={`shrink-0 text-gray-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
@@ -207,12 +207,20 @@ export function Footer() {
             )}
           </FooterMobileSection>
 
-          <Link
-            to="/contact"
-            className="mt-4 flex w-full items-center justify-center border-2 border-secondary text-secondary px-4 py-2.5 rounded-md hover:bg-secondary hover:text-white transition-all duration-200 text-sm"
-          >
-            Nous contacter
-          </Link>
+          <div className="my-4 space-y-2">
+            <Link
+              to="/contact"
+              className="flex w-full items-center justify-center border-2 border-secondary text-secondary px-4 py-2.5 rounded-md hover:bg-secondary hover:text-white transition-all duration-200 text-sm"
+            >
+              Nous contacter
+            </Link>
+            <Link
+              to="/avis"
+              className="flex w-full items-center justify-center text-gray-400 hover:text-secondary transition-colors duration-200 text-sm underline underline-offset-2 font-semibold"
+            >
+              Votre avis nous intéresse
+            </Link>
+          </div>
         </div>
 
         {/* Desktop */}
@@ -337,12 +345,20 @@ export function Footer() {
             ) : (
               <ContactBlockSkeleton lines={4} />
             )}
-            <Link
-              to="/contact"
-              className="inline-block mt-4 border-2 border-secondary text-secondary px-4 py-2 rounded-md hover:bg-secondary hover:text-white transition-all duration-200 text-md cursor-pointer"
-            >
-              Nous contacter
-            </Link>
+            <div className="mt-4 space-y-2">
+              <Link
+                to="/contact"
+                className="inline-block border-2 border-secondary text-secondary px-4 py-2 rounded-md hover:bg-secondary hover:text-white transition-all duration-200 text-md cursor-pointer"
+              >
+                Nous contacter
+              </Link>
+              <Link
+                to="/avis"
+                className="block text-gray-400 hover:text-secondary transition-colors duration-200 text-md underline underline-offset-2 font-semibold"
+              >
+                Votre avis nous intéresse
+              </Link>
+            </div>
           </div>
 
           <div className="hidden lg:block md:col-span-2">

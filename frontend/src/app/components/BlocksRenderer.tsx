@@ -7,7 +7,12 @@ import type {
   TextInlineNode,
 } from "@/types/blocks";
 import { API_URL } from "@/api/Client";
-import React from "react";
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "./ui/dialog";
 
 type InlineNode = TextInlineNode | { type: "link"; url: string; children: TextInlineNode[] };
 
@@ -127,6 +132,66 @@ function renderInline(
   });
 }
 
+type BlocksImageProps = {
+  src: string;
+  alt: string;
+  caption?: string | null;
+  width?: number;
+  height?: number;
+  figcaptionClass: string;
+};
+
+function BlocksImage({
+  src,
+  alt,
+  caption,
+  width,
+  height,
+  figcaptionClass,
+}: BlocksImageProps) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <figure className="my-8">
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="block w-full cursor-zoom-in rounded-2xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
+          aria-label={`Agrandir l'image : ${alt}`}
+        >
+          <img
+            src={src}
+            alt={alt}
+            className="w-full rounded-2xl shadow-md max-h-150 object-contain transition-opacity hover:opacity-90"
+            width={width}
+            height={height}
+          />
+        </button>
+        {caption && (
+          <figcaption className={figcaptionClass}>{caption}</figcaption>
+        )}
+      </figure>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="flex max-h-[80vh] w-[80vw] max-w-[80vw] items-center justify-center border-0 bg-transparent p-2 shadow-none sm:max-w-[80vw] sm:p-3 [&>button]:top-2 [&>button]:right-2 [&>button]:rounded-full [&>button]:bg-black/50 [&>button]:p-2 [&>button]:text-white [&>button]:hover:bg-black/70">
+          <DialogTitle className="sr-only">{alt}</DialogTitle>
+          <img
+            src={src}
+            alt={alt}
+            className="max-h-[96vh] max-w-full rounded-lg object-contain"
+            width={width}
+            height={height}
+          />
+          {caption && (
+            <p className="mt-2 text-center text-sm text-white/80">{caption}</p>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
 function renderList(
   list: ListBlockNode,
   key: string,
@@ -223,20 +288,15 @@ function renderBlock(
         ? block.image.url
         : `${API_URL}${block.image.url}`;
       return (
-        <figure key={key} className="my-8">
-          <img
-            src={src}
-            alt={block.image.alternativeText ?? block.image.name}
-            className="w-full rounded-2xl shadow-md max-h-150 object-contain"
-            width={block.image.width}
-            height={block.image.height}
-          />
-          {block.image.caption && (
-            <figcaption className={styles.figcaption}>
-              {block.image.caption}
-            </figcaption>
-          )}
-        </figure>
+        <BlocksImage
+          key={key}
+          src={src}
+          alt={block.image.alternativeText ?? block.image.name}
+          caption={block.image.caption}
+          width={block.image.width}
+          height={block.image.height}
+          figcaptionClass={styles.figcaption}
+        />
       );
     }
     default:

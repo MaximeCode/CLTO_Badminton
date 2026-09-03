@@ -33,6 +33,9 @@ const AdhererPage = lazy(() =>
 const FAQPage = lazy(() =>
   import('./pages/FAQPage').then((m) => ({ default: m.FAQPage })),
 );
+const AvisPage = lazy(() =>
+  import('./pages/AvisPage').then((m) => ({ default: m.AvisPage })),
+);
 const StagesPage = lazy(() =>
   import('./pages/StagesPage').then((m) => ({ default: m.StagesPage })),
 );
@@ -120,6 +123,7 @@ export const router = createBrowserRouter([
       { path: 'entreprise', loader: () => redirect('/entreprises') },
       { path: 'contact', Component: ContactPage },
       { path: 'faq', Component: FAQPage },
+      { path: 'avis', Component: AvisPage },
       { path: 'stages', Component: StagesPage },
       { path: 'adherer', Component: AdhererPage },
       { path: 'formations', Component: FormationsPage },
