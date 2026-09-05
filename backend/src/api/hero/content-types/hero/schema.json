@@ -4,7 +4,7 @@
   "info": {
     "singularName": "hero",
     "pluralName": "heros",
-    "displayName": "Bandeau accueil"
+    "displayName": "Bandeaux accueil"
   },
   "options": {
     "draftAndPublish": true

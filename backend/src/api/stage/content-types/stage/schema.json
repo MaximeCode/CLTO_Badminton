@@ -4,7 +4,7 @@
   "info": {
     "singularName": "stage",
     "pluralName": "stages",
-    "displayName": "Stage"
+    "displayName": "Stages"
   },
   "options": {
     "draftAndPublish": true

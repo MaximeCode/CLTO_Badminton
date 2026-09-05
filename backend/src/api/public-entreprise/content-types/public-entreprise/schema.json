@@ -4,7 +4,7 @@
   "info": {
     "singularName": "public-entreprise",
     "pluralName": "publics-entreprise",
-    "displayName": "Public Entreprise"
+    "displayName": "Public Entreprises"
   },
   "options": {
     "draftAndPublish": true

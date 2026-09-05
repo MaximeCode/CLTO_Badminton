@@ -4,7 +4,7 @@
   "info": {
     "singularName": "interclub-team",
     "pluralName": "interclub-teams",
-    "displayName": "Interclub Team",
+    "displayName": "Équipes interclubs",
     "description": "Données interclubs scrapées depuis IcBAD — classement + rencontres par équipe"
   },
   "options": {
