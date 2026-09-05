@@ -1212,7 +1212,7 @@ export function CreneauxPage() {
               </div>
 
               <p className="mt-6 text-sm text-gray-600 bg-blue-50 p-3 rounded-lg border-l-4 border-primary">
-                💡 <strong>Astuce:</strong> Survolez un créneau pour voir plus de détails.
+                💡 <strong>Astuce:</strong> Survolez un créneau pour afficher le gymnase, l'entraîneur et le public concernés
               </p>
               <p className="mt-3 text-sm text-red-700 bg-red-50 p-3 rounded-lg border-l-4 border-red-600 flex items-start gap-2">
                 <AlertTriangle size={18} className="shrink-0 mt-0.5" />

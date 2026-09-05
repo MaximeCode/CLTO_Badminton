@@ -97,7 +97,7 @@ export function ActualitePage() {
               </div>
             </motion.div>
 
-            {/* Right - vignette, ~30% (contrainte taille sur mobile pour éviter overflow) */}
+            {/* Right - vignette, ~30% (contrainte taille pour rester dans le bandeau) */}
             {article?.vignette.url && (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
@@ -109,7 +109,7 @@ export function ActualitePage() {
                   <img
                     src={article.vignette.url}
                     alt={article.titre ?? ''}
-                    className="h-auto w-full max-w-full object-contain"
+                    className="h-auto w-full max-w-full max-h-52 sm:max-h-60 md:max-h-72 object-contain"
                   />
                 </div>
               </motion.div>

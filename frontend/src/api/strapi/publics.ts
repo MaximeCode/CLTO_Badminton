@@ -79,8 +79,14 @@ export async function getPublicAdultesCompetiteurs(): Promise<PublicAdultesCompe
     id: data.id,
     documentId: data.documentId,
     ...mapBannerFields(data),
+    prix_licence: data.prix_licence,
+    envie_de_progresser: {
+      id: data.envie_de_progresser.id,
+      titre: data.envie_de_progresser.titre,
+      contenu: data.envie_de_progresser.contenu,
+    },
+    vie_du_club: mapInformations(data.vie_du_club),
     tournois_competitions: mapContenus(data.tournois_competitions),
-    les_avantages: mapAvantages(data.les_avantages),
   };
 }
 

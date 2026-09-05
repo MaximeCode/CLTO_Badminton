@@ -27,8 +27,10 @@ type PublicFields = {
 
 export type PublicAdultesCompetiteurs = Base &
   PublicFields & {
+    prix_licence: number;
+    envie_de_progresser: InformationsPublic;
+    vie_du_club: InformationsPublic[];
     tournois_competitions: ContenuPublic[];
-    les_avantages: Avantage[];
   };
 
 export type PublicAdultesLoisirs = Base &

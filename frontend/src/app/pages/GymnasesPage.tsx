@@ -113,9 +113,7 @@ export function GymnasesPage() {
             {gymsCount} GYMNASES
           </h2>
           <p className="text-gray-600 text-md md:text-lg max-w-2xl mx-auto">
-            Le CLTO Badminton vous accueille dans {gymsCount} gymnases à Orléans, permettant de
-            proposer de nombreux créneaux de jeu libre et d&apos;entraînement tout au long de la
-            semaine.
+            Le CLTO Badminton vous accueille dans {gymsCount} gymnases à Orléans, permettant de proposer de nombreux créneaux de jeu libre et d&apos;entraînement tout au long de la semaine.
           </p>
         </motion.div>
 

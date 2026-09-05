@@ -252,7 +252,7 @@ export function AdultesLoisirsPage() {
           transition={{ duration: 0.6 }}
           className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-12 text-center shadow-lg text-white"
         >
-          <h2 className="font-primary text-4xl mb-4">Pourquoi nous rejoindre ?</h2>
+          <h2 className="font-primary text-4xl mb-4">Rejoignez nous</h2>
           <p className="text-white/90 text-md mb-8 max-w-2xl mx-auto">
             Rejoignez les créneaux Adultes Loisirs pour jouer à votre rythme, dans une ambiance
             conviviale.

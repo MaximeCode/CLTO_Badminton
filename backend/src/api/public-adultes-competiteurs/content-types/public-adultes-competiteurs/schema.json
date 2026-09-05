@@ -17,6 +17,21 @@
     "description": {
       "type": "text"
     },
+    "prix_licence": {
+      "type": "decimal",
+      "required": true
+    },
+    "envie_de_progresser": {
+      "type": "component",
+      "component": "infos-publics.carte-d-informations",
+      "repeatable": false,
+      "required": true
+    },
+    "vie_du_club": {
+      "type": "component",
+      "component": "infos-publics.carte-d-informations",
+      "repeatable": true
+    },
     "tournois_competitions": {
       "type": "component",
       "component": "contenu-page.contenu",
