@@ -143,7 +143,7 @@ function GroupBlock({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="mb-12 text-center"
+        className="mb-12"
       >
         <h3 className="mb-4 font-primary text-4xl text-primary md:text-5xl">{title}</h3>
       </motion.div>
@@ -289,6 +289,9 @@ export function OrganigrammePage() {
             <p className="mx-auto max-w-3xl text-lg text-primary-accent">
               Le conseil d&apos;administration, les commissions et les ouvreurs qui font vivre le
               club au quotidien.
+            </p>
+            <p className="mx-auto mt-3 max-w-3xl text-sm text-primary-accent/80 italic">
+              Survolez une carte pour afficher l&apos;adresse e-mail.
             </p>
           </motion.div>
 

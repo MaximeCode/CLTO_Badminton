@@ -1,0 +1,12 @@
+{
+  "name": "enhanced-homepage",
+  "version": "1.0.0",
+  "description": "Widgets homepage Strapi enrichis (createdBy, createdAt, titre types uniques)",
+  "strapi": {
+    "kind": "plugin",
+    "name": "enhanced-homepage",
+    "displayName": "Enhanced Homepage",
+    "description": "Dernières entrées éditées / publiées avec Créé par et Créé le"
+  },
+  "dependencies": {}
+}

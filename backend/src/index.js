@@ -139,11 +139,156 @@ async function syncAdminRoleFieldPermissions(strapi) {
   }
 }
 
+/**
+ * Assigne createdBy / updatedBy depuis l'utilisateur admin de la requête.
+ *
+ * Contexte : en Strapi 5 ces champs sont des relations `writable: false`.
+ * Ils sont injectés par le Content Manager via setCreatorFields, mais :
+ * - les lignes issues de la migration v4→v5 / anciennes créations ont souvent
+ *   created_by_id NULL
+ * - une publication clone le brouillon (y compris les NULL)
+ * - l'update ne remplit jamais createdBy (seulement updatedBy)
+ *
+ * Ce lifecycle rattrape create + update (+ publish qui passe par create)
+ * pour tous les content-types applicatifs / plugins.
+ */
+function registerCreatorFieldsLifecycle(strapi) {
+  const hasCreatorFields = (model) =>
+    Boolean(model?.attributes?.createdBy && model?.attributes?.updatedBy);
+
+  const isManagedContentUid = (uid) =>
+    typeof uid === 'string' &&
+    (uid.startsWith('api::') || uid.startsWith('plugin::'));
+
+  const getRequestUserId = () => strapi.requestContext.get()?.state?.user?.id;
+
+  const hasCreatorValue = (data) =>
+    data.createdBy != null || data.created_by_id != null;
+
+  const hasUpdaterValue = (data) =>
+    data.updatedBy != null || data.updated_by_id != null;
+
+  strapi.db.lifecycles.subscribe({
+    async beforeCreate(event) {
+      const { model, params } = event;
+      if (!isManagedContentUid(model?.uid) || !hasCreatorFields(model)) return;
+
+      const userId = getRequestUserId();
+      if (!userId || !params?.data) return;
+
+      if (!hasCreatorValue(params.data)) {
+        params.data.createdBy = userId;
+      }
+      if (!hasUpdaterValue(params.data)) {
+        params.data.updatedBy = userId;
+      }
+    },
+
+    async beforeUpdate(event) {
+      const { model, params } = event;
+      if (!isManagedContentUid(model?.uid) || !hasCreatorFields(model)) return;
+
+      const userId = getRequestUserId();
+      if (!userId || !params?.data) return;
+
+      // Toujours tracer le dernier éditeur
+      params.data.updatedBy = userId;
+
+      // Backfill createdBy si la ligne en base est encore NULL
+      const rowId = params.where?.id;
+      if (!rowId || hasCreatorValue(params.data)) return;
+
+      try {
+        const tableName = model.collectionName;
+        if (!tableName) return;
+
+        const row = await strapi.db.connection(tableName)
+          .where({ id: rowId })
+          .first('created_by_id');
+
+        if (row && row.created_by_id == null) {
+          params.data.createdBy = userId;
+        }
+      } catch (err) {
+        strapi.log.warn(
+          `[creator-fields] Impossible de backfiller createdBy sur ${model.uid}#${rowId}: ${err.message}`,
+        );
+      }
+    },
+  });
+}
+
+/**
+ * Répare les lignes historiques où created_by_id / updated_by_id sont NULL.
+ * Idempotent. Préfère recopier updated_by_id → created_by_id, sinon admin #1.
+ */
+async function backfillMissingCreatorFields(strapi) {
+  const adminUsers = await strapi.db.query('admin::user').findMany({
+    select: ['id'],
+    orderBy: { id: 'asc' },
+    limit: 1,
+  });
+  const fallbackAdminId = adminUsers[0]?.id;
+  if (!fallbackAdminId) {
+    strapi.log.warn('[creator-fields] Aucun admin — backfill skip');
+    return;
+  }
+
+  let repaired = 0;
+
+  for (const uid of Object.keys(strapi.contentTypes)) {
+    const contentType = strapi.contentTypes[uid];
+    if (!uid.startsWith('api::') && !uid.startsWith('plugin::')) continue;
+    if (!contentType?.attributes?.createdBy || !contentType?.attributes?.updatedBy) continue;
+
+    const tableName = contentType.collectionName;
+    if (!tableName) continue;
+
+    try {
+      const knex = strapi.db.connection;
+
+      // updated_by présent → s'en servir pour created_by
+      const fromUpdated = await knex(tableName)
+        .whereNull('created_by_id')
+        .whereNotNull('updated_by_id')
+        .update({
+          created_by_id: knex.ref('updated_by_id'),
+        });
+
+      // les deux NULL → premier admin
+      const fromFallback = await knex(tableName)
+        .whereNull('created_by_id')
+        .whereNull('updated_by_id')
+        .update({
+          created_by_id: fallbackAdminId,
+          updated_by_id: fallbackAdminId,
+        });
+
+      const count = Number(fromUpdated || 0) + Number(fromFallback || 0);
+      if (count > 0) {
+        repaired += count;
+        strapi.log.info(`[creator-fields] ${uid}: ${count} ligne(s) réparée(s)`);
+      }
+    } catch (err) {
+      strapi.log.warn(`[creator-fields] Backfill ${uid} ignoré: ${err.message}`);
+    }
+  }
+
+  if (repaired === 0) {
+    strapi.log.info('[creator-fields] Backfill: rien à réparer');
+  } else {
+    strapi.log.info(`[creator-fields] Backfill: ${repaired} ligne(s) au total`);
+  }
+}
+
 module.exports = {
-  register(/* { strapi } */) { },
+  register({ strapi }) {
+    registerCreatorFieldsLifecycle(strapi);
+  },
 
   async bootstrap({ strapi }) {
     await enablePublicReadPermissions(strapi);
     await syncAdminRoleFieldPermissions(strapi);
+    await backfillMissingCreatorFields(strapi);
   },
 };
