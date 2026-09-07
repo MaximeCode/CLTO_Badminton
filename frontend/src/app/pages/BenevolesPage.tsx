@@ -7,6 +7,7 @@ import { Section } from '../components/Section';
 import { BlocksRenderer } from '../components/BlocksRenderer';
 import { getPageBenevoles } from '@/api/strapi/benevole';
 import type { PageBlockContent } from '@/types/pageBlockContentType';
+import { Seo } from '../components/Seo';
 
 export function BenevolesPage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.BENEVOLES);
@@ -31,6 +32,10 @@ export function BenevolesPage() {
 
   return (
     <>
+      <Seo
+        title="Bénévoles"
+        description="Devenez bénévole au CLTO Badminton Orléans et rejoignez l'équipe qui fait vivre le club."
+      />
       <PageHero
         title="BÉNÉVOLES"
         subtitle="Rejoignez l'équipe des bénévoles du CLTO Badminton"

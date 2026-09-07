@@ -80,11 +80,15 @@ export function GaleriePage() {
 
       <Section className="bg-white">
         {loading && (
-          <p className="text-center text-gray-500">Chargement des albums…</p>
+          <p className="text-center text-gray-500" role="status">
+            Chargement des albums…
+          </p>
         )}
 
         {loadError && (
-          <p className="text-center text-red-600">{loadError}</p>
+          <p className="text-center text-red-600" role="alert">
+            {loadError}
+          </p>
         )}
 
         {!loading && !loadError && albums.length === 0 && (

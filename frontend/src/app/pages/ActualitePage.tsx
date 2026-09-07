@@ -77,8 +77,8 @@ export function ActualitePage() {
           <div className="h-full flex flex-col-reverse items-center gap-4 sm:gap-8 md:flex-row md:gap-12 min-w-0">
 
             {loading && (
-              <div className="min-h-40 sm:min-h-[50vh] w-full min-w-0 flex items-center justify-center">
-                <Loader2 className="w-10 h-10 animate-spin text-secondary" />
+              <div className="min-h-40 sm:min-h-[50vh] w-full min-w-0 flex items-center justify-center" role="status">
+                <Loader2 className="w-10 h-10 animate-spin text-secondary" aria-hidden />
                 <p className="text-white text-xl ml-3">Chargement…</p>
               </div>
             )}
@@ -132,7 +132,7 @@ export function ActualitePage() {
         </div>
 
         {loadError && (
-          <div className="bg-red-500 text-white p-4 rounded-lg">
+          <div className="bg-red-500 text-white p-4 rounded-lg" role="alert">
             {loadError}
           </div>
         )}

@@ -10,6 +10,7 @@ import { EvenementCard } from '../components/EvenementCard';
 import { getPageFormations } from '@/api/strapi/formation';
 import type { PageFormation } from '@/types/formationType';
 import { formatPaginationRange, ListPagination } from '../components/ListPagination';
+import { Seo } from '../components/Seo';
 
 const FORMATIONS_PER_PAGE = 5;
 
@@ -53,6 +54,10 @@ export function FormationsPage() {
 
   return (
     <>
+      <Seo
+        title="Formations"
+        description="Formations au CLTO Badminton Orléans : formez-vous et participez autrement à la vie du badminton."
+      />
       <PageHero
         title="FORMATIONS"
         subtitle="Formez-vous et participez autrement à la vie du badminton"

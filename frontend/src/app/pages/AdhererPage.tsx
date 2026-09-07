@@ -140,9 +140,9 @@ export function AdhererPage() {
                                 </div>
                             </>
                         ) : loadError ? (
-                            <p className="text-sm text-red-500">{loadError}</p>
+                            <p className="text-sm text-red-500" role="alert">{loadError}</p>
                         ) : (
-                            <p className="text-sm text-primary-accent">Chargement...</p>
+                            <p className="text-sm text-primary-accent" role="status">Chargement...</p>
                         )}
                     </motion.div>
 

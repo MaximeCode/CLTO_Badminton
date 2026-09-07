@@ -175,7 +175,9 @@ export function AvisPage() {
               </button>
 
               {error && (
-                <p className="text-center text-red-600 text-sm">{error}</p>
+                <p className="text-center text-red-600 text-sm" role="alert">
+                  {error}
+                </p>
               )}
             </form>
           </motion.div>

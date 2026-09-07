@@ -120,6 +120,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
         className={loadingShellClass}
         aria-busy="true"
         aria-label="Chargement du carrousel"
+        role="status"
       >
         <Loader2 className="w-10 h-10 animate-spin text-secondary" aria-hidden />
         <p className="text-primary">Chargement des slides...</p>

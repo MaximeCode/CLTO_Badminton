@@ -65,6 +65,9 @@ const PolitiqueConfidentialitePage = lazy(() =>
     default: m.PolitiqueConfidentialitePage,
   })),
 );
+const PlanDuSitePage = lazy(() =>
+  import('./pages/PlanDuSitePage').then((m) => ({ default: m.PlanDuSitePage })),
+);
 const FormationsPage = lazy(() =>
   import('./pages/FormationsPage').then((m) => ({ default: m.FormationsPage })),
 );
@@ -130,6 +133,7 @@ export const router = createBrowserRouter([
       { path: 'benevoles', Component: BenevolesPage },
       { path: 'mentions-legales', Component: MentionsLegalesPage },
       { path: 'politique-de-confidentialite', Component: PolitiqueConfidentialitePage },
+      { path: 'plan-du-site', Component: PlanDuSitePage },
       { path: '*', Component: NotFound },
     ],
   },

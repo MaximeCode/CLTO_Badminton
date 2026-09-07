@@ -11,7 +11,7 @@ export function DocumentsPage() {
     return (
         <>
             <Seo
-                title="Documents"
+                title="Documents officiels"
                 description="Documents officiels du CLTO Badminton Orléans : inscriptions, fiches de frais et ressources pour les adhérents du club."
             />
             <PageHero

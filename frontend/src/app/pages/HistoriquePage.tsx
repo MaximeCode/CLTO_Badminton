@@ -60,6 +60,12 @@ export function HistoriquePage() {
           </p>
         </motion.div>
 
+        {loadError && (
+          <p className="mb-8 text-center text-red-600" role="alert">
+            {loadError}
+          </p>
+        )}
+
         <div className="relative">
           {/* Timeline Line */}
           <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-secondary transform -translate-x-1/2" />

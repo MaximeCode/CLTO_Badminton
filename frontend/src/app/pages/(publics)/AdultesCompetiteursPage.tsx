@@ -9,6 +9,7 @@ import { Link } from 'react-router';
 import { getPublicAdultesCompetiteurs } from '@/api/strapi/publics';
 import type { PublicAdultesCompetiteurs } from '@/types/publicsType';
 import { BlocksRenderer } from '@/app/components/BlocksRenderer';
+import { Seo } from '@/app/components/Seo';
 
 const espritCompetiteurs = [
   {
@@ -93,6 +94,13 @@ export function AdultesCompetiteursPage() {
 
   return (
     <>
+      <Seo
+        title="Adultes compétiteurs"
+        description={
+          data?.description?.trim() ||
+          'Badminton adultes compétiteurs au CLTO Badminton Orléans : du loisir à la compétition.'
+        }
+      />
       <PageHero
         title={data?.titre || BANDEAU_PAGES.ADULTES_COMPETITEURS}
         subtitle={
@@ -303,7 +311,7 @@ export function AdultesCompetiteursPage() {
       </Section>
 
       {loadError && (
-        <p className="sr-only" role="alert">
+        <p className="px-6 pb-6 text-center text-red-600" role="alert">
           {loadError}
         </p>
       )}

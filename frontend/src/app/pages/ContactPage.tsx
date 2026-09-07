@@ -174,7 +174,7 @@ export function ContactPage() {
                 </div>
               </>
             ) : (
-              <div>Chargement des coordonnées...</div>
+              <div role="status">Chargement des coordonnées...</div>
             )}
           </motion.div>
 
@@ -300,7 +300,7 @@ export function ContactPage() {
               </button>
 
               {error && (
-                <p className="text-center text-red-600 text-sm">
+                <p className="text-center text-red-600 text-sm" role="alert">
                   {error}
                 </p>
               )}

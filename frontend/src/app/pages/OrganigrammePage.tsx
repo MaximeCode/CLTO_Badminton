@@ -257,7 +257,7 @@ export function OrganigrammePage() {
   return (
     <>
       <Seo
-        title="Conseil d'administration"
+        title="Organigramme"
         description="Conseil d'administration et organigramme du CLTO Badminton Orléans, club de badminton à Orléans."
       />
       <PageHero

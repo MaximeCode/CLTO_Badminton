@@ -8,6 +8,7 @@ import { getEvenements } from '@/api/strapi/evenement';
 import type { Evenement } from '@/types/evenementType';
 import { EvenementCard } from '../components/EvenementCard';
 import { formatPaginationRange, ListPagination } from '../components/ListPagination';
+import { Seo } from '../components/Seo';
 
 const EVENTS_PER_PAGE = 5;
 
@@ -52,6 +53,10 @@ export function EvenementsPage() {
 
   return (
     <>
+      <Seo
+        title="Événements"
+        description="Événements du CLTO Badminton Orléans : compétitions, tournois et moments forts de la saison."
+      />
       <PageHero title={BANDEAU_PAGES.EVENEMENTS} image={bandeauImage} />
 
       <Section className="py-12 md:py-20 bg-white">
