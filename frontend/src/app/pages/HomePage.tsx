@@ -156,6 +156,11 @@ export function HomePage() {
         jsonLd={homeJsonLd}
       />
       <Hero slides={heroSlides} />
+      <div className="container w-9/10 md:w-3/5 mx-auto my-4 md:my-8 bg-primary-accent rounded-full">
+        <p className="py-2 md:py-3 text-center text-lg font-bold md:text-2xl text-white text-balance">
+          Bienvenue au CLTO Badminton, le club de badminton d&apos;Orléans&nbsp;!
+        </p>
+      </div>
       {sections ? (
         <Suspense fallback={<BelowFoldFallback />}>
           <FeaturedNews articles={sections.featuredArticles} />
