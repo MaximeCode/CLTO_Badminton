@@ -17,18 +17,7 @@
     "description": {
       "type": "text"
     },
-    "presentation": {
-      "type": "blocks"
-    },
-    "pourquoi": {
-      "type": "blocks"
-    },
-    "formes_soutien": {
-      "type": "component",
-      "component": "infos-publics.carte-d-informations",
-      "repeatable": true
-    },
-    "visibilite": {
+    "informations": {
       "type": "component",
       "component": "infos-publics.carte-d-informations",
       "repeatable": true

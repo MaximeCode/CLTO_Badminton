@@ -18,82 +18,19 @@ import {
 import { getAdherentsCount } from '@/api/gestion/adherents';
 import type { PagePartenaires } from '@/types/pagePartenairesType';
 import type { Partner } from '@/types/partnersType';
-import type { BlocksContent } from '@/types/blocks';
 import type { InformationsPublic } from '@/types/publicsType';
 
-function hasBlocks(content: BlocksContent | null | undefined): boolean {
-  return Array.isArray(content) && content.length > 0;
-}
-
-function CardsSection({
-  title,
-  cards,
+function InformationSection({
+  carte,
+  index,
 }: {
-  title: string;
-  cards: InformationsPublic[];
+  carte: InformationsPublic;
+  index: number;
 }) {
-  if (cards.length === 0) return null;
+  const alternateBg = index % 2 === 0 ? 'bg-gray-50' : 'bg-white';
 
   return (
-    <Section className="bg-gray-50">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="text-center mb-10 md:mb-12"
-      >
-        <h2 className="font-primary text-4xl md:text-5xl lg:text-6xl text-primary">
-          {title}
-        </h2>
-      </motion.div>
-
-      <div
-        className={
-          cards.length === 1
-            ? 'max-w-3xl mx-auto'
-            : 'grid gap-6 md:grid-cols-2 md:gap-8'
-        }
-      >
-        {cards.map((carte, index) => (
-          <motion.article
-            key={carte.id}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.08 }}
-            className="rounded-2xl border border-primary/10 bg-white p-6 md:p-8 shadow-sm"
-          >
-            <h3 className="font-primary text-2xl md:text-3xl text-primary mb-4">
-              {carte.titre}
-            </h3>
-            <div className="[&_a]:text-secondary-text [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_p]:text-base sm:[&_li]:text-base">
-              <BlocksRenderer
-                content={carte.contenu}
-                headingOffset={3}
-                listVariant={listVariantFromTitle(carte.titre)}
-              />
-            </div>
-          </motion.article>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-function BlocksSection({
-  title,
-  content,
-  className = 'bg-white',
-}: {
-  title: string;
-  content: BlocksContent | null;
-  className?: string;
-}) {
-  if (!hasBlocks(content)) return null;
-
-  return (
-    <Section className={className}>
+    <Section className={alternateBg}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -102,13 +39,13 @@ function BlocksSection({
         className="max-w-3xl mx-auto"
       >
         <h2 className="font-primary text-4xl md:text-5xl lg:text-6xl text-primary text-center mb-8">
-          {title}
+          {carte.titre}
         </h2>
         <div className="rounded-2xl border border-primary/10 bg-white p-6 md:p-10 shadow-sm [&_a]:text-secondary-text [&_li]:text-primary-accent [&_p]:mb-3 [&_p]:text-primary-accent">
           <BlocksRenderer
-            content={content!}
+            content={carte.contenu}
             headingOffset={2}
-            listVariant={listVariantFromTitle(title)}
+            listVariant={listVariantFromTitle(carte.titre)}
           />
         </div>
       </motion.div>
@@ -150,13 +87,7 @@ export function PartenairesPage() {
     loadData();
   }, []);
 
-  const formesSoutien = data?.formes_soutien ?? [];
-  const visibilite = data?.visibilite ?? [];
-  const hasEditorialContent =
-    hasBlocks(data?.presentation) ||
-    hasBlocks(data?.pourquoi) ||
-    formesSoutien.length > 0 ||
-    visibilite.length > 0;
+  const informations = data?.informations ?? [];
 
   return (
     <>
@@ -180,27 +111,11 @@ export function PartenairesPage() {
         </Section>
       )}
 
-      <BlocksSection
-        title="Présentation"
-        content={data?.presentation ?? null}
-        className="bg-gray-50"
-      />
+      {informations.map((carte, index) => (
+        <InformationSection key={carte.id} carte={carte} index={index} />
+      ))}
 
-      <ClubStats
-        initialAdherentsCount={adherentsCount}
-        variant="compact"
-      />
-
-      <BlocksSection
-        title="Pourquoi devenir partenaire"
-        content={data?.pourquoi ?? null}
-        className="bg-white"
-      />
-
-      <CardsSection title="Formes de soutien" cards={formesSoutien} />
-      <CardsSection title="Visibilité et valorisation" cards={visibilite} />
-
-      {!hasEditorialContent && !loadError && (
+      {informations.length === 0 && !loadError && (
         <Section className="bg-gray-50">
           <p className="text-center text-gray-600 max-w-2xl mx-auto">
             Le contenu détaillé de cette page sera bientôt disponible. En attendant,
@@ -208,6 +123,11 @@ export function PartenairesPage() {
           </p>
         </Section>
       )}
+
+      <ClubStats
+        initialAdherentsCount={adherentsCount}
+        variant="compact"
+      />
 
       <Section className="bg-white">
         <motion.div

@@ -36,18 +36,14 @@ export function Partners({
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: partnerIndex * 0.08 }}
               className={
-                isCompact
-                  ? 'rounded-xl border border-primary/10 bg-white/90'
-                  : 'rounded-2xl border border-primary/10 bg-white/90 shadow-[0_12px_36px_rgba(1,83,182,0.08)]'
+                'rounded-2xl border border-primary/10 bg-white/90 shadow-[0_12px_36px_rgba(1,83,182,0.08)]'
               }
             >
               <div
-                className={`flex items-center justify-between border-b border-primary/10 ${isCompact ? 'px-4 py-3 md:px-6' : 'px-6 md:px-8 py-4'
-                  }`}
+                className={`flex items-center justify-between border-b border-primary/10 px-6 md:px-8 py-4`}
               >
                 <h3
-                  className={`font-primary text-footer tracking-wide ${isCompact ? 'text-xl' : 'text-2xl'
-                    }`}
+                  className={`font-primary text-footer tracking-wide text-2xl`}
                 >
                   {partner.type}
                 </h3>

@@ -24,10 +24,7 @@ export async function getPagePartenaires(): Promise<PagePartenaires | null> {
       documentId: data.documentId,
       titre: data.titre ?? null,
       description: data.description ?? null,
-      presentation: data.presentation ?? null,
-      pourquoi: data.pourquoi ?? null,
-      formes_soutien: mapInformations(data.formes_soutien),
-      visibilite: mapInformations(data.visibilite),
+      informations: mapInformations(data.informations),
     };
   } catch (error) {
     if (error instanceof Error && error.message === 'Not Found') {
