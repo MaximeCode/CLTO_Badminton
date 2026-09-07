@@ -64,8 +64,11 @@ const NAV_ITEMS: NavItem[] = [
 
 const SHOP_URL = `${import.meta.env.VITE_HELLOASSO_URL}/boutiques/commandes-groupees`;
 
+const FOCUS_RING =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2";
+
 const CTA_BUTTON_BASE =
-  "hidden items-center justify-center gap-1.5 rounded-md px-1.5 py-1 lg:text-white lg:hover:text-white transition-colors duration-200 md:flex lg:px-1 lg:py-2 xl:gap-2 xl:px-4";
+  `hidden items-center justify-center gap-1.5 rounded-md px-1.5 py-1 lg:text-white lg:hover:text-white transition-colors duration-200 md:flex lg:px-1 lg:py-2 xl:gap-2 xl:px-4 ${FOCUS_RING}`;
 
 const JOIN_CLUB_BUTTON_CLASS = `${CTA_BUTTON_BASE} text-primary hover:text-primary/80 lg:bg-primary lg:hover:bg-primary/80`;
 
@@ -90,6 +93,7 @@ export function Header() {
 
   const location = useLocation();
   const headerRef = useRef<HTMLElement | null>(null);
+  const menuButtonRef = useRef<HTMLButtonElement | null>(null);
 
   /*
    * Ferme le menu mobile lorsqu'un clic ou un toucher est effectué en dehors
@@ -117,6 +121,37 @@ export function Header() {
     };
   }, [isMenuOpen]);
 
+  /* Escape : ferme sous-menus puis menu mobile ; restaure le focus sur le déclencheur. */
+  useEffect(() => {
+    if (!isMenuOpen && !openDropdown) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+
+      if (openDropdown) {
+        const controlsId = isMenuOpen
+          ? `mobile-${createDropdownId(openDropdown)}`
+          : createDropdownId(openDropdown);
+        const trigger = headerRef.current?.querySelector(
+          `button[aria-controls="${controlsId}"]`,
+        ) as HTMLButtonElement | null;
+        setOpenDropdown(null);
+        if (!isMenuOpen) {
+          trigger?.focus();
+          return;
+        }
+      }
+
+      if (isMenuOpen) {
+        setIsMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isMenuOpen, openDropdown]);
+
   const closeMobileMenu = () => {
     setIsMenuOpen(false);
     setOpenDropdown(null);
@@ -137,7 +172,7 @@ export function Header() {
         <div className="flex h-20 items-center justify-between">
           <Link
             to="/"
-            className="flex items-center"
+            className={`flex items-center rounded-sm ${FOCUS_RING}`}
             aria-label="Accueil du CLTO Badminton Orléans"
           >
             <img
@@ -164,7 +199,7 @@ export function Header() {
                   <Link
                     key={item.title}
                     to={item.path}
-                    className={`group relative cursor-pointer font-medium text-gray-700 transition-colors duration-200 hover:text-primary ${isActive ? "text-primary" : ""
+                    className={`group relative cursor-pointer rounded-sm font-medium text-gray-700 transition-colors duration-200 hover:text-primary ${FOCUS_RING} ${isActive ? "text-primary" : ""
                       }`}
                     aria-current={isActive ? "page" : undefined}
                   >
@@ -202,7 +237,7 @@ export function Header() {
                 >
                   <button
                     type="button"
-                    className="relative flex cursor-pointer items-center gap-1 text-gray-700 transition-colors duration-200 hover:text-primary"
+                    className={`relative flex cursor-pointer items-center gap-1 rounded-sm text-gray-700 transition-colors duration-200 hover:text-primary ${FOCUS_RING}`}
                     onClick={() => toggleDropdown(item.title)}
                     aria-expanded={isOpen}
                     aria-controls={dropdownId}
@@ -229,7 +264,7 @@ export function Header() {
                           <Link
                             key={subItem.path}
                             to={subItem.path}
-                            className={`block px-4 py-3 text-gray-700 transition-colors duration-150 hover:bg-primary hover:text-white ${isSubItemActive ? "bg-secondary text-white" : ""
+                            className={`block px-4 py-3 text-gray-700 transition-colors duration-150 hover:bg-primary hover:text-white ${FOCUS_RING} ${isSubItemActive ? "bg-secondary text-white" : ""
                               }`}
                             aria-current={isSubItemActive ? "page" : undefined}
                           >
@@ -271,9 +306,10 @@ export function Header() {
           </div>
 
           <button
+            ref={menuButtonRef}
             type="button"
             onClick={() => setIsMenuOpen((currentValue) => !currentValue)}
-            className="p-2 text-gray-700 hover:text-primary md:hidden"
+            className={`rounded-sm p-2 text-gray-700 hover:text-primary md:hidden ${FOCUS_RING}`}
             aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={isMenuOpen}
             aria-controls="mobile-navigation"
@@ -300,7 +336,7 @@ export function Header() {
                   <Link
                     key={item.title}
                     to={item.path}
-                    className={`block py-1 text-gray-700 hover:text-primary ${isActive ? "text-primary" : ""
+                    className={`block rounded-sm py-1 text-gray-700 hover:text-primary ${FOCUS_RING} ${isActive ? "text-primary" : ""
                       }`}
                     onClick={closeMobileMenu}
                     aria-current={isActive ? "page" : undefined}
@@ -318,7 +354,7 @@ export function Header() {
                   <button
                     type="button"
                     onClick={() => toggleDropdown(item.title)}
-                    className="flex w-full items-center justify-between py-1 text-gray-700 hover:text-primary"
+                    className={`flex w-full items-center justify-between rounded-sm py-1 text-gray-700 hover:text-primary ${FOCUS_RING}`}
                     aria-expanded={isOpen}
                     aria-controls={dropdownId}
                   >
@@ -340,7 +376,7 @@ export function Header() {
                           <Link
                             key={subItem.path}
                             to={subItem.path}
-                            className={`block pb-1 text-gray-600 hover:text-primary ${isSubItemActive ? "text-primary" : ""
+                            className={`block rounded-sm pb-1 text-gray-600 hover:text-primary ${FOCUS_RING} ${isSubItemActive ? "text-primary" : ""
                               }`}
                             onClick={closeMobileMenu}
                             aria-current={isSubItemActive ? "page" : undefined}
@@ -358,7 +394,7 @@ export function Header() {
             <div className="flex justify-center gap-2 text-sm">
               <Link
                 to="/adherer"
-                className="flex w-full items-center justify-center gap-2 rounded-md bg-primary px-2 py-2 text-center text-white transition-colors duration-200 hover:bg-primary-accent"
+                className={`flex w-full items-center justify-center gap-2 rounded-md bg-primary px-2 py-2 text-center text-white transition-colors duration-200 hover:bg-primary-accent ${FOCUS_RING}`}
                 onClick={closeMobileMenu}
               >
                 <JoinClubIcon />
@@ -369,7 +405,7 @@ export function Header() {
                 href={SHOP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-2 rounded-md bg-secondary px-2 py-2 text-center text-white transition-colors duration-200 hover:bg-secondary/80"
+                className={`flex w-full items-center justify-center gap-2 rounded-md bg-secondary px-2 py-2 text-center text-white transition-colors duration-200 hover:bg-secondary/80 ${FOCUS_RING}`}
                 onClick={closeMobileMenu}
               >
                 <ShopIcon />

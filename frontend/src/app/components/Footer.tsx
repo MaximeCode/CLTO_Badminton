@@ -1,4 +1,4 @@
-import { useContext, useState, type ReactNode } from 'react';
+import { useContext, useEffect, useState, type ReactNode } from 'react';
 import { Facebook, Instagram, Youtube, MapPin, Phone, Mail, Linkedin, ChevronDown, Clock } from 'lucide-react';
 import { Link } from 'react-router';
 import logo from '../../imports/logo_clto_main.webp';
@@ -7,6 +7,9 @@ import type { Contact } from '@/types/contactType';
 import { formatTime, joinDays } from '@/utils/showHoraires';
 
 type FooterMobileSectionId = 'navigation' | 'espaces' | 'contact';
+
+const FOCUS_RING =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-footer';
 
 function FooterMobileSection({
   id,
@@ -29,11 +32,12 @@ function FooterMobileSection({
         type="button"
         onClick={() => onToggle(id)}
         aria-expanded={open}
-        className="flex w-full items-center justify-between py-3 text-left"
+        className={`flex w-full items-center justify-between rounded-sm py-3 text-left ${FOCUS_RING}`}
       >
         <p className="font-primary text-lg tracking-wide">{title}</p>
         <ChevronDown
           size={18}
+          aria-hidden
           className={`shrink-0 text-gray-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
         />
       </button>
@@ -67,6 +71,19 @@ export function Footer() {
     setOpenSection((current) => (current === id ? null : id));
   };
 
+  useEffect(() => {
+    if (!openSection) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpenSection(null);
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [openSection]);
+
+  const socialLinkClass = `w-9 h-9 rounded-full bg-white/10 hover:bg-secondary flex items-center justify-center transition-colors duration-200 ${FOCUS_RING}`;
+
   return (
     <footer className="relative bg-footer text-white overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-6 py-4 sm:pt-10 sm:pb-6">
@@ -83,9 +100,9 @@ export function Footer() {
                     target={href.startsWith('http') ? '_blank' : undefined}
                     rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                     aria-label={label}
-                    className="w-9 h-9 rounded-full bg-white/10 hover:bg-secondary flex items-center justify-center transition-colors duration-200"
+                    className={socialLinkClass}
                   >
-                    <Icon size={16} />
+                    <Icon size={16} aria-hidden />
                   </a>
                 ))}
               </div>
@@ -236,9 +253,9 @@ export function Footer() {
                   target={href.startsWith('http') ? '_blank' : undefined}
                   rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   aria-label={label}
-                  className="w-9 h-9 rounded-full bg-white/10 hover:bg-secondary flex items-center justify-center transition-colors duration-200"
+                  className={socialLinkClass}
                 >
-                  <Icon size={16} />
+                  <Icon size={16} aria-hidden />
                 </a>
               ))}
             </div>

@@ -8,7 +8,7 @@ import { ResponsiveImage } from './ResponsiveImage';
 import { hideLcpPrerender } from '@/utils/hideLcpPrerender';
 
 const ctaClassName =
-  'inline-block cursor-pointer bg-secondary text-white text-sm sm:text-base px-5 py-2.5 sm:px-8 sm:py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200';
+  'inline-block cursor-pointer bg-secondary text-white text-sm sm:text-base px-5 py-2.5 sm:px-8 sm:py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary';
 
 const ctaMotionProps = {
   initial: { y: 20, opacity: 0 },
@@ -93,7 +93,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
   const slide = slides[currentSlide];
 
   const navButtonClass =
-    'min-w-11 min-h-11 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors duration-200 flex items-center justify-center cursor-pointer';
+    'min-w-11 min-h-11 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors duration-200 flex items-center justify-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-transparent';
 
   if (!loaded) {
     const loadingShellClass = hasPrerender
@@ -280,7 +280,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                       aria-selected={index === currentSlide}
                       aria-current={index === currentSlide ? 'true' : undefined}
                       onClick={() => goToSlide(index)}
-                      className="relative min-w-11 min-h-11 inline-flex items-center justify-center"
+                      className="relative min-w-11 min-h-11 inline-flex items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
                     >
                       <span className="relative block w-9 sm:w-12 h-1 bg-white/30 overflow-hidden" aria-hidden>
                         {index === currentSlide && (
