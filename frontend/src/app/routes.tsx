@@ -39,8 +39,10 @@ const AvisPage = lazy(() =>
 const StagesPage = lazy(() =>
   import('./pages/StagesPage').then((m) => ({ default: m.StagesPage })),
 );
-const ProjetClub = lazy(() =>
-  import('./pages/ProjetClub').then((m) => ({ default: m.ProjetClub })),
+const DecouvrirLeClubPage = lazy(() =>
+  import('./pages/DecouvrirLeClubPage').then((m) => ({
+    default: m.DecouvrirLeClubPage,
+  })),
 );
 const DocumentsPage = lazy(() =>
   import('./pages/DocumentsPage').then((m) => ({ default: m.DocumentsPage })),
@@ -116,7 +118,8 @@ export const router = createBrowserRouter([
       { path: 'gymnases', Component: GymnasesPage },
       { path: 'creneaux', Component: CreneauxPage },
       { path: 'interclub', Component: InterclubPage },
-      { path: 'projet-club', Component: ProjetClub },
+      { path: 'decouvrir-le-club', Component: DecouvrirLeClubPage },
+      { path: 'projet-club', loader: () => redirect('/decouvrir-le-club') },
       { path: 'documents', Component: DocumentsPage },
       { path: 'jeunes', Component: JeunesPage },
       { path: 'adultes-loisirs', Component: AdultesLoisirsPage },
