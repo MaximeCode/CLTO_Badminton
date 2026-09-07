@@ -10,14 +10,18 @@ export function ClubStats({
   initialTeamsCount,
   initialAdherentsCount,
   accueil,
+  variant = 'full',
 }: {
   initialTeamsCount?: string;
   initialAdherentsCount: string;
-  accueil: Accueil | null;
+  accueil?: Accueil | null;
+  /** `compact` : chiffres principaux uniquement (sans « Mais aussi… » ni labels). */
+  variant?: 'full' | 'compact';
 }) {
   const [teamsCount, setTeamsCount] = useState<string>(initialTeamsCount ?? '…');
-  const extraStats = accueil?.stats_club ?? [];
-  const labels = accueil?.labels ?? [];
+  const showExtras = variant === 'full';
+  const extraStats = showExtras ? (accueil?.stats_club ?? []) : [];
+  const labels = showExtras ? (accueil?.labels ?? []) : [];
 
   useEffect(() => {
     if (initialTeamsCount != null) {

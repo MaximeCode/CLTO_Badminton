@@ -71,6 +71,9 @@ const FormationsPage = lazy(() =>
 const BenevolesPage = lazy(() =>
   import('./pages/BenevolesPage').then((m) => ({ default: m.BenevolesPage })),
 );
+const PartenairesPage = lazy(() =>
+  import('./pages/PartenairesPage').then((m) => ({ default: m.PartenairesPage })),
+);
 const AdultesCompetiteursPage = lazy(() =>
   import('./pages/(publics)/AdultesCompetiteursPage').then((m) => ({
     default: m.AdultesCompetiteursPage,
@@ -128,6 +131,7 @@ export const router = createBrowserRouter([
       { path: 'adherer', Component: AdhererPage },
       { path: 'formations', Component: FormationsPage },
       { path: 'benevoles', Component: BenevolesPage },
+      { path: 'partenaires', Component: PartenairesPage },
       { path: 'mentions-legales', Component: MentionsLegalesPage },
       { path: 'politique-de-confidentialite', Component: PolitiqueConfidentialitePage },
       { path: '*', Component: NotFound },

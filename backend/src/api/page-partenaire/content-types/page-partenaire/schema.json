@@ -1,0 +1,37 @@
+{
+  "kind": "singleType",
+  "collectionName": "page_partenaires",
+  "info": {
+    "singularName": "page-partenaire",
+    "pluralName": "page-partenaires",
+    "displayName": "Page Partenaires"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "titre": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "presentation": {
+      "type": "blocks"
+    },
+    "pourquoi": {
+      "type": "blocks"
+    },
+    "formes_soutien": {
+      "type": "component",
+      "component": "infos-publics.carte-d-informations",
+      "repeatable": true
+    },
+    "visibilite": {
+      "type": "component",
+      "component": "infos-publics.carte-d-informations",
+      "repeatable": true
+    }
+  }
+}

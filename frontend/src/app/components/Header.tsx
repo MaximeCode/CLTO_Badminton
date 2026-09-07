@@ -18,6 +18,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Projet Club", path: "/projet-club" },
       { label: "Organigramme", path: "/organigramme" },
       { label: "Bénévoles", path: "/benevoles" },
+      { label: "Partenaires", path: "/partenaires" },
       { label: "Événements", path: "/evenements" },
       { label: "Palmarès", path: "/palmares" },
       { label: "Documents officiels", path: "/documents" },
