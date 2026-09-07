@@ -8,6 +8,7 @@ import { Building2, ExternalLink, FileDown, Gift, CheckCircle, Loader2 } from 'l
 import { getPublicEntreprise } from '@/api/strapi/publics';
 import type { PublicEntreprise } from '@/types/publicsType';
 import { BlocksRenderer } from '@/app/components/BlocksRenderer';
+import { resolveMediaAlt } from '@/utils/media';
 
 export function EntreprisePage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.ENTREPRISE);
@@ -93,7 +94,10 @@ export function EntreprisePage() {
                   >
                     <img
                       src={flyerUrl}
-                      alt={data?.flyer?.alternativeText || data?.flyer?.name || 'Flyer entreprise'}
+                      alt={resolveMediaAlt(
+                        data?.flyer,
+                        'Flyer entreprise — CLTO Badminton Orléans',
+                      )}
                       className="w-full h-auto rounded-md"
                     />
                     <a

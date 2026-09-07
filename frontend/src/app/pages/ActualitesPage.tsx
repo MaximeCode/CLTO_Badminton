@@ -15,6 +15,7 @@ import { getCategories } from '@/api/strapi/categories';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { stringifyDate } from '@/utils/formatDate';
 import { formatPaginationRange, ListPagination } from '../components/ListPagination';
+import { resolveMediaAlt } from '@/utils/media';
 
 const ARTICLES_PER_PAGE = 10;
 
@@ -227,7 +228,7 @@ export function ActualitesPage() {
                       <div className="relative h-56 overflow-hidden">
                         <ImageWithFallback
                           src={article.vignette.url}
-                          alt={article.titre}
+                          alt={resolveMediaAlt(article.vignette, article.titre)}
                           width={article.vignette.width ?? 640}
                           height={article.vignette.height ?? 360}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
@@ -272,10 +273,10 @@ export function ActualitesPage() {
                             </span>
                           ))}
                         </div>
-                        <button className="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
-                          Lire la suite
-                          <ArrowRight size={16} />
-                        </button>
+                        <span className="flex items-center gap-2 text-primary group-hover:text-secondary transition-colors">
+                          Lire l&apos;article
+                          <ArrowRight size={16} aria-hidden />
+                        </span>
                       </div>
                     </motion.article>
                   </Link>

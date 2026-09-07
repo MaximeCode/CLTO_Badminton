@@ -38,7 +38,7 @@ export function FeaturedNews({ articles }: { articles: Article[] }) {
             <div className="relative overflow-hidden rounded-lg mb-4 aspect-16/10">
               <ResponsiveImage
                 media={featuredArticle.vignette}
-                alt={featuredArticle.titre}
+                altFallback={featuredArticle.titre}
                 sizes="(max-width: 1024px) 100vw, 640px"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 loading="lazy"
@@ -68,8 +68,8 @@ export function FeaturedNews({ articles }: { articles: Article[] }) {
                 <span
                   className="text-primary hover:text-primary-accent font-medium flex items-center gap-2 group-hover:gap-3 transition-all duration-200"
                 >
-                  Lire l'article
-                  <ArrowRight size={16} />
+                  Lire l&apos;article
+                  <ArrowRight size={16} aria-hidden />
                 </span>
               </div>
             </div>
@@ -92,7 +92,7 @@ export function FeaturedNews({ articles }: { articles: Article[] }) {
                 <div className="w-32 h-32 shrink-0 rounded-lg overflow-hidden">
                   <ResponsiveImage
                     media={article.vignette}
-                    alt={article.titre}
+                    altFallback={article.titre}
                     sizes="128px"
                     width={128}
                     height={128}

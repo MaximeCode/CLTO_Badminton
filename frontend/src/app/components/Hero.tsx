@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { isInternalAppLink } from '../../utils/resolveAppLink';
+import { accessibleLinkLabel, resolveMediaAlt } from '@/utils/media';
 import type { Media } from '@/types/baseType';
 import { ResponsiveImage } from './ResponsiveImage';
 import { hideLcpPrerender } from '@/utils/hideLcpPrerender';
@@ -132,6 +133,17 @@ export function Hero<T extends HeroSlide = HeroSlide>({
   }
 
   const isLcpSlide = currentSlide === 0;
+  const slideAlt = resolveMediaAlt(
+    slide.media,
+    slide.title
+      ? `${slide.title} — CLTO Badminton Orléans`
+      : 'CLTO Badminton Orléans, club de badminton à Orléans',
+  );
+  const ctaAccessible = slide.cta
+    ? accessibleLinkLabel(slide.cta, slide.title)
+    : undefined;
+  const ctaNeedsAria =
+    Boolean(ctaAccessible && slide.cta && ctaAccessible !== slide.cta.trim());
 
   return (
     <section
@@ -159,11 +171,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
             <ResponsiveImage
               media={slide.media}
               src={slide.image || slide.media?.url}
-              alt={
-                slide.title
-                  ? `${slide.title} — CLTO Badminton Orléans`
-                  : 'CLTO Badminton Orléans, club de badminton à Orléans'
-              }
+              alt={slideAlt}
               sizes="100vw"
               className={
                 isInterclub
@@ -251,7 +259,11 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                 {slide.cta && slide.lien && (
                   isInternalAppLink(slide.lien) ? (
                     <motion.div {...ctaMotionProps} className="w-fit">
-                      <Link to={slide.lien} className={ctaClassName}>
+                      <Link
+                        to={slide.lien}
+                        className={ctaClassName}
+                        aria-label={ctaNeedsAria ? ctaAccessible : undefined}
+                      >
                         {slide.cta} →
                       </Link>
                     </motion.div>
@@ -262,6 +274,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                       href={slide.lien}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={ctaNeedsAria ? ctaAccessible : undefined}
                     >
                       {slide.cta} →
                     </motion.a>

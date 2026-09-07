@@ -13,6 +13,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "./ui/dialog";
+import { resolveMediaAlt } from "@/utils/media";
 
 type InlineNode = TextInlineNode | { type: "link"; url: string; children: TextInlineNode[] };
 
@@ -291,7 +292,13 @@ function renderBlock(
         <BlocksImage
           key={key}
           src={src}
-          alt={block.image.alternativeText ?? block.image.name}
+          alt={resolveMediaAlt(
+            {
+              alternativeText: block.image.alternativeText,
+              name: block.image.name,
+            },
+            block.image.caption,
+          )}
           caption={block.image.caption}
           width={block.image.width}
           height={block.image.height}

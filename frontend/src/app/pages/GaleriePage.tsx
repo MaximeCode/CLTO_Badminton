@@ -12,6 +12,7 @@ import type { Categorie } from "@/types/categoriesType";
 import { getFlickrPlayerSrc, getGalerie } from "@/api/strapi/galerie";
 import { getGalerieCategories } from "@/api/strapi/galerie-categories";
 import { stringifyDate } from "@/utils/formatDate";
+import { resolveMediaAlt } from "@/utils/media";
 
 export function GaleriePage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.GALERIE);
@@ -153,7 +154,7 @@ export function GaleriePage() {
                 <div className="relative aspect-4/3 overflow-hidden bg-gray-100">
                   <ImageWithFallback
                     src={album.vignette.url}
-                    alt={album.titre}
+                    alt={resolveMediaAlt(album.vignette, album.titre)}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>

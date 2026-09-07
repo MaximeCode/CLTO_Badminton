@@ -9,6 +9,7 @@ import { stringifyDate } from '@/utils/formatDate';
 import { BlocksRenderer } from '../components/BlocksRenderer';
 import { Seo } from '../components/Seo';
 import { motion } from 'motion/react';
+import { resolveMediaAlt } from '@/utils/media';
 
 const userAvatar = new URL('../../imports/user.webp', import.meta.url).href;
 
@@ -108,7 +109,7 @@ export function ActualitePage() {
                 <div className="overflow-hidden rounded-xl border-2 border-secondary/50 shadow-2xl ring-2 ring-white/10">
                   <img
                     src={article.vignette.url}
-                    alt={article.titre ?? ''}
+                    alt={resolveMediaAlt(article.vignette, article.titre)}
                     className="h-auto w-full max-w-full max-h-52 sm:max-h-60 md:max-h-72 object-contain"
                   />
                 </div>
