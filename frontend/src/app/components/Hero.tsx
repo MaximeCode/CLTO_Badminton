@@ -9,7 +9,7 @@ import { ResponsiveImage } from './ResponsiveImage';
 import { hideLcpPrerender } from '@/utils/hideLcpPrerender';
 
 const ctaClassName =
-  'inline-block cursor-pointer bg-secondary text-white text-sm sm:text-base px-5 py-2.5 sm:px-8 sm:py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary';
+  'inline-block cursor-pointer bg-secondary text-white text-sm sm:text-base px-5 py-2.5 sm:px-8 sm:py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary font-bold';
 
 const ctaMotionProps = {
   initial: { y: 20, opacity: 0 },

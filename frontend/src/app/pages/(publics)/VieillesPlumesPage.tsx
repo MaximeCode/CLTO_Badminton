@@ -8,7 +8,7 @@ import { Clock, Users, Smile, ShieldCheck, Gift, CheckCircle } from 'lucide-reac
 import { Link } from 'react-router';
 import { getPublicVieillesPlumes } from '@/api/strapi/publics';
 import type { PublicVieillesPlumes } from '@/types/publicsType';
-import { BlocksRenderer } from '@/app/components/BlocksRenderer';
+import { BlocksRenderer, listVariantFromTitle } from '@/app/components/BlocksRenderer';
 import { Seo } from '@/app/components/Seo';
 
 const highlights = [
@@ -165,7 +165,11 @@ export function VieillesPlumesPage() {
               >
                 <h3 className="font-primary text-2xl text-primary mb-4">{item.titre}</h3>
                 <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                  <BlocksRenderer content={item.contenu} headingOffset={3} />
+                  <BlocksRenderer
+                    content={item.contenu}
+                    headingOffset={3}
+                    listVariant={listVariantFromTitle(item.titre)}
+                  />
                 </div>
               </motion.div>
             ))}

@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 import type { CaseKey, EtapeInscription } from '@/types/pageAdhererType';
-import { BlocksRenderer } from './BlocksRenderer';
+import { BlocksRenderer, listVariantFromTitle } from './BlocksRenderer';
 
 type NodeId =
     | 'q-deja-licence'
@@ -283,7 +283,11 @@ export function InscriptionWizard({
                         </div>
 
                         <div className="[&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                            <BlocksRenderer content={selectedCase.contenu} headingOffset={3} />
+                            <BlocksRenderer
+                                content={selectedCase.contenu}
+                                headingOffset={3}
+                                listVariant={listVariantFromTitle(selectedCase.titre)}
+                            />
                         </div>
                     </div>
                 ) : (

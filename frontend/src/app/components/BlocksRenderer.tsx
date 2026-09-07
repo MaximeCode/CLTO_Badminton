@@ -8,6 +8,7 @@ import type {
 } from "@/types/blocks";
 import { API_URL } from "@/api/Client";
 import React, { useState } from "react";
+import { CheckCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -193,24 +194,49 @@ function BlocksImage({
   );
 }
 
+type ListVariant = "default" | "checklist";
+
+/** Checklist si le titre du composant contient « avantage » (insensible à la casse). */
+export function listVariantFromTitle(titre?: string | null): ListVariant {
+  return titre && /avantage/i.test(titre) ? "checklist" : "default";
+}
+
 function renderList(
   list: ListBlockNode,
   key: string,
   styles: VariantStyles,
+  listVariant: ListVariant = "default",
 ): React.ReactNode {
+  const isChecklist = listVariant === "checklist" && list.format !== "ordered";
   const Tag = list.format === "ordered" ? "ol" : "ul";
-  const listClass =
-    list.format === "ordered"
-      ? `list-decimal pl-6 space-y-2`
-      : `list-disc pl-6 space-y-2`;
+  const listClass = isChecklist
+    ? "list-none space-y-2.5 pl-0"
+    : list.format === "ordered"
+      ? "list-decimal pl-6 space-y-2"
+      : "list-disc pl-6 space-y-2";
 
   return (
     <Tag key={key} className={listClass}>
       {list.children.map((child, index) => {
         if (child.type === "list") {
-          return renderList(child, `${key}-nested-${index}`, styles);
+          return renderList(child, `${key}-nested-${index}`, styles, listVariant);
         }
         const item = child as ListItemInlineNode;
+        if (isChecklist) {
+          return (
+            <li
+              key={`${key}-item-${index}`}
+              className={`flex items-start gap-2.5 ${styles.list} leading-relaxed`}
+            >
+              <CheckCircle
+                size={20}
+                className="mt-0.5 shrink-0 text-secondary"
+                aria-hidden
+              />
+              <span>{renderInline(item.children, `${key}-item-${index}`, styles)}</span>
+            </li>
+          );
+        }
         return (
           <li key={`${key}-item-${index}`} className={`${styles.list} leading-relaxed`}>
             {renderInline(item.children, `${key}-item-${index}`, styles)}
@@ -226,6 +252,7 @@ function renderBlock(
   index: number,
   styles: VariantStyles,
   resolvedLevel?: number,
+  listVariant: ListVariant = "default",
 ): React.ReactNode {
   const key = `block-${index}`;
 
@@ -283,7 +310,11 @@ function renderBlock(
         </pre>
       );
     case "list":
-      return <div key={key} className="mb-6">{renderList(block, key, styles)}</div>;
+      return (
+        <div key={key} className="mb-6">
+          {renderList(block, key, styles, listVariant)}
+        </div>
+      );
     case "image": {
       const src = block.image.url.startsWith("http")
         ? block.image.url
@@ -324,6 +355,8 @@ type BlocksRendererProps = {
    * devient un h2). Les niveaux relatifs CMS sont conservés sans trous.
    */
   headingOffset?: number;
+  /** `checklist` = puces remplacées par une icône CheckCircle (couleur secondary). */
+  listVariant?: ListVariant;
 };
 
 /**
@@ -363,6 +396,7 @@ export function BlocksRenderer({
   size = "lg",
   sizeDesktop,
   headingOffset = 0,
+  listVariant = "default",
 }: BlocksRendererProps) {
   if (!content.length) {
     return null;
@@ -374,7 +408,7 @@ export function BlocksRenderer({
   return (
     <div className="blocks-content">
       {content.map((block, i) =>
-        renderBlock(block, i, styles, headingLevels.get(i)),
+        renderBlock(block, i, styles, headingLevels.get(i), listVariant),
       )}
     </div>
   );

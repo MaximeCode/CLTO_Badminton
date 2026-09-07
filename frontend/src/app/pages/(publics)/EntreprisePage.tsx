@@ -7,7 +7,7 @@ import { motion } from 'motion/react';
 import { Building2, ExternalLink, FileDown, Gift, CheckCircle, Loader2 } from 'lucide-react';
 import { getPublicEntreprise } from '@/api/strapi/publics';
 import type { PublicEntreprise } from '@/types/publicsType';
-import { BlocksRenderer } from '@/app/components/BlocksRenderer';
+import { BlocksRenderer, listVariantFromTitle } from '@/app/components/BlocksRenderer';
 import { Seo } from '@/app/components/Seo';
 import { resolveMediaAlt } from '@/utils/media';
 
@@ -141,7 +141,11 @@ export function EntreprisePage() {
                     >
                       <h3 className="font-primary text-2xl text-primary mb-4">{carte.titre}</h3>
                       <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                        <BlocksRenderer content={carte.contenu} headingOffset={3} />
+                        <BlocksRenderer
+                          content={carte.contenu}
+                          headingOffset={3}
+                          listVariant={listVariantFromTitle(carte.titre)}
+                        />
                       </div>
                     </article>
                   ))}

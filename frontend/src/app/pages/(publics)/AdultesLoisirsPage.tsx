@@ -16,7 +16,7 @@ import {
 import { Link } from 'react-router';
 import { getPublicAdultesLoisirs } from '@/api/strapi/publics';
 import type { PublicAdultesLoisirs } from '@/types/publicsType';
-import { BlocksRenderer } from '@/app/components/BlocksRenderer';
+import { BlocksRenderer, listVariantFromTitle } from '@/app/components/BlocksRenderer';
 import { Seo } from '@/app/components/Seo';
 
 const espritLoisirs = [
@@ -144,7 +144,12 @@ export function AdultesLoisirsPage() {
               {data.envie_de_progresser.titre}
             </h2>
             <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-              <BlocksRenderer content={data.envie_de_progresser.contenu} size="lg" headingOffset={1} />
+              <BlocksRenderer
+                content={data.envie_de_progresser.contenu}
+                size="lg"
+                headingOffset={1}
+                listVariant={listVariantFromTitle(data.envie_de_progresser.titre)}
+              />
             </div>
           </motion.div>
         </Section>
@@ -176,7 +181,11 @@ export function AdultesLoisirsPage() {
               >
                 <h3 className="font-primary text-2xl text-primary mb-4">{carte.titre}</h3>
                 <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                  <BlocksRenderer content={carte.contenu} headingOffset={3} />
+                  <BlocksRenderer
+                    content={carte.contenu}
+                    headingOffset={3}
+                    listVariant={listVariantFromTitle(carte.titre)}
+                  />
                 </div>
               </motion.article>
             ))}
@@ -233,7 +242,7 @@ export function AdultesLoisirsPage() {
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">TARIFS</h2>
             <p className="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
               L&apos;adhésion au club vous donne accès à tous les créneaux loisir de la semaine.
-              Les licenciés présents au club la saison dernière peuvent bénéficier de 20&nbsp;€ de
+              Les licenciés présents au club la saison dernière peuvent bénéficier de <strong>20&nbsp;€</strong> de
               réduction.
             </p>
             <div className="bg-white rounded-lg p-8 max-w-md mx-auto shadow-md">

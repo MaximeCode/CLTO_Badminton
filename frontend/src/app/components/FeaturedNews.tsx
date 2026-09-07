@@ -55,7 +55,7 @@ export function FeaturedNews({ articles }: { articles: Article[] }) {
               </div>
             </div>
             <div>
-              <h3 className="font-primary text-3xl text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
+              <h3 className="font-primary text-2xl md:text-3xl text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
                 {featuredArticle.titre}
               </h3>
               {excerpt && (

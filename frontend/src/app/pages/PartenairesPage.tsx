@@ -7,7 +7,7 @@ import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
-import { BlocksRenderer } from '../components/BlocksRenderer';
+import { BlocksRenderer, listVariantFromTitle } from '../components/BlocksRenderer';
 import { ClubStats } from '../components/ClubStats';
 import { Partners } from '../components/Partners';
 import {
@@ -68,7 +68,11 @@ function CardsSection({
               {carte.titre}
             </h3>
             <div className="[&_a]:text-secondary-text [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_p]:text-base sm:[&_li]:text-base">
-              <BlocksRenderer content={carte.contenu} headingOffset={3} />
+              <BlocksRenderer
+                content={carte.contenu}
+                headingOffset={3}
+                listVariant={listVariantFromTitle(carte.titre)}
+              />
             </div>
           </motion.article>
         ))}
@@ -101,7 +105,11 @@ function BlocksSection({
           {title}
         </h2>
         <div className="rounded-2xl border border-primary/10 bg-white p-6 md:p-10 shadow-sm [&_a]:text-secondary-text [&_li]:text-primary-accent [&_p]:mb-3 [&_p]:text-primary-accent">
-          <BlocksRenderer content={content!} headingOffset={2} />
+          <BlocksRenderer
+            content={content!}
+            headingOffset={2}
+            listVariant={listVariantFromTitle(title)}
+          />
         </div>
       </motion.div>
     </Section>
