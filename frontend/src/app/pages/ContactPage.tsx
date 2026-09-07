@@ -87,7 +87,7 @@ export function ContactPage() {
     });
   };
 
-  const formClasses = "w-full px-4 py-2 md:py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none transition-colors";
+  const formClasses = "w-full px-4 py-2 md:py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors";
 
   return (
     <>
@@ -174,7 +174,7 @@ export function ContactPage() {
                 </div>
               </>
             ) : (
-              <div>Chargement des coordonnées...</div>
+              <div role="status">Chargement des coordonnées...</div>
             )}
           </motion.div>
 
@@ -300,7 +300,7 @@ export function ContactPage() {
               </button>
 
               {error && (
-                <p className="text-center text-red-600 text-sm">
+                <p className="text-center text-red-600 text-sm" role="alert">
                   {error}
                 </p>
               )}

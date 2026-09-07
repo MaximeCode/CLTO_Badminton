@@ -110,10 +110,10 @@ function MemberCard({
                   }}
                   transition={{ duration: 0.28, ease: 'easeInOut' }}
                   tabIndex={hovered ? 0 : -1}
-                  className={`mt-3 inline-flex w-full items-center justify-center gap-1.5 text-sm text-primary-accent hover:text-secondary transition-colors duration-200 break-all ${hovered ? 'pointer-events-auto' : 'pointer-events-none'
+                  className={`mt-3 inline-flex w-full items-center justify-center gap-1.5 text-sm text-primary-accent hover:text-secondary transition-colors duration-200 break-all rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 ${hovered ? 'pointer-events-auto' : 'pointer-events-none'
                     }`}
                 >
-                  <Mail size={14} className="shrink-0" />
+                  <Mail size={14} className="shrink-0" aria-hidden />
                   {contact.email}
                 </motion.a>
               </div>
@@ -257,7 +257,7 @@ export function OrganigrammePage() {
   return (
     <>
       <Seo
-        title="Conseil d'administration"
+        title="Organigramme"
         description="Conseil d'administration et organigramme du CLTO Badminton Orléans, club de badminton à Orléans."
       />
       <PageHero

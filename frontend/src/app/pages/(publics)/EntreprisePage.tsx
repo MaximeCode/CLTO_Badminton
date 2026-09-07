@@ -8,6 +8,8 @@ import { Building2, ExternalLink, FileDown, Gift, CheckCircle, Loader2 } from 'l
 import { getPublicEntreprise } from '@/api/strapi/publics';
 import type { PublicEntreprise } from '@/types/publicsType';
 import { BlocksRenderer } from '@/app/components/BlocksRenderer';
+import { Seo } from '@/app/components/Seo';
+import { resolveMediaAlt } from '@/utils/media';
 
 export function EntreprisePage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.ENTREPRISE);
@@ -68,6 +70,13 @@ export function EntreprisePage() {
 
   return (
     <>
+      <Seo
+        title="Entreprises"
+        description={
+          data?.description?.trim() ||
+          'Offres entreprises du CLTO Badminton Orléans : partenariats, team building et pratique du badminton.'
+        }
+      />
       <PageHero
         title={data?.titre || BANDEAU_PAGES.ENTREPRISE}
         subtitle={data?.description || "Partenariats et offres pour les entreprises"}
@@ -93,7 +102,10 @@ export function EntreprisePage() {
                   >
                     <img
                       src={flyerUrl}
-                      alt={data?.flyer?.alternativeText || data?.flyer?.name || 'Flyer entreprise'}
+                      alt={resolveMediaAlt(
+                        data?.flyer,
+                        'Flyer entreprise — CLTO Badminton Orléans',
+                      )}
                       className="w-full h-auto rounded-md"
                     />
                     <a
@@ -205,7 +217,7 @@ export function EntreprisePage() {
       )}
 
       {loadError && (
-        <p className="sr-only" role="alert">
+        <p className="px-6 pb-6 text-center text-red-600" role="alert">
           {loadError}
         </p>
       )}

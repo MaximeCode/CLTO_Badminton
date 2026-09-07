@@ -9,6 +9,7 @@ import { Link } from 'react-router';
 import { getPublicVieillesPlumes } from '@/api/strapi/publics';
 import type { PublicVieillesPlumes } from '@/types/publicsType';
 import { BlocksRenderer } from '@/app/components/BlocksRenderer';
+import { Seo } from '@/app/components/Seo';
 
 const highlights = [
   {
@@ -67,6 +68,13 @@ export function VieillesPlumesPage() {
 
   return (
     <>
+      <Seo
+        title="Vieilles Plumes — Seniors 60 ans et +"
+        description={
+          data?.description?.trim() ||
+          'Vieilles Plumes du CLTO Badminton Orléans : créneaux dédiés aux seniors de 60 ans et plus.'
+        }
+      />
       <PageHero
         title={data?.titre || 'Le badminton pour les 60 ans et plus'}
         subtitle={
@@ -225,7 +233,7 @@ export function VieillesPlumesPage() {
       </Section>
 
       {loadError && (
-        <p className="sr-only" role="alert">
+        <p className="px-6 pb-6 text-center text-red-600" role="alert">
           {loadError}
         </p>
       )}

@@ -118,7 +118,9 @@ export function GymnasesPage() {
         </motion.div>
 
         {loadError && (
-          <p className="mb-8 text-center text-red-600">{loadError}</p>
+          <p className="mb-8 text-center text-red-600" role="alert">
+            {loadError}
+          </p>
         )}
 
         <div className="grid lg:grid-cols-2 gap-4 md:gap-8 lg:items-start">

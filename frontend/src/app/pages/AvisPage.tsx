@@ -54,7 +54,7 @@ export function AvisPage() {
   };
 
   const formClasses =
-    'w-full px-4 py-2 md:py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none transition-colors';
+    'w-full px-4 py-2 md:py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors';
 
   return (
     <>
@@ -175,7 +175,9 @@ export function AvisPage() {
               </button>
 
               {error && (
-                <p className="text-center text-red-600 text-sm">{error}</p>
+                <p className="text-center text-red-600 text-sm" role="alert">
+                  {error}
+                </p>
               )}
             </form>
           </motion.div>

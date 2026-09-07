@@ -19,6 +19,7 @@ import { Link } from 'react-router';
 import { getPublicJeunes } from '@/api/strapi/publics';
 import type { PublicJeunes } from '@/types/publicsType';
 import { BlocksRenderer } from '@/app/components/BlocksRenderer';
+import { Seo } from '@/app/components/Seo';
 
 const benefits = [
   {
@@ -78,6 +79,13 @@ export function JeunesPage() {
 
   return (
     <>
+      <Seo
+        title="Jeunes"
+        description={
+          data?.description?.trim() ||
+          "Public jeunes du CLTO Badminton Orléans : apprentissage, loisir et compétition pour les enfants et adolescents."
+        }
+      />
       <PageHero
         title={data?.titre || BANDEAU_PAGES.JEUNES}
         subtitle={data?.description || "L'apprentissage et la compétition pour les jeunes, du loisir à la performance"}
@@ -418,7 +426,7 @@ export function JeunesPage() {
       </Section>
 
       {loadError && (
-        <p className="sr-only" role="alert">
+        <p className="px-6 pb-6 text-center text-red-600" role="alert">
           {loadError}
         </p>
       )}

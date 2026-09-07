@@ -23,7 +23,7 @@ function mapHero(item: any): Hero {
     categorie: item.categorie,
     titre: item.titre,
     description: item.description ?? "",
-    libelle_btn: item.libelle_btn ?? "En savoir plus",
+    libelle_btn: item.libelle_btn?.trim() || "En savoir plus",
     image,
     lien: item.lien ?? "",
   };

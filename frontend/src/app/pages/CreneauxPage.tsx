@@ -498,11 +498,15 @@ export function CreneauxPage() {
 
       <Section className="bg-gray-50" width_subdiv={2000}>
         {loadError && (
-          <p className="mb-8 text-center text-red-600">{loadError}</p>
+          <p className="mb-8 text-center text-red-600" role="alert">
+            {loadError}
+          </p>
         )}
 
         {isLoading && (
-          <p className="mb-8 text-center text-gray-600">Chargement des créneaux…</p>
+          <p className="mb-8 text-center text-gray-600" role="status">
+            Chargement des créneaux…
+          </p>
         )}
 
         {!isLoading && !loadError && weeks.length === 0 && (

@@ -17,6 +17,7 @@ import { Link } from 'react-router';
 import { getPublicAdultesLoisirs } from '@/api/strapi/publics';
 import type { PublicAdultesLoisirs } from '@/types/publicsType';
 import { BlocksRenderer } from '@/app/components/BlocksRenderer';
+import { Seo } from '@/app/components/Seo';
 
 const espritLoisirs = [
   {
@@ -79,6 +80,13 @@ export function AdultesLoisirsPage() {
 
   return (
     <>
+      <Seo
+        title="Adultes loisirs"
+        description={
+          data?.description?.trim() ||
+          'Badminton adultes loisirs au CLTO Badminton Orléans : pratique conviviale pour tous les niveaux.'
+        }
+      />
       <PageHero
         title={data?.titre || BANDEAU_PAGES.ADULTES_LOISIRS}
         subtitle={data?.description || 'Le badminton en toute convivialité'}
@@ -267,7 +275,7 @@ export function AdultesLoisirsPage() {
       </Section>
 
       {loadError && (
-        <p className="sr-only" role="alert">
+        <p className="px-6 pb-6 text-center text-red-600" role="alert">
           {loadError}
         </p>
       )}

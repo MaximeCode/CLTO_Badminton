@@ -3,12 +3,13 @@ import { Link } from 'react-router';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { isInternalAppLink } from '../../utils/resolveAppLink';
+import { accessibleLinkLabel, resolveMediaAlt } from '@/utils/media';
 import type { Media } from '@/types/baseType';
 import { ResponsiveImage } from './ResponsiveImage';
 import { hideLcpPrerender } from '@/utils/hideLcpPrerender';
 
 const ctaClassName =
-  'inline-block cursor-pointer bg-secondary text-white text-sm sm:text-base px-5 py-2.5 sm:px-8 sm:py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200';
+  'inline-block cursor-pointer bg-secondary text-white text-sm sm:text-base px-5 py-2.5 sm:px-8 sm:py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary';
 
 const ctaMotionProps = {
   initial: { y: 20, opacity: 0 },
@@ -93,7 +94,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
   const slide = slides[currentSlide];
 
   const navButtonClass =
-    'min-w-11 min-h-11 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors duration-200 flex items-center justify-center cursor-pointer';
+    'min-w-11 min-h-11 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors duration-200 flex items-center justify-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-transparent';
 
   if (!loaded) {
     const loadingShellClass = hasPrerender
@@ -119,6 +120,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
         className={loadingShellClass}
         aria-busy="true"
         aria-label="Chargement du carrousel"
+        role="status"
       >
         <Loader2 className="w-10 h-10 animate-spin text-secondary" aria-hidden />
         <p className="text-primary">Chargement des slides...</p>
@@ -132,6 +134,17 @@ export function Hero<T extends HeroSlide = HeroSlide>({
   }
 
   const isLcpSlide = currentSlide === 0;
+  const slideAlt = resolveMediaAlt(
+    slide.media,
+    slide.title
+      ? `${slide.title} — CLTO Badminton Orléans`
+      : 'CLTO Badminton Orléans, club de badminton à Orléans',
+  );
+  const ctaAccessible = slide.cta
+    ? accessibleLinkLabel(slide.cta, slide.title)
+    : undefined;
+  const ctaNeedsAria =
+    Boolean(ctaAccessible && slide.cta && ctaAccessible !== slide.cta.trim());
 
   return (
     <section
@@ -159,11 +172,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
             <ResponsiveImage
               media={slide.media}
               src={slide.image || slide.media?.url}
-              alt={
-                slide.title
-                  ? `${slide.title} — CLTO Badminton Orléans`
-                  : 'CLTO Badminton Orléans, club de badminton à Orléans'
-              }
+              alt={slideAlt}
               sizes="100vw"
               className={
                 isInterclub
@@ -251,7 +260,11 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                 {slide.cta && slide.lien && (
                   isInternalAppLink(slide.lien) ? (
                     <motion.div {...ctaMotionProps} className="w-fit">
-                      <Link to={slide.lien} className={ctaClassName}>
+                      <Link
+                        to={slide.lien}
+                        className={ctaClassName}
+                        aria-label={ctaNeedsAria ? ctaAccessible : undefined}
+                      >
                         {slide.cta} →
                       </Link>
                     </motion.div>
@@ -262,6 +275,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                       href={slide.lien}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={ctaNeedsAria ? ctaAccessible : undefined}
                     >
                       {slide.cta} →
                     </motion.a>
@@ -280,7 +294,7 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                       aria-selected={index === currentSlide}
                       aria-current={index === currentSlide ? 'true' : undefined}
                       onClick={() => goToSlide(index)}
-                      className="relative min-w-11 min-h-11 inline-flex items-center justify-center"
+                      className="relative min-w-11 min-h-11 inline-flex items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
                     >
                       <span className="relative block w-9 sm:w-12 h-1 bg-white/30 overflow-hidden" aria-hidden>
                         {index === currentSlide && (

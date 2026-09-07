@@ -5,6 +5,7 @@ import { getInterclubTeams } from '@/api/icbad_local/interclub';
 import type { Accueil } from '@/types/accueilType';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
 import { Section } from './Section';
+import { resolveMediaAlt } from '@/utils/media';
 
 export function ClubStats({
   initialTeamsCount,
@@ -163,7 +164,7 @@ export function ClubStats({
                 <div className="flex items-center justify-center min-h-20 md:min-h-24 mb-4">
                   <img
                     src={item.logo.url}
-                    alt={item.label}
+                    alt={resolveMediaAlt(item.logo, item.label)}
                     width={item.logo.width ?? 160}
                     height={item.logo.height ?? 80}
                     className="max-h-16 md:max-h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105"

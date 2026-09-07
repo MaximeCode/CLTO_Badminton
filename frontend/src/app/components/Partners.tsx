@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { HomePageSectionTitle } from './homePage_SectionTitle';
 import { Section } from './Section';
 import type { Partner } from '@/types/partnersType';
+import { resolveMediaAlt } from '@/utils/media';
 
 export function Partners({
   partners,
@@ -71,11 +72,10 @@ export function Partners({
                   >
                     <img
                       src={logo.url}
-                      alt={
-                        logo.alternativeText ||
-                        logo.name ||
-                        `Logo partenaire — ${partner.type}`
-                      }
+                      alt={resolveMediaAlt(
+                        logo,
+                        `Logo partenaire — ${partner.type}`,
+                      )}
                       width={logo.width ?? 180}
                       height={logo.height ?? 90}
                       className={`w-auto object-contain grayscale-12 group-hover:grayscale-0 transition-all duration-200 ${isCompact ? 'max-h-12 md:max-h-16' : 'max-h-16 md:max-h-22.5'

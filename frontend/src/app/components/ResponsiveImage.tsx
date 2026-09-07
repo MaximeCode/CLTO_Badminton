@@ -1,11 +1,16 @@
 import type { ReactNode } from 'react';
-import { buildSrcSet } from '@/utils/media';
+import { buildSrcSet, resolveMediaAlt } from '@/utils/media';
 import type { Media } from '@/types/baseType';
 
 type ResponsiveImageProps = {
   media?: Pick<Media, 'url' | 'width' | 'height' | 'alternativeText' | 'formats' | 'name'> | null;
   src?: string;
-  alt: string;
+  /** Prioritaire s’il est renseigné ; sinon dérivé de `media` (+ fallback). */
+  alt?: string;
+  /** Contexte page (ex. titre d’article) si `alternativeText` Strapi est vide. */
+  altFallback?: string;
+  /** Image purement décorative : `alt=""` (RGAA 1.2). */
+  decorative?: boolean;
   sizes?: string;
   className?: string;
   width?: number;
@@ -24,6 +29,8 @@ export function ResponsiveImage({
   media,
   src,
   alt,
+  altFallback,
+  decorative = false,
   sizes = '100vw',
   className,
   width,
@@ -38,19 +45,23 @@ export function ResponsiveImage({
   const srcSet = media ? buildSrcSet(media) : undefined;
   const w = width ?? media?.width ?? undefined;
   const h = height ?? media?.height ?? undefined;
+  const resolvedAlt = decorative
+    ? ''
+    : alt?.trim() || resolveMediaAlt(media, altFallback);
 
   return (
     <img
       src={resolvedSrc}
       srcSet={srcSet}
       sizes={srcSet ? sizes : undefined}
-      alt={alt}
+      alt={resolvedAlt}
       className={className}
       width={w ?? undefined}
       height={h ?? undefined}
       loading={loading}
       fetchpriority={fetchpriority}
       decoding={decoding}
+      aria-hidden={decorative || undefined}
     />
   );
 }

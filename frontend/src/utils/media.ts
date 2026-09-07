@@ -121,3 +121,58 @@ export function pickMediaUrl(
   candidates.sort((a, b) => a.width - b.width);
   return (candidates.find((c) => c.width >= targetWidth) ?? candidates[candidates.length - 1]).url;
 }
+
+const FILENAME_EXT_RE = /\.(jpe?g|png|gif|webp|svg|avif|bmp|tiff?)$/i;
+const GENERIC_ALT_RE =
+  /^(image|img|photo|picture|illustration|sans[-_\s]?titre|untitled|logo)[\s_\d.-]*$/i;
+
+/**
+ * Texte alternatif pour un média Strapi (RGAA 1.1 / 1.3).
+ * Priorité : alternativeText CMS → contexte page → nom fichier nettoyé → fallback club.
+ */
+export function resolveMediaAlt(
+  media?: Pick<Media, 'alternativeText' | 'name'> | null,
+  contextFallback?: string | null,
+): string {
+  const fromCms = media?.alternativeText?.trim();
+  if (fromCms && !GENERIC_ALT_RE.test(fromCms)) return fromCms;
+
+  const fromContext = contextFallback?.trim();
+  if (fromContext) return fromContext;
+
+  const rawName = media?.name?.trim();
+  if (rawName) {
+    const cleaned = rawName
+      .replace(FILENAME_EXT_RE, '')
+      .replace(/[_-]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (cleaned && !GENERIC_ALT_RE.test(cleaned)) return cleaned;
+  }
+
+  return 'CLTO Badminton Orléans';
+}
+
+const GENERIC_LINK_LABEL_RE =
+  /^(en savoir plus|lire la suite|lire l['’]article|cliquez ici|voir plus|découvrir)(\s*[.…!]*)?$/i;
+
+/** Indique si un libellé de lien est trop générique (RGAA 6.1). */
+export function isGenericLinkLabel(label?: string | null): boolean {
+  return GENERIC_LINK_LABEL_RE.test(label?.trim() ?? '');
+}
+
+/**
+ * Libellé accessible pour un CTA : enrichit les formulations génériques avec le contexte.
+ * Ex. « En savoir plus » + titre → « En savoir plus : Stages d'été ».
+ */
+export function accessibleLinkLabel(
+  label: string | null | undefined,
+  context: string,
+  fallbackLabel = 'En savoir plus',
+): string {
+  const visible = label?.trim() || fallbackLabel;
+  const ctx = context.trim();
+  if (!ctx) return visible;
+  if (isGenericLinkLabel(visible)) return `${visible} : ${ctx}`;
+  return visible;
+}
