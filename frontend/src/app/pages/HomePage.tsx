@@ -31,10 +31,10 @@ const Partners = lazy(() =>
 );
 
 const QUICK_LINKS = [
-  { label: 'Créneaux', to: '/creneaux', icon: Clock },
-  { label: "S'inscrire", to: '/adherer', icon: UserPlus },
-  { label: 'Découvrir le club', to: '/decouvrir-le-club', icon: Building2 },
-  { label: 'Interclubs', to: '/interclub', icon: Users },
+  { label: 'Qui sommes-nous ?', to: '/decouvrir-le-club', icon: Building2 },
+  { label: "Comment s'inscrire ?", to: '/adherer', icon: UserPlus },
+  { label: 'Nos créneaux hebdomadaires', to: '/creneaux', icon: Clock },
+  { label: 'Nos équipes d\'interclubs', to: '/interclub', icon: Users },
 ] as const;
 
 function BelowFoldFallback() {
@@ -165,15 +165,21 @@ export function HomePage() {
         jsonLd={homeJsonLd}
       />
       <Hero slides={heroSlides} />
-      <div className="mx-auto my-4 w-9/10 md:my-8 md:w-3/5">
-        <div className="rounded-full bg-primary-accent">
+      <div className="w-9/10 mx-auto">
+        <div className="rounded-full bg-primary-accent my-4 w-9/10 md:my-8 md:w-4/5 max-w-250 mx-auto">
+
           <p className="py-2 text-center text-lg font-bold text-balance text-white md:py-3 md:text-2xl">
             Bienvenue au CLTO Badminton, le club de badminton d&apos;Orléans&nbsp;!
           </p>
         </div>
+        <div className="mt-5 mb-3 flex items-center justify-center gap-3 md:mt-6 md:mb-4 md:gap-4">
+          <h2 className="font-primary text-2xl tracking-wide text-primary md:text-3xl xl:text-4xl">
+            Nos pages principales
+          </h2>
+        </div>
         <nav
           aria-label="Accès rapide"
-          className="mt-3 flex flex-wrap items-center justify-center gap-2 md:mt-4 md:gap-3"
+          className="flex flex-wrap items-center justify-center gap-2 md:gap-3"
         >
           {QUICK_LINKS.map(({ label, to, icon: Icon }) => (
             <Link
