@@ -1,4 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router';
+import { Building2, Clock, UserPlus, Users } from 'lucide-react';
 import { Hero, type HeroSlide } from '../components/Hero';
 import { Seo } from '../components/Seo';
 import { DEFAULT_DESCRIPTION, SITE_NAME } from '@/utils/seo';
@@ -27,6 +29,13 @@ const PresidentQuote = lazy(() =>
 const Partners = lazy(() =>
   import('../components/Partners').then((m) => ({ default: m.Partners })),
 );
+
+const QUICK_LINKS = [
+  { label: 'Créneaux', to: '/creneaux', icon: Clock },
+  { label: "S'inscrire", to: '/adherer', icon: UserPlus },
+  { label: 'Découvrir le club', to: '/decouvrir-le-club', icon: Building2 },
+  { label: 'Interclubs', to: '/interclub', icon: Users },
+] as const;
 
 function BelowFoldFallback() {
   return <div className="min-h-24" aria-hidden />;
@@ -156,10 +165,27 @@ export function HomePage() {
         jsonLd={homeJsonLd}
       />
       <Hero slides={heroSlides} />
-      <div className="container w-9/10 md:w-3/5 mx-auto my-4 md:my-8 bg-primary-accent rounded-full">
-        <p className="py-2 md:py-3 text-center text-lg font-bold md:text-2xl text-white text-balance">
-          Bienvenue au CLTO Badminton, le club de badminton d&apos;Orléans&nbsp;!
-        </p>
+      <div className="mx-auto my-4 w-9/10 md:my-8 md:w-3/5">
+        <div className="rounded-full bg-primary-accent">
+          <p className="py-2 text-center text-lg font-bold text-balance text-white md:py-3 md:text-2xl">
+            Bienvenue au CLTO Badminton, le club de badminton d&apos;Orléans&nbsp;!
+          </p>
+        </div>
+        <nav
+          aria-label="Accès rapide"
+          className="mt-3 flex flex-wrap items-center justify-center gap-2 md:mt-4 md:gap-3"
+        >
+          {QUICK_LINKS.map(({ label, to, icon: Icon }) => (
+            <Link
+              key={to}
+              to={to}
+              className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-secondary-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:gap-2 md:px-4 md:py-2 md:text-base"
+            >
+              <Icon className="size-4 shrink-0 md:size-5" aria-hidden />
+              {label}
+            </Link>
+          ))}
+        </nav>
       </div>
       {sections ? (
         <Suspense fallback={<BelowFoldFallback />}>
