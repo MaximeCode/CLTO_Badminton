@@ -6,14 +6,12 @@ import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { getStages } from '@/api/strapi/stage';
-import { getParametresGlobaux } from '@/api/strapi/parametre-globaux';
 import { Stage } from '@/types/stageType';
 import { BlocksRenderer } from '../components/BlocksRenderer';
 import { formatDateRange } from '@/utils/formatDate';
 import { Seo } from '../components/Seo';
 import { formatPaginationRange, ListPagination } from '../components/ListPagination';
 
-const HELLOASSO_URL_FALLBACK = import.meta.env.VITE_HELLOASSO_URL as string;
 const STAGES_PER_PAGE = 5;
 
 export function StagesPage() {
@@ -21,7 +19,6 @@ export function StagesPage() {
   const listRef = useRef<HTMLDivElement>(null);
 
   const [stages, setStages] = useState<Stage[] | null>(null);
-  const [helloassoUrl, setHelloassoUrl] = useState(HELLOASSO_URL_FALLBACK);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -29,14 +26,8 @@ export function StagesPage() {
     async function loadData() {
       try {
         setLoadError(null);
-        const [stagesData, parametres] = await Promise.all([
-          getStages(),
-          getParametresGlobaux(),
-        ]);
+        const stagesData = await getStages();
         setStages(stagesData);
-        setHelloassoUrl(
-          parametres?.lien_accueil_helloasso?.trim() || HELLOASSO_URL_FALLBACK,
-        );
         setCurrentPage(1);
       } catch (error) {
         console.error('Error loading data:', error);
@@ -85,7 +76,7 @@ export function StagesPage() {
           <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4 text-balance">
             NOS STAGES 2026-2027
           </h2>
-          <p className="text-gray-600 text-lg max-w-3xl mx-auto space-y-3">
+          <p className="text-gray-600 text-lg text-balance max-w-4xl mx-auto space-y-3">
             <span className="block">
               Le CLTO Badminton propose tout au long de la saison des stages encadrés par les
               entraîneurs du club, pour progresser, se perfectionner ou préparer les compétitions.
@@ -111,57 +102,70 @@ export function StagesPage() {
         )}
 
         <div ref={listRef} className="flex flex-col gap-8 scroll-mt-24">
-          {paginatedStages.map((stage: Stage) => (
-            <motion.article
-              key={stage.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="overflow-hidden rounded-lg bg-gray-50 shadow-lg"
-            >
-              <div className="bg-linear-to-r from-primary to-primary-accent px-6 py-4 sm:px-8">
-                <h3 className="font-primary text-3xl text-white sm:text-4xl">{stage.titre}</h3>
-              </div>
+          {paginatedStages.map((stage: Stage) => {
+            const inscriptionUrl = stage.lien?.trim();
 
-              <div className="space-y-8 p-6 sm:p-8">
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 text-md">
-                  <div className="flex items-start gap-3 text-gray-700">
-                    <Calendar size={20} className="mt-0.5 shrink-0 text-secondary" />
-                    <span className="font-semibold">
-                      {formatDateRange(stage.date_debut, stage.date_fin)}
-                    </span>
-                  </div>
-                  <div className="flex items-start gap-3 text-gray-700">
-                    <MapPin size={20} className="mt-0.5 shrink-0 text-secondary" />
-                    <span className="font-semibold">{stage.gymnase}</span>
-                  </div>
-                  <div className="flex items-start gap-3 text-gray-700">
-                    <Users size={20} className="mt-0.5 shrink-0 text-secondary" />
-                    <span className="font-semibold">{stage.public}</span>
-                  </div>
-                  <div className="flex items-start gap-3 text-gray-700">
-                    <Euro size={20} className="mt-0.5 shrink-0 text-secondary" />
-                    <span className="font-semibold">{stage.autre_infos}</span>
-                  </div>
+            return (
+              <motion.article
+                key={stage.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="overflow-hidden rounded-lg bg-gray-50 shadow-lg"
+              >
+                <div className="bg-linear-to-r from-primary to-primary-accent px-6 py-4 sm:px-8">
+                  <h3 className="font-primary text-3xl text-white sm:text-4xl">{stage.titre}</h3>
                 </div>
 
-                <article>
-                  <BlocksRenderer content={stage.description ?? []} size="base" headingOffset={3} />
-                </article>
+                <div className="space-y-8 p-6 sm:p-8">
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 text-md">
+                    <div className="flex items-start gap-3 text-gray-700">
+                      <Calendar size={20} className="mt-0.5 shrink-0 text-secondary" />
+                      <span className="font-semibold">
+                        {formatDateRange(stage.date_debut, stage.date_fin)}
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-3 text-gray-700">
+                      <MapPin size={20} className="mt-0.5 shrink-0 text-secondary" />
+                      <span className="font-semibold">{stage.gymnase}</span>
+                    </div>
+                    <div className="flex items-start gap-3 text-gray-700">
+                      <Users size={20} className="mt-0.5 shrink-0 text-secondary" />
+                      <span className="font-semibold">{stage.public}</span>
+                    </div>
+                    <div className="flex items-start gap-3 text-gray-700">
+                      <Euro size={20} className="mt-0.5 shrink-0 text-secondary" />
+                      <span className="font-semibold">{stage.autre_infos}</span>
+                    </div>
+                  </div>
 
-                <a
-                  href={stage.lien}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-md bg-secondary px-6 py-3 text-white transition-colors duration-200 hover:bg-secondary-accent"
-                >
-                  S&apos;inscrire sur HelloAsso
-                  <ArrowRight size={18} />
-                </a>
-              </div>
-            </motion.article>
-          ))}
+                  <article>
+                    <BlocksRenderer content={stage.description ?? []} size="base" headingOffset={3} />
+                  </article>
+
+                  {inscriptionUrl ? (
+                    <a
+                      href={inscriptionUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-md bg-secondary px-6 py-3 text-white transition-colors duration-200 hover:bg-secondary-accent"
+                    >
+                      S&apos;inscrire sur HelloAsso
+                      <ArrowRight size={18} />
+                    </a>
+                  ) : (
+                    <span
+                      aria-disabled="true"
+                      className="inline-flex cursor-not-allowed items-center gap-2 rounded-md bg-gray-300 px-6 py-3 text-gray-500"
+                    >
+                      Les inscriptions seront bientôt ouvertes
+                    </span>
+                  )}
+                </div>
+              </motion.article>
+            );
+          })}
         </div>
 
         <ListPagination
