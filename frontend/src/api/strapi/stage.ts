@@ -3,7 +3,10 @@ import { fetchAPI } from "../Client";
 import type { Stage } from "@/types/stageType";
 
 export async function getStages(): Promise<Stage[]> {
-  const { data } = await fetchAPI("/api/stages?populate=*");
+  const today = new Date().toISOString().slice(0, 10);
+  const { data } = await fetchAPI(
+    `/api/stages?populate=*&sort=date_debut:asc&filters[date_fin][$gte]=${today}`
+  );
 
   return data.map(
     (item: {
