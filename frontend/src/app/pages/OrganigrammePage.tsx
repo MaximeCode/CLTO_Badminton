@@ -40,21 +40,52 @@ function displayName(contact: OrgContact): string {
   return `${prenom} ${nomFormatted}`.trim();
 }
 
+function isPresident(contact: OrgContact): boolean {
+  return contact.fonction.trim().toLowerCase() === 'président';
+}
+
+function contactKey(contact: OrgContact): string {
+  return `${contact.id}-${contact.typeCode}`;
+}
+
+/** Président en tête ; ordre API conservé pour les autres (sort stable). */
+function withPresidentFirst(contacts: OrgContact[]): OrgContact[] {
+  return [...contacts].sort((a, b) => {
+    const aPres = isPresident(a);
+    const bPres = isPresident(b);
+    if (aPres === bPres) return 0;
+    return aPres ? -1 : 1;
+  });
+}
+
+/** Survol réel (desktop) — évite d'ouvrir le footer au tap mobile via mouseenter synthétique. */
+function isDesktopHoverDevice(): boolean {
+  return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+}
+
 function MemberCard({
   contact,
   isExecutive = false,
   headingLevel = 3,
+  footerOpen,
+  onOpenFooter,
+  onCloseFooter,
+  onToggleFooter,
 }: {
   contact: OrgContact;
   isExecutive?: boolean;
   headingLevel?: 3 | 4;
+  footerOpen: boolean;
+  onOpenFooter: () => void;
+  onCloseFooter: () => void;
+  onToggleFooter: () => void;
 }) {
   const HeadingTag = headingLevel === 4 ? 'h4' : 'h3';
   const name = displayName(contact);
-  const [hovered, setHovered] = useState(false);
+  const hasEmail = Boolean(contact.email);
 
   return (
-    <motion.article
+    <motion.div
       layout
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -63,65 +94,98 @@ function MemberCard({
         duration: 0.45,
         layout: { duration: 0.28, ease: 'easeInOut' },
       }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocus={() => setHovered(true)}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-          setHovered(false);
-        }
+      className="relative min-w-0"
+      onMouseEnter={() => {
+        if (hasEmail && isDesktopHoverDevice()) onOpenFooter();
       }}
-      tabIndex={contact.email ? 0 : undefined}
-      className={[
-        'group relative overflow-hidden bg-white rounded-2xl px-2 pb-4 pt-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 outline-hidden focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-2',
-        isExecutive ? 'border-primary/50' : 'border-primary/15',
-      ].join(' ')}
+      onMouseLeave={() => {
+        if (hasEmail && isDesktopHoverDevice()) onCloseFooter();
+      }}
     >
-      <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-primary to-secondary" />
+      <article
+        className={[
+          'group relative overflow-hidden bg-white rounded-2xl px-2 pb-4 pt-6 shadow-sm transition-shadow duration-300 border-2 outline-hidden',
+          isExecutive ? 'border-primary/50' : 'border-primary/15',
+          hasEmail ? 'hover:shadow-xl' : '',
+        ].join(' ')}
+      >
+        <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-primary to-secondary" />
 
-      <div className="flex flex-col items-center gap-4 text-center">
-        <div className="relative">
-          <ImageWithFallback
-            src={contact.photoUrl || placeholderPhoto}
-            alt={name}
-            className="h-20 w-20 rounded-full border-4 border-secondary object-cover shadow-md md:w-24 md:h-24"
-          />
+        {hasEmail ? (
+          <button
+            type="button"
+            className={[
+              'absolute top-4 right-2 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-primary/20 text-primary shadow-sm transition-colors duration-200 hover:border-secondary hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 md:hidden',
+              footerOpen ? 'bg-gray-200' : 'bg-white',
+            ].join(' ')}
+            aria-label={footerOpen ? "Masquer l'adresse e-mail" : "Afficher l'adresse e-mail"}
+            aria-expanded={footerOpen}
+            onClick={(event) => {
+              event.stopPropagation();
+              onToggleFooter();
+            }}
+          >
+            <Mail size={16} aria-hidden />
+          </button>
+        ) : null}
+
+        <div className="flex flex-col items-center gap-4 text-center">
+          <div className="relative">
+            <ImageWithFallback
+              src={contact.photoUrl || placeholderPhoto}
+              alt={name}
+              className="h-20 w-20 rounded-full border-4 border-secondary object-cover shadow-md md:w-24 md:h-24"
+            />
+          </div>
+          <div>
+            <HeadingTag className="font-primary text-2xl md:text-3xl leading-none tracking-wide text-primary">
+              {name}
+            </HeadingTag>
+            <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-secondary">
+              {contact.fonction}
+            </p>
+          </div>
         </div>
-        <div>
-          <HeadingTag className="font-primary text-2xl md:text-3xl leading-none tracking-wide text-primary">
-            {name}
-          </HeadingTag>
-          <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-secondary">
-            {contact.fonction}
-          </p>
-          {contact.email ? (
-            <div
-              className={`grid w-full overflow-hidden transition-[grid-template-rows] duration-300 ease-in-out ${hovered ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-                }`}
-              aria-hidden={!hovered}
-            >
-              <div className="min-h-0 overflow-hidden">
+      </article>
+
+      {hasEmail ? (
+        <div
+          className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${footerOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+            }`}
+          aria-hidden={!footerOpen}
+        >
+          <div className={`min-h-0 ${footerOpen ? 'overflow-visible' : 'overflow-hidden'}`}>
+            <div className="relative w-full pt-2 pb-1">
+              {/* Réserve la hauteur d'une ligne à partir de sm (footer en absolute) */}
+              <div
+                className="pointer-events-none invisible hidden border-2 border-transparent px-3 py-2 text-sm sm:block"
+                aria-hidden
+              >
+                &nbsp;
+              </div>
+              {/* <sm : dans le flux, largeur carte, wrap ; sm+ : centré sous la carte, une ligne */}
+              <div className="w-full sm:absolute sm:left-1/2 sm:top-2 sm:z-20 sm:w-auto sm:-translate-x-1/2">
                 <motion.a
                   href={`mailto:${contact.email}`}
                   initial={false}
                   animate={{
-                    opacity: hovered ? 1 : 0,
-                    y: hovered ? 0 : 6,
+                    opacity: footerOpen ? 1 : 0,
+                    y: footerOpen ? 0 : 8,
                   }}
                   transition={{ duration: 0.28, ease: 'easeInOut' }}
-                  tabIndex={hovered ? 0 : -1}
-                  className={`mt-3 inline-flex w-full items-center justify-center gap-1.5 text-sm text-primary-accent hover:text-secondary transition-colors duration-200 break-all rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 ${hovered ? 'pointer-events-auto' : 'pointer-events-none'
+                  tabIndex={footerOpen ? 0 : -1}
+                  className={`flex w-full max-w-full items-center gap-2 break-all rounded-xl border-2 border-primary/15 bg-white px-3 py-2 text-left text-sm text-primary underline decoration-primary/40 underline-offset-2 shadow-sm transition-colors duration-200 hover:border-secondary/40 hover:text-secondary hover:decoration-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 sm:inline-flex sm:w-max sm:break-normal sm:whitespace-nowrap sm:text-center active:text-secondary ${footerOpen ? 'pointer-events-auto' : 'pointer-events-none'
                     }`}
                 >
-                  <Mail size={14} className="shrink-0" aria-hidden />
-                  {contact.email}
+                  <Mail size={14} className="shrink-0 self-start sm:self-center" aria-hidden />
+                  <span>{contact.email}</span>
                 </motion.a>
               </div>
             </div>
-          ) : null}
+          </div>
         </div>
-      </div>
-    </motion.article>
+      ) : null}
+    </motion.div>
   );
 }
 
@@ -129,12 +193,18 @@ function GroupBlock({
   title,
   contacts,
   isExecutive = false,
+  openFooterKey,
+  onOpenFooterKey,
 }: {
   title: string;
   contacts: OrgContact[];
   isExecutive?: boolean;
+  openFooterKey: string | null;
+  onOpenFooterKey: (key: string | null) => void;
 }) {
   if (contacts.length === 0) return null;
+
+  const orderedContacts = isExecutive ? withPresidentFirst(contacts) : contacts;
 
   return (
     <div className="mb-20">
@@ -149,13 +219,24 @@ function GroupBlock({
       </motion.div>
 
       <div className="mx-auto grid max-w-6xl gap-4 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {contacts.map((contact) => (
-          <MemberCard
-            key={`${contact.id}-${contact.typeCode}`}
-            contact={contact}
-            isExecutive={isExecutive}
-          />
-        ))}
+        {orderedContacts.map((contact) => {
+          const key = contactKey(contact);
+          return (
+            <MemberCard
+              key={key}
+              contact={contact}
+              isExecutive={isExecutive}
+              footerOpen={openFooterKey === key}
+              onOpenFooter={() => onOpenFooterKey(key)}
+              onCloseFooter={() => {
+                if (openFooterKey === key) onOpenFooterKey(null);
+              }}
+              onToggleFooter={() => {
+                onOpenFooterKey(openFooterKey === key ? null : key);
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -219,6 +300,7 @@ export function OrganigrammePage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.ORGANIGRAMME);
   const [contacts, setContacts] = useState<OrgContact[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [openFooterKey, setOpenFooterKey] = useState<string | null>(null);
 
   useEffect(() => {
     if (isInMaintenance) return;
@@ -291,7 +373,8 @@ export function OrganigrammePage() {
               club au quotidien.
             </p>
             <p className="mx-auto mt-3 max-w-3xl text-sm text-primary-accent/80 italic">
-              Survolez une carte pour afficher l&apos;adresse e-mail.
+              Survolez une carte, ou touchez l&apos;icône e-mail sur mobile, pour afficher
+              l&apos;adresse.
             </p>
           </motion.div>
 
@@ -301,6 +384,8 @@ export function OrganigrammePage() {
               title={GROUP_TITLES[groupKey] ?? groupKey}
               contacts={byGroup.get(groupKey) ?? []}
               isExecutive={groupKey === "Conseil d'administration"}
+              openFooterKey={openFooterKey}
+              onOpenFooterKey={setOpenFooterKey}
             />
           ))}
 
@@ -322,6 +407,8 @@ export function OrganigrammePage() {
               key={groupKey}
               title={GROUP_TITLES[groupKey] ?? groupKey}
               contacts={byGroup.get(groupKey) ?? []}
+              openFooterKey={openFooterKey}
+              onOpenFooterKey={setOpenFooterKey}
             />
           ))}
         </Section>
