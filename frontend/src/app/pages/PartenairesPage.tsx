@@ -139,9 +139,19 @@ export function PartenairesPage() {
         >
           <Handshake className="mx-auto mb-6" size={56} />
           <h2 className="font-primary text-4xl mb-4">DEVENEZ PARTENAIRE</h2>
-          <p className="text-white/90 text-md mb-8 max-w-2xl mx-auto">
+          <p className="text-white/90 text-md mb-6 max-w-2xl mx-auto">
             Découvrez notre dossier partenaires / sponsoring ou contactez-nous pour
-            construire ensemble un partenariat adapté à vos objectifs.
+            construire ensemble un partenariat adapté à vos objectifs.<br />
+            Contactez le responsable partenariat ci-dessous ou envoyer un message via le formulaire de contact pour plus d&apos;informations.
+          </p>
+          <p className="text-white text-md mb-8 max-w-2xl mx-auto font-semibold">
+            Benoit SOULARD —{' '}
+            <a
+              href="mailto:benoit.soulard@cltobadminton.fr"
+              className="underline decoration-white/40 underline-offset-2 hover:decoration-white"
+            >
+              benoit.soulard@cltobadminton.fr
+            </a>
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             {dossierUrl && (

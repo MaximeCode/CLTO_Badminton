@@ -4,7 +4,8 @@ import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
-import { Building2, ExternalLink, FileDown, Loader2 } from 'lucide-react';
+import { Building2, ExternalLink, FileDown, Loader2, Handshake } from 'lucide-react';
+import { Link } from 'react-router';
 import { getPublicEntreprise } from '@/api/strapi/publics';
 import type { PublicEntreprise } from '@/types/publicsType';
 import { BlocksRenderer, listVariantFromTitle } from '@/app/components/BlocksRenderer';
@@ -175,7 +176,7 @@ export function EntreprisePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="max-w-4xl mx-auto [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base"
+            className="bg-white rounded-lg p-8 shadow-lg max-w-4xl mx-auto [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base"
           >
             <BlocksRenderer
               content={avantages.contenu}
@@ -214,6 +215,41 @@ export function EntreprisePage() {
           </motion.div>
         </Section>
       )}
+
+      <Section className="bg-white">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-12 text-center shadow-lg text-white"
+        >
+          <Handshake className="mx-auto mb-6" size={56} />
+          <h2 className="font-primary text-4xl mb-4">ENVIE DE REJOINDRE NOS PARTENAIRES ?</h2>
+          <p className="text-white/90 text-md max-w-4xl mx-auto">
+            Vous souhaitez soutenir le CLTO Badminton ou simplement échanger sur les possibilités de
+            partenariat ?
+          </p>
+          <p className="text-white/90 text-md mb-6 max-w-2xl mx-auto">
+            Contactez-nous pour construire ensemble une formule adaptée.
+          </p>
+          <p className="text-white text-md mb-8 max-w-2xl mx-auto font-semibold">
+            Benoit SOULARD —{' '}
+            <a
+              href="mailto:benoit.soulard@cltobadminton.fr"
+              className="underline decoration-white/40 underline-offset-2 hover:decoration-white"
+            >
+              benoit.soulard@cltobadminton.fr
+            </a>
+          </p>
+          <Link
+            to="/contact"
+            className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+          >
+            Contactez-nous
+          </Link>
+        </motion.div>
+      </Section>
 
       {loadError && (
         <p className="px-6 pb-6 text-center text-red-600" role="alert">

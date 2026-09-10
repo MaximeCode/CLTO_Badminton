@@ -32,6 +32,7 @@ export type PublicAdultesCompetiteurs = Base &
     envie_de_progresser: InformationsPublic;
     vie_du_club: InformationsPublic[];
     tournois_competitions: ContenuPublic[];
+    inscription_champ?: InformationsPublic | null;
   };
 
 export type PublicAdultesLoisirs = Base &
@@ -53,6 +54,7 @@ export type PublicJeunes = Base &
     informations: InformationsPublic[];
     entrainements: InformationsPublic[];
     tournois_competitions: ContenuPublic[];
+    inscription_champ?: InformationsPublic | null;
     prix_volants: PrixVolant[];
   };
 

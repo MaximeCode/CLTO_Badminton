@@ -80,8 +80,12 @@ export function JeunesPage() {
   const entrainements = data?.entrainements ?? [];
   const tournois = data?.tournois_competitions ?? [];
   const avantages = data?.les_avantages;
+  const inscriptionChamp = data?.inscription_champ;
   const prixVolants = data?.prix_volants ?? [];
   const hasAvantages = Boolean(avantages?.contenu && avantages.contenu.length > 0);
+  const hasInscriptionChamp = Boolean(
+    inscriptionChamp?.contenu && inscriptionChamp.contenu.length > 0,
+  );
 
   return (
     <>
@@ -299,41 +303,6 @@ export function JeunesPage() {
         </motion.div>
       </Section>
 
-      <Section className="bg-white">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-            S'INSCRIRE À UN CHAMPIONNAT
-          </h2>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-10 text-white shadow-lg w-full text-center"
-        >
-          <Trophy className="mx-auto mb-5" size={52} />
-          <h3 className="font-primary text-3xl mb-4">Championnats pris en charge par le club</h3>
-          <p className="text-white/90 leading-relaxed mb-4">
-            Les frais d&apos;inscription au championnat départemental individuel et au championnat
-            régional individuel sont intégralement pris en charge par le CLTO Badminton pour les
-            joueurs concernés. Les volants sont également fournis par le club lors de ces
-            compétitions.
-          </p>
-          <p className="text-white/90 leading-relaxed">
-            Les éventuels frais de déplacement, de restauration ou d&apos;hébergement ne sont pas
-            inclus dans cette prise en charge et restent soumis aux modalités définies par le club.
-          </p>
-        </motion.div>
-      </Section>
-
       {(hasAvantages || prixVolants.length > 0) && (
         <Section className="bg-gray-50">
           <motion.div
@@ -344,18 +313,26 @@ export function JeunesPage() {
             className="text-center mb-12"
           >
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-              {avantages.titre || 'LES AVANTAGES'}
+              {avantages?.titre || 'LES AVANTAGES'}
             </h2>
           </motion.div>
 
-          <div className={`grid gap-8 ${hasAvantages && prixVolants.length > 0 ? 'lg:grid-cols-2' : ''}`}>
+          <div
+            className={
+              hasAvantages && prixVolants.length > 0
+                ? 'grid gap-8 lg:grid-cols-2'
+                : hasAvantages
+                  ? 'max-w-4xl mx-auto'
+                  : 'grid gap-8'
+            }
+          >
             {hasAvantages && avantages && (
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="[&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base"
+                className="bg-white rounded-lg p-8 shadow-lg [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base"
               >
                 <BlocksRenderer
                   content={avantages.contenu}
@@ -416,24 +393,56 @@ export function JeunesPage() {
         </Section>
       )}
 
-      <Section className="bg-linear-to-r from-primary to-primary-accent text-white text-center">
+      {hasInscriptionChamp && inscriptionChamp && (
+        <Section className="bg-white">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
+              S'INSCRIRE À UN CHAMPIONNAT
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-10 text-white shadow-lg w-full text-center"
+          >
+            <Trophy className="mx-auto mb-5" size={52} />
+            <h3 className="font-primary text-3xl mb-4">{inscriptionChamp.titre}</h3>
+            <BlocksRenderer
+              content={inscriptionChamp.contenu}
+              variant="onPrimary"
+              size="base"
+              headingOffset={3}
+            />
+          </motion.div>
+        </Section>
+      )}
+
+      <Section className="bg-white">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-12 text-center shadow-lg text-white"
         >
-          <h2 className="font-primary text-4xl text-white mb-4">
-            INSCRIVEZ VOTRE ENFANT
-          </h2>
+          <h2 className="font-primary text-4xl mb-4">INSCRIVEZ VOTRE ENFANT</h2>
           <p className="text-white/90 text-md mb-8 max-w-2xl mx-auto">
-            Les inscriptions sont ouvertes toute l'année. Deux séances d'essai gratuites !
+            Les inscriptions sont ouvertes toute l&apos;année. Deux séances d&apos;essai gratuites !
           </p>
           <Link
             to="/adherer"
             className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
           >
-            S'inscrire
+            S&apos;inscrire
           </Link>
         </motion.div>
       </Section>

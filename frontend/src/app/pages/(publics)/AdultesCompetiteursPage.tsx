@@ -4,7 +4,7 @@ import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
-import { Calendar, Clock, Users, Target, Heart, Flame, Mountain } from 'lucide-react';
+import { Calendar, Clock, Users, Target, Heart, Flame, Mountain, Trophy } from 'lucide-react';
 import { Link } from 'react-router';
 import { getPublicAdultesCompetiteurs } from '@/api/strapi/publics';
 import type { PublicAdultesCompetiteurs } from '@/types/publicsType';
@@ -92,6 +92,10 @@ export function AdultesCompetiteursPage() {
   const vieDuClub = data?.vie_du_club ?? [];
   const tournois = data?.tournois_competitions ?? [];
   const avantages = data?.les_avantages;
+  const inscriptionChamp = data?.inscription_champ;
+  const hasInscriptionChamp = Boolean(
+    inscriptionChamp?.contenu && inscriptionChamp.contenu.length > 0,
+  );
 
   return (
     <>
@@ -323,6 +327,38 @@ export function AdultesCompetiteursPage() {
         </Section>
       )}
 
+      {avantages?.contenu && avantages.contenu.length > 0 && (
+        <Section className="bg-gray-50">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
+              {avantages.titre || 'LES AVANTAGES'}
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-white rounded-lg p-8 shadow-lg max-w-4xl mx-auto [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base"
+          >
+            <BlocksRenderer
+              content={avantages.contenu}
+              size="sm"
+              sizeDesktop="lg"
+              headingOffset={2}
+              listVariant={listVariantFromTitle(avantages.titre)}
+            />
+          </motion.div>
+        </Section>
+      )}
+
       <Section className="bg-white">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -359,8 +395,8 @@ export function AdultesCompetiteursPage() {
         </div>
       </Section>
 
-      {avantages?.contenu && avantages.contenu.length > 0 && (
-        <Section className="bg-gray-50">
+      {hasInscriptionChamp && inscriptionChamp && (
+        <Section className="bg-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -369,7 +405,7 @@ export function AdultesCompetiteursPage() {
             className="text-center mb-12"
           >
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-              {avantages.titre || 'LES AVANTAGES'}
+              S'INSCRIRE À UN CHAMPIONNAT
             </h2>
           </motion.div>
 
@@ -378,18 +414,41 @@ export function AdultesCompetiteursPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="max-w-4xl mx-auto [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base"
+            className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-10 text-white shadow-lg w-full text-center"
           >
+            <Trophy className="mx-auto mb-5" size={52} />
+            <h3 className="font-primary text-3xl mb-4">{inscriptionChamp.titre}</h3>
             <BlocksRenderer
-              content={avantages.contenu}
-              size="sm"
-              sizeDesktop="lg"
-              headingOffset={2}
-              listVariant={listVariantFromTitle(avantages.titre)}
+              content={inscriptionChamp.contenu}
+              variant="onPrimary"
+              size="base"
+              headingOffset={3}
             />
           </motion.div>
         </Section>
       )}
+
+      <Section className="bg-white">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-12 text-center shadow-lg text-white"
+        >
+          <h2 className="font-primary text-4xl mb-4">REJOIGNEZ-NOUS</h2>
+          <p className="text-white/90 text-md mb-8 max-w-2xl mx-auto">
+            Rejoignez les créneaux Adultes Compétiteurs pour progresser, dans un esprit d&apos;équipe
+            et de performance.
+          </p>
+          <Link
+            to="/adherer"
+            className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+          >
+            S&apos;inscrire
+          </Link>
+        </motion.div>
+      </Section>
 
       {loadError && (
         <p className="px-6 pb-6 text-center text-red-600" role="alert">

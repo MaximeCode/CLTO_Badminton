@@ -37,6 +37,11 @@
       "component": "contenu-page.contenu",
       "repeatable": true
     },
+    "inscription_champ": {
+      "type": "component",
+      "component": "infos-publics.carte-d-informations",
+      "repeatable": false
+    },
     "les_avantages": {
       "type": "component",
       "component": "infos-publics.carte-d-informations",

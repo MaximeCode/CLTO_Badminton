@@ -91,6 +91,7 @@ export async function getPublicAdultesCompetiteurs(): Promise<PublicAdultesCompe
     },
     vie_du_club: mapInformations(data.vie_du_club),
     tournois_competitions: mapContenus(data.tournois_competitions),
+    inscription_champ: mapInformation(data.inscription_champ),
     les_avantages: mapInformation(data.les_avantages),
   };
 }
@@ -134,6 +135,7 @@ export async function getPublicJeunes(): Promise<PublicJeunes> {
     informations: mapInformations(data.informations),
     entrainements: mapInformations(data.entrainements),
     tournois_competitions: mapContenus(data.tournois_competitions),
+    inscription_champ: mapInformation(data.inscription_champ),
     les_avantages: mapInformation(data.les_avantages),
     prix_volants: mapPrixVolants(data.prix_volants),
   };
