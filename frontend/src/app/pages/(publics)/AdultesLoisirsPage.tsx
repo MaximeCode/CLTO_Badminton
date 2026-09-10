@@ -10,8 +10,6 @@ import {
   Scale,
   Sparkles,
   Smile,
-  Gift,
-  CheckCircle,
 } from 'lucide-react';
 import { Link } from 'react-router';
 import { getPublicAdultesLoisirs } from '@/api/strapi/publics';
@@ -76,7 +74,7 @@ export function AdultesLoisirsPage() {
   }, []);
 
   const vieDuClub = data?.vie_du_club ?? [];
-  const avantages = data?.les_avantages ?? [];
+  const avantages = data?.les_avantages;
 
   return (
     <>
@@ -193,7 +191,7 @@ export function AdultesLoisirsPage() {
         </Section>
       )}
 
-      {avantages.length > 0 && (
+      {avantages?.contenu && avantages.contenu.length > 0 && (
         <Section className="bg-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -203,7 +201,7 @@ export function AdultesLoisirsPage() {
             className="text-center mb-12"
           >
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-              LES AVANTAGES
+              {avantages.titre || 'LES AVANTAGES'}
             </h2>
           </motion.div>
 
@@ -212,20 +210,15 @@ export function AdultesLoisirsPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-gray-50 rounded-lg p-8 shadow-lg max-w-3xl mx-auto"
+            className="max-w-4xl mx-auto [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base"
           >
-            <h3 className="font-primary text-2xl text-primary mb-5 flex items-center gap-2">
-              <Gift size={24} className="text-secondary" />
-              Vos avantages
-            </h3>
-            <ul className="space-y-3">
-              {avantages.map((avantage) => (
-                <li key={avantage.id} className="flex items-start gap-3 text-gray-700">
-                  <CheckCircle size={20} className="text-secondary shrink-0 mt-0.5" />
-                  <span>{avantage.contenu}</span>
-                </li>
-              ))}
-            </ul>
+            <BlocksRenderer
+              content={avantages.contenu}
+              size="sm"
+              sizeDesktop="lg"
+              headingOffset={2}
+              listVariant={listVariantFromTitle(avantages.titre)}
+            />
           </motion.div>
         </Section>
       )}
@@ -243,7 +236,8 @@ export function AdultesLoisirsPage() {
             <p className="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
               L&apos;adhésion au club vous donne accès à tous les créneaux loisir de la semaine.
               Les licenciés présents au club la saison dernière peuvent bénéficier de <strong>20&nbsp;€</strong> de
-              réduction.
+              réduction.<br />
+              <span className="text-gray-600 text-sm italic">*Tarifs pour les catégories Débutant & Intermédiaire</span>
             </p>
             <div className="bg-white rounded-lg p-8 max-w-md mx-auto shadow-md">
               <div className="text-secondary text-5xl font-bold mb-2">
@@ -257,6 +251,8 @@ export function AdultesLoisirsPage() {
                 S&apos;inscrire
               </Link>
             </div>
+
+            {/* Branchement type organigramme vers options entraînements */}
           </motion.div>
         </Section>
       )}

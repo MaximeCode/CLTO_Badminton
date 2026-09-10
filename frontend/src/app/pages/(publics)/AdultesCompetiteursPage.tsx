@@ -91,6 +91,7 @@ export function AdultesCompetiteursPage() {
 
   const vieDuClub = data?.vie_du_club ?? [];
   const tournois = data?.tournois_competitions ?? [];
+  const avantages = data?.les_avantages;
 
   return (
     <>
@@ -260,9 +261,10 @@ export function AdultesCompetiteursPage() {
           >
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">TARIFS</h2>
             <p className="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
-              L&apos;adhésion au club vous donne accès à tous les créneaux loisir de la semaine.
-              Les licenciés présents au club la saison dernière peuvent bénéficier de <strong>20&nbsp;€</strong> de
-              réduction.
+              L&apos;adhésion au club vous donne accès à tous les créneaux jeu libre de la semaine.
+              Les licenciés présents au club la saison dernière bénéficient de <strong>20&nbsp;€</strong> de
+              réduction.<br />
+              <span className="text-gray-600 text-sm italic">*Tarifs pour les catégories Perfectionnement & Élite</span>
             </p>
             <div className="bg-white rounded-lg p-8 max-w-md mx-auto shadow-md">
               <div className="text-secondary text-5xl font-bold mb-2">
@@ -270,7 +272,7 @@ export function AdultesCompetiteursPage() {
               </div>
               <div className="text-gray-600 mb-2">par an (licence FFBaD incluse)</div>
               <p className="text-secondary text-sm font-semibold mb-6">
-                Prix pour 1 entraînement. Pour 2 entraînements : +20&nbsp;€.
+                Accès à tous les jeu libres
               </p>
               <Link
                 to="/adherer"
@@ -278,6 +280,44 @@ export function AdultesCompetiteursPage() {
               >
                 S&apos;inscrire
               </Link>
+            </div>
+
+            {/* Branchement type organigramme vers options entraînements */}
+            <div className="relative mx-auto max-w-3xl" aria-hidden>
+              <div className="mx-auto h-8 w-0.5 bg-gray-300" />
+              {/* Fourche desktop : barre + 2 descentes centrées sur chaque colonne */}
+              <div className="relative mx-auto hidden h-8 md:block">
+                <div className="absolute left-1/4 right-1/4 top-0 h-0.5 bg-gray-300" />
+                <div className="absolute left-1/4 top-0 h-8 w-0.5 -translate-x-1/2 bg-gray-300" />
+                <div className="absolute left-3/4 top-0 h-8 w-0.5 -translate-x-1/2 bg-gray-300" />
+              </div>
+            </div>
+
+            <div className="mx-auto flex max-w-3xl flex-col gap-0 md:grid md:grid-cols-2 md:gap-8">
+              <div className="bg-white rounded-lg p-8 shadow-md">
+                <div className="text-secondary text-5xl font-bold mb-2">+120&nbsp;€</div>
+                <div className="text-gray-600 mb-2">pour 1 entraînement, avec un entraîneur diplômé</div>
+                <Link
+                  to="/adherer"
+                  className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+                >
+                  S&apos;inscrire
+                </Link>
+              </div>
+
+              {/* Trait vertical mobile entre les 2 options */}
+              <div className="mx-auto h-6 w-0.5 bg-gray-300 md:hidden" aria-hidden />
+
+              <div className="bg-white rounded-lg p-8 shadow-md">
+                <div className="text-secondary text-5xl font-bold mb-2">+140&nbsp;€</div>
+                <div className="text-gray-600 mb-2">pour 2 entraînements, avec un entraîneur diplômé</div>
+                <Link
+                  to="/adherer"
+                  className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+                >
+                  S&apos;inscrire
+                </Link>
+              </div>
             </div>
           </motion.div>
         </Section>
@@ -318,6 +358,38 @@ export function AdultesCompetiteursPage() {
           })}
         </div>
       </Section>
+
+      {avantages?.contenu && avantages.contenu.length > 0 && (
+        <Section className="bg-gray-50">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
+              {avantages.titre || 'LES AVANTAGES'}
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl mx-auto [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base"
+          >
+            <BlocksRenderer
+              content={avantages.contenu}
+              size="sm"
+              sizeDesktop="lg"
+              headingOffset={2}
+              listVariant={listVariantFromTitle(avantages.titre)}
+            />
+          </motion.div>
+        </Section>
+      )}
 
       {loadError && (
         <p className="px-6 pb-6 text-center text-red-600" role="alert">

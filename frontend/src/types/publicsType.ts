@@ -1,5 +1,5 @@
 import type { BlocksContent } from "@/types/blocks";
-import type { Avantage, Base, Media } from "@/types/baseType";
+import type { Base, Media } from "@/types/baseType";
 
 export type InformationsPublic = {
   id: number;
@@ -23,6 +23,7 @@ export type PrixVolant = {
 type PublicFields = {
   titre?: string | null;
   description?: string | null;
+  les_avantages?: InformationsPublic | null;
 };
 
 export type PublicAdultesCompetiteurs = Base &
@@ -38,7 +39,6 @@ export type PublicAdultesLoisirs = Base &
     prix_licence: number;
     envie_de_progresser: InformationsPublic;
     vie_du_club: InformationsPublic[];
-    les_avantages: Avantage[];
   };
 
 export type PublicEntreprise = Base &
@@ -46,7 +46,6 @@ export type PublicEntreprise = Base &
     lien_dossier_partenariat?: string | null;
     flyer: Media;
     partenariat: InformationsPublic[];
-    les_avantages: Avantage[];
   };
 
 export type PublicJeunes = Base &
@@ -54,7 +53,6 @@ export type PublicJeunes = Base &
     informations: InformationsPublic[];
     entrainements: InformationsPublic[];
     tournois_competitions: ContenuPublic[];
-    les_avantages: Avantage[];
     prix_volants: PrixVolant[];
   };
 
@@ -62,5 +60,4 @@ export type PublicVieillesPlumes = Base &
   PublicFields & {
     format_simple: BlocksContent;
     tournois_competitions: InformationsPublic[];
-    les_avantages: Avantage[];
   };

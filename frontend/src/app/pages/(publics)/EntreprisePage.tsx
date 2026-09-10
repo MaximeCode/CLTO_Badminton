@@ -4,7 +4,7 @@ import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
-import { Building2, ExternalLink, FileDown, Gift, CheckCircle, Loader2 } from 'lucide-react';
+import { Building2, ExternalLink, FileDown, Loader2 } from 'lucide-react';
 import { getPublicEntreprise } from '@/api/strapi/publics';
 import type { PublicEntreprise } from '@/types/publicsType';
 import { BlocksRenderer, listVariantFromTitle } from '@/app/components/BlocksRenderer';
@@ -35,7 +35,7 @@ export function EntreprisePage() {
   }, []);
 
   const partenariat = data?.partenariat ?? [];
-  const avantages = data?.les_avantages ?? [];
+  const avantages = data?.les_avantages;
   const flyerUrl = data?.flyer?.url;
   const flyerName = data?.flyer?.name || 'flyer-entreprise';
   const dossierUrl = data?.lien_dossier_partenariat;
@@ -156,7 +156,7 @@ export function EntreprisePage() {
         </Section>
       )}
 
-      {avantages.length > 0 && (
+      {avantages?.contenu && avantages.contenu.length > 0 && (
         <Section className="bg-gray-50">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -166,7 +166,7 @@ export function EntreprisePage() {
             className="text-center mb-12"
           >
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-              LES AVANTAGES
+              {avantages.titre || 'LES AVANTAGES'}
             </h2>
           </motion.div>
 
@@ -175,20 +175,15 @@ export function EntreprisePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-white rounded-lg p-8 shadow-lg max-w-3xl mx-auto"
+            className="max-w-4xl mx-auto [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base"
           >
-            <h3 className="font-primary text-2xl text-primary mb-5 flex items-center gap-2">
-              <Gift size={24} className="text-secondary" />
-              Vos avantages
-            </h3>
-            <ul className="space-y-3">
-              {avantages.map((avantage) => (
-                <li key={avantage.id} className="flex items-start gap-3 text-gray-700">
-                  <CheckCircle size={20} className="text-secondary shrink-0 mt-0.5" />
-                  <span>{avantage.contenu}</span>
-                </li>
-              ))}
-            </ul>
+            <BlocksRenderer
+              content={avantages.contenu}
+              size="sm"
+              sizeDesktop="lg"
+              headingOffset={2}
+              listVariant={listVariantFromTitle(avantages.titre)}
+            />
           </motion.div>
         </Section>
       )}

@@ -11,9 +11,7 @@ import {
   Heart,
   Star,
   Trophy,
-  Gift,
   ShoppingBag,
-  CheckCircle,
 } from 'lucide-react';
 import { Link } from 'react-router';
 import { getPublicJeunes } from '@/api/strapi/publics';
@@ -81,8 +79,9 @@ export function JeunesPage() {
   const informations = data?.informations ?? [];
   const entrainements = data?.entrainements ?? [];
   const tournois = data?.tournois_competitions ?? [];
-  const avantages = data?.les_avantages ?? [];
+  const avantages = data?.les_avantages;
   const prixVolants = data?.prix_volants ?? [];
+  const hasAvantages = Boolean(avantages?.contenu && avantages.contenu.length > 0);
 
   return (
     <>
@@ -335,7 +334,7 @@ export function JeunesPage() {
         </motion.div>
       </Section>
 
-      {(avantages.length > 0 || prixVolants.length > 0) && (
+      {(hasAvantages || prixVolants.length > 0) && (
         <Section className="bg-gray-50">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -345,31 +344,26 @@ export function JeunesPage() {
             className="text-center mb-12"
           >
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-              AVANTAGES COMPÉTITEURS
+              {avantages.titre || 'LES AVANTAGES'}
             </h2>
           </motion.div>
 
-          <div className={`grid gap-8 ${avantages.length > 0 && prixVolants.length > 0 ? 'lg:grid-cols-2' : ''}`}>
-            {avantages.length > 0 && (
+          <div className={`grid gap-8 ${hasAvantages && prixVolants.length > 0 ? 'lg:grid-cols-2' : ''}`}>
+            {hasAvantages && avantages && (
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="bg-white rounded-lg p-8 shadow-lg"
+                className="[&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base"
               >
-                <h3 className="font-primary text-2xl text-primary mb-5 flex items-center gap-2">
-                  <Gift size={24} className="text-secondary" />
-                  Vos avantages
-                </h3>
-                <ul className="space-y-3">
-                  {avantages.map((avantage) => (
-                    <li key={avantage.id} className="flex items-start gap-3 text-gray-700">
-                      <CheckCircle size={20} className="text-secondary shrink-0 mt-0.5" />
-                      <span>{avantage.contenu}</span>
-                    </li>
-                  ))}
-                </ul>
+                <BlocksRenderer
+                  content={avantages.contenu}
+                  size="sm"
+                  sizeDesktop="lg"
+                  headingOffset={2}
+                  listVariant={listVariantFromTitle(avantages.titre)}
+                />
               </motion.div>
             )}
 

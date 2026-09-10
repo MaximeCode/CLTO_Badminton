@@ -36,8 +36,8 @@
     },
     "les_avantages": {
       "type": "component",
-      "component": "contenu-page.liste-txt",
-      "repeatable": true
+      "component": "infos-publics.carte-d-informations",
+      "repeatable": false
     }
   }
 }
