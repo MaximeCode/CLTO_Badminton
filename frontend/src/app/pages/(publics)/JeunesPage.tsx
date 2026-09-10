@@ -20,6 +20,7 @@ import { getPublicJeunes } from '@/api/strapi/publics';
 import type { PublicJeunes } from '@/types/publicsType';
 import { BlocksRenderer, listVariantFromTitle } from '@/app/components/BlocksRenderer';
 import { Seo } from '@/app/components/Seo';
+import { getParametresGlobaux } from '@/api/strapi/parametre-globaux';
 
 const benefits = [
   {
@@ -51,7 +52,7 @@ function cardsGridClass(count: number) {
 
 export function JeunesPage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.JEUNES);
-
+  const [shopUrl, setShopUrl] = useState<string | null>(null);
   const [data, setData] = useState<PublicJeunes | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -59,8 +60,14 @@ export function JeunesPage() {
     async function loadData() {
       try {
         setLoadError(null);
+        // Get public jeunes data
         const result = await getPublicJeunes();
         setData(result);
+        // Get shop url
+        const parametres = await getParametresGlobaux();
+        if (parametres?.lien_accueil_helloasso) {
+          setShopUrl(parametres.lien_accueil_helloasso);
+        }
       } catch (error) {
         console.error('Error loading data:', error);
         setLoadError(
@@ -402,7 +409,7 @@ export function JeunesPage() {
                   ))}
                 </div>
                 <a
-                  href={`${import.meta.env.VITE_HELLOASSO_URL}/boutiques/commandes-groupees`}
+                  href={shopUrl ?? "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200 text-center"

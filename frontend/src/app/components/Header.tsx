@@ -5,6 +5,7 @@ import logo from "../../imports/logo_clto_main.webp";
 import { NavItem } from "@/types/headerType";
 import { JoinClubIcon } from "./icons/JoinClubIcon";
 import { ShopIcon } from "./icons/ShopIcon";
+import { getParametresGlobaux } from "@/api/strapi/parametre-globaux";
 
 const NAV_ITEMS: NavItem[] = [
   {
@@ -63,8 +64,6 @@ const NAV_ITEMS: NavItem[] = [
   },
 ];
 
-const SHOP_URL = `${import.meta.env.VITE_HELLOASSO_URL}/boutiques/commandes-groupees`;
-
 const FOCUS_RING =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2";
 
@@ -91,6 +90,22 @@ function createDropdownId(title: string) {
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [shopUrl, setShopUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const fetchShopUrl = async () => {
+        const parametres = await getParametresGlobaux()
+        if (parametres?.lien_accueil_helloasso) {
+          setShopUrl(parametres.lien_accueil_helloasso);
+        }
+      };
+      fetchShopUrl();
+    }
+    catch (error) {
+      console.error("Error fetching shop url:", error);
+    }
+  }, []);
 
   const location = useLocation();
   const headerRef = useRef<HTMLElement | null>(null);
@@ -294,7 +309,7 @@ export function Header() {
 
             {/* No <Link> because it's an external link */}
             <a
-              href={SHOP_URL}
+              href={shopUrl ?? "#"}
               title="Notre boutique"
               target="_blank"
               rel="noopener noreferrer"
@@ -403,7 +418,7 @@ export function Header() {
               </Link>
 
               <a
-                href={SHOP_URL}
+                href={shopUrl ?? "#"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`flex w-full items-center justify-center gap-2 rounded-md bg-secondary px-2 py-2 text-center text-white transition-colors duration-200 hover:bg-secondary/80 ${FOCUS_RING}`}
