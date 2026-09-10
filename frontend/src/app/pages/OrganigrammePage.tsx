@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { PageHero } from '../components/PageHero';
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
@@ -63,6 +63,86 @@ function isDesktopHoverDevice(): boolean {
   return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 }
 
+const FOOTER_VIEWPORT_MARGIN = 8;
+
+function getViewportWidth(): number {
+  return window.visualViewport?.width ?? document.documentElement.clientWidth;
+}
+
+/**
+ * Positionne le footer en `fixed` sous la carte, centré quand possible,
+ * sinon décalé pour rester entièrement dans le viewport (gauche et droite).
+ */
+function useFooterViewportPosition(
+  active: boolean,
+  cardRef: React.RefObject<HTMLElement | null>,
+) {
+  const footerRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState<{ top: number; centerX: number } | null>(null);
+
+  useLayoutEffect(() => {
+    if (!active) {
+      setPos(null);
+      return;
+    }
+
+    const update = () => {
+      const card = cardRef.current;
+      const footer = footerRef.current;
+      if (!card || !footer) return;
+
+      const cardRect = card.getBoundingClientRect();
+      const vw = getViewportWidth();
+      const margin = FOOTER_VIEWPORT_MARGIN;
+
+      const prevTransform = footer.style.transform;
+      const prevLeft = footer.style.left;
+      footer.style.transform = 'none';
+      footer.style.left = '0px';
+      const fw = footer.getBoundingClientRect().width;
+      footer.style.transform = prevTransform;
+      footer.style.left = prevLeft;
+
+      const idealLeft = cardRect.left + cardRect.width / 2 - fw / 2;
+      const maxLeft = vw - margin - fw;
+      const clampedLeft =
+        fw >= vw - 2 * margin
+          ? margin
+          : Math.min(Math.max(idealLeft, margin), Math.max(margin, maxLeft));
+
+      setPos({
+        top: cardRect.bottom + 8,
+        centerX: clampedLeft + fw / 2,
+      });
+    };
+
+    update();
+    const raf = requestAnimationFrame(() => {
+      update();
+      requestAnimationFrame(update);
+    });
+    const t1 = window.setTimeout(update, 50);
+    const t2 = window.setTimeout(update, 320);
+
+    window.addEventListener('resize', update);
+    window.addEventListener('scroll', update, true);
+    window.visualViewport?.addEventListener('resize', update);
+    window.visualViewport?.addEventListener('scroll', update);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+      window.removeEventListener('resize', update);
+      window.removeEventListener('scroll', update, true);
+      window.visualViewport?.removeEventListener('resize', update);
+      window.visualViewport?.removeEventListener('scroll', update);
+    };
+  }, [active, cardRef]);
+
+  return { footerRef, pos };
+}
+
 function MemberCard({
   contact,
   isExecutive = false,
@@ -83,26 +163,48 @@ function MemberCard({
   const HeadingTag = headingLevel === 4 ? 'h4' : 'h3';
   const name = displayName(contact);
   const hasEmail = Boolean(contact.email);
+  const cardRef = useRef<HTMLElement>(null);
+  const closeTimerRef = useRef<number | null>(null);
+  const { footerRef, pos } = useFooterViewportPosition(footerOpen && hasEmail, cardRef);
+
+  const cancelScheduledClose = () => {
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const scheduleClose = () => {
+    cancelScheduledClose();
+    closeTimerRef.current = window.setTimeout(() => {
+      onCloseFooter();
+      closeTimerRef.current = null;
+    }, 120);
+  };
+
+  useEffect(() => {
+    return () => cancelScheduledClose();
+  }, []);
 
   return (
     <motion.div
-      layout
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
-      transition={{
-        duration: 0.45,
-        layout: { duration: 0.28, ease: 'easeInOut' },
-      }}
+      transition={{ duration: 0.45 }}
       className="relative min-w-0"
       onMouseEnter={() => {
-        if (hasEmail && isDesktopHoverDevice()) onOpenFooter();
+        if (!hasEmail || !isDesktopHoverDevice()) return;
+        cancelScheduledClose();
+        onOpenFooter();
       }}
       onMouseLeave={() => {
-        if (hasEmail && isDesktopHoverDevice()) onCloseFooter();
+        if (!hasEmail || !isDesktopHoverDevice()) return;
+        scheduleClose();
       }}
     >
       <article
+        ref={cardRef}
         className={[
           'group relative overflow-hidden bg-white rounded-2xl px-2 pb-4 pt-6 shadow-sm transition-shadow duration-300 border-2 outline-hidden',
           isExecutive ? 'border-primary/50' : 'border-primary/15',
@@ -154,35 +256,56 @@ function MemberCard({
             }`}
           aria-hidden={!footerOpen}
         >
-          <div className={`min-h-0 ${footerOpen ? 'overflow-visible' : 'overflow-hidden'}`}>
-            <div className="relative w-full pt-2 pb-1">
-              {/* Réserve la hauteur d'une ligne à partir de sm (footer en absolute) */}
-              <div
-                className="pointer-events-none invisible hidden border-2 border-transparent px-3 py-2 text-sm sm:block"
-                aria-hidden
-              >
-                &nbsp;
-              </div>
-              {/* <sm : dans le flux, largeur carte, wrap ; sm+ : centré sous la carte, une ligne */}
-              <div className="w-full sm:absolute sm:left-1/2 sm:top-2 sm:z-20 sm:w-auto sm:-translate-x-1/2">
-                <motion.a
-                  href={`mailto:${contact.email}`}
-                  initial={false}
-                  animate={{
-                    opacity: footerOpen ? 1 : 0,
-                    y: footerOpen ? 0 : 8,
-                  }}
-                  transition={{ duration: 0.28, ease: 'easeInOut' }}
-                  tabIndex={footerOpen ? 0 : -1}
-                  className={`flex w-full max-w-full items-center gap-2 break-all rounded-xl border-2 border-primary/15 bg-white px-3 py-2 text-left text-sm text-primary underline decoration-primary/40 underline-offset-2 shadow-sm transition-colors duration-200 hover:border-secondary/40 hover:text-secondary hover:decoration-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 sm:inline-flex sm:w-max sm:break-normal sm:whitespace-nowrap sm:text-center active:text-secondary ${footerOpen ? 'pointer-events-auto' : 'pointer-events-none'
-                    }`}
-                >
-                  <Mail size={14} className="shrink-0 self-start sm:self-center" aria-hidden />
-                  <span>{contact.email}</span>
-                </motion.a>
-              </div>
+          <div className="min-h-0 overflow-hidden">
+            {/* Réserve la place dans le flux ; le lien visible est en fixed */}
+            <div
+              className="pointer-events-none invisible border-2 border-transparent px-3 py-2 text-sm"
+              aria-hidden
+            >
+              &nbsp;
             </div>
           </div>
+        </div>
+      ) : null}
+
+      {hasEmail ? (
+        <div
+          ref={footerRef}
+          className="fixed z-50"
+          style={
+            footerOpen && pos
+              ? {
+                top: pos.top,
+                left: pos.centerX,
+                transform: 'translateX(-50%)',
+              }
+              : { top: 0, left: 0, visibility: 'hidden', pointerEvents: 'none' }
+          }
+          onMouseEnter={() => {
+            if (!isDesktopHoverDevice()) return;
+            cancelScheduledClose();
+            onOpenFooter();
+          }}
+          onMouseLeave={() => {
+            if (!isDesktopHoverDevice()) return;
+            scheduleClose();
+          }}
+        >
+          <motion.a
+            href={`mailto:${contact.email}`}
+            initial={false}
+            animate={{
+              opacity: footerOpen ? 1 : 0,
+              y: footerOpen ? 0 : 8,
+            }}
+            transition={{ duration: 0.28, ease: 'easeInOut' }}
+            tabIndex={footerOpen ? 0 : -1}
+            className={`inline-flex w-max max-w-[calc(100vw-1rem)] items-center gap-2 overflow-hidden whitespace-nowrap rounded-xl border-2 border-primary/15 bg-white px-3 py-2 text-sm text-primary underline decoration-primary/40 underline-offset-2 shadow-sm transition-colors duration-200 hover:border-secondary/40 hover:text-secondary hover:decoration-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 active:text-secondary ${footerOpen ? 'pointer-events-auto' : 'pointer-events-none'
+              }`}
+          >
+            <Mail size={14} className="shrink-0" aria-hidden />
+            <span className="truncate">{contact.email}</span>
+          </motion.a>
         </div>
       ) : null}
     </motion.div>

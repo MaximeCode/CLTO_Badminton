@@ -69,7 +69,7 @@ export function VieillesPlumesPage() {
   return (
     <>
       <Seo
-        title="Vieilles Plumes — Seniors 60 ans et +"
+        title="Vieilles Plumes — 60 ans et +"
         description={
           data?.description?.trim() ||
           'Vieilles Plumes du CLTO Badminton Orléans : créneaux dédiés aux seniors de 60 ans et plus.'

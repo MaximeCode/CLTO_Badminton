@@ -15,7 +15,7 @@
 - [Jeunes](https://cltobadminton.fr/jeunes): Badminton pour les jeunes et école de badminton.
 - [Adultes loisirs](https://cltobadminton.fr/adultes-loisirs): Créneaux loisirs pour adultes.
 - [Adultes compétiteurs](https://cltobadminton.fr/adultes-competiteurs): Parcours compétition et équipes.
-- [Vieilles Plumes](https://cltobadminton.fr/vieilles-plumes): Section seniors 60 ans et plus.
+- [Vieilles Plumes](https://cltobadminton.fr/vieilles-plumes): Section Vieilles Plumes 60 ans et plus.
 - [Entreprises](https://cltobadminton.fr/entreprises): Offres et activités pour les entreprises.
 
 ## Informations pratiques
