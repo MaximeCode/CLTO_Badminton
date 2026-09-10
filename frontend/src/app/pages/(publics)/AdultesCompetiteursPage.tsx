@@ -261,7 +261,7 @@ export function AdultesCompetiteursPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="p-12 text-center"
+            className="text-center"
           >
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">TARIFS</h2>
             <p className="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
@@ -298,8 +298,8 @@ export function AdultesCompetiteursPage() {
             </div>
 
             <div className="mx-auto flex max-w-3xl flex-col gap-0 md:grid md:grid-cols-2 md:gap-8">
-              <div className="bg-white rounded-lg p-8 shadow-md">
-                <div className="text-secondary text-5xl font-bold mb-2">+120&nbsp;€</div>
+              <div className="bg-white rounded-lg p-4 md:p-8 shadow-md">
+                <div className="text-secondary text-4xl font-semibold mb-2">+120&nbsp;€</div>
                 <div className="text-gray-600 mb-2">pour 1 entraînement, avec un entraîneur diplômé</div>
                 <Link
                   to="/adherer"
@@ -312,8 +312,8 @@ export function AdultesCompetiteursPage() {
               {/* Trait vertical mobile entre les 2 options */}
               <div className="mx-auto h-6 w-0.5 bg-gray-300 md:hidden" aria-hidden />
 
-              <div className="bg-white rounded-lg p-8 shadow-md">
-                <div className="text-secondary text-5xl font-bold mb-2">+140&nbsp;€</div>
+              <div className="bg-white rounded-lg p-4 md:p-8 shadow-md">
+                <div className="text-secondary text-4xl font-semibold mb-2">+140&nbsp;€</div>
                 <div className="text-gray-600 mb-2">pour 2 entraînements, avec un entraîneur diplômé</div>
                 <Link
                   to="/adherer"
@@ -434,7 +434,7 @@ export function AdultesCompetiteursPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-12 text-center shadow-lg text-white"
+          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:text-center shadow-lg text-white"
         >
           <h2 className="font-primary text-4xl mb-4">REJOIGNEZ-NOUS</h2>
           <p className="text-white/90 text-md mb-8 max-w-2xl mx-auto">

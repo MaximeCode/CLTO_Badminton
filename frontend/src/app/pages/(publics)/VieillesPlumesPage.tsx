@@ -215,7 +215,7 @@ export function VieillesPlumesPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-12 text-center shadow-lg text-white"
+          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:text-center shadow-lg text-white"
         >
           <h2 className="font-primary text-4xl mb-4">REJOIGNEZ-NOUS</h2>
           <p className="text-white/90 text-md mb-8 max-w-2xl mx-auto">

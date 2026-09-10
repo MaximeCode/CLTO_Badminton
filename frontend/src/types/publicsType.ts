@@ -51,6 +51,7 @@ export type PublicEntreprise = Base &
 
 export type PublicJeunes = Base &
   PublicFields & {
+    prix_licence: number;
     informations: InformationsPublic[];
     entrainements: InformationsPublic[];
     tournois_competitions: ContenuPublic[];

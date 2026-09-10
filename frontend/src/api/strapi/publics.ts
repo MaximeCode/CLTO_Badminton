@@ -132,6 +132,7 @@ export async function getPublicJeunes(): Promise<PublicJeunes> {
     id: data.id,
     documentId: data.documentId,
     ...mapBannerFields(data),
+    prix_licence: data.prix_licence,
     informations: mapInformations(data.informations),
     entrainements: mapInformations(data.entrainements),
     tournois_competitions: mapContenus(data.tournois_competitions),

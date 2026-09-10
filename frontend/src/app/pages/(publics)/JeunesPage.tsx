@@ -393,6 +393,101 @@ export function JeunesPage() {
         </Section>
       )}
 
+      {data?.prix_licence != null && (
+        <Section className="bg-gray-50">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">TARIFS</h2>
+            <p className="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
+              L&apos;adhésion au club vous donne accès à tous les créneaux jeu libre de la semaine.
+              Les licenciés présents au club la saison dernière bénéficient de <strong>20&nbsp;€</strong> de
+              réduction.
+            </p>
+
+            {/*
+              mobile: colonne ; tablette: grille 2×2 (4 cartes) ;
+              desktop: mère centrée puis 3 enfants en ligne
+            */}
+            <div className="mx-auto grid max-w-5xl grid-cols-1 gap-0 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
+              <div className="bg-white rounded-lg p-4 md:p-8 shadow-md lg:col-span-3 lg:mx-auto lg:w-full lg:max-w-md">
+                <div className="text-secondary text-5xl font-bold mb-2">
+                  {Number(data.prix_licence).toLocaleString('fr-FR')}€
+                </div>
+                <div className="text-gray-600 mb-2">par an (licence FFBaD incluse)</div>
+                <p className="text-secondary text-sm font-semibold mb-6">
+                  Accès à tous les jeu libres
+                </p>
+                <Link
+                  to="/adherer"
+                  className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+                >
+                  S&apos;inscrire
+                </Link>
+              </div>
+
+              {/* Connecteur : visible mobile + desktop, masqué tablette */}
+              <div
+                className="relative mx-auto w-full max-w-5xl md:hidden lg:col-span-3 lg:block"
+                aria-hidden
+              >
+                <div className="mx-auto h-8 w-0.5 bg-gray-300" />
+                <div className="relative mx-auto hidden h-8 lg:block">
+                  <div className="absolute left-[16.666%] right-[16.666%] top-0 h-0.5 bg-gray-300" />
+                  <div className="absolute left-[16.666%] top-0 h-8 w-0.5 -translate-x-1/2 bg-gray-300" />
+                  <div className="absolute left-1/2 top-0 h-8 w-0.5 -translate-x-1/2 bg-gray-300" />
+                  <div className="absolute left-[83.333%] top-0 h-8 w-0.5 -translate-x-1/2 bg-gray-300" />
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg p-4 md:p-8 shadow-md">
+                <div className="text-secondary text-4xl font-semibold mb-2">+50&nbsp;€</div>
+                <div className="text-gray-600 mb-6">
+                  1 cours collectif hebdomadaire{' '}
+                  <span className="italic text-primary-accent">(hors babybad et minibad)</span>
+                </div>
+                <Link
+                  to="/adherer"
+                  className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+                >
+                  S&apos;inscrire
+                </Link>
+              </div>
+
+              <div className="mx-auto h-6 w-0.5 bg-gray-300 md:hidden" aria-hidden />
+
+              <div className="bg-white rounded-lg p-4 md:p-8 shadow-md">
+                <div className="text-secondary text-4xl font-semibold mb-2">+100&nbsp;€</div>
+                <div className="text-gray-600 mb-6">2 cours collectifs hebdomadaires</div>
+                <Link
+                  to="/adherer"
+                  className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+                >
+                  S&apos;inscrire
+                </Link>
+              </div>
+
+              <div className="mx-auto h-6 w-0.5 bg-gray-300 md:hidden" aria-hidden />
+
+              <div className="bg-white rounded-lg p-4 md:p-8 shadow-md">
+                <div className="text-secondary text-4xl font-semibold mb-2">+125&nbsp;€</div>
+                <div className="text-gray-600 mb-6">3 cours collectifs hebdomadaires</div>
+                <Link
+                  to="/adherer"
+                  className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+                >
+                  S&apos;inscrire
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        </Section>
+      )}
+
       {hasInscriptionChamp && inscriptionChamp && (
         <Section className="bg-white">
           <motion.div
@@ -432,7 +527,7 @@ export function JeunesPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-12 text-center shadow-lg text-white"
+          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:text-center shadow-lg text-white"
         >
           <h2 className="font-primary text-4xl mb-4">INSCRIVEZ VOTRE ENFANT</h2>
           <p className="text-white/90 text-md mb-8 max-w-2xl mx-auto">

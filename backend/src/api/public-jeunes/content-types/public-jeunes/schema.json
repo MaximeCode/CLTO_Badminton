@@ -17,6 +17,10 @@
     "description": {
       "type": "text"
     },
+    "prix_licence": {
+      "type": "decimal",
+      "required": true
+    },
     "informations": {
       "type": "component",
       "component": "infos-publics.carte-d-informations",
