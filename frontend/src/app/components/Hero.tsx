@@ -39,7 +39,6 @@ export function Hero<T extends HeroSlide = HeroSlide>({
   variant = 'home',
 }: HeroProps<T>) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [progress, setProgress] = useState(0);
   const [reduceMotion, setReduceMotion] = useState(false);
 
   const isInterclub = variant === 'interclub';
@@ -63,32 +62,23 @@ export function Hero<T extends HeroSlide = HeroSlide>({
   useEffect(() => {
     if (!loaded || reduceMotion || slides.length <= 1) return;
 
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          setCurrentSlide((curr) => (curr + 1) % slides.length);
-          return 0;
-        }
-        return prev + 1;
-      });
-    }, 50);
+    const timer = setTimeout(() => {
+      setCurrentSlide((curr) => (curr + 1) % slides.length);
+    }, 5000);
 
-    return () => clearInterval(timer);
-  }, [loaded, reduceMotion, slides.length]);
+    return () => clearTimeout(timer);
+  }, [loaded, reduceMotion, slides.length, currentSlide]);
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
-    setProgress(0);
   };
 
   const nextSlide = () => {
     setCurrentSlide((curr) => (curr + 1) % slides.length);
-    setProgress(0);
   };
 
   const prevSlide = () => {
     setCurrentSlide((curr) => (curr - 1 + slides.length) % slides.length);
-    setProgress(0);
   };
 
   const slide = slides[currentSlide];
@@ -298,9 +288,11 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                     >
                       <span className="relative block w-9 sm:w-12 h-1 bg-white/30 overflow-hidden" aria-hidden>
                         {index === currentSlide && (
-                          <span
+                          <motion.span
                             className="absolute inset-0 bg-secondary"
-                            style={{ width: `${progress}%` }}
+                            initial={{ width: "0%" }}
+                            animate={{ width: "100%" }}
+                            transition={{ duration: reduceMotion ? 0 : 5, ease: "linear" }}
                           />
                         )}
                       </span>
