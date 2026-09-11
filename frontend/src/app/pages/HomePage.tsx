@@ -139,7 +139,7 @@ export function HomePage() {
     };
   }, []);
 
-  const heroSlides: HeroSlide[] = heros.map((h) => ({
+  const heroSlides: HeroSlide[] = useMemo(() => heros.map((h) => ({
     id: h.id,
     image: pickMediaUrl(h.image, 1600) || h.image.url,
     media: h.image,
@@ -148,7 +148,7 @@ export function HomePage() {
     description: h.description ?? '',
     cta: h.libelle_btn,
     lien: h.lien ?? '',
-  }));
+  })), [heros]);
 
   return (
     <>
