@@ -22,9 +22,10 @@ export const SITE_MAP_SECTIONS: SiteMapSection[] = [
     title: "Le Club",
     links: [
       { label: "Historique", path: "/historique" },
-      { label: "Projet Club", path: "/projet-club" },
+      { label: "Découvrir le club", path: "/decouvrir-le-club" },
       { label: "Organigramme", path: "/organigramme" },
       { label: "Bénévoles", path: "/benevoles" },
+      { label: "Partenaires", path: "/partenaires" },
       { label: "Événements", path: "/evenements" },
       { label: "Palmarès", path: "/palmares" },
       { label: "Documents officiels", path: "/documents" },
