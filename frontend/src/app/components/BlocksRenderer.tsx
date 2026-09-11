@@ -343,7 +343,7 @@ function renderBlock(
 }
 
 type BlocksRendererProps = {
-  content: BlocksContent;
+  content?: BlocksContent | null;
   /** `onPrimary` = texte clair pour fond coloré (ex. Mot du Président) */
   variant?: BlocksVariant;
   /** Taille mobile des paragraphes / listes. Défaut `lg` = comportement historique. */
@@ -398,7 +398,7 @@ export function BlocksRenderer({
   headingOffset = 0,
   listVariant = "default",
 }: BlocksRendererProps) {
-  if (!content.length) {
+  if (!content?.length) {
     return null;
   }
 

@@ -28,8 +28,8 @@ type PublicFields = {
 
 export type PublicAdultesCompetiteurs = Base &
   PublicFields & {
-    prix_licence: number;
-    envie_de_progresser: InformationsPublic;
+    prix_licence?: number | null;
+    envie_de_progresser?: InformationsPublic | null;
     vie_du_club: InformationsPublic[];
     tournois_competitions: ContenuPublic[];
     inscription_champ?: InformationsPublic | null;
@@ -37,21 +37,21 @@ export type PublicAdultesCompetiteurs = Base &
 
 export type PublicAdultesLoisirs = Base &
   PublicFields & {
-    prix_licence: number;
-    envie_de_progresser: InformationsPublic;
+    prix_licence?: number | null;
+    envie_de_progresser?: InformationsPublic | null;
     vie_du_club: InformationsPublic[];
   };
 
 export type PublicEntreprise = Base &
   PublicFields & {
     lien_dossier_partenariat?: string | null;
-    flyer: Media;
+    flyer?: Media | null;
     partenariat: InformationsPublic[];
   };
 
 export type PublicJeunes = Base &
   PublicFields & {
-    prix_licence: number;
+    prix_licence?: number | null;
     informations: InformationsPublic[];
     entrainements: InformationsPublic[];
     tournois_competitions: ContenuPublic[];
@@ -61,6 +61,6 @@ export type PublicJeunes = Base &
 
 export type PublicVieillesPlumes = Base &
   PublicFields & {
-    format_simple: BlocksContent;
+    format_simple?: BlocksContent | null;
     tournois_competitions: InformationsPublic[];
   };

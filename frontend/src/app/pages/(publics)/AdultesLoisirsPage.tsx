@@ -73,8 +73,14 @@ export function AdultesLoisirsPage() {
     loadData();
   }, []);
 
-  const vieDuClub = data?.vie_du_club ?? [];
+  const vieDuClub = (data?.vie_du_club ?? []).filter(
+    (carte) => carte?.contenu && carte.contenu.length > 0,
+  );
   const avantages = data?.les_avantages;
+  const envieDeProgresser = data?.envie_de_progresser;
+  const hasEnvieDeProgresser = Boolean(
+    envieDeProgresser?.contenu && envieDeProgresser.contenu.length > 0,
+  );
 
   return (
     <>
@@ -129,7 +135,7 @@ export function AdultesLoisirsPage() {
         </div>
       </Section>
 
-      {data?.envie_de_progresser && (
+      {hasEnvieDeProgresser && envieDeProgresser && (
         <Section className="bg-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -139,14 +145,14 @@ export function AdultesLoisirsPage() {
             className="max-w-4xl mx-auto bg-white rounded-lg p-8 shadow-lg"
           >
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4 text-center">
-              {data.envie_de_progresser.titre}
+              {envieDeProgresser.titre}
             </h2>
             <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
               <BlocksRenderer
-                content={data.envie_de_progresser.contenu}
+                content={envieDeProgresser.contenu}
                 size="lg"
                 headingOffset={1}
-                listVariant={listVariantFromTitle(data.envie_de_progresser.titre)}
+                listVariant={listVariantFromTitle(envieDeProgresser.titre)}
               />
             </div>
           </motion.div>

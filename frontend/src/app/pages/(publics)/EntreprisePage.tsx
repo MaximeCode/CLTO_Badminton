@@ -35,7 +35,9 @@ export function EntreprisePage() {
     loadData();
   }, []);
 
-  const partenariat = data?.partenariat ?? [];
+  const partenariat = (data?.partenariat ?? []).filter(
+    (carte) => carte?.contenu && carte.contenu.length > 0,
+  );
   const avantages = data?.les_avantages;
   const flyerUrl = data?.flyer?.url;
   const flyerName = data?.flyer?.name || 'flyer-entreprise';

@@ -76,12 +76,20 @@ export function JeunesPage() {
     loadData();
   }, []);
 
-  const informations = data?.informations ?? [];
-  const entrainements = data?.entrainements ?? [];
-  const tournois = data?.tournois_competitions ?? [];
+  const informations = (data?.informations ?? []).filter(
+    (carte) => carte?.contenu && carte.contenu.length > 0,
+  );
+  const entrainements = (data?.entrainements ?? []).filter(
+    (carte) => carte?.contenu && carte.contenu.length > 0,
+  );
+  const tournois = (data?.tournois_competitions ?? []).filter(
+    (item) => item?.contenu && item.contenu.length > 0,
+  );
   const avantages = data?.les_avantages;
   const inscriptionChamp = data?.inscription_champ;
-  const prixVolants = data?.prix_volants ?? [];
+  const prixVolants = (data?.prix_volants ?? []).filter(
+    (item) => item != null && item.prix != null,
+  );
   const hasAvantages = Boolean(avantages?.contenu && avantages.contenu.length > 0);
   const hasInscriptionChamp = Boolean(
     inscriptionChamp?.contenu && inscriptionChamp.contenu.length > 0,

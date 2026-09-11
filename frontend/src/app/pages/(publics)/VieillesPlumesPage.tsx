@@ -62,9 +62,12 @@ export function VieillesPlumesPage() {
     loadData();
   }, []);
 
-  const tournois = data?.tournois_competitions ?? [];
+  const tournois = (data?.tournois_competitions ?? []).filter(
+    (item) => item?.contenu && item.contenu.length > 0,
+  );
   const avantages = data?.les_avantages;
   const formatSimple = data?.format_simple ?? [];
+  const hasFormatSimple = Array.isArray(formatSimple) && formatSimple.length > 0;
 
   return (
     <>
@@ -122,7 +125,7 @@ export function VieillesPlumesPage() {
         </div>
       </Section>
 
-      {formatSimple.length > 0 && (
+      {hasFormatSimple && (
         <Section className="bg-gray-50">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
