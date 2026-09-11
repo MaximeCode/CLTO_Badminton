@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
-import { Building2, Clock, UserPlus, Users } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import { Hero, type HeroSlide } from '../components/Hero';
 import { Seo } from '../components/Seo';
 import { DEFAULT_DESCRIPTION, SITE_NAME } from '@/utils/seo';
@@ -20,9 +20,6 @@ const ClubStats = lazy(() =>
 const InterclubRankings = lazy(() =>
   import('../components/InterclubRankings').then((m) => ({ default: m.InterclubRankings })),
 );
-const SpaceCards = lazy(() =>
-  import('../components/SpaceCards').then((m) => ({ default: m.SpaceCards })),
-);
 const PresidentQuote = lazy(() =>
   import('../components/MotPresident').then((m) => ({ default: m.PresidentQuote })),
 );
@@ -31,10 +28,7 @@ const Partners = lazy(() =>
 );
 
 const QUICK_LINKS = [
-  { label: 'Qui sommes-nous ?', to: '/decouvrir-le-club', icon: Building2 },
-  { label: "Comment s'inscrire ?", to: '/adherer', icon: UserPlus },
   { label: 'Nos créneaux hebdomadaires', to: '/creneaux', icon: Clock },
-  { label: 'Nos équipes d\'interclubs', to: '/interclub', icon: Users },
 ] as const;
 
 function BelowFoldFallback() {
@@ -172,11 +166,6 @@ export function HomePage() {
             Bienvenue au CLTO Badminton, le club de badminton d&apos;Orléans&nbsp;!
           </p>
         </div>
-        <div className="mt-5 mb-3 flex items-center justify-center gap-3 md:mt-6 md:mb-4 md:gap-4">
-          <h2 className="font-primary text-2xl tracking-wide text-primary md:text-3xl xl:text-4xl">
-            Nos pages principales
-          </h2>
-        </div>
         <nav
           aria-label="Accès rapide"
           className="flex flex-wrap items-center justify-center gap-2 md:gap-3"
@@ -185,9 +174,9 @@ export function HomePage() {
             <Link
               key={to}
               to={to}
-              className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-secondary-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:gap-2 md:px-4 md:py-2 md:text-base"
+              className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-secondary-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:gap-3 md:px-6 md:py-2.5 md:text-lg"
             >
-              <Icon className="size-4 shrink-0 md:size-5" aria-hidden />
+              <Icon className="size-5 shrink-0 md:size-6" aria-hidden />
               {label}
             </Link>
           ))}
@@ -201,7 +190,6 @@ export function HomePage() {
             accueil={sections.accueil}
           />
           <InterclubRankings />
-          <SpaceCards />
           <PresidentQuote motPresident={sections.motPresident} />
           <Partners partners={sections.partenaires} />
         </Suspense>
