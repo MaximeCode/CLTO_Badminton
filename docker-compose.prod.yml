@@ -31,9 +31,6 @@ services:
     networks:
       - max_network
 
-    volumes:
-      - ./frontend/public/uploads:/usr/share/nginx/html/uploads:ro
-
   ## STRAPI ##
   backend:
     container_name: cltobadminton-strapi-prod
