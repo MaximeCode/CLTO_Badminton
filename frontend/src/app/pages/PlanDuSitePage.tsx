@@ -18,19 +18,6 @@ export function PlanDuSitePage() {
 
       <Section className="bg-white">
         <div className="mx-auto max-w-3xl space-y-10">
-          <p className="text-gray-600 text-sm md:text-base">
-            Cette page liste l&apos;ensemble des rubriques du site. Vous pouvez aussi consulter le{' '}
-            <a
-              href="/sitemap.xml"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-semibold text-primary underline underline-offset-2 hover:text-secondary"
-            >
-              sitemap XML
-            </a>{' '}
-            destiné aux moteurs de recherche.
-          </p>
-
           {SITE_MAP_SECTIONS.map((section, index) => (
             <section key={section.title} aria-labelledby={`sitemap-section-${index}`}>
               <h2

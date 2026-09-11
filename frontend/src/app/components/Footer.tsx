@@ -421,9 +421,6 @@ export function Footer() {
               <Link to="/plan-du-site" className="text-xs hover:text-secondary transition-colors">
                 Plan du site
               </Link>
-              <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer" className="text-xs hover:text-secondary transition-colors">
-                Sitemap XML
-              </a>
             </nav>
           </div>
         </div>
