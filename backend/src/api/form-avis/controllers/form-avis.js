@@ -2,12 +2,20 @@ const { buildAvisEmail } = require('../templates_js/form-avis');
 
 module.exports = {
   async send(ctx) {
-    const { name, email, message } = ctx.request.body;
-    const trimmedMessage = String(message ?? '').trim();
+    let { name, email, message } = ctx.request.body;
 
-    if (!trimmedMessage) {
-      return ctx.badRequest('Le champ avis est obligatoire.');
+    // Type checking and max length validation
+    if (name !== undefined && (typeof name !== 'string' || name.length > 255)) {
+        return ctx.badRequest('Le nom est invalide ou trop long.');
     }
+    if (email !== undefined && (typeof email !== 'string' || email.length > 255)) {
+        return ctx.badRequest('L\'email est invalide ou trop long.');
+    }
+    if (typeof message !== 'string' || message.length > 5000 || message.trim() === '') {
+        return ctx.badRequest('Le champ avis est obligatoire, invalide ou trop long.');
+    }
+
+    const trimmedMessage = message.trim();
 
     const recipient = process.env.AVIS_EMAIL;
     if (!recipient) {
@@ -15,13 +23,15 @@ module.exports = {
       return ctx.internalServerError('Configuration email avis manquante');
     }
 
+    const cleanEmail = String(email ?? '').replace(/[\r\n]/g, '').trim();
+    const cleanName = String(name ?? '').replace(/[\r\n]/g, '').trim();
+
     const { html, text, visitorName } = buildAvisEmail({
-      name,
-      email,
+      name: cleanName,
+      email: cleanEmail,
       message: trimmedMessage,
     });
 
-    const trimmedEmail = String(email ?? '').trim();
     const mailOptions = {
       to: recipient,
       from: process.env.SMTP_FROM || 'no-reply@cltobadminton.fr',
@@ -31,14 +41,14 @@ module.exports = {
       html,
     };
 
-    if (trimmedEmail) {
-      mailOptions.replyTo = trimmedEmail;
+    if (cleanEmail) {
+      mailOptions.replyTo = cleanEmail;
     }
 
     try {
       await strapi.plugins['email'].services.email.send(mailOptions);
       ctx.send({ message: 'Avis envoyé avec succès' });
-      console.info('[LOG] form-avis:', { name: name || null, email: trimmedEmail || null });
+      console.info('[LOG] form-avis:', { name: cleanName || null, email: cleanEmail || null });
     } catch (error) {
       console.error("[LOG] form-avis: Erreur lors de l'envoi de l'email", error);
       return ctx.internalServerError("Erreur lors de l'envoi de l'email");
