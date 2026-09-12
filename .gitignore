@@ -16,7 +16,7 @@ screen_txt_a_modifier
 /*.csv
 
 # uploads
-/uploads/
+frontend/public/uploads/
 
 # docs
 docs/*
