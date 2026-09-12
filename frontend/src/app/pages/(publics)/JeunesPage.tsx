@@ -11,14 +11,13 @@ import {
   Heart,
   Star,
   Trophy,
-  Gift,
   ShoppingBag,
-  CheckCircle,
 } from 'lucide-react';
 import { Link } from 'react-router';
 import { getPublicJeunes } from '@/api/strapi/publics';
 import type { PublicJeunes } from '@/types/publicsType';
-import { BlocksRenderer } from '@/app/components/BlocksRenderer';
+import { BlocksRenderer, listVariantFromTitle } from '@/app/components/BlocksRenderer';
+import { Seo } from '@/app/components/Seo';
 import { getParametresGlobaux } from '@/api/strapi/parametre-globaux';
 
 const benefits = [
@@ -77,14 +76,34 @@ export function JeunesPage() {
     loadData();
   }, []);
 
-  const informations = data?.informations ?? [];
-  const entrainements = data?.entrainements ?? [];
-  const tournois = data?.tournois_competitions ?? [];
-  const avantages = data?.les_avantages ?? [];
-  const prixVolants = data?.prix_volants ?? [];
+  const informations = (data?.informations ?? []).filter(
+    (carte) => carte?.contenu && carte.contenu.length > 0,
+  );
+  const entrainements = (data?.entrainements ?? []).filter(
+    (carte) => carte?.contenu && carte.contenu.length > 0,
+  );
+  const tournois = (data?.tournois_competitions ?? []).filter(
+    (item) => item?.contenu && item.contenu.length > 0,
+  );
+  const avantages = data?.les_avantages;
+  const inscriptionChamp = data?.inscription_champ;
+  const prixVolants = (data?.prix_volants ?? []).filter(
+    (item) => item != null && item.prix != null,
+  );
+  const hasAvantages = Boolean(avantages?.contenu && avantages.contenu.length > 0);
+  const hasInscriptionChamp = Boolean(
+    inscriptionChamp?.contenu && inscriptionChamp.contenu.length > 0,
+  );
 
   return (
     <>
+      <Seo
+        title="Jeunes"
+        description={
+          data?.description?.trim() ||
+          "Public jeunes du CLTO Badminton Orléans : apprentissage, loisir et compétition pour les enfants et adolescents."
+        }
+      />
       <PageHero
         title={data?.titre || BANDEAU_PAGES.JEUNES}
         subtitle={data?.description || "L'apprentissage et la compétition pour les jeunes, du loisir à la performance"}
@@ -158,7 +177,11 @@ export function JeunesPage() {
               >
                 <h3 className="font-primary text-3xl text-primary mb-4">{carteInfo.titre}</h3>
                 <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                  <BlocksRenderer content={carteInfo.contenu} headingOffset={3} />
+                  <BlocksRenderer
+                    content={carteInfo.contenu}
+                    headingOffset={3}
+                    listVariant={listVariantFromTitle(carteInfo.titre)}
+                  />
                 </div>
               </motion.article>
             ))}
@@ -192,7 +215,11 @@ export function JeunesPage() {
               >
                 <h3 className="font-primary text-2xl text-primary mb-4">{entrainement.titre}</h3>
                 <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                  <BlocksRenderer content={entrainement.contenu} headingOffset={3} />
+                  <BlocksRenderer
+                    content={entrainement.contenu}
+                    headingOffset={3}
+                    listVariant={listVariantFromTitle(entrainement.titre)}
+                  />
                 </div>
               </motion.div>
             ))}
@@ -229,7 +256,11 @@ export function JeunesPage() {
                   <p className="text-secondary font-semibold mb-4">{item.sous_titre}</p>
                 )}
                 <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                  <BlocksRenderer content={item.contenu} headingOffset={3} />
+                  <BlocksRenderer
+                    content={item.contenu}
+                    headingOffset={3}
+                    listVariant={listVariantFromTitle(item.titre)}
+                  />
                 </div>
               </motion.div>
             ))}
@@ -245,77 +276,42 @@ export function JeunesPage() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6">
-            <span className="text-secondary font-semibold">Reconnaissance FFBAD</span>
+          <div className="inline-block bg-secondary-accent rounded-full px-6 py-2 mb-6">
+            <span className="text-white font-semibold">Reconnaissance FFBAD</span>
           </div>
-          <h2 className="font-primary text-5xl md:text-6xl mb-6">
+          <h2 className="font-primary text-4xl md:text-5xl mb-6">
             ÉCOLE 4 ÉTOILES
           </h2>
           <div className="flex items-center justify-center gap-2 mb-6">
             {[1, 2, 3, 4].map((star) => (
-              <Star key={star} size={48} fill="#da9619" className="text-secondary" />
+              <Star key={star} size={48} fill="#ffbb00" className="text-[#ffbb00]" />
             ))}
             <Star size={48} className="text-white/30" />
           </div>
-          <p className="text-lg md:text-xl max-w-3xl mx-auto mb-4">
+          <p className="text-base md:text-xl max-w-3xl mx-auto mb-4">
             Notre école de badminton est labellisée <strong>4 étoiles</strong> par la Fédération Française de Badminton (FFBAD)
           </p>
-          <p className="text-white/90 max-w-2xl mx-auto mb-8">
+          <p className="text-white/90 text-sm max-w-2xl mx-auto mb-8">
             Cette reconnaissance témoigne de la qualité de notre enseignement, de nos infrastructures et de notre encadrement. Notre objectif : décrocher la 5ème étoile l'année prochaine !
           </p>
-          <div className="grid md:grid-cols-3 gap-8 mt-12">
+          <div className="grid md:grid-cols-3 gap-4 md:gap-8 mt-6 md:mt-12">
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-              <div className="text-4xl font-primary text-secondary mb-2">Excellence</div>
+              <div className="text-2xl md:text-4xl font-primary text-secondary-accent font-bold mb-2">Excellence</div>
               <p className="text-sm text-white/90">Formation de qualité reconnue</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-              <div className="text-4xl font-primary text-secondary mb-2">Encadrement</div>
+              <div className="text-2xl md:text-4xl font-primary text-secondary-accent font-bold mb-2">Encadrement</div>
               <p className="text-sm text-white/90">Entraîneurs diplômés FFBAD</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-              <div className="text-4xl font-primary text-secondary mb-2">Progression</div>
+              <div className="text-2xl md:text-4xl font-primary text-secondary-accent font-bold mb-2">Progression</div>
               <p className="text-sm text-white/90">Objectif 5ème étoile en 2027</p>
             </div>
           </div>
         </motion.div>
       </Section>
 
-      <Section className="bg-white">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-            S'INSCRIRE À UN CHAMPIONNAT
-          </h2>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-10 text-white shadow-lg w-full text-center"
-        >
-          <Trophy className="mx-auto mb-5" size={52} />
-          <h3 className="font-primary text-3xl mb-4">Championnats pris en charge par le club</h3>
-          <p className="text-white/90 leading-relaxed mb-4">
-            Les frais d&apos;inscription au championnat départemental individuel et au championnat
-            régional individuel sont intégralement pris en charge par le CLTO Badminton pour les
-            joueurs concernés. Les volants sont également fournis par le club lors de ces
-            compétitions.
-          </p>
-          <p className="text-white/90 leading-relaxed">
-            Les éventuels frais de déplacement, de restauration ou d&apos;hébergement ne sont pas
-            inclus dans cette prise en charge et restent soumis aux modalités définies par le club.
-          </p>
-        </motion.div>
-      </Section>
-
-      {(avantages.length > 0 || prixVolants.length > 0) && (
+      {(hasAvantages || prixVolants.length > 0) && (
         <Section className="bg-gray-50">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -325,31 +321,34 @@ export function JeunesPage() {
             className="text-center mb-12"
           >
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-              AVANTAGES COMPÉTITEURS
+              {avantages?.titre || 'LES AVANTAGES'}
             </h2>
           </motion.div>
 
-          <div className={`grid gap-8 ${avantages.length > 0 && prixVolants.length > 0 ? 'lg:grid-cols-2' : ''}`}>
-            {avantages.length > 0 && (
+          <div
+            className={
+              hasAvantages && prixVolants.length > 0
+                ? 'grid gap-8 lg:grid-cols-2'
+                : hasAvantages
+                  ? 'max-w-4xl mx-auto'
+                  : 'grid gap-8'
+            }
+          >
+            {hasAvantages && avantages && (
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="bg-white rounded-lg p-8 shadow-lg"
+                className="bg-white rounded-lg p-8 shadow-lg [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base"
               >
-                <h3 className="font-primary text-2xl text-primary mb-5 flex items-center gap-2">
-                  <Gift size={24} className="text-secondary" />
-                  Vos avantages
-                </h3>
-                <ul className="space-y-3">
-                  {avantages.map((avantage) => (
-                    <li key={avantage.id} className="flex items-start gap-3 text-gray-700">
-                      <CheckCircle size={20} className="text-secondary shrink-0 mt-0.5" />
-                      <span>{avantage.contenu}</span>
-                    </li>
-                  ))}
-                </ul>
+                <BlocksRenderer
+                  content={avantages.contenu}
+                  size="sm"
+                  sizeDesktop="lg"
+                  headingOffset={2}
+                  listVariant={listVariantFromTitle(avantages.titre)}
+                />
               </motion.div>
             )}
 
@@ -402,30 +401,157 @@ export function JeunesPage() {
         </Section>
       )}
 
-      <Section className="bg-linear-to-r from-primary to-primary-accent text-white text-center">
+      {data?.prix_licence != null && (
+        <Section className="bg-gray-50">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">TARIFS</h2>
+            <p className="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
+              L&apos;adhésion au club vous donne accès à tous les créneaux jeu libre de la semaine.
+              Les licenciés présents au club la saison dernière bénéficient de <strong>20&nbsp;€</strong> de
+              réduction.
+            </p>
+
+            {/*
+              mobile: colonne ; tablette: grille 2×2 (4 cartes) ;
+              desktop: mère centrée puis 3 enfants en ligne
+            */}
+            <div className="mx-auto grid max-w-5xl grid-cols-1 gap-0 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
+              <div className="bg-white rounded-lg p-4 md:p-8 shadow-md lg:col-span-3 lg:mx-auto lg:w-full lg:max-w-md">
+                <div className="text-secondary text-5xl font-bold mb-2">
+                  {Number(data.prix_licence).toLocaleString('fr-FR')}€
+                </div>
+                <div className="text-gray-600 mb-2">par an (licence FFBaD incluse)</div>
+                <p className="text-secondary text-sm font-semibold mb-6">
+                  Accès à tous les jeu libres
+                </p>
+                <Link
+                  to="/adherer"
+                  className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+                >
+                  S&apos;inscrire
+                </Link>
+              </div>
+
+              {/* Connecteur : visible mobile + desktop, masqué tablette */}
+              <div
+                className="relative mx-auto w-full max-w-5xl md:hidden lg:col-span-3 lg:block"
+                aria-hidden
+              >
+                <div className="mx-auto h-8 w-0.5 bg-gray-300" />
+                <div className="relative mx-auto hidden h-8 lg:block">
+                  <div className="absolute left-[16.666%] right-[16.666%] top-0 h-0.5 bg-gray-300" />
+                  <div className="absolute left-[16.666%] top-0 h-8 w-0.5 -translate-x-1/2 bg-gray-300" />
+                  <div className="absolute left-1/2 top-0 h-8 w-0.5 -translate-x-1/2 bg-gray-300" />
+                  <div className="absolute left-[83.333%] top-0 h-8 w-0.5 -translate-x-1/2 bg-gray-300" />
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg p-4 md:p-8 shadow-md">
+                <div className="text-secondary text-4xl font-semibold mb-2">+50&nbsp;€</div>
+                <div className="text-gray-600 mb-6">
+                  1 cours collectif hebdomadaire{' '}
+                  <span className="italic text-primary-accent">(hors babybad et minibad)</span>
+                </div>
+                <Link
+                  to="/adherer"
+                  className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+                >
+                  S&apos;inscrire
+                </Link>
+              </div>
+
+              <div className="mx-auto h-6 w-0.5 bg-gray-300 md:hidden" aria-hidden />
+
+              <div className="bg-white rounded-lg p-4 md:p-8 shadow-md">
+                <div className="text-secondary text-4xl font-semibold mb-2">+100&nbsp;€</div>
+                <div className="text-gray-600 mb-6">2 cours collectifs hebdomadaires</div>
+                <Link
+                  to="/adherer"
+                  className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+                >
+                  S&apos;inscrire
+                </Link>
+              </div>
+
+              <div className="mx-auto h-6 w-0.5 bg-gray-300 md:hidden" aria-hidden />
+
+              <div className="bg-white rounded-lg p-4 md:p-8 shadow-md">
+                <div className="text-secondary text-4xl font-semibold mb-2">+125&nbsp;€</div>
+                <div className="text-gray-600 mb-6">3 cours collectifs hebdomadaires</div>
+                <Link
+                  to="/adherer"
+                  className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+                >
+                  S&apos;inscrire
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        </Section>
+      )}
+
+      {hasInscriptionChamp && inscriptionChamp && (
+        <Section className="bg-white">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
+              S'INSCRIRE À UN CHAMPIONNAT
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-10 text-white shadow-lg w-full text-center"
+          >
+            <Trophy className="mx-auto mb-5" size={52} />
+            <h3 className="font-primary text-3xl mb-4">{inscriptionChamp.titre}</h3>
+            <BlocksRenderer
+              content={inscriptionChamp.contenu}
+              variant="onPrimary"
+              size="base"
+              headingOffset={3}
+            />
+          </motion.div>
+        </Section>
+      )}
+
+      <Section className="bg-white">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:text-center shadow-lg text-white"
         >
-          <h2 className="font-primary text-4xl text-white mb-4">
-            INSCRIVEZ VOTRE ENFANT
-          </h2>
+          <h2 className="font-primary text-4xl mb-4">INSCRIVEZ VOTRE ENFANT</h2>
           <p className="text-white/90 text-md mb-8 max-w-2xl mx-auto">
-            Les inscriptions sont ouvertes toute l'année. Deux séances d'essai gratuites !
+            Les inscriptions sont ouvertes toute l&apos;année. Deux séances d&apos;essai gratuites !
           </p>
           <Link
             to="/adherer"
             className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
           >
-            S'inscrire
+            S&apos;inscrire
           </Link>
         </motion.div>
       </Section>
 
       {loadError && (
-        <p className="sr-only" role="alert">
+        <p className="px-6 pb-6 text-center text-red-600" role="alert">
           {loadError}
         </p>
       )}

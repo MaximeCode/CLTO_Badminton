@@ -10,13 +10,12 @@ import {
   Scale,
   Sparkles,
   Smile,
-  Gift,
-  CheckCircle,
 } from 'lucide-react';
 import { Link } from 'react-router';
 import { getPublicAdultesLoisirs } from '@/api/strapi/publics';
 import type { PublicAdultesLoisirs } from '@/types/publicsType';
-import { BlocksRenderer } from '@/app/components/BlocksRenderer';
+import { BlocksRenderer, listVariantFromTitle } from '@/app/components/BlocksRenderer';
+import { Seo } from '@/app/components/Seo';
 
 const espritLoisirs = [
   {
@@ -74,11 +73,24 @@ export function AdultesLoisirsPage() {
     loadData();
   }, []);
 
-  const vieDuClub = data?.vie_du_club ?? [];
-  const avantages = data?.les_avantages ?? [];
+  const vieDuClub = (data?.vie_du_club ?? []).filter(
+    (carte) => carte?.contenu && carte.contenu.length > 0,
+  );
+  const avantages = data?.les_avantages;
+  const envieDeProgresser = data?.envie_de_progresser;
+  const hasEnvieDeProgresser = Boolean(
+    envieDeProgresser?.contenu && envieDeProgresser.contenu.length > 0,
+  );
 
   return (
     <>
+      <Seo
+        title="Adultes loisirs"
+        description={
+          data?.description?.trim() ||
+          'Badminton adultes loisirs au CLTO Badminton Orléans : pratique conviviale pour tous les niveaux.'
+        }
+      />
       <PageHero
         title={data?.titre || BANDEAU_PAGES.ADULTES_LOISIRS}
         subtitle={data?.description || 'Le badminton en toute convivialité'}
@@ -123,7 +135,7 @@ export function AdultesLoisirsPage() {
         </div>
       </Section>
 
-      {data?.envie_de_progresser && (
+      {hasEnvieDeProgresser && envieDeProgresser && (
         <Section className="bg-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -133,10 +145,15 @@ export function AdultesLoisirsPage() {
             className="max-w-4xl mx-auto bg-white rounded-lg p-8 shadow-lg"
           >
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4 text-center">
-              {data.envie_de_progresser.titre}
+              {envieDeProgresser.titre}
             </h2>
             <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-              <BlocksRenderer content={data.envie_de_progresser.contenu} size="lg" headingOffset={1} />
+              <BlocksRenderer
+                content={envieDeProgresser.contenu}
+                size="lg"
+                headingOffset={1}
+                listVariant={listVariantFromTitle(envieDeProgresser.titre)}
+              />
             </div>
           </motion.div>
         </Section>
@@ -168,48 +185,15 @@ export function AdultesLoisirsPage() {
               >
                 <h3 className="font-primary text-2xl text-primary mb-4">{carte.titre}</h3>
                 <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                  <BlocksRenderer content={carte.contenu} headingOffset={3} />
+                  <BlocksRenderer
+                    content={carte.contenu}
+                    headingOffset={3}
+                    listVariant={listVariantFromTitle(carte.titre)}
+                  />
                 </div>
               </motion.article>
             ))}
           </div>
-        </Section>
-      )}
-
-      {avantages.length > 0 && (
-        <Section className="bg-white">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-              LES AVANTAGES
-            </h2>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-gray-50 rounded-lg p-8 shadow-lg max-w-3xl mx-auto"
-          >
-            <h3 className="font-primary text-2xl text-primary mb-5 flex items-center gap-2">
-              <Gift size={24} className="text-secondary" />
-              Vos avantages
-            </h3>
-            <ul className="space-y-3">
-              {avantages.map((avantage) => (
-                <li key={avantage.id} className="flex items-start gap-3 text-gray-700">
-                  <CheckCircle size={20} className="text-secondary shrink-0 mt-0.5" />
-                  <span>{avantage.contenu}</span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
         </Section>
       )}
 
@@ -220,13 +204,14 @@ export function AdultesLoisirsPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="p-12 text-center"
+            className="text-center"
           >
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">TARIFS</h2>
             <p className="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
               L&apos;adhésion au club vous donne accès à tous les créneaux loisir de la semaine.
-              Les licenciés présents au club la saison dernière peuvent bénéficier de 20&nbsp;€ de
-              réduction.
+              Les licenciés présents au club la saison dernière peuvent bénéficier de <strong>20&nbsp;€</strong> de
+              réduction.<br />
+              <span className="text-gray-600 text-sm italic">*Tarifs pour les catégories Débutant & Intermédiaire</span>
             </p>
             <div className="bg-white rounded-lg p-8 max-w-md mx-auto shadow-md">
               <div className="text-secondary text-5xl font-bold mb-2">
@@ -240,6 +225,56 @@ export function AdultesLoisirsPage() {
                 S&apos;inscrire
               </Link>
             </div>
+
+            {/* Branchement type organigramme vers option entraînement */}
+            <div className="relative mx-auto max-w-md" aria-hidden>
+              <div className="mx-auto h-8 w-0.5 bg-gray-300" />
+            </div>
+
+            <div className="bg-white rounded-lg p-8 max-w-md mx-auto shadow-md">
+              <div className="text-secondary text-4xl font-semibold mb-2">+100&nbsp;€</div>
+              <div className="text-gray-600 mb-6">
+                pour 1 entraînement, avec un entraîneur diplômé
+              </div>
+              <Link
+                to="/adherer"
+                className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
+              >
+                S&apos;inscrire
+              </Link>
+            </div>
+          </motion.div>
+        </Section>
+      )}
+
+      {avantages?.contenu && avantages.contenu.length > 0 && (
+        <Section className="bg-gray-50">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
+              {avantages.titre || 'LES AVANTAGES'}
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-white rounded-lg p-8 shadow-lg max-w-4xl mx-auto [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base"
+          >
+            <BlocksRenderer
+              content={avantages.contenu}
+              size="sm"
+              sizeDesktop="lg"
+              headingOffset={2}
+              listVariant={listVariantFromTitle(avantages.titre)}
+            />
           </motion.div>
         </Section>
       )}
@@ -250,9 +285,9 @@ export function AdultesLoisirsPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-12 text-center shadow-lg text-white"
+          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:text-center shadow-lg text-white"
         >
-          <h2 className="font-primary text-4xl mb-4">Pourquoi nous rejoindre ?</h2>
+          <h2 className="font-primary text-4xl mb-4">REJOIGNEZ-NOUS</h2>
           <p className="text-white/90 text-md mb-8 max-w-2xl mx-auto">
             Rejoignez les créneaux Adultes Loisirs pour jouer à votre rythme, dans une ambiance
             conviviale.
@@ -261,13 +296,13 @@ export function AdultesLoisirsPage() {
             to="/adherer"
             className="inline-block bg-secondary text-white px-8 py-3 rounded-md hover:bg-secondary-accent transition-colors duration-200"
           >
-            S'inscrire
+            S&apos;inscrire
           </Link>
         </motion.div>
       </Section>
 
       {loadError && (
-        <p className="sr-only" role="alert">
+        <p className="px-6 pb-6 text-center text-red-600" role="alert">
           {loadError}
         </p>
       )}

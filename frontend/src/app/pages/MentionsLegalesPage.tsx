@@ -3,6 +3,7 @@ import { PageHero } from '../components/PageHero';
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
+import { Seo } from '../components/Seo';
 
 function LegalSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -18,6 +19,10 @@ export function MentionsLegalesPage() {
 
   return (
     <>
+      <Seo
+        title="Mentions légales"
+        description="Mentions légales du site du CLTO Badminton Orléans : éditeur, hébergeur, propriété intellectuelle et responsabilités."
+      />
       <PageHero
         title="MENTIONS LÉGALES"
         subtitle="Informations légales relatives au site du CLTO Badminton"

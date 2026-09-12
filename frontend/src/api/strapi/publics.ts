@@ -9,50 +9,58 @@ import type {
   ContenuPublic,
   PrixVolant,
 } from "@/types/publicsType";
-import type { Avantage, Media } from "@/types/baseType";
+import type { Media } from "@/types/baseType";
 
-function mapInformations(items: InformationsPublic[] | null | undefined): InformationsPublic[] {
-  return (items ?? []).map((item) => ({
-    id: item.id,
-    titre: item.titre,
-    contenu: item.contenu,
-  }));
+function mapInformations(
+  items: Array<InformationsPublic | null | undefined> | null | undefined,
+): InformationsPublic[] {
+  return (items ?? [])
+    .filter((item): item is InformationsPublic => item != null)
+    .map((item) => ({
+      id: item.id,
+      titre: item.titre ?? "",
+      contenu: item.contenu ?? [],
+    }));
 }
 
-function mapContenus(items: ContenuPublic[] | null | undefined): ContenuPublic[] {
-  return (items ?? []).map((item) => ({
+function mapInformation(
+  item: InformationsPublic | null | undefined,
+): InformationsPublic | null {
+  if (!item) return null;
+  return {
     id: item.id,
-    titre: item.titre,
-    sous_titre: item.sous_titre ?? null,
-    contenu: item.contenu,
-  }));
+    titre: item.titre ?? "",
+    contenu: item.contenu ?? [],
+  };
 }
 
-function mapAvantages(items: Avantage[] | null | undefined): Avantage[] {
-  return (items ?? []).map((item) => ({
-    id: item.id,
-    contenu: item.contenu,
-  }));
+function mapContenus(
+  items: Array<ContenuPublic | null | undefined> | null | undefined,
+): ContenuPublic[] {
+  return (items ?? [])
+    .filter((item): item is ContenuPublic => item != null)
+    .map((item) => ({
+      id: item.id,
+      titre: item.titre ?? "",
+      sous_titre: item.sous_titre ?? null,
+      contenu: item.contenu ?? [],
+    }));
 }
 
-function mapPrixVolants(items: PrixVolant[] | null | undefined): PrixVolant[] {
-  return (items ?? []).map((item) => ({
-    id: item.id,
-    volants: item.volants,
-    prix: item.prix,
-  }));
+function mapPrixVolants(
+  items: Array<PrixVolant | null | undefined> | null | undefined,
+): PrixVolant[] {
+  return (items ?? [])
+    .filter((item): item is PrixVolant => item != null)
+    .map((item) => ({
+      id: item.id,
+      volants: item.volants,
+      prix: item.prix,
+    }));
 }
 
-function mapMedia(media: Media | null | undefined): Media {
-  if (!media) {
-    return {
-      id: 0,
-      documentId: "",
-      name: "",
-      alternativeText: null,
-      url: "",
-    };
-  }
+function mapMedia(media: Media | null | undefined): Media | null {
+  if (!media) return null;
 
   return {
     id: media.id,
@@ -79,8 +87,12 @@ export async function getPublicAdultesCompetiteurs(): Promise<PublicAdultesCompe
     id: data.id,
     documentId: data.documentId,
     ...mapBannerFields(data),
+    prix_licence: data.prix_licence ?? null,
+    envie_de_progresser: mapInformation(data.envie_de_progresser),
+    vie_du_club: mapInformations(data.vie_du_club),
     tournois_competitions: mapContenus(data.tournois_competitions),
-    les_avantages: mapAvantages(data.les_avantages),
+    inscription_champ: mapInformation(data.inscription_champ),
+    les_avantages: mapInformation(data.les_avantages),
   };
 }
 
@@ -90,14 +102,10 @@ export async function getPublicAdultesLoisirs(): Promise<PublicAdultesLoisirs> {
     id: data.id,
     documentId: data.documentId,
     ...mapBannerFields(data),
-    prix_licence: data.prix_licence,
-    envie_de_progresser: {
-      id: data.envie_de_progresser.id,
-      titre: data.envie_de_progresser.titre,
-      contenu: data.envie_de_progresser.contenu,
-    },
+    prix_licence: data.prix_licence ?? null,
+    envie_de_progresser: mapInformation(data.envie_de_progresser),
     vie_du_club: mapInformations(data.vie_du_club),
-    les_avantages: mapAvantages(data.les_avantages),
+    les_avantages: mapInformation(data.les_avantages),
   };
 }
 
@@ -110,7 +118,7 @@ export async function getPublicEntreprise(): Promise<PublicEntreprise> {
     lien_dossier_partenariat: data.lien_dossier_partenariat ?? null,
     flyer: mapMedia(data.flyer),
     partenariat: mapInformations(data.partenariat),
-    les_avantages: mapAvantages(data.les_avantages),
+    les_avantages: mapInformation(data.les_avantages),
   };
 }
 
@@ -120,10 +128,12 @@ export async function getPublicJeunes(): Promise<PublicJeunes> {
     id: data.id,
     documentId: data.documentId,
     ...mapBannerFields(data),
+    prix_licence: data.prix_licence ?? null,
     informations: mapInformations(data.informations),
     entrainements: mapInformations(data.entrainements),
     tournois_competitions: mapContenus(data.tournois_competitions),
-    les_avantages: mapAvantages(data.les_avantages),
+    inscription_champ: mapInformation(data.inscription_champ),
+    les_avantages: mapInformation(data.les_avantages),
     prix_volants: mapPrixVolants(data.prix_volants),
   };
 }
@@ -136,6 +146,6 @@ export async function getPublicVieillesPlumes(): Promise<PublicVieillesPlumes> {
     ...mapBannerFields(data),
     format_simple: data.format_simple ?? [],
     tournois_competitions: mapInformations(data.tournois_competitions),
-    les_avantages: mapAvantages(data.les_avantages),
+    les_avantages: mapInformation(data.les_avantages),
   };
 }

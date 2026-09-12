@@ -7,7 +7,14 @@ import type {
   TextInlineNode,
 } from "@/types/blocks";
 import { API_URL } from "@/api/Client";
-import React from "react";
+import React, { useState } from "react";
+import { CheckCircle } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "./ui/dialog";
+import { resolveMediaAlt } from "@/utils/media";
 
 type InlineNode = TextInlineNode | { type: "link"; url: string; children: TextInlineNode[] };
 
@@ -127,24 +134,109 @@ function renderInline(
   });
 }
 
+type BlocksImageProps = {
+  src: string;
+  alt: string;
+  caption?: string | null;
+  width?: number;
+  height?: number;
+  figcaptionClass: string;
+};
+
+function BlocksImage({
+  src,
+  alt,
+  caption,
+  width,
+  height,
+  figcaptionClass,
+}: BlocksImageProps) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <figure className="my-8">
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="block w-full cursor-zoom-in rounded-2xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
+          aria-label={`Agrandir l'image : ${alt}`}
+        >
+          <img
+            src={src}
+            alt={alt}
+            className="w-full rounded-2xl shadow-md max-h-150 object-contain transition-opacity hover:opacity-90"
+            width={width}
+            height={height}
+          />
+        </button>
+        {caption && (
+          <figcaption className={figcaptionClass}>{caption}</figcaption>
+        )}
+      </figure>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="flex max-h-[80vh] w-[80vw] max-w-[80vw] items-center justify-center border-0 bg-transparent p-2 shadow-none sm:max-w-[80vw] sm:p-3 [&>button]:top-2 [&>button]:right-2 [&>button]:rounded-full [&>button]:bg-black/50 [&>button]:p-2 [&>button]:text-white [&>button]:hover:bg-black/70">
+          <DialogTitle className="sr-only">{alt}</DialogTitle>
+          <img
+            src={src}
+            alt={alt}
+            className="max-h-[96vh] max-w-full rounded-lg object-contain"
+            width={width}
+            height={height}
+          />
+          {caption && (
+            <p className="mt-2 text-center text-sm text-white/80">{caption}</p>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
+type ListVariant = "default" | "checklist";
+
+/** Checklist si le titre du composant contient « avantage » (insensible à la casse). */
+export function listVariantFromTitle(titre?: string | null): ListVariant {
+  return titre && /avantage/i.test(titre) ? "checklist" : "default";
+}
+
 function renderList(
   list: ListBlockNode,
   key: string,
   styles: VariantStyles,
+  listVariant: ListVariant = "default",
 ): React.ReactNode {
+  const isChecklist = listVariant === "checklist" && list.format !== "ordered";
   const Tag = list.format === "ordered" ? "ol" : "ul";
-  const listClass =
-    list.format === "ordered"
-      ? `list-decimal pl-6 space-y-2`
-      : `list-disc pl-6 space-y-2`;
+  const listClass = isChecklist
+    ? "list-none space-y-2.5 pl-0"
+    : list.format === "ordered"
+      ? "list-decimal pl-6 space-y-2"
+      : "list-disc pl-6 space-y-2";
 
   return (
     <Tag key={key} className={listClass}>
       {list.children.map((child, index) => {
         if (child.type === "list") {
-          return renderList(child, `${key}-nested-${index}`, styles);
+          return renderList(child, `${key}-nested-${index}`, styles, listVariant);
         }
         const item = child as ListItemInlineNode;
+        if (isChecklist) {
+          return (
+            <li
+              key={`${key}-item-${index}`}
+              className={`flex items-start gap-2.5 ${styles.list} leading-relaxed`}
+            >
+              <CheckCircle
+                size={20}
+                className="mt-0.5 shrink-0 text-secondary"
+                aria-hidden
+              />
+              <span>{renderInline(item.children, `${key}-item-${index}`, styles)}</span>
+            </li>
+          );
+        }
         return (
           <li key={`${key}-item-${index}`} className={`${styles.list} leading-relaxed`}>
             {renderInline(item.children, `${key}-item-${index}`, styles)}
@@ -160,6 +252,7 @@ function renderBlock(
   index: number,
   styles: VariantStyles,
   resolvedLevel?: number,
+  listVariant: ListVariant = "default",
 ): React.ReactNode {
   const key = `block-${index}`;
 
@@ -217,26 +310,31 @@ function renderBlock(
         </pre>
       );
     case "list":
-      return <div key={key} className="mb-6">{renderList(block, key, styles)}</div>;
+      return (
+        <div key={key} className="mb-6">
+          {renderList(block, key, styles, listVariant)}
+        </div>
+      );
     case "image": {
       const src = block.image.url.startsWith("http")
         ? block.image.url
         : `${API_URL}${block.image.url}`;
       return (
-        <figure key={key} className="my-8">
-          <img
-            src={src}
-            alt={block.image.alternativeText ?? block.image.name}
-            className="w-full rounded-2xl shadow-md max-h-150 object-contain"
-            width={block.image.width}
-            height={block.image.height}
-          />
-          {block.image.caption && (
-            <figcaption className={styles.figcaption}>
-              {block.image.caption}
-            </figcaption>
+        <BlocksImage
+          key={key}
+          src={src}
+          alt={resolveMediaAlt(
+            {
+              alternativeText: block.image.alternativeText,
+              name: block.image.name,
+            },
+            block.image.caption,
           )}
-        </figure>
+          caption={block.image.caption}
+          width={block.image.width}
+          height={block.image.height}
+          figcaptionClass={styles.figcaption}
+        />
       );
     }
     default:
@@ -245,7 +343,7 @@ function renderBlock(
 }
 
 type BlocksRendererProps = {
-  content: BlocksContent;
+  content?: BlocksContent | null;
   /** `onPrimary` = texte clair pour fond coloré (ex. Mot du Président) */
   variant?: BlocksVariant;
   /** Taille mobile des paragraphes / listes. Défaut `lg` = comportement historique. */
@@ -257,6 +355,8 @@ type BlocksRendererProps = {
    * devient un h2). Les niveaux relatifs CMS sont conservés sans trous.
    */
   headingOffset?: number;
+  /** `checklist` = puces remplacées par une icône CheckCircle (couleur secondary). */
+  listVariant?: ListVariant;
 };
 
 /**
@@ -296,8 +396,9 @@ export function BlocksRenderer({
   size = "lg",
   sizeDesktop,
   headingOffset = 0,
+  listVariant = "default",
 }: BlocksRendererProps) {
-  if (!content.length) {
+  if (!content?.length) {
     return null;
   }
 
@@ -307,7 +408,7 @@ export function BlocksRenderer({
   return (
     <div className="blocks-content">
       {content.map((block, i) =>
-        renderBlock(block, i, styles, headingLevels.get(i)),
+        renderBlock(block, i, styles, headingLevels.get(i), listVariant),
       )}
     </div>
   );

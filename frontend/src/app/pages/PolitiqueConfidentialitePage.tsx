@@ -3,6 +3,7 @@ import { PageHero } from '../components/PageHero';
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
+import { Seo } from '../components/Seo';
 
 function LegalSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -18,6 +19,10 @@ export function PolitiqueConfidentialitePage() {
 
   return (
     <>
+      <Seo
+        title="Politique de confidentialité"
+        description="Politique de confidentialité du CLTO Badminton Orléans : données personnelles, cookies, droits et durées de conservation."
+      />
       <PageHero
         title="POLITIQUE DE CONFIDENTIALITÉ"
         subtitle="Protection des données personnelles - CLTO Badminton"

@@ -1,5 +1,5 @@
 import type { BlocksContent } from "@/types/blocks";
-import type { Avantage, Base, Media } from "@/types/baseType";
+import type { Base, Media } from "@/types/baseType";
 
 export type InformationsPublic = {
   id: number;
@@ -23,42 +23,44 @@ export type PrixVolant = {
 type PublicFields = {
   titre?: string | null;
   description?: string | null;
+  les_avantages?: InformationsPublic | null;
 };
 
 export type PublicAdultesCompetiteurs = Base &
   PublicFields & {
+    prix_licence?: number | null;
+    envie_de_progresser?: InformationsPublic | null;
+    vie_du_club: InformationsPublic[];
     tournois_competitions: ContenuPublic[];
-    les_avantages: Avantage[];
+    inscription_champ?: InformationsPublic | null;
   };
 
 export type PublicAdultesLoisirs = Base &
   PublicFields & {
-    prix_licence: number;
-    envie_de_progresser: InformationsPublic;
+    prix_licence?: number | null;
+    envie_de_progresser?: InformationsPublic | null;
     vie_du_club: InformationsPublic[];
-    les_avantages: Avantage[];
   };
 
 export type PublicEntreprise = Base &
   PublicFields & {
     lien_dossier_partenariat?: string | null;
-    flyer: Media;
+    flyer?: Media | null;
     partenariat: InformationsPublic[];
-    les_avantages: Avantage[];
   };
 
 export type PublicJeunes = Base &
   PublicFields & {
+    prix_licence?: number | null;
     informations: InformationsPublic[];
     entrainements: InformationsPublic[];
     tournois_competitions: ContenuPublic[];
-    les_avantages: Avantage[];
+    inscription_champ?: InformationsPublic | null;
     prix_volants: PrixVolant[];
   };
 
 export type PublicVieillesPlumes = Base &
   PublicFields & {
-    format_simple: BlocksContent;
+    format_simple?: BlocksContent | null;
     tournois_competitions: InformationsPublic[];
-    les_avantages: Avantage[];
   };

@@ -4,7 +4,7 @@
   "info": {
     "singularName": "public-entreprise",
     "pluralName": "publics-entreprise",
-    "displayName": "Public Entreprise"
+    "displayName": "Public Entreprises"
   },
   "options": {
     "draftAndPublish": true
@@ -36,8 +36,8 @@
     },
     "les_avantages": {
       "type": "component",
-      "component": "contenu-page.liste-txt",
-      "repeatable": true
+      "component": "infos-publics.carte-d-informations",
+      "repeatable": false
     }
   }
 }

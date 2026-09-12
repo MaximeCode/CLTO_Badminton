@@ -100,10 +100,10 @@ export function MobileCarousel<T>({
           type="button"
           aria-label={prevAriaLabel}
           onClick={goToPrev}
-          className="flex items-center justify-center cursor-pointer focus:outline-none"
+          className="flex items-center justify-center cursor-pointer rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
         >
           <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md text-primary hover:bg-primary hover:text-white transition-colors duration-200">
-            <ChevronLeft size={20} />
+            <ChevronLeft size={20} aria-hidden />
           </span>
         </button>
 
@@ -111,10 +111,10 @@ export function MobileCarousel<T>({
           type="button"
           aria-label={nextAriaLabel}
           onClick={goToNext}
-          className="flex items-center justify-center cursor-pointer focus:outline-none"
+          className="flex items-center justify-center cursor-pointer rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
         >
           <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md text-primary hover:bg-primary hover:text-white transition-colors duration-200">
-            <ChevronRight size={20} />
+            <ChevronRight size={20} aria-hidden />
           </span>
         </button>
       </div>

@@ -4,7 +4,7 @@
   "info": {
     "singularName": "mot-du-president",
     "pluralName": "mot-du-presidents",
-    "displayName": "Mot du président"
+    "displayName": "Mots du président"
   },
   "options": {
     "draftAndPublish": true

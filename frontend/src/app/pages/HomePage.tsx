@@ -1,4 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router';
+import { Clock } from 'lucide-react';
 import { Hero, type HeroSlide } from '../components/Hero';
 import { Seo } from '../components/Seo';
 import { DEFAULT_DESCRIPTION, SITE_NAME } from '@/utils/seo';
@@ -18,15 +20,16 @@ const ClubStats = lazy(() =>
 const InterclubRankings = lazy(() =>
   import('../components/InterclubRankings').then((m) => ({ default: m.InterclubRankings })),
 );
-const SpaceCards = lazy(() =>
-  import('../components/SpaceCards').then((m) => ({ default: m.SpaceCards })),
-);
 const PresidentQuote = lazy(() =>
   import('../components/MotPresident').then((m) => ({ default: m.PresidentQuote })),
 );
 const Partners = lazy(() =>
   import('../components/Partners').then((m) => ({ default: m.Partners })),
 );
+
+const QUICK_LINKS = [
+  { label: 'Nos créneaux hebdomadaires', to: '/creneaux', icon: Clock },
+] as const;
 
 function BelowFoldFallback() {
   return <div className="min-h-24" aria-hidden />;
@@ -156,6 +159,29 @@ export function HomePage() {
         jsonLd={homeJsonLd}
       />
       <Hero slides={heroSlides} />
+      <div className="w-9/10 mx-auto">
+        <div className="rounded-full bg-primary-accent my-4 w-9/10 md:my-8 md:w-4/5 max-w-250 mx-auto">
+
+          <p className="py-2 text-center text-lg font-bold text-balance text-white md:py-3 md:text-2xl">
+            Bienvenue au CLTO Badminton, le club de badminton d&apos;Orléans&nbsp;!
+          </p>
+        </div>
+        <nav
+          aria-label="Accès rapide"
+          className="flex flex-wrap items-center justify-center gap-2 md:gap-3"
+        >
+          {QUICK_LINKS.map(({ label, to, icon: Icon }) => (
+            <Link
+              key={to}
+              to={to}
+              className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-secondary-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:gap-3 md:px-6 md:py-2.5 md:text-lg"
+            >
+              <Icon className="size-5 shrink-0 md:size-6" aria-hidden />
+              {label}
+            </Link>
+          ))}
+        </nav>
+      </div>
       {sections ? (
         <Suspense fallback={<BelowFoldFallback />}>
           <FeaturedNews articles={sections.featuredArticles} />
@@ -164,7 +190,6 @@ export function HomePage() {
             accueil={sections.accueil}
           />
           <InterclubRankings />
-          <SpaceCards />
           <PresidentQuote motPresident={sections.motPresident} />
           <Partners partners={sections.partenaires} />
         </Suspense>

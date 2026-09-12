@@ -9,6 +9,7 @@ import { stringifyDate } from '@/utils/formatDate';
 import { BlocksRenderer } from '../components/BlocksRenderer';
 import { Seo } from '../components/Seo';
 import { motion } from 'motion/react';
+import { resolveMediaAlt } from '@/utils/media';
 
 const userAvatar = new URL('../../imports/user.webp', import.meta.url).href;
 
@@ -76,8 +77,8 @@ export function ActualitePage() {
           <div className="h-full flex flex-col-reverse items-center gap-4 sm:gap-8 md:flex-row md:gap-12 min-w-0">
 
             {loading && (
-              <div className="min-h-40 sm:min-h-[50vh] w-full min-w-0 flex items-center justify-center">
-                <Loader2 className="w-10 h-10 animate-spin text-secondary" />
+              <div className="min-h-40 sm:min-h-[50vh] w-full min-w-0 flex items-center justify-center" role="status">
+                <Loader2 className="w-10 h-10 animate-spin text-secondary" aria-hidden />
                 <p className="text-white text-xl ml-3">Chargement…</p>
               </div>
             )}
@@ -97,7 +98,7 @@ export function ActualitePage() {
               </div>
             </motion.div>
 
-            {/* Right - vignette, ~30% (contrainte taille sur mobile pour éviter overflow) */}
+            {/* Right - vignette, ~30% (contrainte taille pour rester dans le bandeau) */}
             {article?.vignette.url && (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
@@ -108,8 +109,8 @@ export function ActualitePage() {
                 <div className="overflow-hidden rounded-xl border-2 border-secondary/50 shadow-2xl ring-2 ring-white/10">
                   <img
                     src={article.vignette.url}
-                    alt={article.titre ?? ''}
-                    className="h-auto w-full max-w-full object-contain"
+                    alt={resolveMediaAlt(article.vignette, article.titre)}
+                    className="h-auto w-full max-w-full max-h-52 sm:max-h-60 md:max-h-72 object-contain"
                   />
                 </div>
               </motion.div>
@@ -131,7 +132,7 @@ export function ActualitePage() {
         </div>
 
         {loadError && (
-          <div className="bg-red-500 text-white p-4 rounded-lg">
+          <div className="bg-red-500 text-white p-4 rounded-lg" role="alert">
             {loadError}
           </div>
         )}

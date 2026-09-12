@@ -1,4 +1,9 @@
 module.exports = ({ env }) => ({
+    // Widgets admin : Dernières entrées éditées / publiées avec Créé par et Créé le
+    'enhanced-homepage': {
+        enabled: true,
+        resolve: './src/plugins/enhanced-homepage',
+    },
     'icbad-scraper': {
         enabled: true,
         resolve: './src/plugins/icbad-scraper',

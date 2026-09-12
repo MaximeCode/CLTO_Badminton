@@ -1,6 +1,39 @@
+import { Pencil, CheckCircle } from '@strapi/icons';
 import { mountEnvBanner } from './EnvBanner';
 
 export default {
+  register(app) {
+    if (!('widgets' in app)) return;
+
+    app.widgets.register([
+      {
+        icon: Pencil,
+        title: {
+          id: 'enhanced-homepage.widget.last-edited.title',
+          defaultMessage: 'Last edited entries',
+        },
+        component: async () => {
+          const { EnhancedLastEditedWidget } = await import('./widgets/RecentEntriesWidgets');
+          return EnhancedLastEditedWidget;
+        },
+        id: 'enhanced-last-edited',
+        permissions: [{ action: 'plugin::content-manager.explorer.read' }],
+      },
+      {
+        icon: CheckCircle,
+        title: {
+          id: 'enhanced-homepage.widget.last-published.title',
+          defaultMessage: 'Last published entries',
+        },
+        component: async () => {
+          const { EnhancedLastPublishedWidget } = await import('./widgets/RecentEntriesWidgets');
+          return EnhancedLastPublishedWidget;
+        },
+        id: 'enhanced-last-published',
+        permissions: [{ action: 'plugin::content-manager.explorer.read' }],
+      },
+    ]);
+  },
   config: {
     locales: [
       'fr',
@@ -14,6 +47,18 @@ export default {
         "User": "Utilisateur",
         "search.placeholder": "Rechercher",
         "list.asset.at.finished": "Chargement terminé.",
+
+        // ─── enhanced-homepage widgets ───────────────────────────────────────────
+        "enhanced-homepage.widget.last-edited.title": "Dernières entrées éditées",
+        "enhanced-homepage.widget.last-published.title": "Dernières entrées publiées",
+        "enhanced-homepage.widget.column.title": "Titre",
+        "enhanced-homepage.widget.column.type": "Type",
+        "enhanced-homepage.widget.column.status": "Statut",
+        "enhanced-homepage.widget.column.createdBy": "Créé par",
+        "enhanced-homepage.widget.column.createdAt": "Créé le",
+        "enhanced-homepage.widget.column.updatedBy": "Modifié par",
+        "enhanced-homepage.widget.column.updatedAt": "Modifié",
+        "enhanced-homepage.widget.column.publishedAt": "Publié",
 
         // ─── app.* ───────────────────────────────────────────────────────────────
         "app.components.LeftMenuLinkContainer.settings": "Paramètres",

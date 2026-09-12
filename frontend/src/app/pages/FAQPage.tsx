@@ -100,7 +100,7 @@ export function FAQPage() {
   return (
     <>
       <Seo
-        title="FAQ"
+        title="Foire aux questions"
         description="FAQ du CLTO Badminton Orléans : adhésion, créneaux, compétitions et pratique du badminton à Orléans."
       />
       <PageHero
@@ -158,7 +158,9 @@ export function FAQPage() {
 
           <div ref={listRef} className="w-full scroll-mt-24 space-y-4">
             {loading ? (
-              <p className="text-center text-gray-500 py-12">Chargement des questions…</p>
+              <p className="text-center text-gray-500 py-12" role="status">
+                Chargement des questions…
+              </p>
             ) : filteredFaqs.length === 0 ? (
               <p className="text-center text-gray-500 py-12">
                 Aucune question dans cette catégorie.
@@ -218,7 +220,7 @@ export function FAQPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:p-12 text-center shadow-lg text-white"
+          className="bg-linear-to-br from-primary to-primary-accent rounded-lg text-center shadow-lg text-white"
         >
           <HelpCircle className="mx-auto mb-6" size={56} />
           <h2 className="font-primary text-4xl mb-4">UNE AUTRE QUESTION ?</h2>

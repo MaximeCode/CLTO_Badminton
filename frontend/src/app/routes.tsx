@@ -33,11 +33,16 @@ const AdhererPage = lazy(() =>
 const FAQPage = lazy(() =>
   import('./pages/FAQPage').then((m) => ({ default: m.FAQPage })),
 );
+const AvisPage = lazy(() =>
+  import('./pages/AvisPage').then((m) => ({ default: m.AvisPage })),
+);
 const StagesPage = lazy(() =>
   import('./pages/StagesPage').then((m) => ({ default: m.StagesPage })),
 );
-const ProjetClub = lazy(() =>
-  import('./pages/ProjetClub').then((m) => ({ default: m.ProjetClub })),
+const DecouvrirLeClubPage = lazy(() =>
+  import('./pages/DecouvrirLeClubPage').then((m) => ({
+    default: m.DecouvrirLeClubPage,
+  })),
 );
 const DocumentsPage = lazy(() =>
   import('./pages/DocumentsPage').then((m) => ({ default: m.DocumentsPage })),
@@ -62,11 +67,17 @@ const PolitiqueConfidentialitePage = lazy(() =>
     default: m.PolitiqueConfidentialitePage,
   })),
 );
+const PlanDuSitePage = lazy(() =>
+  import('./pages/PlanDuSitePage').then((m) => ({ default: m.PlanDuSitePage })),
+);
 const FormationsPage = lazy(() =>
   import('./pages/FormationsPage').then((m) => ({ default: m.FormationsPage })),
 );
 const BenevolesPage = lazy(() =>
   import('./pages/BenevolesPage').then((m) => ({ default: m.BenevolesPage })),
+);
+const PartenairesPage = lazy(() =>
+  import('./pages/PartenairesPage').then((m) => ({ default: m.PartenairesPage })),
 );
 const AdultesCompetiteursPage = lazy(() =>
   import('./pages/(publics)/AdultesCompetiteursPage').then((m) => ({
@@ -110,7 +121,8 @@ export const router = createBrowserRouter([
       { path: 'gymnases', Component: GymnasesPage },
       { path: 'creneaux', Component: CreneauxPage },
       { path: 'interclub', Component: InterclubPage },
-      { path: 'projet-club', Component: ProjetClub },
+      { path: 'decouvrir-le-club', Component: DecouvrirLeClubPage },
+      { path: 'projet-club', loader: () => redirect('/decouvrir-le-club') },
       { path: 'documents', Component: DocumentsPage },
       { path: 'jeunes', Component: JeunesPage },
       { path: 'adultes-loisirs', Component: AdultesLoisirsPage },
@@ -120,12 +132,15 @@ export const router = createBrowserRouter([
       { path: 'entreprise', loader: () => redirect('/entreprises') },
       { path: 'contact', Component: ContactPage },
       { path: 'faq', Component: FAQPage },
+      { path: 'avis', Component: AvisPage },
       { path: 'stages', Component: StagesPage },
       { path: 'adherer', Component: AdhererPage },
       { path: 'formations', Component: FormationsPage },
       { path: 'benevoles', Component: BenevolesPage },
+      { path: 'partenaires', Component: PartenairesPage },
       { path: 'mentions-legales', Component: MentionsLegalesPage },
       { path: 'politique-de-confidentialite', Component: PolitiqueConfidentialitePage },
+      { path: 'plan-du-site', Component: PlanDuSitePage },
       { path: '*', Component: NotFound },
     ],
   },

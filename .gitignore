@@ -17,3 +17,10 @@ screen_txt_a_modifier
 
 # uploads
 /uploads/
+
+# docs
+docs/*
+frontend/docs/*
+
+# skills
+skills/*

@@ -4,11 +4,12 @@ import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../../components/Section';
 import { motion } from 'motion/react';
-import { Clock, Users, Smile, ShieldCheck, Gift, CheckCircle } from 'lucide-react';
+import { Clock, Users, Smile, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router';
 import { getPublicVieillesPlumes } from '@/api/strapi/publics';
 import type { PublicVieillesPlumes } from '@/types/publicsType';
-import { BlocksRenderer } from '@/app/components/BlocksRenderer';
+import { BlocksRenderer, listVariantFromTitle } from '@/app/components/BlocksRenderer';
+import { Seo } from '@/app/components/Seo';
 
 const highlights = [
   {
@@ -61,12 +62,22 @@ export function VieillesPlumesPage() {
     loadData();
   }, []);
 
-  const tournois = data?.tournois_competitions ?? [];
-  const avantages = data?.les_avantages ?? [];
+  const tournois = (data?.tournois_competitions ?? []).filter(
+    (item) => item?.contenu && item.contenu.length > 0,
+  );
+  const avantages = data?.les_avantages;
   const formatSimple = data?.format_simple ?? [];
+  const hasFormatSimple = Array.isArray(formatSimple) && formatSimple.length > 0;
 
   return (
     <>
+      <Seo
+        title="Vieilles Plumes — 60 ans et +"
+        description={
+          data?.description?.trim() ||
+          'Vieilles Plumes du CLTO Badminton Orléans : créneaux dédiés aux seniors de 60 ans et plus.'
+        }
+      />
       <PageHero
         title={data?.titre || 'Le badminton pour les 60 ans et plus'}
         subtitle={
@@ -114,7 +125,7 @@ export function VieillesPlumesPage() {
         </div>
       </Section>
 
-      {formatSimple.length > 0 && (
+      {hasFormatSimple && (
         <Section className="bg-gray-50">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -157,7 +168,11 @@ export function VieillesPlumesPage() {
               >
                 <h3 className="font-primary text-2xl text-primary mb-4">{item.titre}</h3>
                 <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-                  <BlocksRenderer content={item.contenu} headingOffset={3} />
+                  <BlocksRenderer
+                    content={item.contenu}
+                    headingOffset={3}
+                    listVariant={listVariantFromTitle(item.titre)}
+                  />
                 </div>
               </motion.div>
             ))}
@@ -165,8 +180,8 @@ export function VieillesPlumesPage() {
         </Section>
       )}
 
-      {avantages.length > 0 && (
-        <Section className="bg-white">
+      {avantages?.contenu && avantages.contenu.length > 0 && (
+        <Section className="bg-gray-50">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -175,7 +190,7 @@ export function VieillesPlumesPage() {
             className="text-center mb-12"
           >
             <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4">
-              LES AVANTAGES
+              {avantages.titre || 'LES AVANTAGES'}
             </h2>
           </motion.div>
 
@@ -184,34 +199,28 @@ export function VieillesPlumesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-gray-50 rounded-lg p-8 shadow-lg max-w-3xl mx-auto"
+            className="bg-white rounded-lg p-8 shadow-lg max-w-4xl mx-auto [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base"
           >
-            <h3 className="font-primary text-2xl text-primary mb-5 flex items-center gap-2">
-              <Gift size={24} className="text-secondary" />
-              Vos avantages
-            </h3>
-            <ul className="space-y-3">
-              {avantages.map((avantage) => (
-                <li key={avantage.id} className="flex items-start gap-3 text-gray-700">
-                  <CheckCircle size={20} className="text-secondary shrink-0 mt-0.5" />
-                  <span>{avantage.contenu}</span>
-                </li>
-              ))}
-            </ul>
+            <BlocksRenderer
+              content={avantages.contenu}
+              size="sm"
+              sizeDesktop="lg"
+              headingOffset={2}
+              listVariant={listVariantFromTitle(avantages.titre)}
+            />
           </motion.div>
         </Section>
       )}
 
-      <Section className="bg-linear-to-r from-primary to-primary-accent text-white text-center">
+      <Section className="bg-white">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          className="bg-linear-to-br from-primary to-primary-accent rounded-lg p-6 md:text-center shadow-lg text-white"
         >
-          <h2 className="font-primary text-4xl text-white mb-4">
-            REJOIGNEZ-NOUS
-          </h2>
+          <h2 className="font-primary text-4xl mb-4">REJOIGNEZ-NOUS</h2>
           <p className="text-white/90 text-md mb-8 max-w-2xl mx-auto">
             Envie de découvrir les créneaux Vieilles Plumes ? Contactez le club.
           </p>
@@ -225,7 +234,7 @@ export function VieillesPlumesPage() {
       </Section>
 
       {loadError && (
-        <p className="sr-only" role="alert">
+        <p className="px-6 pb-6 text-center text-red-600" role="alert">
           {loadError}
         </p>
       )}

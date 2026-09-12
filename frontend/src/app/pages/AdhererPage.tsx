@@ -8,7 +8,7 @@ import { Seo } from '../components/Seo';
 import { InscriptionWizard } from '../components/InscriptionWizard';
 import { PageAdherer, Document } from '@/types/pageAdhererType';
 import { getPageAdherer } from '@/api/strapi/pageAdherer';
-import { BlocksRenderer } from '../components/BlocksRenderer';
+import { BlocksRenderer, listVariantFromTitle } from '../components/BlocksRenderer';
 
 function SectionTitle({ title, subtitle }: { title: string; subtitle?: string }) {
     return (
@@ -136,13 +136,19 @@ export function AdhererPage() {
                                     </p>
                                 )}
                                 <div className="[&_p]:mb-0 [&_p]:text-primary-accent">
-                                    <BlocksRenderer content={introBloc.contenu} size="sm" sizeDesktop="base" headingOffset={1} />
+                                    <BlocksRenderer
+                                        content={introBloc.contenu}
+                                        size="sm"
+                                        sizeDesktop="base"
+                                        headingOffset={1}
+                                        listVariant={listVariantFromTitle(introBloc.titre)}
+                                    />
                                 </div>
                             </>
                         ) : loadError ? (
-                            <p className="text-sm text-red-500">{loadError}</p>
+                            <p className="text-sm text-red-500" role="alert">{loadError}</p>
                         ) : (
-                            <p className="text-sm text-primary-accent">Chargement...</p>
+                            <p className="text-sm text-primary-accent" role="status">Chargement...</p>
                         )}
                     </motion.div>
 
@@ -180,7 +186,13 @@ export function AdhererPage() {
                                     onToggle={togglePanel}
                                 >
                                     <div className="[&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_p]:text-base [&_li]:text-sm sm:[&_li]:text-base [&_li]:text-primary-accent [&_a]:text-secondary">
-                                        <BlocksRenderer content={bloc.contenu} size="sm" sizeDesktop="lg" headingOffset={2} />
+                                        <BlocksRenderer
+                                            content={bloc.contenu}
+                                            size="sm"
+                                            sizeDesktop="lg"
+                                            headingOffset={2}
+                                            listVariant={listVariantFromTitle(bloc.titre)}
+                                        />
                                     </div>
                                 </CollapsiblePanel>
                             ))

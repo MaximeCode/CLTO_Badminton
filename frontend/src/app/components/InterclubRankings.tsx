@@ -77,8 +77,8 @@ export function InterclubRankings({
     if (loading) {
         return (
             <Section className="bg-linear-to-b from-gray-50 to-white">
-                <div className="flex flex-col items-center justify-center min-h-64">
-                    <Loader2 size={40} className="text-primary animate-spin mb-4" />
+                <div className="flex flex-col items-center justify-center min-h-64" role="status">
+                    <Loader2 size={40} className="text-primary animate-spin mb-4" aria-hidden />
                     <p className="text-gray-500 font-medium">Chargement des classements…</p>
                 </div>
             </Section>
@@ -88,8 +88,8 @@ export function InterclubRankings({
     if (error || teams.length === 0) {
         return (
             <Section className="bg-linear-to-b from-gray-50 to-white">
-                <div className="flex flex-col items-center justify-center min-h-64">
-                    <AlertCircle size={40} className="text-red-500 mb-4" />
+                <div className="flex flex-col items-center justify-center min-h-64" role="alert">
+                    <AlertCircle size={40} className="text-red-500 mb-4" aria-hidden />
                     <p className="text-gray-600">{error ?? 'Aucune donnée disponible.'}</p>
                 </div>
             </Section>

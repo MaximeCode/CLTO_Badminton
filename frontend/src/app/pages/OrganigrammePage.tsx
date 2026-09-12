@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { PageHero } from '../components/PageHero';
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
@@ -40,88 +40,275 @@ function displayName(contact: OrgContact): string {
   return `${prenom} ${nomFormatted}`.trim();
 }
 
+function isPresident(contact: OrgContact): boolean {
+  return contact.fonction.trim().toLowerCase() === 'président';
+}
+
+function contactKey(contact: OrgContact): string {
+  return `${contact.id}-${contact.typeCode}`;
+}
+
+/** Président en tête ; ordre API conservé pour les autres (sort stable). */
+function withPresidentFirst(contacts: OrgContact[]): OrgContact[] {
+  return [...contacts].sort((a, b) => {
+    const aPres = isPresident(a);
+    const bPres = isPresident(b);
+    if (aPres === bPres) return 0;
+    return aPres ? -1 : 1;
+  });
+}
+
+/** Survol réel (desktop) — évite d'ouvrir le footer au tap mobile via mouseenter synthétique. */
+function isDesktopHoverDevice(): boolean {
+  return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+}
+
+const FOOTER_VIEWPORT_MARGIN = 8;
+
+function getViewportWidth(): number {
+  return window.visualViewport?.width ?? document.documentElement.clientWidth;
+}
+
+/**
+ * Positionne le footer en `fixed` sous la carte, centré quand possible,
+ * sinon décalé pour rester entièrement dans le viewport (gauche et droite).
+ */
+function useFooterViewportPosition(
+  active: boolean,
+  cardRef: React.RefObject<HTMLElement | null>,
+) {
+  const footerRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState<{ top: number; centerX: number } | null>(null);
+
+  useLayoutEffect(() => {
+    if (!active) {
+      setPos(null);
+      return;
+    }
+
+    const update = () => {
+      const card = cardRef.current;
+      const footer = footerRef.current;
+      if (!card || !footer) return;
+
+      const cardRect = card.getBoundingClientRect();
+      const vw = getViewportWidth();
+      const margin = FOOTER_VIEWPORT_MARGIN;
+
+      const prevTransform = footer.style.transform;
+      const prevLeft = footer.style.left;
+      footer.style.transform = 'none';
+      footer.style.left = '0px';
+      const fw = footer.getBoundingClientRect().width;
+      footer.style.transform = prevTransform;
+      footer.style.left = prevLeft;
+
+      const idealLeft = cardRect.left + cardRect.width / 2 - fw / 2;
+      const maxLeft = vw - margin - fw;
+      const clampedLeft =
+        fw >= vw - 2 * margin
+          ? margin
+          : Math.min(Math.max(idealLeft, margin), Math.max(margin, maxLeft));
+
+      setPos({
+        top: cardRect.bottom + 8,
+        centerX: clampedLeft + fw / 2,
+      });
+    };
+
+    update();
+    const raf = requestAnimationFrame(() => {
+      update();
+      requestAnimationFrame(update);
+    });
+    const t1 = window.setTimeout(update, 50);
+    const t2 = window.setTimeout(update, 320);
+
+    window.addEventListener('resize', update);
+    window.addEventListener('scroll', update, true);
+    window.visualViewport?.addEventListener('resize', update);
+    window.visualViewport?.addEventListener('scroll', update);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+      window.removeEventListener('resize', update);
+      window.removeEventListener('scroll', update, true);
+      window.visualViewport?.removeEventListener('resize', update);
+      window.visualViewport?.removeEventListener('scroll', update);
+    };
+  }, [active, cardRef]);
+
+  return { footerRef, pos };
+}
+
 function MemberCard({
   contact,
   isExecutive = false,
   headingLevel = 3,
+  footerOpen,
+  onOpenFooter,
+  onCloseFooter,
+  onToggleFooter,
 }: {
   contact: OrgContact;
   isExecutive?: boolean;
   headingLevel?: 3 | 4;
+  footerOpen: boolean;
+  onOpenFooter: () => void;
+  onCloseFooter: () => void;
+  onToggleFooter: () => void;
 }) {
   const HeadingTag = headingLevel === 4 ? 'h4' : 'h3';
   const name = displayName(contact);
-  const [hovered, setHovered] = useState(false);
+  const hasEmail = Boolean(contact.email);
+  const cardRef = useRef<HTMLElement>(null);
+  const closeTimerRef = useRef<number | null>(null);
+  const { footerRef, pos } = useFooterViewportPosition(footerOpen && hasEmail, cardRef);
+
+  const cancelScheduledClose = () => {
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const scheduleClose = () => {
+    cancelScheduledClose();
+    closeTimerRef.current = window.setTimeout(() => {
+      onCloseFooter();
+      closeTimerRef.current = null;
+    }, 120);
+  };
+
+  useEffect(() => {
+    return () => cancelScheduledClose();
+  }, []);
 
   return (
-    <motion.article
-      layout
+    <motion.div
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
-      transition={{
-        duration: 0.45,
-        layout: { duration: 0.28, ease: 'easeInOut' },
+      transition={{ duration: 0.45 }}
+      className="relative min-w-0"
+      onMouseEnter={() => {
+        if (!hasEmail || !isDesktopHoverDevice()) return;
+        cancelScheduledClose();
+        onOpenFooter();
       }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocus={() => setHovered(true)}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-          setHovered(false);
-        }
+      onMouseLeave={() => {
+        if (!hasEmail || !isDesktopHoverDevice()) return;
+        scheduleClose();
       }}
-      tabIndex={contact.email ? 0 : undefined}
-      className={[
-        'group relative overflow-hidden bg-white rounded-2xl px-2 pb-4 pt-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 outline-hidden focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-2',
-        isExecutive ? 'border-primary/50' : 'border-primary/15',
-      ].join(' ')}
     >
-      <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-primary to-secondary" />
+      <article
+        ref={cardRef}
+        className={[
+          'group relative overflow-hidden bg-white rounded-2xl px-2 pb-4 pt-6 shadow-sm transition-shadow duration-300 border-2 outline-hidden',
+          isExecutive ? 'border-primary/50' : 'border-primary/15',
+          hasEmail ? 'hover:shadow-xl' : '',
+        ].join(' ')}
+      >
+        <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-primary to-secondary" />
 
-      <div className="flex flex-col items-center gap-4 text-center">
-        <div className="relative">
-          <ImageWithFallback
-            src={contact.photoUrl || placeholderPhoto}
-            alt={name}
-            className="h-20 w-20 rounded-full border-4 border-secondary object-cover shadow-md md:w-24 md:h-24"
-          />
+        {hasEmail ? (
+          <button
+            type="button"
+            className={[
+              'absolute top-4 right-2 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-primary/20 text-primary shadow-sm transition-colors duration-200 hover:border-secondary hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 md:hidden',
+              footerOpen ? 'bg-gray-200' : 'bg-white',
+            ].join(' ')}
+            aria-label={footerOpen ? "Masquer l'adresse e-mail" : "Afficher l'adresse e-mail"}
+            aria-expanded={footerOpen}
+            onClick={(event) => {
+              event.stopPropagation();
+              onToggleFooter();
+            }}
+          >
+            <Mail size={16} aria-hidden />
+          </button>
+        ) : null}
+
+        <div className="flex flex-col items-center gap-4 text-center">
+          <div className="relative">
+            <ImageWithFallback
+              src={contact.photoUrl || placeholderPhoto}
+              alt={name}
+              className="h-20 w-20 rounded-full border-4 border-secondary object-cover shadow-md md:w-24 md:h-24"
+            />
+          </div>
+          <div>
+            <HeadingTag className="font-primary text-2xl md:text-3xl leading-none tracking-wide text-primary">
+              {name}
+            </HeadingTag>
+            <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-secondary">
+              {contact.fonction}
+            </p>
+          </div>
         </div>
-        <div>
-          <HeadingTag className="font-primary text-2xl md:text-3xl leading-none tracking-wide text-primary">
-            {name}
-          </HeadingTag>
-          <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-secondary">
-            {contact.fonction}
-          </p>
-          {contact.email ? (
+      </article>
+
+      {hasEmail ? (
+        <div
+          className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${footerOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+            }`}
+          aria-hidden={!footerOpen}
+        >
+          <div className="min-h-0 overflow-hidden">
+            {/* Réserve la place dans le flux ; le lien visible est en fixed */}
             <div
-              className={`grid w-full overflow-hidden transition-[grid-template-rows] duration-300 ease-in-out ${hovered ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-                }`}
-              aria-hidden={!hovered}
+              className="pointer-events-none invisible border-2 border-transparent px-3 py-2 text-sm"
+              aria-hidden
             >
-              <div className="min-h-0 overflow-hidden">
-                <motion.a
-                  href={`mailto:${contact.email}`}
-                  initial={false}
-                  animate={{
-                    opacity: hovered ? 1 : 0,
-                    y: hovered ? 0 : 6,
-                  }}
-                  transition={{ duration: 0.28, ease: 'easeInOut' }}
-                  tabIndex={hovered ? 0 : -1}
-                  className={`mt-3 inline-flex w-full items-center justify-center gap-1.5 text-sm text-primary-accent hover:text-secondary transition-colors duration-200 break-all ${hovered ? 'pointer-events-auto' : 'pointer-events-none'
-                    }`}
-                >
-                  <Mail size={14} className="shrink-0" />
-                  {contact.email}
-                </motion.a>
-              </div>
+              &nbsp;
             </div>
-          ) : null}
+          </div>
         </div>
-      </div>
-    </motion.article>
+      ) : null}
+
+      {hasEmail ? (
+        <div
+          ref={footerRef}
+          className="fixed z-50"
+          style={
+            footerOpen && pos
+              ? {
+                top: pos.top,
+                left: pos.centerX,
+                transform: 'translateX(-50%)',
+              }
+              : { top: 0, left: 0, visibility: 'hidden', pointerEvents: 'none' }
+          }
+          onMouseEnter={() => {
+            if (!isDesktopHoverDevice()) return;
+            cancelScheduledClose();
+            onOpenFooter();
+          }}
+          onMouseLeave={() => {
+            if (!isDesktopHoverDevice()) return;
+            scheduleClose();
+          }}
+        >
+          <motion.a
+            href={`mailto:${contact.email}`}
+            initial={false}
+            animate={{
+              opacity: footerOpen ? 1 : 0,
+              y: footerOpen ? 0 : 8,
+            }}
+            transition={{ duration: 0.28, ease: 'easeInOut' }}
+            tabIndex={footerOpen ? 0 : -1}
+            className={`inline-flex w-max max-w-[calc(100vw-1rem)] items-center gap-2 overflow-hidden whitespace-nowrap rounded-xl border-2 border-primary/15 bg-white px-3 py-2 text-sm text-primary underline decoration-primary/40 underline-offset-2 shadow-sm transition-colors duration-200 hover:border-secondary/40 hover:text-secondary hover:decoration-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 active:text-secondary ${footerOpen ? 'pointer-events-auto' : 'pointer-events-none'
+              }`}
+          >
+            <Mail size={14} className="shrink-0" aria-hidden />
+            <span className="truncate">{contact.email}</span>
+          </motion.a>
+        </div>
+      ) : null}
+    </motion.div>
   );
 }
 
@@ -129,12 +316,18 @@ function GroupBlock({
   title,
   contacts,
   isExecutive = false,
+  openFooterKey,
+  onOpenFooterKey,
 }: {
   title: string;
   contacts: OrgContact[];
   isExecutive?: boolean;
+  openFooterKey: string | null;
+  onOpenFooterKey: (key: string | null) => void;
 }) {
   if (contacts.length === 0) return null;
+
+  const orderedContacts = isExecutive ? withPresidentFirst(contacts) : contacts;
 
   return (
     <div className="mb-20">
@@ -143,19 +336,30 @@ function GroupBlock({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="mb-12 text-center"
+        className="mb-12"
       >
         <h3 className="mb-4 font-primary text-4xl text-primary md:text-5xl">{title}</h3>
       </motion.div>
 
       <div className="mx-auto grid max-w-6xl gap-4 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {contacts.map((contact) => (
-          <MemberCard
-            key={`${contact.id}-${contact.typeCode}`}
-            contact={contact}
-            isExecutive={isExecutive}
-          />
-        ))}
+        {orderedContacts.map((contact) => {
+          const key = contactKey(contact);
+          return (
+            <MemberCard
+              key={key}
+              contact={contact}
+              isExecutive={isExecutive}
+              footerOpen={openFooterKey === key}
+              onOpenFooter={() => onOpenFooterKey(key)}
+              onCloseFooter={() => {
+                if (openFooterKey === key) onOpenFooterKey(null);
+              }}
+              onToggleFooter={() => {
+                onOpenFooterKey(openFooterKey === key ? null : key);
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -219,6 +423,7 @@ export function OrganigrammePage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.ORGANIGRAMME);
   const [contacts, setContacts] = useState<OrgContact[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [openFooterKey, setOpenFooterKey] = useState<string | null>(null);
 
   useEffect(() => {
     if (isInMaintenance) return;
@@ -257,7 +462,7 @@ export function OrganigrammePage() {
   return (
     <>
       <Seo
-        title="Conseil d'administration"
+        title="Organigramme"
         description="Conseil d'administration et organigramme du CLTO Badminton Orléans, club de badminton à Orléans."
       />
       <PageHero
@@ -290,6 +495,10 @@ export function OrganigrammePage() {
               Le conseil d&apos;administration, les commissions et les ouvreurs qui font vivre le
               club au quotidien.
             </p>
+            <p className="mx-auto mt-3 max-w-3xl text-sm text-primary-accent/80 italic">
+              Survolez une carte, ou touchez l&apos;icône e-mail sur mobile, pour afficher
+              l&apos;adresse.
+            </p>
           </motion.div>
 
           {PART1_GROUP_ORDER.map((groupKey) => (
@@ -298,6 +507,8 @@ export function OrganigrammePage() {
               title={GROUP_TITLES[groupKey] ?? groupKey}
               contacts={byGroup.get(groupKey) ?? []}
               isExecutive={groupKey === "Conseil d'administration"}
+              openFooterKey={openFooterKey}
+              onOpenFooterKey={setOpenFooterKey}
             />
           ))}
 
@@ -319,6 +530,8 @@ export function OrganigrammePage() {
               key={groupKey}
               title={GROUP_TITLES[groupKey] ?? groupKey}
               contacts={byGroup.get(groupKey) ?? []}
+              openFooterKey={openFooterKey}
+              onOpenFooterKey={setOpenFooterKey}
             />
           ))}
         </Section>

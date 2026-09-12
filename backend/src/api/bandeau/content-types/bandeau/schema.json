@@ -4,7 +4,7 @@
   "info": {
     "singularName": "bandeau",
     "pluralName": "bandeaux",
-    "displayName": "Bandeau"
+    "displayName": "Bandeaux pages"
   },
   "options": {
     "draftAndPublish": true
@@ -21,6 +21,7 @@
         "CONTACT",
         "CRÉNEAUX",
         "Documents officiels",
+        "DÉCOUVRIR LE CLUB",
         "ÉVÉNEMENTS",
         "FAQ",
         "FORMATIONS",
@@ -30,13 +31,13 @@
         "MENTIONS LÉGALES",
         "ORGANIGRAMME",
         "PALMARÈS",
+        "PARTENAIRES",
         "POLITIQUE DE CONFIDENTIALITÉ",
-        "PROJET CLUB",
         "ADULTES COMPÉTITEURS",
         "ADULTES LOISIRS",
         "ENTREPRISES",
         "JEUNES",
-        "VIEILLES PLUMES Seniors 60 ans et +",
+        "VIEILLES PLUMES 60 ans et +",
         "STAGES"
       ],
       "required": true,

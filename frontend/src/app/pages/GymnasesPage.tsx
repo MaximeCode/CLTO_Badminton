@@ -113,14 +113,14 @@ export function GymnasesPage() {
             {gymsCount} GYMNASES
           </h2>
           <p className="text-gray-600 text-md md:text-lg max-w-2xl mx-auto">
-            Le CLTO Badminton vous accueille dans {gymsCount} gymnases à Orléans, permettant de
-            proposer de nombreux créneaux de jeu libre et d&apos;entraînement tout au long de la
-            semaine.
+            Le CLTO Badminton vous accueille dans {gymsCount} gymnases à Orléans, permettant de proposer de nombreux créneaux de jeu libre et d&apos;entraînement tout au long de la semaine.
           </p>
         </motion.div>
 
         {loadError && (
-          <p className="mb-8 text-center text-red-600">{loadError}</p>
+          <p className="mb-8 text-center text-red-600" role="alert">
+            {loadError}
+          </p>
         )}
 
         <div className="grid lg:grid-cols-2 gap-4 md:gap-8 lg:items-start">
@@ -214,13 +214,13 @@ export function GymnasesPage() {
             )}
           </motion.div>
 
-          <div className="h-150 min-h-125 lg:h-[calc(100vh-6rem)] lg:sticky lg:top-24">
+          <div className="h-150 min-h-100 md:min-h-125 lg:h-[calc(100vh-6rem)] lg:sticky lg:top-24">
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="relative h-3/4 rounded-lg overflow-hidden shadow-xl bg-gray-100"
+              className="relative h-full md:h-3/4 rounded-lg overflow-hidden shadow-xl bg-gray-100"
             >
               <GymMap
                 gyms={gyms}
@@ -273,7 +273,7 @@ export function GymnasesPage() {
                 key={stat.label}
                 className="flex items-center justify-between gap-2 py-4 first:pt-0 last:pb-0 sm:flex-col sm:justify-center sm:text-center sm:py-0"
               >
-                <p className="font-primary text-4xl md:text-5xl text-secondary leading-none">
+                <p className="font-primary text-3xl md:text-5xl text-secondary leading-none">
                   {stat.value}
                 </p>
                 <p className="text-sm sm:text-base opacity-90 text-right sm:text-center">

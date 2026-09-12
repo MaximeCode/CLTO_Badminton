@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Calendar, Clock, MapPin } from 'lucide-react';
 import type { EvenementInfos, EvenementMedia } from '@/types/evenementType';
 import { stringifyDate } from '@/utils/formatDate';
+import { accessibleLinkLabel, resolveMediaAlt } from '@/utils/media';
 
 export type EvenementCardLink = {
   href: string;
@@ -47,7 +48,7 @@ export function EvenementCard({
           <div className="md:w-1/3 shrink-0">
             <img
               src={affiche.url}
-              alt={affiche.alternativeText || titre}
+              alt={resolveMediaAlt(affiche, titre)}
               className="h-48 w-full object-cover object-center md:h-162.5 md:max-h-162.5"
             />
           </div>
@@ -75,17 +76,21 @@ export function EvenementCard({
 
           {visibleLinks.length > 0 && (
             <div className="mt-6 flex shrink-0 flex-col gap-2 sm:flex-row sm:gap-6">
-              {visibleLinks.map((link) => (
-                <a
-                  key={`${link.label}-${link.href}`}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-secondary font-semibold underline underline-offset-2 hover:text-secondary-accent transition-colors"
-                >
-                  {link.label}
-                </a>
-              ))}
+              {visibleLinks.map((link) => {
+                const accessible = accessibleLinkLabel(link.label, titre);
+                return (
+                  <a
+                    key={`${link.label}-${link.href}`}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-secondary font-semibold underline underline-offset-2 hover:text-secondary-accent transition-colors"
+                    aria-label={accessible !== link.label.trim() ? accessible : undefined}
+                  >
+                    {link.label}
+                  </a>
+                );
+              })}
             </div>
           )}
         </div>
