@@ -197,20 +197,6 @@ function RecentDocumentsTable({ documents, timeField, timeLabelId, timeLabelDefa
             </Td>
             <Td>
               <CellTypography
-                title={document.createdBy || undefined}
-                variant="omega"
-                textColor="neutral600"
-              >
-                {document.createdBy || '-'}
-              </CellTypography>
-            </Td>
-            <Td>
-              <Typography textColor="neutral600">
-                {document.createdAt ? <RelativeTime timestamp={document.createdAt} /> : '-'}
-              </Typography>
-            </Td>
-            <Td>
-              <CellTypography
                 title={document.updatedBy || undefined}
                 variant="omega"
                 textColor="neutral600"
@@ -221,6 +207,20 @@ function RecentDocumentsTable({ documents, timeField, timeLabelId, timeLabelDefa
             <Td>
               <Typography textColor="neutral600">
                 {document[timeField] ? <RelativeTime timestamp={document[timeField]} /> : '-'}
+              </Typography>
+            </Td>
+            <Td>
+              <CellTypography
+                title={document.createdBy || undefined}
+                variant="omega"
+                textColor="neutral600"
+              >
+                {document.createdBy || '-'}
+              </CellTypography>
+            </Td>
+            <Td>
+              <Typography textColor="neutral600">
+                {document.createdAt ? <RelativeTime timestamp={document.createdAt} /> : '-'}
               </Typography>
             </Td>
             <Td onClick={(e) => e.stopPropagation()}>
