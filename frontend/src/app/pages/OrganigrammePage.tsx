@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 import { PageHero } from '../components/PageHero';
 import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
@@ -182,6 +183,11 @@ function MemberCard({
     }, 120);
   };
 
+  // Si une autre carte a pris le footer, annuler le timer local (évite d'écraser l'ouverture)
+  useEffect(() => {
+    if (!footerOpen) cancelScheduledClose();
+  }, [footerOpen]);
+
   useEffect(() => {
     return () => cancelScheduledClose();
   }, []);
@@ -323,7 +329,7 @@ function GroupBlock({
   contacts: OrgContact[];
   isExecutive?: boolean;
   openFooterKey: string | null;
-  onOpenFooterKey: (key: string | null) => void;
+  onOpenFooterKey: Dispatch<SetStateAction<string | null>>;
 }) {
   if (contacts.length === 0) return null;
 
@@ -352,10 +358,12 @@ function GroupBlock({
               footerOpen={openFooterKey === key}
               onOpenFooter={() => onOpenFooterKey(key)}
               onCloseFooter={() => {
-                if (openFooterKey === key) onOpenFooterKey(null);
+                // Comparer sur l'état courant (pas une closure figée) pour ne pas
+                // fermer le footer d'une autre carte ouverte entre-temps.
+                onOpenFooterKey((current) => (current === key ? null : current));
               }}
               onToggleFooter={() => {
-                onOpenFooterKey(openFooterKey === key ? null : key);
+                onOpenFooterKey((current) => (current === key ? null : key));
               }}
             />
           );
@@ -496,8 +504,7 @@ export function OrganigrammePage() {
               club au quotidien.
             </p>
             <p className="mx-auto mt-3 max-w-3xl text-sm text-primary-accent/80 italic">
-              Survolez une carte, ou touchez l&apos;icône e-mail sur mobile, pour afficher
-              l&apos;adresse.
+              <span className='hidden md:inline'>Survolez une carte</span> <span className='inline md:hidden'>Touchez l&apos;icône</span> pour afficher le mail de la personne
             </p>
           </motion.div>
 
