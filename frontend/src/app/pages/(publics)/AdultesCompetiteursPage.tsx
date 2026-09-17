@@ -159,30 +159,6 @@ export function AdultesCompetiteursPage() {
         </div>
       </Section>
 
-      {hasEnvieDeProgresser && envieDeProgresser && (
-        <Section className="bg-white">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="max-w-4xl mx-auto bg-white rounded-lg p-8 shadow-lg"
-          >
-            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4 text-center">
-              {envieDeProgresser.titre}
-            </h2>
-            <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
-              <BlocksRenderer
-                content={envieDeProgresser.contenu}
-                size="lg"
-                headingOffset={1}
-                listVariant={listVariantFromTitle(envieDeProgresser.titre)}
-              />
-            </div>
-          </motion.div>
-        </Section>
-      )}
-
       {vieDuClub.length > 0 && (
         <Section className="bg-gray-50">
           <motion.div
@@ -402,6 +378,30 @@ export function AdultesCompetiteursPage() {
           })}
         </div>
       </Section>
+
+      {hasEnvieDeProgresser && envieDeProgresser && (
+        <Section className="bg-white">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl mx-auto bg-white rounded-lg p-8 shadow-lg"
+          >
+            <h2 className="font-primary text-5xl md:text-6xl text-primary mb-4 text-center">
+              {envieDeProgresser.titre}
+            </h2>
+            <div className="space-y-4 text-gray-700 [&_a]:text-secondary [&_li]:text-sm [&_li]:text-primary-accent [&_p]:mb-2 [&_p]:text-sm [&_p]:text-primary-accent sm:[&_li]:text-base sm:[&_p]:text-base">
+              <BlocksRenderer
+                content={envieDeProgresser.contenu}
+                size="lg"
+                headingOffset={1}
+                listVariant={listVariantFromTitle(envieDeProgresser.titre)}
+              />
+            </div>
+          </motion.div>
+        </Section>
+      )}
 
       {hasInscriptionChamp && inscriptionChamp && (
         <Section className="bg-white">
