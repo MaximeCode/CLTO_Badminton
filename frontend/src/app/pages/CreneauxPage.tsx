@@ -159,6 +159,7 @@ type TimeSlot = {
   nom: string;
   publics: string[];
   comment: string | null;
+  lien: string | null;
   sessionKind: "Entraînement" | "Jeu libre";
 };
 
@@ -183,6 +184,7 @@ function seanceToTimeSlot(seance: Seance): TimeSlot {
     nom: seance.nom,
     publics: seance.publics,
     comment: seance.commentaire,
+    lien: seance.lien,
     sessionKind: seance.sessionKind,
   };
 }
@@ -821,6 +823,18 @@ export function CreneauxPage() {
                                             {slot.startTime} - {slot.endTime}
                                           </p>
                                           <div className="inline-flex items-center gap-1.5">
+                                            {slot.lien != null && (
+                                              <a
+                                                href={slot.lien}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center justify-center rounded-full bg-white p-1.5 border border-gray-200 text-primary hover:bg-primary hover:text-white transition-colors"
+                                                title="Ouvrir le lien"
+                                                aria-label="Ouvrir le lien externe"
+                                              >
+                                                <ExternalLink size={16} />
+                                              </a>
+                                            )}
                                             {!slot.hasOuvreur && (
                                               <span
                                                 className="inline-flex items-center justify-center rounded-full bg-red-600 p-1.5"
@@ -1031,6 +1045,19 @@ export function CreneauxPage() {
                                             </span>
                                           </div>
                                           <div className="inline-flex items-center gap-0.5 shrink-0 -mt-0.5">
+                                            {slot.lien != null && (
+                                              <a
+                                                href={slot.lien}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center justify-center rounded-full bg-white/20 p-1 hover:bg-white/40 transition-colors"
+                                                title="Ouvrir le lien"
+                                                aria-label="Ouvrir le lien externe"
+                                                onClick={(e) => e.stopPropagation()}
+                                              >
+                                                <ExternalLink size={14} />
+                                              </a>
+                                            )}
                                             {!slot.hasOuvreur && (
                                               <div
                                                 className="inline-flex items-center justify-center rounded-full bg-red-600 p-1 shadow-sm ring-1 ring-white/40"
@@ -1042,11 +1069,11 @@ export function CreneauxPage() {
                                                 />
                                               </div>
                                             )}
-                                            <div className="inline-flex items-center justify-center rounded-full bg-white/20 p-0.5">
+                                            <div className="inline-flex items-center justify-center rounded-full bg-white/20 p-1">
                                               {slot.sessionKind === "Jeu libre" ? (
-                                                <Gamepad2 size={10} />
+                                                <Gamepad2 size={14} />
                                               ) : (
-                                                <Dumbbell size={10} />
+                                                <Dumbbell size={14} />
                                               )}
                                             </div>
                                           </div>
@@ -1068,6 +1095,19 @@ export function CreneauxPage() {
                                           <div className="font-primary text-base text-secondary mb-1 flex items-start justify-between gap-2">
                                             <span className="min-w-0">{slot.nom}</span>
                                             <div className="inline-flex items-center gap-0.5 shrink-0">
+                                              {slot.lien != null && (
+                                                <a
+                                                  href={slot.lien}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                  className="inline-flex items-center justify-center rounded-full bg-white/20 p-1 hover:bg-white/40 transition-colors"
+                                                  title="Ouvrir le lien"
+                                                  aria-label="Ouvrir le lien externe"
+                                                  onClick={(e) => e.stopPropagation()}
+                                                >
+                                                  <ExternalLink size={14} />
+                                                </a>
+                                              )}
                                               {!slot.hasOuvreur && (
                                                 <div
                                                   className="inline-flex items-center justify-center rounded-full bg-red-600 p-1 ring-1 ring-white/40"
@@ -1079,11 +1119,11 @@ export function CreneauxPage() {
                                                   />
                                                 </div>
                                               )}
-                                              <div className="inline-flex items-center justify-center rounded-full bg-white/20 p-0.5">
+                                              <div className="inline-flex items-center justify-center rounded-full bg-white/20 p-1">
                                                 {slot.sessionKind === "Jeu libre" ? (
-                                                  <Gamepad2 size={10} />
+                                                  <Gamepad2 size={14} />
                                                 ) : (
-                                                  <Dumbbell size={10} />
+                                                  <Dumbbell size={14} />
                                                 )}
                                               </div>
                                             </div>

@@ -19,6 +19,7 @@ type SeanceApiItem = {
   visible: string;
   saison_id: string;
   commentaire: string | null;
+  lien: string | null;
   gymnase_nom: string;
   gymnase_nom_court: string;
   ENCADREMENT?: SeanceTag[] | null;
@@ -100,6 +101,7 @@ function mapSeance(item: SeanceApiItem): Seance {
     ouvreurs,
     publics: mapTags(item.PUBLIC),
     commentaire: item.commentaire,
+    lien: item.lien ?? null,
     actif: item.actif === "1",
     visible: item.visible === "1",
     saisonId: Number(item.saison_id),

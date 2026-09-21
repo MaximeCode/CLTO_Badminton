@@ -27,6 +27,8 @@ export type Seance = {
   ouvreurs: string[];
   publics: string[];
   commentaire: string | null;
+  /** Lien externe (ex. HelloAsso) — null si absent */
+  lien: string | null;
   actif: boolean;
   visible: boolean;
   saisonId: number;
