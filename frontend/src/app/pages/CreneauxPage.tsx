@@ -11,6 +11,7 @@ import {
   Clock,
   ExternalLink,
   MapPin,
+  MessageCircle,
   User,
   Dumbbell,
   Gamepad2,
@@ -835,6 +836,14 @@ export function CreneauxPage() {
                                                 <ExternalLink size={16} />
                                               </a>
                                             )}
+                                            {slot.comment && (
+                                              <span
+                                                className="inline-flex items-center justify-center rounded-full bg-amber-500 p-1.5"
+                                                title="Commentaire à lire"
+                                              >
+                                                <MessageCircle size={16} className="text-white" />
+                                              </span>
+                                            )}
                                             {!slot.hasOuvreur && (
                                               <span
                                                 className="inline-flex items-center justify-center rounded-full bg-red-600 p-1.5"
@@ -1058,6 +1067,17 @@ export function CreneauxPage() {
                                                 <ExternalLink size={14} />
                                               </a>
                                             )}
+                                            {slot.comment && (
+                                              <div
+                                                className="inline-flex items-center justify-center rounded-full bg-amber-500 p-1 shadow-sm ring-1 ring-white/40"
+                                                title="Commentaire à lire"
+                                              >
+                                                <MessageCircle
+                                                  size={14}
+                                                  className="text-white"
+                                                />
+                                              </div>
+                                            )}
                                             {!slot.hasOuvreur && (
                                               <div
                                                 className="inline-flex items-center justify-center rounded-full bg-red-600 p-1 shadow-sm ring-1 ring-white/40"
@@ -1107,6 +1127,17 @@ export function CreneauxPage() {
                                                 >
                                                   <ExternalLink size={14} />
                                                 </a>
+                                              )}
+                                              {slot.comment && (
+                                                <div
+                                                  className="inline-flex items-center justify-center rounded-full bg-amber-500 p-1 ring-1 ring-white/40"
+                                                  title="Commentaire à lire"
+                                                >
+                                                  <MessageCircle
+                                                    size={14}
+                                                    className="text-white"
+                                                  />
+                                                </div>
                                               )}
                                               {!slot.hasOuvreur && (
                                                 <div
@@ -1257,6 +1288,13 @@ export function CreneauxPage() {
 
               <p className="mt-6 text-sm text-gray-600 bg-blue-50 p-3 rounded-lg border-l-4 border-primary">
                 💡 <strong>Astuce:</strong> Survolez un créneau pour afficher le gymnase, l'entraîneur et le public concernés
+              </p>
+              <p className="mt-3 text-sm text-amber-800 bg-amber-50 p-3 rounded-lg border-l-4 border-amber-500 flex items-start gap-2">
+                <MessageCircle size={18} className="shrink-0 mt-0.5" />
+                <span>
+                  <strong>Commentaire à lire.</strong> Le badge jaune indique qu’un
+                  commentaire concerne ce créneau (visible au survol ou en ouvrant le jour).
+                </span>
               </p>
               <p className="mt-3 text-sm text-red-700 bg-red-50 p-3 rounded-lg border-l-4 border-red-600 flex items-start gap-2">
                 <AlertTriangle size={18} className="shrink-0 mt-0.5" />

@@ -101,7 +101,7 @@ function mapSeance(item: SeanceApiItem): Seance {
     ouvreurs,
     publics: mapTags(item.PUBLIC),
     commentaire: item.commentaire,
-    lien: item.lien ?? null,
+    lien: item.lien === "" ? null : item.lien,
     actif: item.actif === "1",
     visible: item.visible === "1",
     saisonId: Number(item.saison_id),
@@ -115,7 +115,7 @@ function mapSeance(item: SeanceApiItem): Seance {
 export async function getSeances(saisonId: number = 17): Promise<Seance[]> {
   const { data } =
     import.meta.env.VITE_ENV === "dev"
-      ? await fetchFakeAPIGestion("allSeances_06-09") // DEV
+      ? await fetchFakeAPIGestion("allSeances_04-10") // DEV
       : await fetchAPIGestion(`/api/seances/${saisonId}`); // PP / PROD
 
   return (data as SeanceApiItem[])
