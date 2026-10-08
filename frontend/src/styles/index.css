@@ -4,6 +4,38 @@
 
 /* leaflet.css est importé uniquement dans GymMap (page Gymnases) */
 
+/* Encadrement temporaire d'un résultat de recherche (deep-link) */
+.search-result-highlight {
+  position: relative;
+  z-index: 1;
+  box-shadow:
+    0 0 0 3px var(--secondary),
+    0 0 0 8px rgb(1 83 182 / 0.25);
+  scroll-margin-top: 6rem;
+  transition: box-shadow 0.7s ease;
+}
+
+.search-result-highlight--fade {
+  box-shadow:
+    0 0 0 3px transparent,
+    0 0 0 8px transparent;
+}
+
+/* Mot recherché dans le contenu */
+mark.search-term-mark {
+  background-color: rgb(218 150 25 / 0.55);
+  color: inherit;
+  /* padding: 0 0.12em; */
+  border-radius: 0.15em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: background-color 0.7s ease;
+}
+
+.search-result-highlight--fade mark.search-term-mark {
+  background-color: transparent;
+}
+
 .gym-map-marker {
   background: transparent;
   border: none;

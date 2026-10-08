@@ -8,6 +8,12 @@ import { motion } from 'motion/react';
 import type { Palmares } from '../../types/palmaresType';
 import { getPalmares } from '@/api/strapi/palmares';
 import { stringifyDate } from '@/utils/formatDate';
+import {
+  searchElementId,
+  useSearchHighlight,
+} from '@/hooks/useSearchHighlight';
+import { highlightText } from '@/utils/highlightText';
+import { cn } from '../components/ui/utils';
 
 export function PalmaresPage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.PALMARES);
@@ -30,6 +36,10 @@ export function PalmaresPage() {
 
     loadData();
   }, []);
+
+  const { highlightedId, searchQuery, isFading } = useSearchHighlight({
+    ready: palmares.length > 0,
+  });
 
   return (
     <>
@@ -72,15 +82,25 @@ export function PalmaresPage() {
           <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-secondary transform -translate-x-1/2" />
 
           <div className="space-y-12">
-            {palmares.map((event, index) => (
+            {palmares.map((event, index) => {
+              const domId = searchElementId('palmares', event.documentId);
+              const isHighlighted = highlightedId === domId;
+              const q = isHighlighted ? searchQuery : '';
+
+              return (
               <motion.div
-                key={event.id}
+                id={domId}
+                key={event.documentId}
                 initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className={`relative flex items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                  } flex-col gap-8`}
+                className={cn(
+                  'relative flex scroll-mt-24 items-center flex-col gap-8',
+                  index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse',
+                  isHighlighted && 'search-result-highlight rounded-lg',
+                  isHighlighted && isFading && 'search-result-highlight--fade',
+                )}
               >
                 {/* Content */}
                 <div className="md:w-5/12 w-full">
@@ -89,9 +109,11 @@ export function PalmaresPage() {
                       {stringifyDate(event.date, 'numeric', 'short', 'numeric')}
                     </div>
                     <h3 className="font-primary text-2xl lg:text-3xl text-primary mb-3">
-                      {event.titre}
+                      {highlightText(event.titre, q)}
                     </h3>
-                    <p className="text-gray-600 text-md lg:text-base">{event.description}</p>
+                    <p className="text-gray-600 text-md lg:text-base">
+                      {highlightText(event.description ?? '', q)}
+                    </p>
                   </div>
                 </div>
 
@@ -101,7 +123,8 @@ export function PalmaresPage() {
                 {/* Spacer */}
                 <div className="hidden md:block md:w-5/12" />
               </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </Section>

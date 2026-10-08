@@ -4,6 +4,8 @@ import { Calendar, Clock, MapPin } from 'lucide-react';
 import type { EvenementInfos, EvenementMedia } from '@/types/evenementType';
 import { stringifyDate } from '@/utils/formatDate';
 import { accessibleLinkLabel, resolveMediaAlt } from '@/utils/media';
+import { highlightText } from '@/utils/highlightText';
+import { cn } from './ui/utils';
 
 export type EvenementCardLink = {
   href: string;
@@ -14,6 +16,10 @@ type EvenementCardProps = EvenementInfos & {
   affiche?: EvenementMedia | null;
   children?: ReactNode;
   links: EvenementCardLink[];
+  id?: string;
+  highlighted?: boolean;
+  highlightFading?: boolean;
+  highlightQuery?: string;
 };
 
 export function EvenementCard({
@@ -25,6 +31,10 @@ export function EvenementCard({
   affiche,
   children,
   links,
+  id,
+  highlighted = false,
+  highlightFading = false,
+  highlightQuery = '',
 }: EvenementCardProps) {
   const dateLabel = detail_date
     ? detail_date
@@ -33,14 +43,21 @@ export function EvenementCard({
 
   return (
     <motion.article
+      id={id}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className="overflow-hidden rounded-lg bg-gray-50 shadow-lg"
+      className={cn(
+        'scroll-mt-24 overflow-hidden rounded-lg bg-gray-50 shadow-lg',
+        highlighted && 'search-result-highlight',
+        highlighted && highlightFading && 'search-result-highlight--fade',
+      )}
     >
       <div className="bg-linear-to-r from-primary to-primary-accent px-6 py-4 sm:px-8">
-        <h3 className="font-primary text-3xl text-white sm:text-4xl">{titre}</h3>
+        <h3 className="font-primary text-3xl text-white sm:text-4xl">
+          {highlightText(titre, highlightQuery)}
+        </h3>
       </div>
 
       <div className="flex flex-col md:flex-row md:max-h-162.5">
@@ -62,7 +79,9 @@ export function EvenementCard({
             </div>
             <div className="flex items-start gap-3 text-gray-700">
               <MapPin size={20} className="mt-0.5 shrink-0 text-secondary" />
-              <span className="font-semibold">{lieu}</span>
+              <span className="font-semibold">
+                {highlightText(lieu, highlightQuery)}
+              </span>
             </div>
             <div className="flex items-start gap-3 text-gray-700">
               <Clock size={20} className="mt-0.5 shrink-0 text-secondary" />
