@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
-import { Clock } from 'lucide-react';
+import { Clock, UserCircle } from 'lucide-react';
 import { Hero, type HeroSlide } from '../components/Hero';
 import { Seo } from '../components/Seo';
 import { DEFAULT_DESCRIPTION, SITE_NAME } from '@/utils/seo';
@@ -27,8 +27,11 @@ const Partners = lazy(() =>
   import('../components/Partners').then((m) => ({ default: m.Partners })),
 );
 
+const PLAYER_ACCOUNT_URL = "https://www.gestion.cltobadminton.fr/";
+
 const QUICK_LINKS = [
-  { label: 'Nos créneaux hebdomadaires', to: '/creneaux', icon: Clock },
+  { label: 'Nos créneaux hebdomadaires', to: '/creneaux', icon: Clock, target: '_self' },
+  { label: 'Compte Joueur', to: PLAYER_ACCOUNT_URL, icon: UserCircle, target: '_blank' },
 ] as const;
 
 function BelowFoldFallback() {
@@ -170,10 +173,11 @@ export function HomePage() {
           aria-label="Accès rapide"
           className="flex flex-wrap items-center justify-center gap-2 md:gap-3"
         >
-          {QUICK_LINKS.map(({ label, to, icon: Icon }) => (
+          {QUICK_LINKS.map(({ label, to, icon: Icon, target }) => (
             <Link
               key={to}
               to={to}
+              target={target}
               className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-secondary-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:gap-3 md:px-6 md:py-2.5 md:text-lg"
             >
               <Icon className="size-5 shrink-0 md:size-6" aria-hidden />
