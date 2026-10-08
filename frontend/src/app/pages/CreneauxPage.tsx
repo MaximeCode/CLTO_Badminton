@@ -40,6 +40,22 @@ import {
 
 const ALL_GYMS = "Tous";
 
+/**
+ * Créneaux complets (liste manuelle, hors API / Strapi).
+ * Remplir les libellés exacts ; laissez vide pour masquer l'alerte.
+ */
+const CRENEAUX_COMPLETS: string[] = [
+  "Minimes-Cadets (vendredi 18h15–20h)",
+  "Adultes Intermédiaires (lundi 19h30–21h30)",
+];
+
+function formatCreneauxCompletsList(items: string[]): string {
+  if (items.length === 0) return "";
+  if (items.length === 1) return items[0];
+  if (items.length === 2) return `${items[0]} et ${items[1]}`;
+  return `${items.slice(0, -1).join(", ")} et ${items[items.length - 1]}`;
+}
+
 const FILTERS_STORAGE_KEY = "clto.creneaux.filters";
 
 const SESSION_KINDS = ["Entraînement", "Jeu libre"] as const;
@@ -500,6 +516,39 @@ export function CreneauxPage() {
       />
 
       <Section className="bg-gray-50" width_subdiv={2000}>
+        {CRENEAUX_COMPLETS.length > 0 && (
+          <div
+            className="mb-8 rounded-xl border border-amber-200 bg-amber-50 p-5 sm:p-6"
+            role="alert"
+          >
+            <div className="flex items-start gap-3">
+              <AlertTriangle
+                className="mt-1 shrink-0 text-amber-700"
+                size={22}
+                aria-hidden="true"
+              />
+              <div>
+                <h2 className="font-primary text-2xl text-amber-800 sm:text-3xl">
+                  Créneaux complets
+                </h2>
+                <p className="mt-2 text-sm text-amber-800 sm:text-base">
+                  Attention :{" "}
+                  {CRENEAUX_COMPLETS.length === 1
+                    ? "le créneau encadré suivant est complet"
+                    : "les créneaux encadrés suivants sont complets"}{" "}
+                  :{" "}
+                  <strong>{formatCreneauxCompletsList(CRENEAUX_COMPLETS)}</strong>
+                  . Les inscriptions pour{" "}
+                  {CRENEAUX_COMPLETS.length === 1
+                    ? "ce créneau"
+                    : "ces créneaux"}{" "}
+                  ne sont plus possibles.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {loadError && (
           <p className="mb-8 text-center text-red-600" role="alert">
             {loadError}
