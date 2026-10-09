@@ -40,13 +40,6 @@ import {
 
 const ALL_GYMS = "Tous";
 
-/**
- * Alerte créneaux complets (texte manuel, hors API / Strapi).
- * Chaîne vide = alerte masquée.
- */
-const CRENEAUX_COMPLETS_MESSAGE =
-  "Les créneaux encadrés Minimes–Cadets (vendredi de 18h15 à 20h) et Adultes Intermédiaires (lundi de 19h30 à 21h30) ont atteint leur capacité maximale.";
-
 const FILTERS_STORAGE_KEY = "clto.creneaux.filters";
 
 const SESSION_KINDS = ["Entraînement", "Jeu libre"] as const;
@@ -247,6 +240,7 @@ export function CreneauxPage() {
     () => getInitialFilters().gym,
   );
   const [completsAlertDismissed, setCompletsAlertDismissed] = useState(false);
+  const [creneauxComplets, setCreneauxComplets] = useState<string[]>([]);
 
   useEffect(() => {
     saveStoredFilters({
@@ -263,6 +257,7 @@ export function CreneauxPage() {
         setLoadError(null);
         setIsLoading(true);
         const parametres = await getParametresGlobaux();
+        setCreneauxComplets(parametres?.creneaux_complets ?? []);
         const saisonId = parametres?.saison_id;
         if (saisonId == null) {
           throw new Error("L'identifiant de saison n'est pas configuré.");
@@ -508,7 +503,7 @@ export function CreneauxPage() {
       />
 
       <Section className="bg-gray-50" width_subdiv={2000}>
-        {CRENEAUX_COMPLETS_MESSAGE && !completsAlertDismissed && (
+        {creneauxComplets.length > 0 && !completsAlertDismissed && (
           <div
             className="relative mx-auto mb-8 max-w-7xl rounded-xl border border-amber-200 bg-amber-50 p-5 pr-12 sm:p-6 sm:pr-14"
             role="alert"
@@ -531,11 +526,25 @@ export function CreneauxPage() {
                 Créneaux complets
               </h2>
               <p className="min-w-0 text-sm text-amber-800 sm:text-base">
-                Les créneaux encadrés <span className="font-bold">Minimes–Cadets (vendredi de 18h15 à 20h)</span> et <span className="font-bold">Adultes Intermédiaires (lundi de 19h30 à 21h30)</span> ont atteint leur capacité maximale.
+                {creneauxComplets.length === 1
+                  ? "Le créneau encadré "
+                  : "Les créneaux encadrés "}
+                {creneauxComplets.map((label, index) => (
+                  <span key={`${label}-${index}`}>
+                    {index > 0 &&
+                      (index === creneauxComplets.length - 1 ? " et " : ", ")}
+                    <span className="font-bold">{label}</span>
+                  </span>
+                ))}{" "}
+                {creneauxComplets.length === 1
+                  ? "a atteint sa capacité maximale."
+                  : "ont atteint leur capacité maximale."}
               </p>
             </div>
             <p className="mt-1 text-sm text-amber-800 sm:text-base">
-              Il n'est donc plus possible de s'inscrire à ces deux créneaux pour le moment.
+              Il n&apos;est donc plus possible de s&apos;inscrire à{" "}
+              {creneauxComplets.length === 1 ? "ce créneau" : "ces créneaux"}{" "}
+              pour le moment.
             </p>
           </div>
         )}

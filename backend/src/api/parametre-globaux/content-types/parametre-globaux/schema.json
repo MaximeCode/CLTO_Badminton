@@ -20,6 +20,11 @@
     "saison_id": {
       "type": "integer",
       "required": true
+    },
+    "creneaux_complets": {
+      "type": "component",
+      "component": "contenu-page.liste-txt",
+      "repeatable": true
     }
   }
 }
