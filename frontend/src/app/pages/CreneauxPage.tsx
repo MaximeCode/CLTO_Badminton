@@ -541,7 +541,7 @@ export function CreneauxPage() {
             className="relative mx-auto mb-8 max-w-7xl rounded-xl border border-amber-200 bg-amber-50 p-5 pr-12 sm:p-6 sm:pr-14"
             role="alert"
           >
-<button
+            <button
               type="button"
               onClick={dismissCompletsAlert}
               className="absolute top-3 right-3 rounded-lg p-1.5 text-amber-700 transition-colors hover:bg-amber-100 hover:text-amber-900"
@@ -559,13 +559,11 @@ export function CreneauxPage() {
                 Créneaux complets
               </h2>
               <p className="min-w-0 text-sm text-amber-800 sm:text-base">
-                {CRENEAUX_COMPLETS_MESSAGE}
+                Les créneaux encadrés <span className="font-bold">Minimes–Cadets (vendredi de 18h15 à 20h)</span> et <span className="font-bold">Adultes Intermédiaires (lundi de 19h30 à 21h30)</span> ont atteint leur capacité maximale.
               </p>
             </div>
             <p className="mt-1 text-sm text-amber-800 sm:text-base">
-              Les inscriptions pour{" "}
-              {CRENEAUX_COMPLETS.length === 1 ? "ce créneau" : "ces créneaux"}{" "}
-              ne sont plus possibles.
+              Il n'est donc plus possible de s'inscrire à ces deux créneaux pour le moment.
             </p>
           </div>
         )}
