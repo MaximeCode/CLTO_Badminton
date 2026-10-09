@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, Search, X } from "lucide-react";
 import logo from "../../imports/logo_clto_main.webp";
 import { NavItem } from "@/types/headerType";
 import { JoinClubIcon } from "./icons/JoinClubIcon";
 import { ShopIcon } from "./icons/ShopIcon";
+import { SearchDialog } from "./SearchDialog";
 import { getParametresGlobaux } from "@/api/strapi/parametre-globaux";
 
 const NAV_ITEMS: NavItem[] = [
@@ -91,6 +92,7 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [shopUrl, setShopUrl] = useState<string | null>(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -110,6 +112,26 @@ export function Header() {
   const location = useLocation();
   const headerRef = useRef<HTMLElement | null>(null);
   const menuButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  function openSearch() {
+    setIsMenuOpen(false);
+    setOpenDropdown(null);
+    setIsSearchOpen(true);
+  }
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setIsMenuOpen(false);
+        setOpenDropdown(null);
+        setIsSearchOpen(true);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   /*
    * Ferme le menu mobile lorsqu'un clic ou un toucher est effectué en dehors
@@ -296,7 +318,7 @@ export function Header() {
           </nav>
 
           {/* Text hidden between MD and LG, then displayed from LG. */}
-          <div className="flex gap-1 text-sm lg:gap-2 lg:text-base">
+          <div className="flex items-center gap-1 text-sm lg:gap-2 lg:text-base">
             <Link
               to="/adherer"
               title="S'inscrire"
@@ -319,7 +341,27 @@ export function Header() {
               <span className="sr-only">Notre boutique</span>
               <span className="hidden lg:block">Notre boutique</span>
             </a>
+
+            <button
+              type="button"
+              onClick={openSearch}
+              className={`hidden rounded-sm p-2 text-primary transition-colors duration-200 hover:text-secondary md:inline-flex ${FOCUS_RING}`}
+              aria-label="Rechercher"
+              title="Rechercher (Ctrl+K)"
+            >
+              <Search size={22} aria-hidden="true" />
+            </button>
           </div>
+
+          <button
+            type="button"
+            onClick={openSearch}
+            className={`rounded-sm p-2 text-primary transition-colors duration-200 hover:text-secondary md:hidden ${FOCUS_RING}`}
+            aria-label="Rechercher"
+            title="Rechercher"
+          >
+            <Search size={26} aria-hidden="true" />
+          </button>
 
           <button
             ref={menuButtonRef}
@@ -431,6 +473,8 @@ export function Header() {
           </nav>
         )}
       </div>
+
+      <SearchDialog open={isSearchOpen} onOpenChange={setIsSearchOpen} />
     </header>
   );
 }
