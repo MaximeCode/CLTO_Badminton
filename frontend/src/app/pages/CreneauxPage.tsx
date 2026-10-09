@@ -41,22 +41,14 @@ import {
 const ALL_GYMS = "Tous";
 
 /**
- * Créneaux complets (liste manuelle, hors API / Strapi).
- * Remplir les libellés exacts ; laissez vide pour masquer l'alerte.
+ * Alerte créneaux complets (texte manuel, hors API / Strapi).
+ * Chaîne vide = alerte masquée.
  */
-const CRENEAUX_COMPLETS: string[] = [
-  "Minimes-Cadets (vendredi 18h15–20h)",
-  "Adultes Intermédiaires (lundi 19h30–21h30)",
-];
-
-function formatCreneauxCompletsList(items: string[]): string {
-  if (items.length === 0) return "";
-  if (items.length === 1) return items[0];
-  if (items.length === 2) return `${items[0]} et ${items[1]}`;
-  return `${items.slice(0, -1).join(", ")} et ${items[items.length - 1]}`;
-}
+const CRENEAUX_COMPLETS_MESSAGE =
+  "Les créneaux encadrés Minimes–Cadets (vendredi de 18h15 à 20h) et Adultes Intermédiaires (lundi de 19h30 à 21h30) ont atteint leur capacité maximale.";
 
 const FILTERS_STORAGE_KEY = "clto.creneaux.filters";
+const COMPLETS_ALERT_DISMISS_KEY = "clto.creneaux.completsAlertDismissed";
 
 const SESSION_KINDS = ["Entraînement", "Jeu libre"] as const;
 
@@ -73,6 +65,26 @@ type StoredFilters = {
   publics: string[];
   gym: string;
 };
+
+function getCompletsAlertSignature(): string {
+  return CRENEAUX_COMPLETS_MESSAGE;
+}
+
+function loadCompletsAlertDismissed(): boolean {
+  try {
+    return localStorage.getItem(COMPLETS_ALERT_DISMISS_KEY) === getCompletsAlertSignature();
+  } catch {
+    return false;
+  }
+}
+
+function saveCompletsAlertDismissed() {
+  try {
+    localStorage.setItem(COMPLETS_ALERT_DISMISS_KEY, getCompletsAlertSignature());
+  } catch {
+    // Quota / mode privé : on ignore silencieusement
+  }
+}
 
 function sanitizeStringList(
   value: unknown,
@@ -255,6 +267,9 @@ export function CreneauxPage() {
   const [selectedGym, setSelectedGym] = useState<string>(
     () => getInitialFilters().gym,
   );
+  const [completsAlertDismissed, setCompletsAlertDismissed] = useState(
+    () => loadCompletsAlertDismissed(),
+  );
 
   useEffect(() => {
     saveStoredFilters({
@@ -398,6 +413,11 @@ export function CreneauxPage() {
     setSelectedGym(DEFAULT_FILTERS.gym);
   };
 
+  const dismissCompletsAlert = () => {
+    saveCompletsAlertDismissed();
+    setCompletsAlertDismissed(true);
+  };
+
   const toMinutes = (time: string) => {
     const [hours, minutes] = time.split(":").map(Number);
     return hours * 60 + minutes;
@@ -516,11 +536,19 @@ export function CreneauxPage() {
       />
 
       <Section className="bg-gray-50" width_subdiv={2000}>
-        {CRENEAUX_COMPLETS.length > 0 && (
+        {CRENEAUX_COMPLETS_MESSAGE && !completsAlertDismissed && (
           <div
-            className="mx-auto mb-8 max-w-7xl rounded-xl border border-amber-200 bg-amber-50 p-5 sm:p-6"
+            className="relative mx-auto mb-8 max-w-7xl rounded-xl border border-amber-200 bg-amber-50 p-5 pr-12 sm:p-6 sm:pr-14"
             role="alert"
           >
+<button
+              type="button"
+              onClick={dismissCompletsAlert}
+              className="absolute top-3 right-3 rounded-lg p-1.5 text-amber-700 transition-colors hover:bg-amber-100 hover:text-amber-900"
+              aria-label="Fermer l'alerte des créneaux complets"
+            >
+              <X size={20} aria-hidden="true" />
+            </button>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
               <AlertTriangle
                 className="shrink-0 text-amber-700"
@@ -531,12 +559,7 @@ export function CreneauxPage() {
                 Créneaux complets
               </h2>
               <p className="min-w-0 text-sm text-amber-800 sm:text-base">
-                Attention :{" "}
-                {CRENEAUX_COMPLETS.length === 1
-                  ? "le créneau encadré suivant est complet"
-                  : "les créneaux encadrés suivants sont complets"}{" "}
-                :{" "}
-                <strong>{formatCreneauxCompletsList(CRENEAUX_COMPLETS)}</strong>.
+                {CRENEAUX_COMPLETS_MESSAGE}
               </p>
             </div>
             <p className="mt-1 text-sm text-amber-800 sm:text-base">
