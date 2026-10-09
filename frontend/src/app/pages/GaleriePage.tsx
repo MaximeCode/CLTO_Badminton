@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
+import { useLocation } from "react-router";
 import { PageHero } from "../components/PageHero"
 import { Seo } from "../components/Seo";
 import { useBandeauImage } from '@/hooks/useBandeauImage';
@@ -13,9 +14,17 @@ import { getFlickrPlayerSrc, getGalerie } from "@/api/strapi/galerie";
 import { getGalerieCategories } from "@/api/strapi/galerie-categories";
 import { stringifyDate } from "@/utils/formatDate";
 import { resolveMediaAlt } from "@/utils/media";
+import {
+  parseSearchHash,
+  searchElementId,
+  useSearchHighlight,
+} from "@/hooks/useSearchHighlight";
+import { highlightText } from "@/utils/highlightText";
+import { cn } from "../components/ui/utils";
 
 export function GaleriePage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.GALERIE);
+  const { hash } = useLocation();
 
   const [albums, setAlbums] = useState<Galerie[]>([]);
   const [categories, setCategories] = useState<Categorie[]>([]);
@@ -61,10 +70,28 @@ export function GaleriePage() {
 
   const playerSrc = selectedAlbum ? getFlickrPlayerSrc(selectedAlbum.url_album) : null;
 
+  useEffect(() => {
+    if (loading || albums.length === 0) return;
+    const target = parseSearchHash(hash);
+    if (!target || target.type !== "galerie") return;
+    setSelectedCategoryId("all");
+  }, [loading, albums, hash]);
+
   const filteredAlbums =
     selectedCategoryId === "all"
       ? albums
       : albums.filter((album) => album.galerie_categorie?.id === selectedCategoryId);
+
+  const highlightReady = useMemo(() => {
+    if (loading) return false;
+    const target = parseSearchHash(hash);
+    if (!target || target.type !== "galerie") return false;
+    return filteredAlbums.some((album) => album.documentId === target.documentId);
+  }, [loading, hash, filteredAlbums]);
+
+  const { highlightedId, searchQuery, isFading } = useSearchHighlight({
+    ready: highlightReady,
+  });
 
   return (
     <>
@@ -144,16 +171,26 @@ export function GaleriePage() {
 
         {!loading && !loadError && filteredAlbums.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {filteredAlbums.map((album, index) => (
+            {filteredAlbums.map((album, index) => {
+              const domId = searchElementId("galerie", album.documentId);
+              const isHighlighted = highlightedId === domId;
+              const q = isHighlighted ? searchQuery : "";
+
+              return (
               <motion.button
-                key={album.id}
+                id={domId}
+                key={album.documentId}
                 type="button"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
                 onClick={() => setSelectedAlbum(album)}
-                className="group text-left overflow-hidden rounded-xl border border-primary/10 bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-secondary/50 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
+                className={cn(
+                  "group scroll-mt-24 text-left overflow-hidden rounded-xl border border-primary/10 bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-secondary/50 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2",
+                  isHighlighted && "search-result-highlight",
+                  isHighlighted && isFading && "search-result-highlight--fade",
+                )}
               >
                 <div className="relative aspect-4/3 overflow-hidden bg-gray-100">
                   <ImageWithFallback
@@ -170,12 +207,13 @@ export function GaleriePage() {
                     {stringifyDate(album.date, "numeric", "long", "numeric")}
                   </time>
                   <h3 className="mt-1 font-primary text-xl md:text-2xl text-primary group-hover:text-secondary transition-colors">
-                    {album.titre}
+                    {highlightText(album.titre, q)}
                   </h3>
                   <p className="mt-1 text-sm text-gray-500 font-medium">Voir l&apos;album</p>
                 </div>
               </motion.button>
-            ))}
+              );
+            })}
           </div>
         )}
       </Section>

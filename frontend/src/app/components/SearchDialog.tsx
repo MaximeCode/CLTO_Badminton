@@ -124,7 +124,18 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
 
   function handleSelect(url: string) {
     onOpenChange(false);
-    navigate(url);
+    // path + ?q= + #ancre → scroll + surlignage du mot recherché
+    const hashIndex = url.indexOf("#");
+    const pathname =
+      hashIndex === -1 ? url : url.slice(0, hashIndex) || "/";
+    const hash = hashIndex === -1 ? "" : url.slice(hashIndex);
+    const q = query.trim();
+
+    navigate({
+      pathname,
+      search: q ? `?q=${encodeURIComponent(q)}` : "",
+      hash,
+    });
   }
 
   const showEmpty =
@@ -174,10 +185,15 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             heading={group}
             className="[&_[cmdk-group-heading]]:!text-primary"
           >
-            {items.map((item) => (
+            {items.map((item, index) => (
               <CommandItem
-                key={`${item.type}-${item.url}-${item.title}`}
-                value={`${item.group} ${item.title} ${item.url}`}
+                key={
+                  item.documentId
+                    ? `${item.type}-${item.documentId}`
+                    : `${item.type}-${item.url}-${item.title}-${index}`
+                }
+                value={`${item.type}-${item.documentId ?? item.url}-${item.title}-${index}`}
+                keywords={[item.title, item.group, item.excerpt ?? ""]}
                 onSelect={() => handleSelect(item.url)}
               >
                 <div className="flex min-w-0 flex-col gap-0.5">

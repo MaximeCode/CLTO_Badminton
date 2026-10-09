@@ -13,6 +13,7 @@ const MAX_TOTAL = 25;
  *   excerpt?: string;
  *   url: string;
  *   group: string;
+ *   documentId?: string;
  * }>>}
  */
 async function searchAll(q) {
@@ -62,6 +63,7 @@ async function searchArticles(q) {
     excerpt: extractTextFromBlocks(item.contenu, 120) || undefined,
     url: `/actualite/${item.documentId}`,
     group: 'Actualités',
+    documentId: item.documentId,
   }));
 }
 
@@ -77,6 +79,7 @@ async function searchStages(q) {
     },
     fields: [
       'titre',
+      'documentId',
       'gymnase',
       'public',
       'autre_infos',
@@ -98,8 +101,9 @@ async function searchStages(q) {
       type: 'stage',
       title: item.titre,
       excerpt,
-      url: '/stages',
+      url: `/stages#stage-${item.documentId}`,
       group: 'Stages',
+      documentId: item.documentId,
     };
   });
 }
@@ -113,7 +117,7 @@ async function searchEvenements(q) {
         { lieu: { $containsi: q } },
       ],
     },
-    fields: ['titre', 'petite_description', 'lieu', 'date'],
+    fields: ['titre', 'documentId', 'petite_description', 'lieu', 'date'],
     sort: ['date:desc'],
     limit: PAGE_SIZE,
     status: 'published',
@@ -123,8 +127,9 @@ async function searchEvenements(q) {
     type: 'evenement',
     title: item.titre,
     excerpt: item.petite_description || item.lieu || undefined,
-    url: '/evenements',
+    url: `/evenements#evenement-${item.documentId}`,
     group: 'Événements',
+    documentId: item.documentId,
   }));
 }
 
@@ -136,7 +141,7 @@ async function searchFaqs(q) {
         { reponse: { $containsi: q } },
       ],
     },
-    fields: ['question', 'reponse', 'updatedAt'],
+    fields: ['question', 'documentId', 'reponse', 'updatedAt'],
     sort: ['updatedAt:desc'],
     limit: PAGE_SIZE,
     status: 'published',
@@ -146,8 +151,9 @@ async function searchFaqs(q) {
     type: 'faq',
     title: item.question,
     excerpt: truncate(item.reponse, 120),
-    url: '/faq',
+    url: `/faq#faq-${item.documentId}`,
     group: 'FAQ',
+    documentId: item.documentId,
   }));
 }
 
@@ -156,7 +162,7 @@ async function searchGaleries(q) {
     filters: {
       titre: { $containsi: q },
     },
-    fields: ['titre', 'date'],
+    fields: ['titre', 'documentId', 'date'],
     sort: ['date:desc'],
     limit: PAGE_SIZE,
     status: 'published',
@@ -165,8 +171,9 @@ async function searchGaleries(q) {
   return (items ?? []).map((item) => ({
     type: 'galerie',
     title: item.titre,
-    url: '/galerie',
+    url: `/galerie#galerie-${item.documentId}`,
     group: 'Galerie',
+    documentId: item.documentId,
   }));
 }
 
@@ -178,7 +185,7 @@ async function searchHistoriques(q) {
         { description: { $containsi: q } },
       ],
     },
-    fields: ['titre', 'description', 'date'],
+    fields: ['titre', 'documentId', 'description', 'date'],
     sort: ['date:desc'],
     limit: PAGE_SIZE,
     status: 'published',
@@ -188,8 +195,9 @@ async function searchHistoriques(q) {
     type: 'historique',
     title: item.titre,
     excerpt: truncate(item.description, 120),
-    url: '/historique',
+    url: `/historique#historique-${item.documentId}`,
     group: 'Historique',
+    documentId: item.documentId,
   }));
 }
 
@@ -201,7 +209,7 @@ async function searchPalmares(q) {
         { description: { $containsi: q } },
       ],
     },
-    fields: ['titre', 'description', 'date'],
+    fields: ['titre', 'documentId', 'description', 'date'],
     sort: ['date:desc'],
     limit: PAGE_SIZE,
     status: 'published',
@@ -211,8 +219,9 @@ async function searchPalmares(q) {
     type: 'palmares',
     title: item.titre,
     excerpt: truncate(item.description, 120),
-    url: '/palmares',
+    url: `/palmares#palmares-${item.documentId}`,
     group: 'Palmarès',
+    documentId: item.documentId,
   }));
 }
 

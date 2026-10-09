@@ -4,17 +4,25 @@ import { useBandeauImage } from '@/hooks/useBandeauImage';
 import { BANDEAU_PAGES } from '@/constants/bandeauPages';
 import { Section } from '../components/Section';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation } from 'react-router';
 import { getEvenements } from '@/api/strapi/evenement';
 import type { Evenement } from '@/types/evenementType';
 import { EvenementCard } from '../components/EvenementCard';
 import { formatPaginationRange, ListPagination } from '../components/ListPagination';
 import { Seo } from '../components/Seo';
+import {
+  parseSearchHash,
+  searchElementId,
+  useSearchHighlight,
+} from '@/hooks/useSearchHighlight';
+import { highlightText } from '@/utils/highlightText';
 
 const EVENTS_PER_PAGE = 5;
 
 export function EvenementsPage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.EVENEMENTS);
   const listRef = useRef<HTMLDivElement>(null);
+  const { hash } = useLocation();
 
   const [evenements, setEvenements] = useState<Evenement[] | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -50,6 +58,26 @@ export function EvenementsPage() {
     }
     loadData();
   }, []);
+
+  useEffect(() => {
+    if (!evenements) return;
+    const target = parseSearchHash(hash);
+    if (!target || target.type !== 'evenement') return;
+    const index = evenements.findIndex((item) => item.documentId === target.documentId);
+    if (index < 0) return;
+    setCurrentPage(Math.floor(index / EVENTS_PER_PAGE) + 1);
+  }, [evenements, hash]);
+
+  const highlightReady = useMemo(() => {
+    if (!evenements) return false;
+    const target = parseSearchHash(hash);
+    if (!target || target.type !== 'evenement') return false;
+    return paginatedEvenements.some((item) => item.documentId === target.documentId);
+  }, [evenements, hash, paginatedEvenements]);
+
+  const { highlightedId, searchQuery, isFading } = useSearchHighlight({
+    ready: highlightReady,
+  });
 
   return (
     <>
@@ -107,7 +135,23 @@ export function EvenementsPage() {
 
             return (
               <EvenementCard
-                key={evenement.id}
+                key={evenement.documentId}
+                id={searchElementId('evenement', evenement.documentId)}
+                highlighted={
+                  highlightedId ===
+                  searchElementId('evenement', evenement.documentId)
+                }
+                highlightFading={
+                  highlightedId ===
+                    searchElementId('evenement', evenement.documentId) &&
+                  isFading
+                }
+                highlightQuery={
+                  highlightedId ===
+                  searchElementId('evenement', evenement.documentId)
+                    ? searchQuery
+                    : ''
+                }
                 titre={evenement.titre}
                 date={evenement.date}
                 detail_date={evenement.detail_date}
@@ -118,7 +162,10 @@ export function EvenementsPage() {
               >
                 {evenement.petite_description ? (
                   <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                    {evenement.petite_description}
+                    {highlightedId ===
+                    searchElementId('evenement', evenement.documentId)
+                      ? highlightText(evenement.petite_description, searchQuery)
+                      : evenement.petite_description}
                   </p>
                 ) : null}
               </EvenementCard>

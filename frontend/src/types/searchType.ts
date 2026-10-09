@@ -14,4 +14,5 @@ export type SearchResult = {
   excerpt?: string;
   url: string;
   group: string;
+  documentId?: string;
 };

@@ -8,11 +8,19 @@ import { Seo } from '../components/Seo';
 import type { Faq, FaqCategorie } from '@/types/faqsType';
 import { getFaqCategories, getFaqs } from '@/api/strapi/faqs';
 import { Section } from '../components/Section';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
+import {
+  parseSearchHash,
+  searchElementId,
+  useSearchHighlight,
+} from '@/hooks/useSearchHighlight';
+import { highlightText } from '@/utils/highlightText';
+import { cn } from '../components/ui/utils';
 
 export function FAQPage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.FAQ);
   const listRef = useRef<HTMLDivElement>(null);
+  const { hash } = useLocation();
 
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [faqs, setFaqs] = useState<Faq[]>([]);
@@ -54,12 +62,33 @@ export function FAQPage() {
     loadData();
   }, []);
 
+  useEffect(() => {
+    if (loading || faqs.length === 0) return;
+    const target = parseSearchHash(hash);
+    if (!target || target.type !== 'faq') return;
+
+    setSelectedCategory('Toutes');
+    const index = faqs.findIndex((faq) => faq.documentId === target.documentId);
+    if (index >= 0) setOpenIndex(index);
+  }, [loading, faqs, hash]);
+
   const filteredFaqs = useMemo(() => {
     if (selectedCategory === 'Toutes') return faqs;
     return faqs.filter((faq) =>
       faq.faq_categories.some((categorie) => categorie.libelle === selectedCategory),
     );
   }, [selectedCategory, faqs]);
+
+  const highlightReady = useMemo(() => {
+    if (loading) return false;
+    const target = parseSearchHash(hash);
+    if (!target || target.type !== 'faq') return false;
+    return filteredFaqs.some((faq) => faq.documentId === target.documentId);
+  }, [loading, hash, filteredFaqs]);
+
+  const { highlightedId, searchQuery, isFading } = useSearchHighlight({
+    ready: highlightReady,
+  });
 
   const rangeLabel =
     filteredFaqs.length === 0
@@ -166,14 +195,24 @@ export function FAQPage() {
                 Aucune question dans cette catégorie.
               </p>
             ) : (
-              filteredFaqs.map((faq, index) => (
+              filteredFaqs.map((faq, index) => {
+                const faqDomId = searchElementId('faq', faq.documentId);
+                const isHighlighted = highlightedId === faqDomId;
+                const q = isHighlighted ? searchQuery : '';
+
+                return (
                 <motion.div
+                  id={faqDomId}
                   key={faq.documentId}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: Math.min(index * 0.04, 0.24) }}
-                  className="bg-gray-50 rounded-lg shadow-md overflow-hidden"
+                  className={cn(
+                    'scroll-mt-24 bg-gray-50 rounded-lg shadow-md overflow-hidden',
+                    isHighlighted && 'search-result-highlight',
+                    isHighlighted && isFading && 'search-result-highlight--fade',
+                  )}
                 >
                   <button
                     type="button"
@@ -182,7 +221,7 @@ export function FAQPage() {
                     aria-expanded={openIndex === index}
                   >
                     <span className="font-semibold text-primary text-base md:text-lg pr-4">
-                      {faq.question}
+                      {highlightText(faq.question, q)}
                     </span>
                     <ChevronDown
                       size={22}
@@ -202,13 +241,14 @@ export function FAQPage() {
                         className="overflow-hidden"
                       >
                         <p className="px-6 pb-5 text-gray-600 leading-relaxed border-t border-gray-200 pt-4 text-sm md:text-base whitespace-pre-line">
-                          {faq.reponse}
+                          {highlightText(faq.reponse, q)}
                         </p>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </motion.div>
-              ))
+                );
+              })
             )}
           </div>
         </div>
