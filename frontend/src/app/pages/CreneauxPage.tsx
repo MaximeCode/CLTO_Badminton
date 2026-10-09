@@ -48,7 +48,6 @@ const CRENEAUX_COMPLETS_MESSAGE =
   "Les créneaux encadrés Minimes–Cadets (vendredi de 18h15 à 20h) et Adultes Intermédiaires (lundi de 19h30 à 21h30) ont atteint leur capacité maximale.";
 
 const FILTERS_STORAGE_KEY = "clto.creneaux.filters";
-const COMPLETS_ALERT_DISMISS_KEY = "clto.creneaux.completsAlertDismissed";
 
 const SESSION_KINDS = ["Entraînement", "Jeu libre"] as const;
 
@@ -65,26 +64,6 @@ type StoredFilters = {
   publics: string[];
   gym: string;
 };
-
-function getCompletsAlertSignature(): string {
-  return CRENEAUX_COMPLETS_MESSAGE;
-}
-
-function loadCompletsAlertDismissed(): boolean {
-  try {
-    return localStorage.getItem(COMPLETS_ALERT_DISMISS_KEY) === getCompletsAlertSignature();
-  } catch {
-    return false;
-  }
-}
-
-function saveCompletsAlertDismissed() {
-  try {
-    localStorage.setItem(COMPLETS_ALERT_DISMISS_KEY, getCompletsAlertSignature());
-  } catch {
-    // Quota / mode privé : on ignore silencieusement
-  }
-}
 
 function sanitizeStringList(
   value: unknown,
@@ -267,9 +246,7 @@ export function CreneauxPage() {
   const [selectedGym, setSelectedGym] = useState<string>(
     () => getInitialFilters().gym,
   );
-  const [completsAlertDismissed, setCompletsAlertDismissed] = useState(
-    () => loadCompletsAlertDismissed(),
-  );
+  const [completsAlertDismissed, setCompletsAlertDismissed] = useState(false);
 
   useEffect(() => {
     saveStoredFilters({
@@ -413,11 +390,6 @@ export function CreneauxPage() {
     setSelectedGym(DEFAULT_FILTERS.gym);
   };
 
-  const dismissCompletsAlert = () => {
-    saveCompletsAlertDismissed();
-    setCompletsAlertDismissed(true);
-  };
-
   const toMinutes = (time: string) => {
     const [hours, minutes] = time.split(":").map(Number);
     return hours * 60 + minutes;
@@ -543,7 +515,7 @@ export function CreneauxPage() {
           >
             <button
               type="button"
-              onClick={dismissCompletsAlert}
+              onClick={() => setCompletsAlertDismissed(true)}
               className="absolute top-3 right-3 rounded-lg p-1.5 text-amber-700 transition-colors hover:bg-amber-100 hover:text-amber-900"
               aria-label="Fermer l'alerte des créneaux complets"
             >
