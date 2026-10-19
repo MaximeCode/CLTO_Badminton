@@ -3,7 +3,7 @@ import type { SearchResult } from "@/types/searchType";
 
 export async function searchContent(q: string): Promise<SearchResult[]> {
   const trimmed = q.trim();
-  if (trimmed.length < 2) return [];
+  if (trimmed.length < 3) return [];
 
   const { data } = await fetchAPI(
     `/api/search?q=${encodeURIComponent(trimmed)}`

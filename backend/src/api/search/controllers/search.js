@@ -2,7 +2,7 @@
 
 const { searchAll } = require('../../../utils/searchQueries');
 
-const MIN_QUERY_LENGTH = 2;
+const MIN_QUERY_LENGTH = 3;
 const MAX_QUERY_LENGTH = 80;
 
 module.exports = {

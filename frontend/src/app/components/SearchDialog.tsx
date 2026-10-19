@@ -13,7 +13,7 @@ import {
 } from "./ui/command";
 
 const DEBOUNCE_MS = 300;
-const MIN_QUERY_LENGTH = 2;
+const MIN_QUERY_LENGTH = 3;
 
 type SearchDialogProps = {
   open: boolean;
