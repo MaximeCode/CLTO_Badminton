@@ -164,9 +164,10 @@ function MemberCard({
   const HeadingTag = headingLevel === 4 ? 'h4' : 'h3';
   const name = displayName(contact);
   const hasEmail = Boolean(contact.email);
+  const showEmail = hasEmail && contact.typeCode !== 'ouvreur_gymnase';
   const cardRef = useRef<HTMLElement>(null);
   const closeTimerRef = useRef<number | null>(null);
-  const { footerRef, pos } = useFooterViewportPosition(footerOpen && hasEmail, cardRef);
+  const { footerRef, pos } = useFooterViewportPosition(footerOpen && showEmail, cardRef);
 
   const cancelScheduledClose = () => {
     if (closeTimerRef.current !== null) {
@@ -200,12 +201,12 @@ function MemberCard({
       transition={{ duration: 0.45 }}
       className="relative min-w-0"
       onMouseEnter={() => {
-        if (!hasEmail || !isDesktopHoverDevice()) return;
+        if (!showEmail || !isDesktopHoverDevice()) return;
         cancelScheduledClose();
         onOpenFooter();
       }}
       onMouseLeave={() => {
-        if (!hasEmail || !isDesktopHoverDevice()) return;
+        if (!showEmail || !isDesktopHoverDevice()) return;
         scheduleClose();
       }}
     >
@@ -214,12 +215,12 @@ function MemberCard({
         className={[
           'group relative overflow-hidden bg-white rounded-2xl px-2 pb-4 pt-6 shadow-sm transition-shadow duration-300 border-2 outline-hidden',
           isExecutive ? 'border-primary/50' : 'border-primary/15',
-          hasEmail ? 'hover:shadow-xl' : '',
+          showEmail ? 'hover:shadow-xl' : '',
         ].join(' ')}
       >
         <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-primary to-secondary" />
 
-        {hasEmail ? (
+        {showEmail ? (
           <button
             type="button"
             className={[
@@ -256,7 +257,7 @@ function MemberCard({
         </div>
       </article>
 
-      {hasEmail ? (
+      {showEmail ? (
         <div
           className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${footerOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
             }`}
@@ -274,7 +275,7 @@ function MemberCard({
         </div>
       ) : null}
 
-      {hasEmail ? (
+      {showEmail ? (
         <div
           ref={footerRef}
           className="fixed z-50"
