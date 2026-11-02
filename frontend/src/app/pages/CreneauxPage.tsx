@@ -39,7 +39,7 @@ import {
   mergeEmptyWeeks,
 } from "@/utils/seancesUtils";
 import { BlocksRenderer } from "../components/BlocksRenderer";
-import type { BlocksContent } from "@/types/blocks";
+import type { SemaineSansCreneaux } from "@/types/parametreGlobauxType";
 
 const ALL_GYMS = "Tous";
 
@@ -259,8 +259,7 @@ export function CreneauxPage() {
     () => getInitialFilters().hideWeekend,
   );
 
-  const [christmasWeekStart, setChristmasWeekStart] = useState<string | null>(null);
-  const [christmasText, setChristmasText] = useState<BlocksContent | null>(null);
+  const [semainesSansCreneaux, setSemainesSansCreneaux] = useState<SemaineSansCreneaux[]>([]);
 
   useEffect(() => {
     saveStoredFilters({
@@ -288,23 +287,21 @@ export function CreneauxPage() {
             ? await getSeances() // DEV
             : await getSeances(saisonId); // PP / PROD
 
-        /** Semaine de Noël définie dans les paramètres globaux. */
-        setChristmasWeekStart(parametres?.date_vacances_noel ? format(parametres.date_vacances_noel, "yyyy-MM-dd") : null);
-        const tempChristmasWeekStart = parametres?.date_vacances_noel ? format(parametres.date_vacances_noel, "yyyy-MM-dd") : null;
-        setChristmasText(parametres?.texte_vacances_noel ? parametres.texte_vacances_noel : null);
+        /** Semaines sans créneaux (message spécial) définies dans les paramètres globaux. */
+        const semainesIndispo = parametres?.semaines_sans_creneaux ?? [];
+        setSemainesSansCreneaux(semainesIndispo);
+        const weekStartsSansCreneaux = semainesIndispo.map((s) => s.date_indispo);
 
-        // Semaines Excel : pas de créneaux API — on injecte des semaines vides navigables
+        // Semaines Excel / indispo : pas de créneaux API — on injecte des semaines vides navigables
         const groupedFromApi = groupSeancesByWeek(seances).map((week) =>
-          (EXCEL_PLANNING_WEEK_STARTS as readonly string[]).includes(week.weekStart)
+          (EXCEL_PLANNING_WEEK_STARTS as readonly string[]).includes(week.weekStart) ||
+          weekStartsSansCreneaux.includes(week.weekStart)
             ? { ...week, seances: [] }
-            : tempChristmasWeekStart ? tempChristmasWeekStart?.includes(week.weekStart)
-              ? { ...week, seances: [] }
-              : week
-              : week,
+            : week,
         );
         const grouped = mergeEmptyWeeks(groupedFromApi, [
           ...EXCEL_PLANNING_WEEK_STARTS,
-          ...(tempChristmasWeekStart ? [tempChristmasWeekStart] : []),
+          ...weekStartsSansCreneaux,
         ]);
         setWeeks(grouped);
 
@@ -390,7 +387,11 @@ export function CreneauxPage() {
     ),
   );
 
-  const isChristmasWeek = selectedWeek && christmasWeekStart ? christmasWeekStart?.includes(selectedWeek.weekStart) : false;
+  const semaineSansCreneaux = selectedWeek
+    ? semainesSansCreneaux.find((s) => s.date_indispo === selectedWeek.weekStart)
+    : undefined;
+  const isSemaineSansCreneaux = Boolean(semaineSansCreneaux);
+  const texteSemaineSansCreneaux = semaineSansCreneaux?.texte_indispo ?? null;
 
   const toggleType = (type: string) => {
     setSelectedTypes((prev) =>
@@ -670,7 +671,7 @@ export function CreneauxPage() {
               </motion.div>
 
               {/* Filters */}
-              {!isExcelPlanningWeek && !isChristmasWeek && (
+              {!isExcelPlanningWeek && !isSemaineSansCreneaux && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -860,7 +861,7 @@ export function CreneauxPage() {
                   </div>
                 </motion.div>
               ) : (
-                isChristmasWeek ? (
+                isSemaineSansCreneaux ? (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -870,7 +871,7 @@ export function CreneauxPage() {
                   >
                     <div className="flex flex-col items-center justify-center text-center px-6 py-16 md:py-24 min-h-70 md:min-h-90 bg-linear-to-b from-blue-50/80 to-white">
                       <PartyPopper className="text-primary mb-5" size={56} />
-                      <BlocksRenderer content={christmasText} />
+                      <BlocksRenderer content={texteSemaineSansCreneaux} />
                     </div>
                   </motion.div>
                 ) : (
@@ -1362,7 +1363,7 @@ export function CreneauxPage() {
               )}
 
               {/* Legend */}
-              {!isChristmasWeek && !isExcelPlanningWeek && (
+              {!isSemaineSansCreneaux && !isExcelPlanningWeek && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}

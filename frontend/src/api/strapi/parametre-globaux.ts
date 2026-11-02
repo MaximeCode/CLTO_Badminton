@@ -1,5 +1,6 @@
 import { fetchAPI } from "../Client";
-import type { ParametreGlobaux } from "@/types/parametreGlobauxType";
+import type { ParametreGlobaux, SemaineSansCreneaux } from "@/types/parametreGlobauxType";
+import type { BlocksContent } from "@/types/blocks";
 
 function mapCreneauxComplets(items: { contenu?: string | null }[] | null | undefined): string[] {
   return (items ?? [])
@@ -7,9 +8,29 @@ function mapCreneauxComplets(items: { contenu?: string | null }[] | null | undef
     .filter((contenu) => contenu.length > 0);
 }
 
+function mapSemainesSansCreneaux(
+  items:
+    | { date_indispo?: string | null; texte_indispo?: BlocksContent | null }[]
+    | null
+    | undefined,
+): SemaineSansCreneaux[] {
+  return (items ?? [])
+    .map((item) => {
+      const date_indispo = item.date_indispo?.trim() ?? "";
+      if (!date_indispo) return null;
+      return {
+        date_indispo,
+        texte_indispo: item.texte_indispo ?? null,
+      };
+    })
+    .filter((item): item is SemaineSansCreneaux => item != null);
+}
+
 export async function getParametresGlobaux(): Promise<ParametreGlobaux | null> {
   try {
-    const { data } = await fetchAPI("/api/parametre-globaux?populate[creneaux_complets]=true");
+    const { data } = await fetchAPI(
+      "/api/parametre-globaux?populate[creneaux_complets]=true&populate[semaines_sans_creneaux]=true",
+    );
 
     if (!data) return null;
 
@@ -20,8 +41,7 @@ export async function getParametresGlobaux(): Promise<ParametreGlobaux | null> {
       lien_charte_interclub: data.lien_charte_interclub ?? null,
       saison_id: data.saison_id ?? null,
       creneaux_complets: mapCreneauxComplets(data.creneaux_complets),
-      date_vacances_noel: data.date_vacances_noel ? new Date(data.date_vacances_noel) : null,
-      texte_vacances_noel: data.texte_vacances_noel ?? null,
+      semaines_sans_creneaux: mapSemainesSansCreneaux(data.semaines_sans_creneaux),
     };
   } catch (error) {
     // Strapi renvoie 404 tant que le single type n'a pas été créé / publié

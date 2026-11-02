@@ -26,11 +26,10 @@
       "component": "contenu-page.liste-txt",
       "repeatable": true
     },
-    "date_vacances_noel": {
-      "type": "date"
-    },
-    "texte_vacances_noel": {
-      "type": "blocks"
+    "semaines_sans_creneaux": {
+      "type": "component",
+      "component": "creneaux.date-indispo-creneaux",
+      "repeatable": true
     }
   }
 }
