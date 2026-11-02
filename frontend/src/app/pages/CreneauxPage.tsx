@@ -38,6 +38,8 @@ import {
   groupSeancesByWeek,
   mergeEmptyWeeks,
 } from "@/utils/seancesUtils";
+import { BlocksRenderer } from "../components/BlocksRenderer";
+import type { BlocksContent } from "@/types/blocks";
 
 const ALL_GYMS = "Tous";
 
@@ -258,6 +260,7 @@ export function CreneauxPage() {
   );
 
   const [christmasWeekStart, setChristmasWeekStart] = useState<string | null>(null);
+  const [christmasText, setChristmasText] = useState<BlocksContent | null>(null);
 
   useEffect(() => {
     saveStoredFilters({
@@ -286,8 +289,9 @@ export function CreneauxPage() {
             : await getSeances(saisonId); // PP / PROD
 
         /** Semaine de Noël définie dans les paramètres globaux. */
-        setChristmasWeekStart(parametres?.vacances_noel ? format(parametres.vacances_noel, "yyyy-MM-dd") : null);
-        const tempChristmasWeekStart = parametres?.vacances_noel ? format(parametres.vacances_noel, "yyyy-MM-dd") : null;
+        setChristmasWeekStart(parametres?.date_vacances_noel ? format(parametres.date_vacances_noel, "yyyy-MM-dd") : null);
+        const tempChristmasWeekStart = parametres?.date_vacances_noel ? format(parametres.date_vacances_noel, "yyyy-MM-dd") : null;
+        setChristmasText(parametres?.texte_vacances_noel ? parametres.texte_vacances_noel : null);
 
         // Semaines Excel : pas de créneaux API — on injecte des semaines vides navigables
         const groupedFromApi = groupSeancesByWeek(seances).map((week) =>
@@ -866,12 +870,7 @@ export function CreneauxPage() {
                   >
                     <div className="flex flex-col items-center justify-center text-center px-6 py-16 md:py-24 min-h-70 md:min-h-90 bg-linear-to-b from-blue-50/80 to-white">
                       <PartyPopper className="text-primary mb-5" size={56} />
-                      <p className="font-primary text-3xl md:text-5xl text-primary leading-tight">
-                        Joyeux Noël !
-                      </p>
-                      <p className="mt-4 text-base md:text-lg text-gray-600 max-w-lg">
-                        Aucune séance prévue cette semaine. Profitez bien des fêtes de fin d'année !
-                      </p>
+                      <BlocksRenderer content={christmasText} />
                     </div>
                   </motion.div>
                 ) : (

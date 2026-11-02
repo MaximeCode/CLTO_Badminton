@@ -26,8 +26,11 @@
       "component": "contenu-page.liste-txt",
       "repeatable": true
     },
-    "vacances_noel": {
+    "date_vacances_noel": {
       "type": "date"
+    },
+    "texte_vacances_noel": {
+      "type": "blocks"
     }
   }
 }
