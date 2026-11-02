@@ -115,7 +115,7 @@ function mapSeance(item: SeanceApiItem): Seance {
 export async function getSeances(saisonId: number = 17): Promise<Seance[]> {
   const { data } =
     import.meta.env.VITE_ENV === "dev"
-      ? await fetchFakeAPIGestion("allSeances_04-10") // DEV
+      ? await fetchFakeAPIGestion("allSeances_02-11") // DEV
       : await fetchAPIGestion(`/api/seances/${saisonId}`); // PP / PROD
 
   return (data as SeanceApiItem[])

@@ -25,6 +25,9 @@
       "type": "component",
       "component": "contenu-page.liste-txt",
       "repeatable": true
+    },
+    "vacances_noel": {
+      "type": "date"
     }
   }
 }

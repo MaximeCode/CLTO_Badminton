@@ -6,4 +6,5 @@ export type ParametreGlobaux = Base & {
   saison_id: number | null;
   /** Libellés des créneaux complets (composant liste-txt.contenu). */
   creneaux_complets: string[];
+  vacances_noel: Date | null;
 };

@@ -24,6 +24,7 @@ export async function getParametresGlobaux(): Promise<ParametreGlobaux | null> {
       lien_charte_interclub: data.lien_charte_interclub ?? null,
       saison_id: data.saison_id ?? null,
       creneaux_complets: mapCreneauxComplets(data.creneaux_complets),
+      vacances_noel: data.vacances_noel ? new Date(data.vacances_noel) : null,
     };
   } catch (error) {
     // Strapi renvoie 404 tant que le single type n'a pas été créé / publié
