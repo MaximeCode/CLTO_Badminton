@@ -26,9 +26,9 @@
       "component": "contenu-page.liste-txt",
       "repeatable": true
     },
-    "semaines_sans_creneaux": {
+    "jours_feries": {
       "type": "component",
-      "component": "creneaux.date-indispo-creneaux",
+      "component": "creneaux.jours-feries",
       "repeatable": true
     }
   }

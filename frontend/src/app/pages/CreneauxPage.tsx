@@ -21,9 +21,8 @@ import {
   Filter,
   X,
   Users,
-  PartyPopper
 } from "lucide-react";
-import { format, isToday, parseISO } from "date-fns";
+import { addDays, format, isToday, isValid, parseISO, startOfWeek } from "date-fns";
 import { fr } from "date-fns/locale";
 import { getSeances } from "@/api/gestion/seances";
 import { getParametresGlobaux } from "@/api/strapi/parametre-globaux";
@@ -39,7 +38,7 @@ import {
   mergeEmptyWeeks,
 } from "@/utils/seancesUtils";
 import { BlocksRenderer } from "../components/BlocksRenderer";
-import type { SemaineSansCreneaux } from "@/types/parametreGlobauxType";
+import type { JourFerie } from "@/types/parametreGlobauxType";
 
 const ALL_GYMS = "Tous";
 
@@ -229,6 +228,99 @@ const TYPE_BADGE_CLASSES: Record<string, string> = {
   "Jeu libre": "bg-lime-600",
 };
 
+/** Bordure d’alerte : rouge épaisse si pas d’ouvreur (prioritaire), sinon orange si commentaire. */
+function getSlotAlertBorderClass(slot: TimeSlot, fallback = ""): string {
+  if (!slot.hasOuvreur) return "border-3 md:border-4 border-red-600";
+  if (slot.comment) return "border-3 md:border-4 border-orange-500";
+  return fallback;
+}
+
+function isDateInJourFerieRange(dateKey: string, ferie: JourFerie): boolean {
+  return dateKey >= ferie.date_debut && dateKey <= ferie.date_fin;
+}
+
+function findJourFerieForDate(
+  date: Date,
+  joursFeries: JourFerie[],
+): JourFerie | undefined {
+  if (!isValid(date)) return undefined;
+  const key = format(date, "yyyy-MM-dd");
+  return joursFeries.find((ferie) => isDateInJourFerieRange(key, ferie));
+}
+
+function isSameJourFeriePeriod(
+  a: JourFerie | undefined,
+  b: JourFerie | undefined,
+): boolean {
+  if (!a || !b) return false;
+  return a.date_debut === b.date_debut && a.date_fin === b.date_fin;
+}
+
+type WeekDayName = (typeof WEEK_DAYS)[number];
+
+/** Groupes de jours visibles consécutifs couverts par la même période jours fériés. */
+function groupConsecutiveFerieDays(
+  visibleDays: readonly WeekDayName[],
+  weekStart: string,
+  joursFeries: JourFerie[],
+): { ferie: JourFerie; startIndex: number; span: number }[] {
+  if (!weekStart || !isValid(parseISO(weekStart))) return [];
+
+  const groups: { ferie: JourFerie; startIndex: number; span: number }[] = [];
+  let i = 0;
+  while (i < visibleDays.length) {
+    const dayIndex = WEEK_DAYS.indexOf(visibleDays[i]);
+    if (dayIndex < 0) {
+      i += 1;
+      continue;
+    }
+    const ferie = findJourFerieForDate(
+      addDaysToWeekStart(weekStart, dayIndex),
+      joursFeries,
+    );
+    if (!ferie) {
+      i += 1;
+      continue;
+    }
+    let span = 1;
+    while (i + span < visibleDays.length) {
+      const nextDayIndex = WEEK_DAYS.indexOf(visibleDays[i + span]);
+      if (nextDayIndex < 0) break;
+      const nextFerie = findJourFerieForDate(
+        addDaysToWeekStart(weekStart, nextDayIndex),
+        joursFeries,
+      );
+      if (!isSameJourFeriePeriod(ferie, nextFerie)) break;
+      span += 1;
+    }
+    groups.push({ ferie, startIndex: i, span });
+    i += span;
+  }
+  return groups;
+}
+
+function isSeanceCoveredByJoursFeries(
+  dateSeance: string,
+  joursFeries: JourFerie[],
+): boolean {
+  const key = dateSeance.slice(0, 10);
+  return joursFeries.some((ferie) => isDateInJourFerieRange(key, ferie));
+}
+
+/** Lundis des semaines couvertes par au moins une période jours fériés. */
+function weekStartsCoveringJoursFeries(joursFeries: JourFerie[]): string[] {
+  const starts = new Set<string>();
+  for (const ferie of joursFeries) {
+    let cursor = startOfWeek(parseISO(ferie.date_debut), { weekStartsOn: 1 });
+    const end = parseISO(ferie.date_fin);
+    while (cursor.getTime() <= end.getTime()) {
+      starts.add(format(cursor, "yyyy-MM-dd"));
+      cursor = addDays(cursor, 7);
+    }
+  }
+  return [...starts];
+}
+
 export function CreneauxPage() {
   const bandeauImage = useBandeauImage(BANDEAU_PAGES.CRENEAUX);
 
@@ -259,7 +351,7 @@ export function CreneauxPage() {
     () => getInitialFilters().hideWeekend,
   );
 
-  const [semainesSansCreneaux, setSemainesSansCreneaux] = useState<SemaineSansCreneaux[]>([]);
+  const [joursFeries, setJoursFeries] = useState<JourFerie[]>([]);
 
   useEffect(() => {
     saveStoredFilters({
@@ -287,21 +379,23 @@ export function CreneauxPage() {
             ? await getSeances() // DEV
             : await getSeances(saisonId); // PP / PROD
 
-        /** Semaines sans créneaux (message spécial) définies dans les paramètres globaux. */
-        const semainesIndispo = parametres?.semaines_sans_creneaux ?? [];
-        setSemainesSansCreneaux(semainesIndispo);
-        const weekStartsSansCreneaux = semainesIndispo.map((s) => s.date_indispo);
+        /** Périodes sans créneaux (jours fériés / gym indispo / vacances). */
+        const feries = parametres?.jours_feries ?? [];
+        setJoursFeries(feries);
+        const seancesVisibles = seances.filter(
+          (seance) => !isSeanceCoveredByJoursFeries(seance.dateSeance, feries),
+        );
+        const weekStartsFeries = weekStartsCoveringJoursFeries(feries);
 
-        // Semaines Excel / indispo : pas de créneaux API — on injecte des semaines vides navigables
-        const groupedFromApi = groupSeancesByWeek(seances).map((week) =>
-          (EXCEL_PLANNING_WEEK_STARTS as readonly string[]).includes(week.weekStart) ||
-          weekStartsSansCreneaux.includes(week.weekStart)
+        // Semaines Excel : pas de créneaux API — on injecte des semaines vides navigables
+        const groupedFromApi = groupSeancesByWeek(seancesVisibles).map((week) =>
+          (EXCEL_PLANNING_WEEK_STARTS as readonly string[]).includes(week.weekStart)
             ? { ...week, seances: [] }
             : week,
         );
         const grouped = mergeEmptyWeeks(groupedFromApi, [
           ...EXCEL_PLANNING_WEEK_STARTS,
-          ...weekStartsSansCreneaux,
+          ...weekStartsFeries,
         ]);
         setWeeks(grouped);
 
@@ -387,12 +481,6 @@ export function CreneauxPage() {
     ),
   );
 
-  const semaineSansCreneaux = selectedWeek
-    ? semainesSansCreneaux.find((s) => s.date_indispo === selectedWeek.weekStart)
-    : undefined;
-  const isSemaineSansCreneaux = Boolean(semaineSansCreneaux);
-  const texteSemaineSansCreneaux = semaineSansCreneaux?.texte_indispo ?? null;
-
   const toggleType = (type: string) => {
     setSelectedTypes((prev) =>
       prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
@@ -426,6 +514,11 @@ export function CreneauxPage() {
   const desktopGridCols = hideWeekend
     ? "grid-cols-[56px_repeat(5,minmax(0,1fr))] lg:grid-cols-[64px_repeat(5,minmax(0,1fr))]"
     : "grid-cols-[56px_repeat(7,minmax(0,1fr))] lg:grid-cols-[64px_repeat(7,minmax(0,1fr))]";
+
+  const ferieDayGroups = useMemo(
+    () => groupConsecutiveFerieDays(visibleDays, weekStart, joursFeries),
+    [visibleDays, weekStart, joursFeries],
+  );
 
   const dismissCompletsAlert = () => {
     setCompletsAlertDismissed(true);
@@ -671,7 +764,7 @@ export function CreneauxPage() {
               </motion.div>
 
               {/* Filters */}
-              {!isExcelPlanningWeek && !isSemaineSansCreneaux && (
+              {!isExcelPlanningWeek && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -861,269 +954,299 @@ export function CreneauxPage() {
                   </div>
                 </motion.div>
               ) : (
-                isSemaineSansCreneaux ? (
+                <>
+                  {/* Mobile View */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.08 }}
-                    className="bg-white rounded-xl shadow-xl overflow-hidden border-2 border-gray-200"
+                    className="md:hidden space-y-4"
                   >
-                    <div className="flex flex-col items-center justify-center text-center px-6 py-16 md:py-24 min-h-70 md:min-h-90 bg-linear-to-b from-blue-50/80 to-white">
-                      <PartyPopper className="text-primary mb-5" size={56} />
-                      <BlocksRenderer content={texteSemaineSansCreneaux} />
-                    </div>
+                    {WEEK_DAYS.map((day, dayIndex) => {
+                      const dayDate = addDaysToWeekStart(weekStart, dayIndex);
+                      const dayFerie = findJourFerieForDate(dayDate, joursFeries);
+                      const daySlotsData = timeSlots.filter((slot) => slot.day === day);
+                      const isCurrentDay = isToday(dayDate);
+
+                      return (
+                        <div
+                          key={day}
+                          className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden"
+                        >
+                          {dayFerie ? (
+                            <>
+                              <div
+                                className={`px-4 py-3 ${isCurrentDay ? "bg-secondary" : "bg-primary"}`}
+                              >
+                                <p className="font-primary text-xl text-white leading-none">
+                                  {day}
+                                </p>
+                                <p className="text-sm text-white/70">
+                                  {format(dayDate, "dd MMMM yyyy", { locale: fr })}
+                                </p>
+                              </div>
+                              <div className="flex flex-col items-center justify-center text-center px-4 py-10 min-h-40 bg-linear-to-b from-blue-50/80 to-white">
+                                <BlocksRenderer content={dayFerie.texte} />
+                              </div>
+                            </>
+                          ) : daySlotsData.length === 0 ? (
+                            <div
+                              className={`px-4 py-3 flex items-center justify-between ${isCurrentDay ? "bg-secondary" : "bg-primary"
+                                }`}
+                            >
+                              <div>
+                                <p className="font-primary text-xl text-white leading-none">
+                                  {day}
+                                </p>
+                                <p className="text-sm text-white/70">
+                                  {format(dayDate, "dd MMMM yyyy", { locale: fr })}
+                                </p>
+                              </div>
+                              <span className="text-xs font-semibold text-white/80 italic">
+                                Aucun créneau ce jour
+                              </span>
+                            </div>
+                          ) : (
+                            <>
+                              <button
+                                className={`w-full flex items-center justify-between px-4 py-3 ${isCurrentDay ? "bg-secondary" : "bg-primary"
+                                  }`}
+                                onClick={() => setOpenDay(openDay === day ? null : day)}
+                              >
+                                <div className="text-left">
+                                  <p className="font-primary text-xl text-white leading-none">
+                                    {day}
+                                  </p>
+                                  <p className="text-sm text-blue-100">
+                                    {format(dayDate, "dd MMMM yyyy", { locale: fr })}
+                                  </p>
+                                </div>
+                                <ChevronDown
+                                  size={20}
+                                  className={`text-white transition-transform duration-200 ${openDay === day ? "rotate-180" : ""
+                                    }`}
+                                />
+                              </button>
+
+                              <AnimatePresence>
+                                {openDay === day && (
+                                  <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: "auto", opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="overflow-hidden"
+                                  >
+                                    <div className="p-3 space-y-3">
+                                      {daySlotsData.map((slot) => (
+                                        <div
+                                          key={slot.id}
+                                          className={`rounded-lg p-3 bg-gray-50 ${getSlotAlertBorderClass(slot, "border border-gray-200")}`}
+                                        >
+                                          <div className="flex items-center justify-between gap-3">
+                                            <p className="font-semibold text-gray-900">
+                                              {slot.startTime} - {slot.endTime}
+                                            </p>
+                                            <div className="inline-flex items-center gap-1.5">
+                                              {slot.lien != null && (
+                                                <a
+                                                  href={slot.lien}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                  className="inline-flex items-center justify-center rounded-full bg-white p-1.5 border border-gray-200 text-primary hover:bg-primary hover:text-white transition-colors"
+                                                  title="Ouvrir le lien"
+                                                  aria-label="Ouvrir le lien externe"
+                                                >
+                                                  <ExternalLink size={16} />
+                                                </a>
+                                              )}
+                                              {slot.comment && (
+                                                <span
+                                                  className="inline-flex items-center justify-center rounded-full bg-amber-500 p-1.5"
+                                                  title="Commentaire à lire"
+                                                >
+                                                  <MessageCircle size={16} className="text-white" />
+                                                </span>
+                                              )}
+                                              {!slot.hasOuvreur && (
+                                                <span
+                                                  className="inline-flex items-center justify-center rounded-full bg-red-600 p-1.5"
+                                                  title="Aucun ouvreur = créneau annulé"
+                                                >
+                                                  <AlertTriangle size={16} className="text-white" />
+                                                </span>
+                                              )}
+                                              <span
+                                                className={`inline-block px-2 py-1 rounded-full text-xs font-semibold text-white ${getTypeBadgeClass(
+                                                  slot.primaryType,
+                                                )}`}
+                                              >
+                                                {slot.primaryType}
+                                              </span>
+                                            </div>
+                                          </div>
+                                          <p className="mt-2 text-sm text-gray-800">{slot.nom}</p>
+                                          <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-white px-2 py-1 text-xs font-semibold text-gray-700 border border-gray-200">
+                                            {slot.sessionKind === "Jeu libre" ? (
+                                              <>
+                                                <Gamepad2
+                                                  size={13}
+                                                  className="text-[#16a34a]"
+                                                />
+                                                Jeu libre
+                                              </>
+                                            ) : (
+                                              <>
+                                                <Dumbbell
+                                                  size={13}
+                                                  className="text-primary"
+                                                />
+                                                Entraînement
+                                              </>
+                                            )}
+                                          </div>
+                                          <div className="mt-2 text-xs text-gray-600 space-y-1">
+                                            <p>📍 {slot.gymFull}</p>
+                                            {(slot.entraineurs.length > 0 ||
+                                              slot.serviceCivique.length > 0) && (
+                                                <p>
+                                                  🏸{" "}
+                                                  {formatPeople([
+                                                    ...slot.entraineurs,
+                                                    ...slot.serviceCivique,
+                                                  ])}
+                                                </p>
+                                              )}
+                                            {slot.ouvreurs.length > 0 && (
+                                              <p>👤 {formatPeople(slot.ouvreurs)}</p>
+                                            )}
+                                            {!slot.hasOuvreur && (
+                                              <p className="flex items-center gap-1.5 font-bold text-red-600">
+                                                <AlertTriangle size={14} className="shrink-0" />
+                                                Aucun ouvreur = créneau annulé
+                                              </p>
+                                            )}
+                                            {slot.publics.length > 0 && (
+                                              <p>👥 {slot.publics.join(", ")}</p>
+                                            )}
+                                          </div>
+                                          {slot.comment && (
+                                            <p className="mt-2 text-xs text-yellow-800 bg-yellow-50 border-l-4 border-yellow-400 p-2 rounded">
+                                              ⚠️ {slot.comment}
+                                            </p>
+                                          )}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </>
+                          )}
+                        </div>
+                      );
+                    })}
                   </motion.div>
-                ) : (
-                  <>
-                    {/* Mobile View */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: 0.08 }}
-                      className="md:hidden space-y-4"
-                    >
-                      {WEEK_DAYS.map((day, dayIndex) => {
+
+                  {/* Calendar Grid (desktop/tablette) */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
+                    className="hidden md:block bg-white rounded-xl shadow-xl border-2 border-gray-200"
+                  >
+                    <div className={`grid ${desktopGridCols} overflow-hidden rounded-t-[calc(0.75rem-2px)] bg-primary border-b-2 border-gray-300`}>
+                      <div className="px-1 py-4 border-r border-blue-400" />
+                      {visibleDays.map((day) => {
+                        const dayIndex = WEEK_DAYS.indexOf(day);
                         const dayDate = addDaysToWeekStart(weekStart, dayIndex);
-                        const daySlotsData = timeSlots.filter((slot) => slot.day === day);
                         const isCurrentDay = isToday(dayDate);
 
                         return (
                           <div
                             key={day}
-                            className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden"
+                            className={`px-2 py-4 text-center border-r border-blue-400 last:border-r-0 ${isCurrentDay ? "bg-secondary" : ""
+                              }`}
                           >
-                            {daySlotsData.length === 0 ? (
-                              <div
-                                className={`px-4 py-3 flex items-center justify-between ${isCurrentDay ? "bg-secondary" : "bg-primary"
-                                  }`}
-                              >
-                                <div>
-                                  <p className="font-primary text-xl text-white leading-none">
-                                    {day}
-                                  </p>
-                                  <p className="text-sm text-white/70">
-                                    {format(dayDate, "dd MMMM yyyy", { locale: fr })}
-                                  </p>
-                                </div>
-                                <span className="text-xs font-semibold text-white/80 italic">
-                                  Aucun créneau ce jour
-                                </span>
-                              </div>
-                            ) : (
-                              <>
-                                <button
-                                  className={`w-full flex items-center justify-between px-4 py-3 ${isCurrentDay ? "bg-secondary" : "bg-primary"
-                                    }`}
-                                  onClick={() => setOpenDay(openDay === day ? null : day)}
-                                >
-                                  <div className="text-left">
-                                    <p className="font-primary text-xl text-white leading-none">
-                                      {day}
-                                    </p>
-                                    <p className="text-sm text-blue-100">
-                                      {format(dayDate, "dd MMMM yyyy", { locale: fr })}
-                                    </p>
-                                  </div>
-                                  <ChevronDown
-                                    size={20}
-                                    className={`text-white transition-transform duration-200 ${openDay === day ? "rotate-180" : ""
-                                      }`}
-                                  />
-                                </button>
-
-                                <AnimatePresence>
-                                  {openDay === day && (
-                                    <motion.div
-                                      initial={{ height: 0, opacity: 0 }}
-                                      animate={{ height: "auto", opacity: 1 }}
-                                      exit={{ height: 0, opacity: 0 }}
-                                      transition={{ duration: 0.2 }}
-                                      className="overflow-hidden"
-                                    >
-                                      <div className="p-3 space-y-3">
-                                        {daySlotsData.map((slot) => (
-                                          <div
-                                            key={slot.id}
-                                            className="rounded-lg border border-gray-200 p-3 bg-gray-50"
-                                          >
-                                            <div className="flex items-center justify-between gap-3">
-                                              <p className="font-semibold text-gray-900">
-                                                {slot.startTime} - {slot.endTime}
-                                              </p>
-                                              <div className="inline-flex items-center gap-1.5">
-                                                {slot.lien != null && (
-                                                  <a
-                                                    href={slot.lien}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="inline-flex items-center justify-center rounded-full bg-white p-1.5 border border-gray-200 text-primary hover:bg-primary hover:text-white transition-colors"
-                                                    title="Ouvrir le lien"
-                                                    aria-label="Ouvrir le lien externe"
-                                                  >
-                                                    <ExternalLink size={16} />
-                                                  </a>
-                                                )}
-                                                {slot.comment && (
-                                                  <span
-                                                    className="inline-flex items-center justify-center rounded-full bg-amber-500 p-1.5"
-                                                    title="Commentaire à lire"
-                                                  >
-                                                    <MessageCircle size={16} className="text-white" />
-                                                  </span>
-                                                )}
-                                                {!slot.hasOuvreur && (
-                                                  <span
-                                                    className="inline-flex items-center justify-center rounded-full bg-red-600 p-1.5"
-                                                    title="Aucun ouvreur = créneau annulé"
-                                                  >
-                                                    <AlertTriangle size={16} className="text-white" />
-                                                  </span>
-                                                )}
-                                                <span
-                                                  className={`inline-block px-2 py-1 rounded-full text-xs font-semibold text-white ${getTypeBadgeClass(
-                                                    slot.primaryType,
-                                                  )}`}
-                                                >
-                                                  {slot.primaryType}
-                                                </span>
-                                              </div>
-                                            </div>
-                                            <p className="mt-2 text-sm text-gray-800">{slot.nom}</p>
-                                            <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-white px-2 py-1 text-xs font-semibold text-gray-700 border border-gray-200">
-                                              {slot.sessionKind === "Jeu libre" ? (
-                                                <>
-                                                  <Gamepad2
-                                                    size={13}
-                                                    className="text-[#16a34a]"
-                                                  />
-                                                  Jeu libre
-                                                </>
-                                              ) : (
-                                                <>
-                                                  <Dumbbell
-                                                    size={13}
-                                                    className="text-primary"
-                                                  />
-                                                  Entraînement
-                                                </>
-                                              )}
-                                            </div>
-                                            <div className="mt-2 text-xs text-gray-600 space-y-1">
-                                              <p>📍 {slot.gymFull}</p>
-                                              {(slot.entraineurs.length > 0 ||
-                                                slot.serviceCivique.length > 0) && (
-                                                  <p>
-                                                    🏸{" "}
-                                                    {formatPeople([
-                                                      ...slot.entraineurs,
-                                                      ...slot.serviceCivique,
-                                                    ])}
-                                                  </p>
-                                                )}
-                                              {slot.ouvreurs.length > 0 && (
-                                                <p>👤 {formatPeople(slot.ouvreurs)}</p>
-                                              )}
-                                              {!slot.hasOuvreur && (
-                                                <p className="flex items-center gap-1.5 font-bold text-red-600">
-                                                  <AlertTriangle size={14} className="shrink-0" />
-                                                  Aucun ouvreur = créneau annulé
-                                                </p>
-                                              )}
-                                              {slot.publics.length > 0 && (
-                                                <p>👥 {slot.publics.join(", ")}</p>
-                                              )}
-                                            </div>
-                                            {slot.comment && (
-                                              <p className="mt-2 text-xs text-yellow-800 bg-yellow-50 border-l-4 border-yellow-400 p-2 rounded">
-                                                ⚠️ {slot.comment}
-                                              </p>
-                                            )}
-                                          </div>
-                                        ))}
-                                      </div>
-                                    </motion.div>
-                                  )}
-                                </AnimatePresence>
-                              </>
-                            )}
+                            <div className="font-primary text-xl lg:text-2xl text-white">
+                              {day}
+                            </div>
+                            <div
+                              className={`text-sm ${isCurrentDay ? "text-white font-bold" : "text-blue-100"
+                                }`}
+                            >
+                              {format(dayDate, "dd MMM", { locale: fr })}
+                            </div>
                           </div>
                         );
                       })}
-                    </motion.div>
+                    </div>
 
-                    {/* Calendar Grid (desktop/tablette) */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: 0.1 }}
-                      className="hidden md:block bg-white rounded-xl shadow-xl overflow-hidden border-2 border-gray-200"
-                    >
-                      <div className={`grid ${desktopGridCols} bg-primary border-b-2 border-gray-300`}>
-                        <div className="px-1 py-4 border-r border-blue-400" />
-                        {visibleDays.map((day) => {
+                    <div className="relative">
+                      <div className={`grid ${desktopGridCols}`}>
+                        <div className="border-r-2 border-gray-200 bg-gray-50">
+                          {timeGrid.map((time) => (
+                            <div
+                              key={time}
+                              className="h-20 border-b border-gray-200 px-1 py-2 text-right"
+                            >
+                              <span className="text-xs lg:text-sm font-semibold text-gray-600">
+                                {time}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+
+                        {visibleDays.map((day, visibleIndex) => {
                           const dayIndex = WEEK_DAYS.indexOf(day);
                           const dayDate = addDaysToWeekStart(weekStart, dayIndex);
                           const isCurrentDay = isToday(dayDate);
+                          const dayFerie = findJourFerieForDate(dayDate, joursFeries);
+                          const ferieGroup = ferieDayGroups.find(
+                            (group) =>
+                              visibleIndex >= group.startIndex &&
+                              visibleIndex < group.startIndex + group.span,
+                          );
+                          const isFerieSpanStart = ferieGroup?.startIndex === visibleIndex;
+                          const daySlotsData = layoutDaySlots(
+                            timeSlots.filter((slot) => slot.day === day),
+                          );
 
                           return (
                             <div
                               key={day}
-                              className={`px-2 py-4 text-center border-r border-blue-400 last:border-r-0 ${isCurrentDay ? "bg-secondary" : ""
-                                }`}
+                              className={`relative border-r border-gray-200 last:border-r-0 ${isFerieSpanStart && (ferieGroup?.span ?? 1) > 1
+                                ? "overflow-visible z-20"
+                                : "overflow-clip"
+                                } ${isCurrentDay ? "bg-blue-50" : "bg-white"}`}
                             >
-                              <div className="font-primary text-xl lg:text-2xl text-white">
-                                {day}
-                              </div>
-                              <div
-                                className={`text-sm ${isCurrentDay ? "text-white font-bold" : "text-blue-100"
-                                  }`}
-                              >
-                                {format(dayDate, "dd MMM", { locale: fr })}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
+                              {timeGrid.map((time) => (
+                                <div
+                                  key={time}
+                                  className="h-20 border-b border-gray-200"
+                                />
+                              ))}
 
-                      <div className="relative">
-                        <div className={`grid ${desktopGridCols}`}>
-                          <div className="border-r-2 border-gray-200 bg-gray-50">
-                            {timeGrid.map((time) => (
-                              <div
-                                key={time}
-                                className="h-20 border-b border-gray-200 px-1 py-2 text-right"
-                              >
-                                <span className="text-xs lg:text-sm font-semibold text-gray-600">
-                                  {time}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-
-                          {visibleDays.map((day) => {
-                            const dayIndex = WEEK_DAYS.indexOf(day);
-                            const dayDate = addDaysToWeekStart(weekStart, dayIndex);
-                            const isCurrentDay = isToday(dayDate);
-                            const daySlotsData = layoutDaySlots(
-                              timeSlots.filter((slot) => slot.day === day),
-                            );
-
-                            return (
-                              <div
-                                key={day}
-                                className={`relative border-r border-gray-200 last:border-r-0 ${isCurrentDay ? "bg-blue-50" : "bg-white"
-                                  }`}
-                              >
-                                {timeGrid.map((time) => (
-                                  <div
-                                    key={time}
-                                    className="h-20 border-b border-gray-200"
-                                  />
-                                ))}
-
+                              {dayFerie ? (
+                                <div className="absolute inset-0 z-10 bg-linear-to-b from-blue-50/90 to-white">
+                                  {isFerieSpanStart && ferieGroup && (
+                                    <div
+                                      className="sticky top-34 z-20 px-2 pt-5 pb-3 text-center bg-linear-to-b from-blue-50 to-blue-50/95"
+                                      style={
+                                        ferieGroup.span > 1
+                                          ? {
+                                            width: `calc(${ferieGroup.span * 100}% + ${ferieGroup.span - 1}px)`,
+                                          }
+                                          : undefined
+                                      }
+                                    >
+                                      <BlocksRenderer content={ferieGroup.ferie.texte} />
+                                    </div>
+                                  )}
+                                </div>
+                              ) : (
                                 <div className="absolute inset-0 pointer-events-none">
                                   {daySlotsData.map((slot) => {
                                     const top = timeToPosition(slot.startTime);
@@ -1160,7 +1283,7 @@ export function CreneauxPage() {
                                         initial={{ opacity: 0, scale: 0.8 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         transition={{ duration: 0.3 }}
-                                        className="absolute rounded-lg shadow-md pointer-events-auto overflow-hidden transition-[height,left,width,z-index] duration-200"
+                                        className={`absolute rounded-lg shadow-md pointer-events-auto overflow-hidden transition-[height,left,width,z-index] duration-200 ${getSlotAlertBorderClass(slot)}`}
                                         style={{
                                           top: `${top}px`,
                                           left: leftStyle,
@@ -1352,18 +1475,18 @@ export function CreneauxPage() {
                                     );
                                   })}
                                 </div>
-                              </div>
-                            );
-                          })}
-                        </div>
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
-                    </motion.div>
-                  </>
-                )
+                    </div>
+                  </motion.div>
+                </>
               )}
 
               {/* Legend */}
-              {!isSemaineSansCreneaux && !isExcelPlanningWeek && (
+              {!isExcelPlanningWeek && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -1425,15 +1548,18 @@ export function CreneauxPage() {
                   <p className="mt-3 text-sm text-amber-800 bg-amber-50 p-3 rounded-lg border-l-4 border-amber-500 flex items-start gap-2">
                     <MessageCircle size={18} className="shrink-0 mt-0.5" />
                     <span>
-                      <strong>Commentaire à lire.</strong> Le badge jaune indique qu’un
-                      commentaire concerne ce créneau (visible au survol ou en ouvrant le jour).
+                      <strong>Commentaire à lire.</strong> Le badge jaune et la bordure orange
+                      indiquent qu’un commentaire concerne ce créneau (visible au survol ou en
+                      ouvrant le jour).
                     </span>
                   </p>
                   <p className="mt-3 text-sm text-red-700 bg-red-50 p-3 rounded-lg border-l-4 border-red-600 flex items-start gap-2">
                     <AlertTriangle size={18} className="shrink-0 mt-0.5" />
                     <span>
-                      <strong>Aucun ouvreur = créneau annulé.</strong> Le badge rouge indique
-                      qu’aucun ouvreur ni entraîneur n’est désigné.
+                      <strong>Aucun ouvreur = créneau annulé.</strong> Le badge rouge et la
+                      bordure rouge épaisse indiquent qu’aucun ouvreur ni entraîneur n’est
+                      désigné (prioritaire sur la bordure orange si un commentaire est aussi
+                      présent).
                     </span>
                   </p>
                 </motion.div>

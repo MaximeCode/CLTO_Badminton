@@ -1,10 +1,12 @@
 import type { Base } from "@/types/baseType";
 import type { BlocksContent } from "@/types/blocks";
 
-export type SemaineSansCreneaux = {
-  /** Lundi de la semaine concernée (yyyy-MM-dd). */
-  date_indispo: string;
-  texte_indispo: BlocksContent | null;
+export type JourFerie = {
+  /** Début de la période (yyyy-MM-dd, inclus). */
+  date_debut: string;
+  /** Fin de la période (yyyy-MM-dd, inclus). Un seul jour → date_debut === date_fin. */
+  date_fin: string;
+  texte: BlocksContent | null;
 };
 
 export type ParametreGlobaux = Base & {
@@ -13,6 +15,6 @@ export type ParametreGlobaux = Base & {
   saison_id: number | null;
   /** Libellés des créneaux complets (composant liste-txt.contenu). */
   creneaux_complets: string[];
-  /** Semaines sans créneaux (message spécial à la place du planning). */
-  semaines_sans_creneaux: SemaineSansCreneaux[];
+  /** Périodes sans créneaux (jours fériés, gym indispo, vacances…). */
+  jours_feries: JourFerie[];
 };
