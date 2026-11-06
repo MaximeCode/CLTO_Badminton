@@ -1,5 +1,5 @@
 import { fetchAPI } from "../Client";
-import type { JourFerie, ParametreGlobaux } from "@/types/parametreGlobauxType";
+import type { JourIndispo, ParametreGlobaux } from "@/types/parametreGlobauxType";
 import type { BlocksContent } from "@/types/blocks";
 
 function mapCreneauxComplets(items: { contenu?: string | null }[] | null | undefined): string[] {
@@ -16,8 +16,8 @@ function mapJoursFeries(
         texte?: BlocksContent | null;
       }[]
     | null
-    | undefined,
-): JourFerie[] {
+    | undefined
+): JourIndispo[] {
   return (items ?? [])
     .map((item) => {
       const date_debut = item.date_debut?.trim() ?? "";
@@ -29,13 +29,13 @@ function mapJoursFeries(
         texte: item.texte ?? null,
       };
     })
-    .filter((item): item is JourFerie => item != null);
+    .filter((item): item is JourIndispo => item != null);
 }
 
 export async function getParametresGlobaux(): Promise<ParametreGlobaux | null> {
   try {
     const { data } = await fetchAPI(
-      "/api/parametre-globaux?populate[creneaux_complets]=true&populate[jours_feries]=true",
+      "/api/parametre-globaux?populate[creneaux_complets]=true&populate[indispo_gymnase]=true"
     );
 
     if (!data) return null;
@@ -47,7 +47,7 @@ export async function getParametresGlobaux(): Promise<ParametreGlobaux | null> {
       lien_charte_interclub: data.lien_charte_interclub ?? null,
       saison_id: data.saison_id ?? null,
       creneaux_complets: mapCreneauxComplets(data.creneaux_complets),
-      jours_feries: mapJoursFeries(data.jours_feries),
+      indispo_gymnase: mapJoursFeries(data.indispo_gymnase),
     };
   } catch (error) {
     // Strapi renvoie 404 tant que le single type n'a pas été créé / publié

@@ -26,9 +26,9 @@
       "component": "contenu-page.liste-txt",
       "repeatable": true
     },
-    "jours_feries": {
+    "indispo_gymnase": {
       "type": "component",
-      "component": "creneaux.jours-feries",
+      "component": "creneaux.indispo-gymnase",
       "repeatable": true
     }
   }

@@ -1,7 +1,7 @@
 {
-  "collectionName": "components_creneaux_jours_feries",
+  "collectionName": "components_creneaux_indispo_gymnase",
   "info": {
-    "displayName": "jours_feries",
+    "displayName": "indispo_gymnase",
     "icon": "calendar"
   },
   "options": {},

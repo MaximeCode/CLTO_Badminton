@@ -38,7 +38,7 @@ import {
   mergeEmptyWeeks,
 } from "@/utils/seancesUtils";
 import { BlocksRenderer } from "../components/BlocksRenderer";
-import type { JourFerie } from "@/types/parametreGlobauxType";
+import type { JourIndispo } from "@/types/parametreGlobauxType";
 
 const ALL_GYMS = "Tous";
 
@@ -235,22 +235,22 @@ function getSlotAlertBorderClass(slot: TimeSlot, fallback = ""): string {
   return fallback;
 }
 
-function isDateInJourFerieRange(dateKey: string, ferie: JourFerie): boolean {
+function isDateInJourIndispoRange(dateKey: string, ferie: JourIndispo): boolean {
   return dateKey >= ferie.date_debut && dateKey <= ferie.date_fin;
 }
 
-function findJourFerieForDate(
+function findJourIndispoForDate(
   date: Date,
-  joursFeries: JourFerie[],
-): JourFerie | undefined {
+  joursFeries: JourIndispo[],
+): JourIndispo | undefined {
   if (!isValid(date)) return undefined;
   const key = format(date, "yyyy-MM-dd");
-  return joursFeries.find((ferie) => isDateInJourFerieRange(key, ferie));
+  return joursFeries.find((ferie) => isDateInJourIndispoRange(key, ferie));
 }
 
-function isSameJourFeriePeriod(
-  a: JourFerie | undefined,
-  b: JourFerie | undefined,
+function isSameJourIndispoPeriod(
+  a: JourIndispo | undefined,
+  b: JourIndispo | undefined,
 ): boolean {
   if (!a || !b) return false;
   return a.date_debut === b.date_debut && a.date_fin === b.date_fin;
@@ -262,11 +262,11 @@ type WeekDayName = (typeof WEEK_DAYS)[number];
 function groupConsecutiveFerieDays(
   visibleDays: readonly WeekDayName[],
   weekStart: string,
-  joursFeries: JourFerie[],
-): { ferie: JourFerie; startIndex: number; span: number }[] {
+  joursFeries: JourIndispo[],
+): { ferie: JourIndispo; startIndex: number; span: number }[] {
   if (!weekStart || !isValid(parseISO(weekStart))) return [];
 
-  const groups: { ferie: JourFerie; startIndex: number; span: number }[] = [];
+  const groups: { ferie: JourIndispo; startIndex: number; span: number }[] = [];
   let i = 0;
   while (i < visibleDays.length) {
     const dayIndex = WEEK_DAYS.indexOf(visibleDays[i]);
@@ -274,7 +274,7 @@ function groupConsecutiveFerieDays(
       i += 1;
       continue;
     }
-    const ferie = findJourFerieForDate(
+    const ferie = findJourIndispoForDate(
       addDaysToWeekStart(weekStart, dayIndex),
       joursFeries,
     );
@@ -286,11 +286,11 @@ function groupConsecutiveFerieDays(
     while (i + span < visibleDays.length) {
       const nextDayIndex = WEEK_DAYS.indexOf(visibleDays[i + span]);
       if (nextDayIndex < 0) break;
-      const nextFerie = findJourFerieForDate(
+      const nextFerie = findJourIndispoForDate(
         addDaysToWeekStart(weekStart, nextDayIndex),
         joursFeries,
       );
-      if (!isSameJourFeriePeriod(ferie, nextFerie)) break;
+      if (!isSameJourIndispoPeriod(ferie, nextFerie)) break;
       span += 1;
     }
     groups.push({ ferie, startIndex: i, span });
@@ -301,14 +301,14 @@ function groupConsecutiveFerieDays(
 
 function isSeanceCoveredByJoursFeries(
   dateSeance: string,
-  joursFeries: JourFerie[],
+  joursFeries: JourIndispo[],
 ): boolean {
   const key = dateSeance.slice(0, 10);
-  return joursFeries.some((ferie) => isDateInJourFerieRange(key, ferie));
+  return joursFeries.some((ferie) => isDateInJourIndispoRange(key, ferie));
 }
 
 /** Lundis des semaines couvertes par au moins une période jours fériés. */
-function weekStartsCoveringJoursFeries(joursFeries: JourFerie[]): string[] {
+function weekStartsCoveringJoursFeries(joursFeries: JourIndispo[]): string[] {
   const starts = new Set<string>();
   for (const ferie of joursFeries) {
     let cursor = startOfWeek(parseISO(ferie.date_debut), { weekStartsOn: 1 });
@@ -351,7 +351,7 @@ export function CreneauxPage() {
     () => getInitialFilters().hideWeekend,
   );
 
-  const [joursFeries, setJoursFeries] = useState<JourFerie[]>([]);
+  const [joursFeries, setJoursFeries] = useState<JourIndispo[]>([]);
 
   useEffect(() => {
     saveStoredFilters({
@@ -380,7 +380,7 @@ export function CreneauxPage() {
             : await getSeances(saisonId); // PP / PROD
 
         /** Périodes sans créneaux (jours fériés / gym indispo / vacances). */
-        const feries = parametres?.jours_feries ?? [];
+        const feries = parametres?.indispo_gymnase ?? [];
         setJoursFeries(feries);
         const seancesVisibles = seances.filter(
           (seance) => !isSeanceCoveredByJoursFeries(seance.dateSeance, feries),
@@ -965,7 +965,7 @@ export function CreneauxPage() {
                   >
                     {WEEK_DAYS.map((day, dayIndex) => {
                       const dayDate = addDaysToWeekStart(weekStart, dayIndex);
-                      const dayFerie = findJourFerieForDate(dayDate, joursFeries);
+                      const dayIndispo = findJourIndispoForDate(dayDate, joursFeries);
                       const daySlotsData = timeSlots.filter((slot) => slot.day === day);
                       const isCurrentDay = isToday(dayDate);
 
@@ -974,20 +974,25 @@ export function CreneauxPage() {
                           key={day}
                           className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden"
                         >
-                          {dayFerie ? (
+                          {dayIndispo ? (
                             <>
                               <div
-                                className={`px-4 py-3 ${isCurrentDay ? "bg-secondary" : "bg-primary"}`}
+                                className={`px-4 py-3 flex items-center justify-between ${isCurrentDay ? "bg-secondary" : "bg-primary"}`}
                               >
-                                <p className="font-primary text-xl text-white leading-none">
-                                  {day}
-                                </p>
-                                <p className="text-sm text-white/70">
-                                  {format(dayDate, "dd MMMM yyyy", { locale: fr })}
-                                </p>
+                                <div>
+                                  <p className="font-primary text-xl text-white leading-none">
+                                    {day}
+                                  </p>
+                                  <p className="text-sm text-white/70">
+                                    {format(dayDate, "dd MMMM yyyy", { locale: fr })}
+                                  </p>
+                                </div>
+                                <span className="text-xs font-semibold text-white/80 italic">
+                                  Aucun créneau ce jour
+                                </span>
                               </div>
                               <div className="flex flex-col items-center justify-center text-center px-4 py-10 min-h-40 bg-linear-to-b from-blue-50/80 to-white">
-                                <BlocksRenderer content={dayFerie.texte} />
+                                <BlocksRenderer content={dayIndispo.texte} />
                               </div>
                             </>
                           ) : daySlotsData.length === 0 ? (
@@ -1203,7 +1208,7 @@ export function CreneauxPage() {
                           const dayIndex = WEEK_DAYS.indexOf(day);
                           const dayDate = addDaysToWeekStart(weekStart, dayIndex);
                           const isCurrentDay = isToday(dayDate);
-                          const dayFerie = findJourFerieForDate(dayDate, joursFeries);
+                          const dayIndispo = findJourIndispoForDate(dayDate, joursFeries);
                           const ferieGroup = ferieDayGroups.find(
                             (group) =>
                               visibleIndex >= group.startIndex &&
@@ -1229,11 +1234,11 @@ export function CreneauxPage() {
                                 />
                               ))}
 
-                              {dayFerie ? (
-                                <div className="absolute inset-0 z-10 bg-linear-to-b from-blue-50/90 to-white">
+                              {dayIndispo ? (
+                                <div className="absolute inset-0 z-10 bg-blue-50/90">
                                   {isFerieSpanStart && ferieGroup && (
                                     <div
-                                      className="sticky top-34 z-20 px-2 pt-5 pb-3 text-center bg-linear-to-b from-blue-50 to-blue-50/95"
+                                      className="sticky top-20 z-20 px-2 pt-5 pb-3 text-center bg-linear-to-b from-blue-50 to-blue-50/95 border border-blue-400"
                                       style={
                                         ferieGroup.span > 1
                                           ? {

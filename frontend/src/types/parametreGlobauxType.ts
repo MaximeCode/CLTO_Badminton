@@ -1,7 +1,7 @@
 import type { Base } from "@/types/baseType";
 import type { BlocksContent } from "@/types/blocks";
 
-export type JourFerie = {
+export type JourIndispo = {
   /** Début de la période (yyyy-MM-dd, inclus). */
   date_debut: string;
   /** Fin de la période (yyyy-MM-dd, inclus). Un seul jour → date_debut === date_fin. */
@@ -16,5 +16,5 @@ export type ParametreGlobaux = Base & {
   /** Libellés des créneaux complets (composant liste-txt.contenu). */
   creneaux_complets: string[];
   /** Périodes sans créneaux (jours fériés, gym indispo, vacances…). */
-  jours_feries: JourFerie[];
+  indispo_gymnase: JourIndispo[];
 };
