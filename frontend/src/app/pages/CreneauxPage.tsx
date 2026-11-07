@@ -991,8 +991,8 @@ export function CreneauxPage() {
                                   Aucun créneau ce jour
                                 </span>
                               </div>
-                              <div className="flex flex-col items-center justify-center text-center px-4 py-10 min-h-40 bg-linear-to-b from-blue-50/80 to-white">
-                                <BlocksRenderer content={dayIndispo.texte} />
+                              <div className="flex flex-col items-center justify-center text-center px-4 py-5 min-h-40 bg-linear-to-b from-blue-50/80 to-white">
+                                <BlocksRenderer content={dayIndispo.texte} customStyles={{ strong: "text-secondary" }} />
                               </div>
                             </>
                           ) : daySlotsData.length === 0 ? (
@@ -1247,7 +1247,7 @@ export function CreneauxPage() {
                                           : undefined
                                       }
                                     >
-                                      <BlocksRenderer content={ferieGroup.ferie.texte} />
+                                      <BlocksRenderer content={ferieGroup.ferie.texte} customStyles={{ strong: "text-secondary" }} />
                                     </div>
                                   )}
                                 </div>

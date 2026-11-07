@@ -77,8 +77,9 @@ function resolveStyles(
   variant: BlocksVariant,
   size: BlocksSize,
   sizeDesktop?: BlocksSize,
+  customStyles?: Partial<VariantStyles>,
 ): VariantStyles {
-  const base = VARIANT_STYLES[variant];
+  const base = { ...VARIANT_STYLES[variant], ...customStyles };
   const sizeClass = resolveSizeClass(size, sizeDesktop);
   const paragraphSpacing = variant === "onPrimary" ? "mb-3 sm:mb-4" : "mb-4";
   const quoteBorder =
@@ -357,6 +358,8 @@ type BlocksRendererProps = {
   headingOffset?: number;
   /** `checklist` = puces remplacées par une icône CheckCircle (couleur secondary). */
   listVariant?: ListVariant;
+  /** Styles personnalisés pour les blocs. */
+  customStyles?: Partial<VariantStyles>;
 };
 
 /**
@@ -397,12 +400,13 @@ export function BlocksRenderer({
   sizeDesktop,
   headingOffset = 0,
   listVariant = "default",
+  customStyles = {} as Partial<VariantStyles>,
 }: BlocksRendererProps) {
   if (!content?.length) {
     return null;
   }
 
-  const styles = resolveStyles(variant, size, sizeDesktop);
+  const styles = resolveStyles(variant, size, sizeDesktop, customStyles);
   const headingLevels = buildNormalizedHeadingLevels(content, headingOffset);
 
   return (
