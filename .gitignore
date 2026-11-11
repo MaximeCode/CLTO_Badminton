@@ -24,3 +24,5 @@ frontend/docs/*
 
 # skills
 skills/*
+PP_DEPLOY_CLTO.bat
+PROD_DEPLOY_CLTO.bat
