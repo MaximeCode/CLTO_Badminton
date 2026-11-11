@@ -5,7 +5,11 @@ import { cachedFetch } from "@/utils/cachedFetch";
 import { mapMedia } from "@/utils/media";
 
 function mapTeam(team: InterclubTeamSummary): InterclubTeamSummary {
-  const rawUrl = team.image?.url ?? "";
+  if (!team.image?.url) {
+    return { ...team, image: null };
+  }
+
+  const rawUrl = team.image.url;
   const absolute = rawUrl.startsWith("http") ? rawUrl : `${API_URL}${rawUrl}`;
   const mapped = mapMedia(team.image as never);
   return {
