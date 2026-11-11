@@ -28,9 +28,10 @@ export async function getGalerie(): Promise<Galerie[]> {
   );
 }
 
-/** Construit l'URL du player Flickr à partir de l'URL d'album Strapi. */
+/** Construit l'URL d'embed Flickr à partir de l'URL d'album Strapi. */
 export function getFlickrPlayerSrc(urlAlbum: string): string | null {
-  const match = urlAlbum.match(/flickr\.com\/photos\/([^/]+)\/albums\/(\d+)/i);
+  // /albums/ et /sets/ sont des alias Flickr ; le player legacy /player/ recharge en boucle.
+  const match = urlAlbum.match(/flickr\.com\/photos\/[^/]+\/(?:albums|sets)\/(\d+)/i);
   if (!match) return null;
-  return `https://www.flickr.com/photos/${match[1]}/albums/${match[2]}/player/`;
+  return `https://embedr.flickr.com/photosets/${match[1]}`;
 }
