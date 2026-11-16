@@ -1,5 +1,11 @@
 'use strict';
 
+const {
+  registerStatsClubLibelleMiddleware,
+  backfillStatsClubLibelles,
+  ensureStatsClubEntryTitle,
+} = require('./utils/statsClubLibelle');
+
 /**
  * Active automatiquement find / findOne sur le rôle Public
  * pour toutes les APIs `api::*` (Content-Types applicatifs).
@@ -284,11 +290,14 @@ async function backfillMissingCreatorFields(strapi) {
 module.exports = {
   register({ strapi }) {
     registerCreatorFieldsLifecycle(strapi);
+    registerStatsClubLibelleMiddleware(strapi);
   },
 
   async bootstrap({ strapi }) {
     await enablePublicReadPermissions(strapi);
     await syncAdminRoleFieldPermissions(strapi);
     await backfillMissingCreatorFields(strapi);
+    await backfillStatsClubLibelles(strapi);
+    await ensureStatsClubEntryTitle(strapi);
   },
 };

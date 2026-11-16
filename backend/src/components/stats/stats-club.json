@@ -14,6 +14,10 @@
     "desc": {
       "type": "text",
       "required": true
+    },
+    "libelle": {
+      "type": "string",
+      "required": false
     }
   }
 }
