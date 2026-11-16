@@ -5,6 +5,11 @@ const {
   backfillStatsClubLibelles,
   ensureStatsClubEntryTitle,
 } = require('./utils/statsClubLibelle');
+const {
+  registerListeTxtLibelleMiddleware,
+  backfillListeTxtLibelles,
+  ensureListeTxtEntryTitle,
+} = require('./utils/listeTxtLibelle');
 
 /**
  * Active automatiquement find / findOne sur le rôle Public
@@ -291,6 +296,7 @@ module.exports = {
   register({ strapi }) {
     registerCreatorFieldsLifecycle(strapi);
     registerStatsClubLibelleMiddleware(strapi);
+    registerListeTxtLibelleMiddleware(strapi);
   },
 
   async bootstrap({ strapi }) {
@@ -299,5 +305,7 @@ module.exports = {
     await backfillMissingCreatorFields(strapi);
     await backfillStatsClubLibelles(strapi);
     await ensureStatsClubEntryTitle(strapi);
+    await backfillListeTxtLibelles(strapi);
+    await ensureListeTxtEntryTitle(strapi);
   },
 };
