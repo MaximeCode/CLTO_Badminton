@@ -9,6 +9,7 @@ module.exports = {
       handler: 'form-contact.send',
       config: {
         auth: false,
+        middlewares: ['api::form-contact.rate-limit'],
       },
     },
   ],

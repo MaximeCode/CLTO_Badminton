@@ -44,8 +44,12 @@ function buildPlainText({ name, email, phone, subject, message }) {
   ].join("\n");
 }
 
+const ALLOWED_SUBJECTS = Object.keys(mailSubjects);
+
 module.exports = {
   BRAND,
+  mailSubjects,
+  ALLOWED_SUBJECTS,
   formatSubject,
   buildPlainText,
 };

@@ -5,7 +5,7 @@ import { Seo } from '../components/Seo';
 import { Section } from '../components/Section';
 import { motion } from 'motion/react';
 import { Mail, Phone, MapPin, Send, Check, Loader2 } from 'lucide-react';
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef } from 'react';
 import type { Contact } from '@/types/contactType';
 import { ContactContext } from '../contexts/ContactContext';
 import { formatTime, joinDays } from '@/utils/showHoraires';
@@ -46,6 +46,9 @@ export function ContactPage() {
     subject: '',
     message: '',
   });
+  /** Honeypot anti-bot — doit rester vide */
+  const [website, setWebsite] = useState('');
+  const formStartedAt = useRef(Date.now());
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -57,7 +60,11 @@ export function ContactPage() {
     setError(null);
 
     try {
-      await PostAPI('/api/form-contact', formData);
+      await PostAPI('/api/form-contact', {
+        ...formData,
+        website,
+        formStartedAt: formStartedAt.current,
+      });
       setSubmitted(true);
       setFormData({
         name: '',
@@ -66,6 +73,8 @@ export function ContactPage() {
         subject: '',
         message: '',
       });
+      setWebsite('');
+      formStartedAt.current = Date.now();
     } catch (err) {
       setError(
         err instanceof Error
@@ -190,6 +199,23 @@ export function ContactPage() {
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+              {/* Honeypot : caché des humains, rempli par beaucoup de bots */}
+              <div
+                aria-hidden="true"
+                className="absolute -left-[9999px] h-0 w-0 overflow-hidden opacity-0"
+              >
+                <label htmlFor="website">Site web</label>
+                <input
+                  type="text"
+                  id="website"
+                  name="website"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
               <div>
                 <label htmlFor="name" className="block text-gray-700 mb-2">
                   Nom et prénom *
