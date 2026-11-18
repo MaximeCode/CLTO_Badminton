@@ -234,14 +234,14 @@ export function Hero<T extends HeroSlide = HeroSlide>({
                     {slide.title}
                   </motion.h2>
                 ) : (
-                  <motion.h1
+                  <motion.p
                     initial={reduceMotion ? false : { y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: reduceMotion ? 0 : 0.3 }}
-                    className="font-primary text-4xl lg:text-5xl xl:text-7xl text-white leading-[1.15] mb-3 md:mb-4"
+                    className="font-primary font-['Bebas_Neue'] text-4xl lg:text-5xl xl:text-7xl text-white leading-[1.15] mb-3 md:mb-4"
                   >
                     {slide.title}
-                  </motion.h1>
+                  </motion.p>
                 )}
 
                 <motion.p

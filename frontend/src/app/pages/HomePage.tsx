@@ -165,9 +165,9 @@ export function HomePage() {
       <div className="w-9/10 mx-auto">
         <div className="rounded-full bg-primary-accent my-4 w-9/10 md:my-8 md:w-4/5 max-w-250 mx-auto">
 
-          <p className="py-2 text-center text-lg font-bold text-balance text-white md:py-3 md:text-2xl">
-            Bienvenue au CLTO Badminton, le club de badminton d&apos;Orléans&nbsp;!
-          </p>
+          <h1 className="py-2 text-center text-lg font-bold text-balance text-white md:py-3 md:text-2xl">
+            Bienvenue au CLTO Badminton, le club de badminton d&apos;Orl&eacute;ans&nbsp;!
+          </h1>
         </div>
         <nav
           aria-label="Accès rapide"

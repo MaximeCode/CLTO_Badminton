@@ -46,13 +46,16 @@ function CommandDialog({
 }) {
   return (
     <Dialog {...props}>
-      <DialogHeader className="sr-only">
-        <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>{description}</DialogDescription>
-      </DialogHeader>
       <DialogContent
         className={cn("overflow-hidden p-0", contentClassName)}
       >
+        {/* Label a11y sans balise de titre : évite un H2 "Rechercher" dans le plan de titres SEO */}
+        <DialogHeader className="sr-only">
+          <DialogTitle asChild>
+            <span>{title}</span>
+          </DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
+        </DialogHeader>
         <Command
           shouldFilter={shouldFilter}
           filter={filter}
