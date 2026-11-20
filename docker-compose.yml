@@ -34,6 +34,21 @@ services:
       - "traefik.http.routers.cltobadminton-frontend-http.middlewares=cltobadminton-frontend-https-redirect"
       - "traefik.http.routers.cltobadminton-frontend-http.service=cltobadminton-frontend"
 
+      # www → apex (HTTP + HTTPS)
+      - "traefik.http.middlewares.cltobadminton-frontend-www-redirect.redirectregex.regex=^https?://www\\.preprod\\.cltobadminton\\.fr(.*)"
+      - "traefik.http.middlewares.cltobadminton-frontend-www-redirect.redirectregex.replacement=https://preprod.cltobadminton.fr$${1}"
+      - "traefik.http.middlewares.cltobadminton-frontend-www-redirect.redirectregex.permanent=true"
+      - "traefik.http.routers.cltobadminton-frontend-www.rule=Host(`www.preprod.cltobadminton.fr`)"
+      - "traefik.http.routers.cltobadminton-frontend-www.entrypoints=websecure"
+      - "traefik.http.routers.cltobadminton-frontend-www.tls=true"
+      - "traefik.http.routers.cltobadminton-frontend-www.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.cltobadminton-frontend-www.middlewares=cltobadminton-frontend-www-redirect"
+      - "traefik.http.routers.cltobadminton-frontend-www.service=cltobadminton-frontend"
+      - "traefik.http.routers.cltobadminton-frontend-www-http.rule=Host(`www.preprod.cltobadminton.fr`)"
+      - "traefik.http.routers.cltobadminton-frontend-www-http.entrypoints=web"
+      - "traefik.http.routers.cltobadminton-frontend-www-http.middlewares=cltobadminton-frontend-www-redirect"
+      - "traefik.http.routers.cltobadminton-frontend-www-http.service=cltobadminton-frontend"
+
       # Basic Auth
       - "traefik.http.routers.cltobadminton-frontend.middlewares=preprod-auth@file"
 
@@ -42,7 +57,7 @@ services:
     networks:
       - max_network
     # ports:
-      # - "5173:80"
+    # - "5173:80"
 
   ## STRAPI ##
   backend:
@@ -87,7 +102,7 @@ services:
     networks:
       - max_network
     # ports:
-      # - "1337:1337"
+    # - "1337:1337"
 
     volumes:
       - strapi_uploads:/backend/public/uploads

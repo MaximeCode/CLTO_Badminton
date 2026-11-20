@@ -15,8 +15,8 @@ services:
     labels:
       - "traefik.enable=true"
 
-      # Domaine frontend (HTTPS)
-      - "traefik.http.routers.cltobadminton-frontend-prod.rule=Host(`cltobadminton.fr`) || Host(`www.cltobadminton.fr`)"
+      # Domaine frontend canonique (HTTPS, sans www)
+      - "traefik.http.routers.cltobadminton-frontend-prod.rule=Host(`cltobadminton.fr`)"
       - "traefik.http.routers.cltobadminton-frontend-prod.entrypoints=websecure"
 
       # HTTPS
@@ -26,13 +26,28 @@ services:
       # Port nginx interne
       - "traefik.http.services.cltobadminton-frontend-prod.loadbalancer.server.port=80"
 
-      # HTTP → HTTPS (Traefik ; pas dans nginx : TLS terminé en amont)
+      # HTTP → HTTPS (apex)
       - "traefik.http.middlewares.cltobadminton-frontend-prod-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.middlewares.cltobadminton-frontend-prod-https-redirect.redirectscheme.permanent=true"
-      - "traefik.http.routers.cltobadminton-frontend-prod-http.rule=Host(`cltobadminton.fr`) || Host(`www.cltobadminton.fr`)"
+      - "traefik.http.routers.cltobadminton-frontend-prod-http.rule=Host(`cltobadminton.fr`)"
       - "traefik.http.routers.cltobadminton-frontend-prod-http.entrypoints=web"
       - "traefik.http.routers.cltobadminton-frontend-prod-http.middlewares=cltobadminton-frontend-prod-https-redirect"
       - "traefik.http.routers.cltobadminton-frontend-prod-http.service=cltobadminton-frontend-prod"
+
+      # www → apex (HTTP + HTTPS)
+      - "traefik.http.middlewares.cltobadminton-frontend-prod-www-redirect.redirectregex.regex=^https?://www\\.cltobadminton\\.fr(.*)"
+      - "traefik.http.middlewares.cltobadminton-frontend-prod-www-redirect.redirectregex.replacement=https://cltobadminton.fr$${1}"
+      - "traefik.http.middlewares.cltobadminton-frontend-prod-www-redirect.redirectregex.permanent=true"
+      - "traefik.http.routers.cltobadminton-frontend-prod-www.rule=Host(`www.cltobadminton.fr`)"
+      - "traefik.http.routers.cltobadminton-frontend-prod-www.entrypoints=websecure"
+      - "traefik.http.routers.cltobadminton-frontend-prod-www.tls=true"
+      - "traefik.http.routers.cltobadminton-frontend-prod-www.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.cltobadminton-frontend-prod-www.middlewares=cltobadminton-frontend-prod-www-redirect"
+      - "traefik.http.routers.cltobadminton-frontend-prod-www.service=cltobadminton-frontend-prod"
+      - "traefik.http.routers.cltobadminton-frontend-prod-www-http.rule=Host(`www.cltobadminton.fr`)"
+      - "traefik.http.routers.cltobadminton-frontend-prod-www-http.entrypoints=web"
+      - "traefik.http.routers.cltobadminton-frontend-prod-www-http.middlewares=cltobadminton-frontend-prod-www-redirect"
+      - "traefik.http.routers.cltobadminton-frontend-prod-www-http.service=cltobadminton-frontend-prod"
 
       # Cache /assets/ et /fonts/ : géré par nginx (TTL 1 an, immutable)
 
