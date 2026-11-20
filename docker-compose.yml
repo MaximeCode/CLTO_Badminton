@@ -15,7 +15,7 @@ services:
     labels:
       - "traefik.enable=true"
 
-      # Domaine frontend
+      # Domaine frontend (HTTPS)
       - "traefik.http.routers.cltobadminton-frontend.rule=Host(`preprod.cltobadminton.fr`)"
       - "traefik.http.routers.cltobadminton-frontend.entrypoints=websecure"
 
@@ -25,6 +25,14 @@ services:
 
       # Port nginx interne
       - "traefik.http.services.cltobadminton-frontend.loadbalancer.server.port=80"
+
+      # HTTP → HTTPS (Traefik ; pas dans nginx : TLS terminé en amont)
+      - "traefik.http.middlewares.cltobadminton-frontend-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.cltobadminton-frontend-https-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.cltobadminton-frontend-http.rule=Host(`preprod.cltobadminton.fr`)"
+      - "traefik.http.routers.cltobadminton-frontend-http.entrypoints=web"
+      - "traefik.http.routers.cltobadminton-frontend-http.middlewares=cltobadminton-frontend-https-redirect"
+      - "traefik.http.routers.cltobadminton-frontend-http.service=cltobadminton-frontend"
 
       # Basic Auth
       - "traefik.http.routers.cltobadminton-frontend.middlewares=preprod-auth@file"

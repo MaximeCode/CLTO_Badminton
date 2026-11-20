@@ -11,6 +11,7 @@ screen_txt_a_modifier
 /*.txt
 /*.json
 /*.md
+/*.bat
 
 /data
 /*.csv
@@ -24,5 +25,3 @@ frontend/docs/*
 
 # skills
 skills/*
-PP_DEPLOY_CLTO.bat
-PROD_DEPLOY_CLTO.bat
