@@ -4,6 +4,11 @@ const { contentTypes } = require('@strapi/utils');
 
 const MAX_DOCUMENTS = 4;
 
+/** Content types excluded from « dernières entrées » (ex. mises à jour scraper). */
+const EXCLUDED_CONTENT_TYPE_UIDS = new Set([
+  'plugin::icbad-scraper.interclub-team', // Équipes interclubs
+]);
+
 /**
  * Homepage service aligned with content-manager's native one, with:
  * - createdAt / createdBy
@@ -156,7 +161,9 @@ module.exports = ({ strapi }) => {
   };
 
   const queryLastDocuments = async (additionalQueryParams = {}, draftAndPublishOnly = false) => {
-    const permittedContentTypes = await getPermittedContentTypes();
+    const permittedContentTypes = (await getPermittedContentTypes()).filter(
+      (uid) => !EXCLUDED_CONTENT_TYPE_UIDS.has(uid),
+    );
     const allowedContentTypeUids = draftAndPublishOnly
       ? permittedContentTypes.filter((uid) =>
         contentTypes.hasDraftAndPublish(strapi.contentType(uid)),

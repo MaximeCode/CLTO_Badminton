@@ -19,6 +19,11 @@ import { useFetchClient, Widget } from '@strapi/strapi/admin';
 
 const BASE_MAX_WIDTH = '10rem';
 
+/** Exclu des widgets « dernières entrées » (mises à jour scraper IcBAD). */
+const EXCLUDED_CONTENT_TYPE_UIDS = new Set([
+  'plugin::icbad-scraper.interclub-team', // Équipes interclubs
+]);
+
 const CellTypography = styled(Typography)`
   display: block;
   max-width: ${({ $maxWidth }) => $maxWidth || BASE_MAX_WIDTH};
@@ -260,7 +265,10 @@ function useRecentDocuments(action) {
       try {
         const { data } = await get(`/enhanced-homepage/recent-documents?action=${action}`);
         if (!cancelled) {
-          setState({ loading: false, data: data?.data ?? data, error: null });
+          const documents = (data?.data ?? data ?? []).filter(
+            (doc) => !EXCLUDED_CONTENT_TYPE_UIDS.has(doc.contentTypeUid),
+          );
+          setState({ loading: false, data: documents, error: null });
         }
       } catch (err) {
         if (!cancelled) {
