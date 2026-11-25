@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
-import { Clock, UserCircle } from 'lucide-react';
+import { Clock, File, UserCircle } from 'lucide-react';
 import { Hero, type HeroSlide } from '../components/Hero';
 import { Seo } from '../components/Seo';
 import { DEFAULT_DESCRIPTION, SITE_NAME } from '@/utils/seo';
@@ -32,6 +32,7 @@ const PLAYER_ACCOUNT_URL = "https://www.gestion.cltobadminton.fr/";
 const QUICK_LINKS = [
   { label: 'Nos créneaux hebdomadaires', to: '/creneaux', icon: Clock, target: '_self' },
   { label: 'Compte Joueur', to: PLAYER_ACCOUNT_URL, icon: UserCircle, target: '_blank' },
+  { label: 'Fondamentaux financiers', to: 'https://drive.google.com/file/d/1v_5tPPkpr6saTtlvKgS-YKzJWRZBuazp/view?usp=drive_link', icon: File, target: '_blank' },
 ] as const;
 
 function BelowFoldFallback() {
